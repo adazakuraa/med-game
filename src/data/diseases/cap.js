@@ -13,6 +13,7 @@ export default {
   minAbxDays: 5,
   vars: (rng) => ({ side: rng.pick(['右', '左']), days: rng.int(2, 5) }),
   cc: () => '発熱と咳',
+  ccKey: 'fever_cough',
   arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
   history: {
     onset: { p: 1, text: '{days}日前から熱と咳が出始めました。' },

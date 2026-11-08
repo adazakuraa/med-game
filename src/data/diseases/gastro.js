@@ -16,6 +16,7 @@ export default {
     familySick: rng.chance(0.5),
   }),
   cc: () => '嘔吐と下痢',
+  ccKey: 'vomit_diarrhea',
   arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
   initVolume: [[700, 1300], [1500, 2400], [2600, 3800]],
   history: {

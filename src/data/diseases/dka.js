@@ -16,6 +16,7 @@ export default {
     };
   },
   cc: () => '嘔吐と倦怠感',
+  ccKey: 'vomit_malaise',
   arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
   initVolume: [[2500, 3500], [3500, 5000], [4500, 6500]],
   initGlu: [[300, 450], [400, 600], [500, 800]],
