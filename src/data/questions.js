@@ -9,6 +9,7 @@ export const Q_CATS = [
 
 export const QUESTIONS = [
   // 現病歴 (OPQRST)
+  { id: 'lastnormal', cat: 'hpi', text: '最後に普段通り元気だったのはいつですか？', no: '今朝まではいつも通りでした。' },
   { id: 'onset', cat: 'hpi', text: 'いつから症状がありますか？', no: 'はっきりとは覚えていません。' },
   { id: 'course', cat: 'hpi', text: '症状はどう変化していますか？', no: 'あまり変わりません。' },
   { id: 'character', cat: 'hpi', text: 'どんな症状ですか？詳しく教えてください', no: 'うまく説明できません。' },
@@ -43,6 +44,10 @@ export const QUESTIONS = [
   { id: 'hematuria', cat: 'assoc', text: '尿の色がおかしいことはありますか？', no: '普段通りの色です。' },
   { id: 'flankpain', cat: 'assoc', text: '腰や背中の痛みはありますか？', no: 'ありません。' },
   { id: 'polyuria', cat: 'assoc', text: '喉の渇きや尿の量が多いことは？', no: '特にありません。' },
+  { id: 'weakness', cat: 'assoc', text: '手足の力が入りにくい、しびれはありますか？', no: 'ありません。' },
+  { id: 'speechq', cat: 'assoc', text: '言葉が出にくい、ろれつが回らないことは？', no: 'ありません。' },
+  { id: 'photophobia', cat: 'assoc', text: '光がまぶしい、音が響くことはありますか？', no: 'ありません。' },
+  { id: 'seizure', cat: 'assoc', text: 'けいれんや意識を失ったことはありますか？', no: 'ありません。' },
   { id: 'headache', cat: 'assoc', text: '頭痛はありますか？', no: 'ありません。' },
   { id: 'myalgia', cat: 'assoc', text: '体の節々の痛みやだるさは？', no: '特にありません。' },
   { id: 'sorethroat', cat: 'assoc', text: '喉の痛みや鼻水はありますか？', no: 'ありません。' },

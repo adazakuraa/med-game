@@ -21,6 +21,7 @@ export const TESTS = [
   { id: 'tnt', cat: 'blood', name: '高感度トロポニンT', kind: 'lab', items: ['TNT'], cost: 1200, timeMin: 45, inv: 1, sample: 'blood' },
   { id: 'hba1c', cat: 'blood', name: 'HbA1c', kind: 'lab', items: ['HBA1C'], cost: 490, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'bhb', cat: 'blood', name: '血中ケトン体（β-HB）', kind: 'lab', items: ['BHB'], cost: 590, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'bs_poct', cat: 'blood', name: '簡易血糖測定（指先）', kind: 'lab', items: ['GLU'], cost: 100, timeMin: 1, inv: 1, sample: 'blood' },
   { id: 'ua', cat: 'urine', name: '尿定性', kind: 'lab', items: ['U_PRO', 'U_GLU', 'U_KET', 'U_BLD', 'U_LEU', 'U_NIT'], cost: 260, timeMin: 15, inv: 0, sample: 'urine' },
   { id: 'used', cat: 'urine', name: '尿沈渣', kind: 'lab', items: ['U_WBC', 'U_RBC', 'U_BACT'], cost: 270, timeMin: 30, inv: 0, sample: 'urine' },
   { id: 'uhcg', cat: 'urine', name: '尿妊娠反応（hCG）', kind: 'qual', cost: 550, timeMin: 10, inv: 0, sample: 'urine', pos: '陽性', neg: '陰性', spec: 0.995 },
@@ -42,6 +43,9 @@ export const TESTS = [
   { id: 'abd_ct_plain', cat: 'image', name: '腹部単純CT', kind: 'report', cost: 14000, timeMin: 45, inv: 0, radiation: true, normal: '腹腔内に明らかな異常所見なし。遊離ガス・腹水なし。' },
   { id: 'abd_ct_contrast', cat: 'image', name: '腹部造影CT', kind: 'report', cost: 22000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '腹腔内に明らかな異常所見なし。虫垂正常。腎の造影不良域なし。' },
   { id: 'leg_us', cat: 'physio', name: '下肢静脈エコー', kind: 'report', cost: 5300, timeMin: 30, inv: 0, normal: '両下肢の深部静脈に血栓なし。圧迫で良好に虚脱する。' },
+  { id: 'head_ct', cat: 'image', name: '頭部単純CT', kind: 'report', cost: 14000, timeMin: 20, inv: 0, radiation: true, normal: '頭蓋内に出血・腫瘤・明らかな低吸収域なし。正中偏位なし。' },
+  { id: 'head_mri', cat: 'image', name: '頭部MRI（拡散強調像・MRA）', kind: 'report', cost: 25000, timeMin: 60, inv: 0, normal: '拡散強調像で異常信号なし。MRAで主幹動脈の閉塞・狭窄・動脈瘤なし。' },
+  { id: 'lp', cat: 'micro', name: '腰椎穿刺（髄液検査・グラム染色）', kind: 'report', cost: 3500, timeMin: 60, inv: 2, normal: '初圧 14cmH2O。無色透明。細胞数 2/μL、蛋白 30mg/dL、糖 65mg/dL（血糖比 0.6以上）。グラム染色で菌を認めない。' },
   { id: 'ecg', cat: 'physio', name: '12誘導心電図', kind: 'ecg', cost: 1300, timeMin: 5, inv: 0 },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];

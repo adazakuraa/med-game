@@ -18,7 +18,9 @@ export const DDX = [
   ['hypoglycemia', '低血糖', 'endo'], ['thyroid_storm', '甲状腺クリーゼ', 'endo'], ['hyperk', '高カリウム血症', 'endo'],
   ['sepsis', '敗血症', 'inf'], ['septic_shock', '敗血症性ショック', 'inf'], ['dehydration', '脱水症', 'inf'], ['anaphylaxis', 'アナフィラキシー', 'inf'],
   ['ectopic', '異所性妊娠', 'gyn'], ['pid', '骨盤内炎症性疾患', 'gyn'], ['ovarian_torsion', '卵巣捻転', 'gyn'],
-  ['meningitis', '細菌性髄膜炎', 'neuro'], ['stroke', '脳卒中', 'neuro'],
+  ['meningitis', '細菌性髄膜炎', 'neuro'], ['stroke', '脳梗塞', 'neuro'], ['ich', '脳出血', 'neuro'], ['sah', 'くも膜下出血', 'neuro'], ['tia', '一過性脳虚血発作（TIA）', 'neuro'],
+  ['migraine', '片頭痛', 'neuro'], ['tension_ha', '緊張型頭痛', 'neuro'], ['cluster', '群発頭痛', 'neuro'], ['encephalitis', '脳炎', 'neuro'], ['epilepsy_sz', 'てんかん発作', 'neuro'],
+  ['wernicke', 'Wernicke脳症', 'neuro'], ['hepatic_enc', '肝性脳症', 'gi'], ['intox', '薬物・アルコール中毒', 'other'], ['sinusitis', '急性副鼻腔炎', 'resp'],
   ['gerd', '逆流性食道炎', 'gi'], ['musculoskeletal', '筋骨格系の胸痛（肋軟骨炎など）', 'other'], ['panic', 'パニック発作', 'other'],
 ].map(([id, name, cat]) => ({ id, name, cat }));
 export const DDX_BY_ID = Object.fromEntries(DDX.map((d) => [d.id, d]));

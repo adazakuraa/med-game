@@ -8,6 +8,11 @@ import acs from './acs.js';
 import aortic_dissection from './aortic_dissection.js';
 import pe from './pe.js';
 import ptx from './ptx.js';
+import stroke from './stroke.js';
+import hypoglycemia from './hypoglycemia.js';
+import meningitis from './meningitis.js';
+import sah from './sah.js';
+import migraine from './migraine.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

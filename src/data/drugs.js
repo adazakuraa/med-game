@@ -12,6 +12,7 @@ export const FREQS = {
   q12h: { label: '1日2回', perDay: 2 },
   q8h: { label: '1日3回', perDay: 3 },
   q6h: { label: '1日4回', perDay: 4 },
+  q4h: { label: '1日6回', perDay: 6 },
   prn: { label: '頓用', perDay: 3 },
   cont: { label: '持続投与', perDay: 24 },
 };
@@ -205,6 +206,55 @@ export const DRUGS = [
     contra: ['sbp90', 'cardiogenic'],
     info: '頻脈の心拍数コントロールに1〜10μg/kg/分で持続静注（心機能低下例の頻脈性不整脈など）。大動脈解離では心拍数60/分前後を目標に用いられる。心原性ショック・高度徐脈には禁忌。',
   },
+  {
+    id: 'alteplase', generic: 'アルテプラーゼ（rt-PA）', brands: ['グルトパ', 'アクチバシン'], cls: '血栓溶解薬', tags: ['thrombolytic'],
+    routes: { iv: { unit: 'mg', min: 20, max: 60, freqs: ['once'], maxDaily: 60, perKgOnce: [0.55, 0.65] } },
+    contra: ['tpa_bp', 'tpa_anticoag', 'tpa_glucose'], effectHours: 1,
+    info: '虚血性脳卒中（発症4.5時間以内）に0.6mg/kg（最大60mg）：10%を急速静注、残りを1時間で点滴。血圧185/110mmHg超、抗凝固薬内服中（INR>1.7など）、頭蓋内出血、低血糖・高血糖などは禁忌・慎重投与。',
+  },
+  {
+    id: 'glucose50', generic: '50%ブドウ糖液', brands: ['大塚糖液50%'], cls: '糖補給', tags: ['dextrose_bolus'],
+    routes: { iv: { unit: 'mL', min: 20, max: 60, freqs: ['once'], maxDaily: 200 } },
+    effectHours: 1,
+    info: '低血糖に20〜40mL（ブドウ糖10〜20g）を静注。スルホニル尿素薬による低血糖は再発しやすく、ブドウ糖の持続点滴と入院観察が必要。栄養不良・アルコール多飲ではビタミンB1を先に（Wernicke脳症の予防）。',
+  },
+  {
+    id: 'thiamine', generic: 'チアミン（ビタミンB1）', brands: ['アリナミンF', 'メタボリン'], cls: 'ビタミン製剤', tags: ['thiamine'],
+    routes: { iv: { unit: 'mg', min: 50, max: 500, freqs: ['once', 'q8h', 'q24h'], maxDaily: 1500 } },
+    effectHours: 24,
+    info: 'アルコール多飲・低栄養の意識障害では、ブドウ糖の前（または同時）に100mg以上を静注しWernicke脳症を予防する。',
+  },
+  {
+    id: 'vcm', generic: 'バンコマイシン', brands: ['塩酸バンコマイシン'], cls: '抗菌薬（グリコペプチド系）', allergy: 'glycopeptide', abx: true, broad: true,
+    routes: { iv: { unit: 'mg', min: 500, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 4000, perKgOnce: [12, 22] } },
+    covers: ['prsp', 'mrsa'],
+    renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 投与間隔を延長し、血中濃度（TDM）で調節' }],
+    info: '1回15〜20mg/kgを12時間毎（重症は負荷投与）。腎障害に注意し、トラフ値（TDM）で調節。細菌性髄膜炎ではペニシリン耐性肺炎球菌（PRSP）をカバーするためセフトリアキソンと併用する。',
+  },
+  {
+    id: 'abpc', generic: 'アンピシリン', brands: ['ビクシリン'], cls: '抗菌薬（ペニシリン系）', allergy: 'penicillin', abx: true,
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q6h', 'q4h'], maxDaily: 12000 } },
+    covers: ['spn', 'listeria'], tags: ['listeria_cover'],
+    renal: [{ crclBelow: 30, maxDaily: 6000, text: 'CrCl<30: 投与間隔を延長' }],
+    info: '細菌性髄膜炎では1回2gを4時間毎。50歳以上・免疫不全ではリステリアをカバーするため追加する。',
+  },
+  {
+    id: 'dexa', generic: 'デキサメタゾン', brands: ['デカドロン'], cls: '副腎皮質ステロイド', tags: ['steroid'],
+    routes: { iv: { unit: 'mg', min: 3.3, max: 13.2, freqs: ['q6h', 'q12h', 'q24h', 'once'], maxDaily: 40 } },
+    info: '細菌性髄膜炎では0.15mg/kgを6時間毎、2〜4日間。抗菌薬の直前または同時に開始する（後遺症・死亡の減少）。',
+  },
+  {
+    id: 'sumatriptan', generic: 'スマトリプタン', brands: ['イミグラン'], cls: '片頭痛治療薬（トリプタン）', tags: ['triptan', 'analgesic'],
+    routes: { sc: { unit: 'mg', min: 3, max: 3, freqs: ['once', 'prn'], maxDaily: 6 }, po: { unit: 'mg', min: 50, max: 100, freqs: ['once', 'prn'], maxDaily: 200 } },
+    contra: ['coronary', 'tpa_bp'], effectHours: 6,
+    info: '片頭痛発作に皮下注3mgまたは内服50mg。虚血性心疾患・脳血管障害・コントロール不良の高血圧には禁忌。',
+  },
+  {
+    id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
+    routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
+    renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
+    info: '1回500〜1500mgを1日2回点滴。けいれんの再発予防に。',
+  },
   // ===== 代謝・電解質 =====
   {
     id: 'insulin_r', generic: '速効型インスリン（静注持続）', brands: ['ヒューマリンR'], cls: 'インスリン', tags: ['insulin'],
@@ -263,4 +313,5 @@ export const HOME_MEDS = {
   latanoprost: { name: '点眼薬（緑内障）', tags: [] },
   valproate: { name: 'バルプロ酸 200mg 1日2回', tags: ['valproate'] },
   ocp: { name: '低用量ピル（避妊目的）', tags: ['ocp'] },
+  glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };
