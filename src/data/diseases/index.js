@@ -18,6 +18,11 @@ import ureteral from './ureteral.js';
 import influenza from './influenza.js';
 import copd from './copd.js';
 import asthma from './asthma.js';
+import anaphylaxis from './anaphylaxis.js';
+import ugib from './ugib.js';
+import pancreatitis from './pancreatitis.js';
+import sbo from './sbo.js';
+import cellulitis from './cellulitis.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

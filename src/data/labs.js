@@ -18,6 +18,7 @@ export const LABS = {
   TBIL: { name: 'T-Bil', unit: 'mg/dL', ref: [0.4, 1.5], dp: 1, base: { m: 0.8, sd: 0.2 }, abs: [0.1, 30] },
   ALB: { name: 'Alb', unit: 'g/dL', ref: [4.1, 5.1], dp: 1, base: { m: 4.4, sd: 0.25 }, abs: [1.0, 5.8] },
   AMY: { name: 'アミラーゼ', unit: 'U/L', ref: [44, 132], dp: 0, base: { m: 80, sd: 18 }, abs: [10, 5000] },
+  LIP: { name: 'リパーゼ', unit: 'U/L', ref: [13, 55], dp: 0, base: { m: 30, sd: 8 }, abs: [3, 8000] },
   CK: { name: 'CK', unit: 'U/L', ref: { M: [59, 248], F: [41, 153] }, dp: 0, base: { M: { m: 120, sd: 35 }, F: { m: 85, sd: 25 } }, abs: [10, 50000] },
   CRP: { name: 'CRP', unit: 'mg/dL', ref: [0, 0.14], dp: 2, base: { m: 0.06, sd: 0.03 }, abs: [0, 50] },
   PCT: { name: 'プロカルシトニン', unit: 'ng/mL', ref: [0, 0.05], dp: 2, base: { m: 0.03, sd: 0.01 }, abs: [0, 200] },

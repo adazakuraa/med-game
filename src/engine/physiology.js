@@ -108,6 +108,7 @@ export function labValue(enc, id, cache = {}) {
       else v = applyDisease(enc, id, baseOf(p, id));
     }
   }
+  if (id === 'HB') v = v - (st.hbLoss || 0) + ((st.rbcIn || 0) / 280) * 1.5 * (60 / p.weight);
   if (d.labHook) v = d.labHook(enc, id, v);
   if (L.abs) v = clamp(v, L.abs[0], L.abs[1]);
   cache[id] = v;

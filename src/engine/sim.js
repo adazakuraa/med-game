@@ -16,6 +16,7 @@ import { clamp, hashRand } from './rng.js';
 export const PROCEDURES = [
   { id: 'drain_R', name: '胸腔ドレナージ（右）', side: '右', min: 20 },
   { id: 'drain_L', name: '胸腔ドレナージ（左）', side: '左', min: 20 },
+  { id: 'ng', name: '胃管（経鼻胃管）挿入・減圧', min: 10 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
@@ -83,6 +84,7 @@ export function effects(enc, t = enc.t) {
       eff.ivRateTotal += rate;
       eff.dextroseGph += (rate / 1000) * F.glucose;
       eff.kRate += (rate / 1000) * F.k;
+      if (F.blood) eff.rbcRate = (eff.rbcRate || 0) + rate;
     } else if (o.kind === 'o2') {
       eff.o2Device = o.device; eff.o2Flow = o.flow; eff.nppv = o.device === 'nppv';
       eff.o2Label = O2_DEVICES.find((x) => x.id === o.device).name + (o.device === 'nppv' ? '' : ` ${o.flow}L/分`);
@@ -132,6 +134,8 @@ export function newEncounter(o) {
     procAt: {}, procDone: {}, drains: {},
   };
   enc.state.glu = patient.initGlu ?? gluSet(enc);
+  const dz0 = DISEASE_BY_ID[patient.diseaseId];
+  if (dz0.initHbLoss) enc.state.hbLoss = dz0.initHbLoss(patient);
   const eff = effects(enc);
   enc.initVit = vitals(enc, eff);
   const cache = {};
@@ -238,6 +242,7 @@ function step(enc, dtMin) {
   st.volume += dV * dtH;
   st.ivCryst += eff.ivVolRate * dtH;
   st.diuresed = (st.diuresed || 0) + eff.diuresis * dtH;
+  st.rbcIn = (st.rbcIn || 0) + (eff.rbcRate || 0) * dtH;
   // 血糖
   const ins = eff.tags.insulin || 0;
   const dka = !!d.gluSetpointDrift;
@@ -532,9 +537,17 @@ export function isOrderActive(enc, o) {
 export function procedure(enc, procId) {
   const P = PROCEDURES.find((x) => x.id === procId);
   const p = enc.patient, st = enc.state, d = disease(enc);
-  st.drains[P.side] = enc.t + P.min;
-  enc.discomfort += 2;
+  enc.discomfort += P.side ? 2 : 1;
   addLog(enc, 'rx', `処置：${P.name}`);
+  if (!P.side) {
+    st.procs = { ...(st.procs || {}), [P.id]: enc.t + P.min };
+    if (P.id === 'ng' && d.id === 'ugib') addLog(enc, 'exam', '胃管からコーヒー残渣様〜暗赤色の排液。', { label: '胃管排液', positive: true });
+    else if (P.id === 'ng' && d.id === 'sbo') addLog(enc, 'exam', '胃管から胆汁様の排液が多量（約800mL）。', { label: '胃管排液', positive: true });
+    else if (P.id === 'ng') addLog(enc, 'exam', '胃管から少量の胃液のみ。', { label: '胃管排液', positive: false });
+    advance(enc, P.min);
+    return;
+  }
+  st.drains[P.side] = enc.t + P.min;
   if (!(d.id === 'ptx' && p.vars.side === P.side)) {
     recordIssues(enc, [{ level: 'harm', code: 'drain_wrong', msg: `気胸のない側への胸腔ドレナージ（${P.name}）：医原性の気胸・出血の危険` }], P.name);
     st.burden = Math.min(100, st.burden + 12);

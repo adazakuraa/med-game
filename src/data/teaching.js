@@ -160,6 +160,7 @@ export const LAB_MEANING = {
   TBIL: { H: '黄疸（肝胆道疾患・溶血・重症感染）' },
   ALB: { L: '栄養状態不良・炎症・肝疾患' },
   AMY: { H: '膵炎などで上昇（DKAでも軽度上がることがある）' },
+  LIP: { H: '膵臓の障害（急性膵炎で基準の3倍以上に上昇）。アミラーゼより膵臓に特異的' },
   CK: { H: '筋肉の障害（横紋筋融解・心筋梗塞など）' },
   CRP: { H: '炎症反応。細菌感染で高値になりやすい' },
   PCT: { H: '細菌感染・敗血症で上昇しやすい' },
@@ -228,6 +229,8 @@ export const DRUG_ROLE = {
   salbutamol: '気管支を広げる吸入薬（SABA）。喘息発作・COPD増悪の第一選択で、繰り返し使える。',
   prednisolone: '飲み薬のステロイド。喘息発作・COPD増悪の炎症を抑える（5日間程度）。',
   mpsl: '点滴のステロイド。飲めない重い喘息発作・COPD増悪などに。',
+  ppi: '胃酸を強力に抑える点滴。出血性潰瘍の止血後の再出血を減らす。',
+  cez: '皮膚の細菌（溶連菌・黄色ブドウ球菌）によく効く点滴の抗菌薬。蜂窩織炎の第一選択。',
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
@@ -237,10 +240,12 @@ export const FLUID_ROLE = {
   ns: '細胞外液。DKAや脱水の初期輸液に使う。大量に使うと高Cl性アシドーシスになりやすい。',
   lr: '細胞外液。脱水・敗血症の初期輸液の基本。',
   d5w: '水分とブドウ糖の補給。血管内に残りにくく、血圧を保つ目的には向かない。DKAで血糖が下がったら追加する。',
+  rbc: '輸血（赤血球）。出血でHbが7g/dL未満などのときに。2単位でHbが約1〜1.5g/dL上がる。輸血しすぎは再出血や心不全のリスク。',
   sol3: 'Kと糖を含む維持輸液。絶食中の1日の必要量を補う。',
 };
 
 export const PROC_ROLE = {
+  ng: '鼻から胃にチューブを入れる。腸閉塞での減圧や、上部消化管出血の確認に使う。',
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
   drain_L: '左の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
 };
@@ -358,7 +363,7 @@ export const APPROACHES = {
   abd_pain: {
     title: '腹痛',
     intro: '腹痛は「部位」と「腹膜刺激徴候」が鍵。手術が必要な疾患を見逃さないこと。妊娠可能年齢の女性では妊娠関連疾患を必ず考える。',
-    keyQ: ['onset', 'location', 'migration', 'character', 'severity', 'aggravating', 'anorexia', 'nausea', 'fever', 'diarrhea', 'dysuria', 'lmp', 'surgery', 'allergy'],
+    keyQ: ['onset', 'location', 'migration', 'character', 'severity', 'radiation', 'aggravating', 'anorexia', 'nausea', 'fever', 'diarrhea', 'dysuria', 'lmp', 'surgery', 'alcohol', 'allergy'],
     keyE: ['gen_appear', 'abd_insp', 'abd_ausc', 'abd_palp', 'mcburney', 'abd_rebound', 'abd_guard', 'rovsing', 'psoas', 'murphy', 'cva'],
     keyT: ['cbc', 'crp', 'chem', 'ua', 'uhcg', 'abd_us', 'abd_ct_contrast'],
     redflags: ['腹膜刺激徴候（反跳痛・筋性防御）→ 外科コンサルト', '妊娠可能年齢の女性 → 妊娠反応（異所性妊娠は命に関わる）', 'ショック → 穿孔・出血・敗血症を考える'],
@@ -366,6 +371,8 @@ export const APPROACHES = {
       { id: 'appendicitis', point: '心窩部から右下腹部への痛みの移動、食欲不振、McBurney点圧痛、反跳痛、エコー・CTで腫大した虫垂', clues: ['q:migration', 'q:anorexia', 'q:aggravating', 'e:mcburney', 'e:abd_rebound', 'e:abd_guard', 'e:rovsing', 'e:psoas', 't:abd_us', 't:abd_ct_contrast', 't:abd_ct_plain', 'H:WBC'] },
       { id: 'gastro', point: '下痢を伴い、圧痛は軽く限局しない', clues: ['q:diarrhea'] },
       { id: 'diverticulitis', point: '限局した圧痛（日本人は右側も多い）、CTで憩室と周囲の炎症' },
+      { id: 'pancreatitis', tests: ['abd_ct_contrast'], point: '飲酒・胆石、上腹部〜背部に突き抜ける持続痛、前かがみで軽快、リパーゼ・アミラーゼ上昇', clues: ['q:alcohol', 'q:radiation', 'q:relieving', 'H:LIP', 'H:AMY', 't:abd_ct_contrast'] },
+      { id: 'sbo', tests: ['axr', 'abd_ct_contrast'], point: '腹部手術歴、波のある腹痛・嘔吐・腹部膨満・排便排ガス停止、X線でニボー', clues: ['q:surgery', 'q:nausea', 'q:diarrhea', 'e:abd_insp', 'e:abd_ausc', 't:axr'] },
       { id: 'ectopic', point: '女性・月経の遅れ・妊娠反応陽性・下腹部痛', clues: ['t:uhcg'] },
       { id: 'ovarian_torsion', point: '女性・突然の下腹部痛・嘔吐' },
       { id: 'pid', point: '女性・下腹部痛・帯下異常・子宮頸部の圧痛' },
@@ -474,6 +481,49 @@ APPROACHES.flank_pain = {
     { id: 'obst_pyelo', point: '結石＋発熱（緊急ドレナージ）', clues: ['q:fever'] },
     { id: 'appendicitis', point: '右下腹部の限局した圧痛・腹膜刺激徴候', clues: ['e:abd_rebound'] },
     { id: 'lumbago', point: '体動で悪化し安静で軽快、尿所見は正常' },
+  ],
+};
+
+APPROACHES.rash_dyspnea = {
+  title: '全身のじんましんと息苦しさ',
+  intro: '皮膚症状に呼吸器症状・血圧低下・消化器症状が加わればアナフィラキシー。診断がつき次第、アドレナリン筋注を最優先する（迷ったら打つ）。',
+  keyQ: ['onset', 'trigger', 'dyspnea', 'sorethroat', 'dizziness', 'nausea', 'abdpain', 'allergy', 'meds', 'pmh'],
+  keyE: ['gen_appear', 'skin', 'pharynx', 'lung_ausc', 'chest_insp', 'periph'],
+  keyT: [],
+  redflags: ['声のかすれ・喉の詰まり・喘鳴・血圧低下 → すぐにアドレナリン0.5mg筋注（大腿外側）', '低血圧には細胞外液の急速投与と下肢挙上', 'β遮断薬内服中はアドレナリンが効きにくい'],
+  ddx: [
+    { id: 'anaphylaxis', point: 'アレルゲン曝露後数分〜数十分で、皮膚症状＋呼吸困難・血圧低下・腹痛', clues: ['q:trigger', 'q:dyspnea', 'q:dizziness', 'e:skin', 'e:pharynx', 'e:lung_ausc'] },
+    { id: 'urticaria', point: '皮膚症状のみで呼吸・循環・消化器症状がない' },
+    { id: 'angioedema', point: '唇・まぶたの腫れが主体、じんましんを伴わないこともある（ACE阻害薬など）' },
+    { id: 'asthma', point: '喘息の既往、皮膚症状がない' },
+  ],
+};
+APPROACHES.hematemesis = {
+  title: '吐血・黒色便',
+  intro: '吐血・黒色便は上部消化管出血。まずショックの評価と蘇生（輸液・輸血）、次に原因薬の確認とPPI、そして緊急内視鏡。',
+  keyQ: ['onset', 'course', 'bloodystool', 'nausea', 'dizziness', 'abdpain', 'meds', 'alcohol', 'pmh'],
+  keyE: ['gen_appear', 'oral_mucosa', 'abd_palp', 'periph', 'skin'],
+  keyT: ['cbc', 'chem', 'coag', 'vbg'],
+  redflags: ['頻脈・低血圧・意識障害 → 出血性ショック：太い点滴2本・細胞外液・輸血', 'Hb 7g/dL未満を目安に輸血（輸血しすぎない）', 'NSAIDs・抗血小板薬・抗凝固薬の内服を確認', '肝硬変・大量飲酒 → 食道静脈瘤を考える'],
+  ddx: [
+    { id: 'ugib', point: 'NSAIDs内服・ピロリ菌、心窩部痛、黒色便・コーヒー残渣様の吐血、BUN上昇', clues: ['q:bloodystool', 'q:meds', 'q:abdpain', 'L:HB', 'H:BUN'] },
+    { id: 'variceal', point: '肝硬変・大量飲酒、大量の鮮血吐血', clues: ['q:alcohol'] },
+    { id: 'lgib', point: '鮮血便が主体、BUNの上昇は軽い' },
+    { id: 'pud', point: '出血していない消化性潰瘍（心窩部痛のみ）' },
+  ],
+};
+APPROACHES.leg_red = {
+  title: '足の赤みと腫れ',
+  intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
+  keyQ: ['onset', 'course', 'character', 'fever', 'chills', 'trigger', 'immobility', 'pmh', 'meds', 'allergy'],
+  keyE: ['skin', 'calf', 'leg_edema', 'gen_appear', 'periph'],
+  keyT: ['cbc', 'crp', 'chem'],
+  redflags: ['見た目に比べて強すぎる痛み・水疱・紫斑・急速な進行 → 壊死性筋膜炎（緊急手術）', '発熱・低血圧 → 敗血症', '片側の腫脹で発赤が乏しい → 深部静脈血栓症（下肢静脈エコー）'],
+  ddx: [
+    { id: 'cellulitis', point: '境界不明瞭な発赤・熱感・圧痛・発熱、足白癬などの侵入門戸', clues: ['q:fever', 'q:trigger', 'e:skin', 'H:CRP', 'H:WBC'] },
+    { id: 'dvt', tests: ['leg_us'], point: '発赤・熱感は乏しく、腫脹とふくらはぎの圧痛、長期臥床などのリスク', clues: ['q:immobility', 't:leg_us'] },
+    { id: 'nec_fasc', point: '強すぎる痛み・水疱・紫斑・急速な進行・CK上昇', clues: ['H:CK'] },
+    { id: 'gout', point: '足の親指の付け根などの関節の急な激痛と発赤' },
   ],
 };
 
@@ -628,6 +678,31 @@ export const DISEASE_NOTES = {
     overview: '気道の慢性炎症がある人で、かぜ・アレルゲン・吸入薬の中断などをきっかけに気道が狭くなる発作。ゼーゼー・ヒューヒュー（wheezes）と呼気の延長。',
     treatment: ['話し方（文章・句・単語）とSpO2で重症度を評価', 'サルブタモール吸入を20分ごとに反復', '全身性ステロイド（プレドニゾロン 40mg 内服、またはメチルプレドニゾロン静注）', 'SpO2 93〜95%を目標に酸素', '重篤（silent chest・意識低下）はアドレナリン筋注・ICU', '帰宅時は吸入ステロイドの継続と吸入手技を指導'],
     flow: '問診（喘息の既往・誘因・吸入の使用状況）→ 聴診（wheezes）→ SpO2・血液ガス → 喘息発作と判断 → サルブタモール吸入・ステロイド → 改善すれば帰宅',
+  },
+  anaphylaxis: {
+    overview: '食物・薬・ハチ毒などに対する急速で全身性のアレルギー反応。皮膚症状に加えて呼吸困難・血圧低下・腹痛を起こし、命に関わる。',
+    treatment: ['アドレナリン 0.3〜0.5mg を大腿外側に筋注（5〜15分ごとに反復可）', '低血圧には細胞外液の急速投与・仰臥位で下肢挙上', '酸素投与、喘鳴にはサルブタモール吸入も', '抗ヒスタミン薬・ステロイドは補助', '二相性反応に備えて経過観察、エピペンの処方と指導'],
+    flow: '曝露と症状の経過を確認 → 皮膚・気道・呼吸・循環を評価 → アドレナリン筋注 → 酸素・輸液 → 経過観察（重症は入院）',
+  },
+  ugib: {
+    overview: '胃・十二指腸潰瘍などから出血し、吐血や黒色便（タール便）を起こす。NSAIDsやピロリ菌が主な原因。大量出血ではショックになる。',
+    treatment: ['ショックの評価と蘇生：細胞外液、Hb 7g/dL未満を目安に輸血', 'PPI静注（オメプラゾール 20mg 1日2回など）', '消化器内科に相談し、24時間以内（不安定なら安定後すぐ）に内視鏡的止血', 'NSAIDs・抗血小板薬・抗凝固薬の中止を検討', 'ピロリ菌の検査と除菌'],
+    flow: '吐血・黒色便 → バイタルでショック評価 → 輸液・採血（Hb・BUN・凝固） → PPI → 必要なら輸血 → 消化器内科コンサルト → 内視鏡で止血 → 入院',
+  },
+  pancreatitis: {
+    overview: '膵酵素によって膵臓自体に炎症が起こる病気。アルコールと胆石が2大原因。上腹部〜背部の激しい持続痛、前かがみで軽快。',
+    treatment: ['リパーゼ・アミラーゼ（基準の3倍以上）と画像で診断', '十分な輸液（脱水・腎障害の予防）', '十分な鎮痛（アセトアミノフェン、オピオイドなど）', '重症度判定（厚生労働省基準・造影CT Grade）、重症はICU', '軽症〜中等症に予防的抗菌薬は不要'],
+    flow: '問診（飲酒・胆石・背部への放散）→ 上腹部の圧痛 → 生化学（リパーゼ）・血算・血液ガス・造影CT → 急性膵炎と診断 → 輸液・鎮痛 → 重症度判定 → 入院',
+  },
+  sbo: {
+    overview: '腹部手術後の癒着などで小腸が詰まる病気。波のある腹痛・嘔吐・腹部膨満・排便排ガスの停止。血流が途絶える絞扼性は緊急手術。',
+    treatment: ['腹部X線・造影CTで閉塞と絞扼の有無を評価', '絶飲食・輸液（脱水・低K・アルカローシスの補正）', '胃管（イレウス管）で減圧', '絞扼のサイン（持続痛・腹膜刺激徴候・乳酸上昇・造影不良）があれば外科で緊急手術'],
+    flow: '問診（手術歴・排便排ガス）→ 腹部診察（膨隆・金属音・腹膜刺激徴候）→ X線・造影CT・採血 → 腸閉塞と診断 → 絶飲食・輸液・胃管 → 絞扼なら外科へ',
+  },
+  cellulitis: {
+    overview: '皮膚の深い層（真皮〜皮下組織）の細菌感染。溶連菌・黄色ブドウ球菌が原因。片側の下腿に多く、発赤・腫脹・熱感・痛み・発熱。',
+    treatment: ['軽症：セファレキシン 500mg 1日4回（内服）で外来', '中等症以上：セファゾリン 1〜2g 8時間毎（点滴）で入院', '患肢の挙上、侵入門戸（足白癬など）の治療', '壊死性筋膜炎のサイン（強すぎる痛み・水疱・紫斑・急速な進行）に注意'],
+    flow: '問診（経過・発熱・傷や水虫）→ 皮膚の診察（範囲を記録）→ 血算・CRP（必要なら血液培養・下肢静脈エコー）→ 蜂窩織炎と診断 → 抗菌薬 → 帰宅または入院',
   },
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
