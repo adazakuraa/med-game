@@ -40,6 +40,12 @@ export const EXAMS = [
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
   { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
+  { id: 'pupils', region: 'neuro', method: '視診', name: '瞳孔・対光反射', normal: '瞳孔 3mm/3mm 同大、対光反射は両側迅速。' },
+  { id: 'facial', region: 'neuro', method: '視診', name: '顔面の左右差', normal: '顔面に左右差なし。' },
+  { id: 'speech', region: 'neuro', method: '視診', name: '言語・構音', normal: '構音障害・失語なし。' },
+  { id: 'motor', region: 'neuro', method: '触診', name: '上下肢の麻痺（Barré・Mingazzini）', normal: '上下肢に麻痺なし（Barré徴候・Mingazzini徴候陰性）。' },
+  { id: 'jolt', region: 'neuro', method: '視診', name: 'jolt accentuation（首振りで頭痛増強）', normal: 'jolt accentuation 陰性。' },
+  { id: 'skin', region: 'general', method: '視診', name: '皮膚（発疹・紫斑・発赤）', normal: '皮疹・紫斑・発赤なし。' },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];
 

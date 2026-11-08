@@ -5,6 +5,7 @@
 // 出典は各疾患データ(sources)と同じガイドライン類、および一般的な臨床医学の教科書的知識に基づく。
 
 export const QUESTION_WHY = {
+  lastnormal: '最終健常確認時刻（最後に普段通りだった時刻）。脳卒中では発症時刻として扱い、rt-PA（4.5時間以内）や血栓回収の適応を決める最重要情報。',
   onset: '発症時期と発症様式（突然か徐々にか）。突然発症は血管系（梗塞・破裂・閉塞）などの緊急疾患を示唆し、日単位の経過は感染症などを考える。',
   course: '悪化・改善・波があるか。進行性なら急いで評価・治療する必要がある。',
   character: '症状の性質。痛みなら鋭い・鈍い・締め付けるなどの性状で原因臓器の推測に役立つ。',
@@ -38,6 +39,10 @@ export const QUESTION_WHY = {
   hematuria: '血尿・尿の混濁は尿路感染症や尿管結石で見られる。',
   flankpain: '腰背部（側腹部）痛は腎盂腎炎・尿管結石・大動脈疾患などを考える。',
   polyuria: '口渇・多飲・多尿は高血糖による浸透圧利尿のサイン。',
+  weakness: '片側の手足の脱力・しびれは脳卒中を疑う。両側なら脊髄や末梢神経、代謝性の原因も考える。',
+  speechq: '言葉が出ない（失語）・ろれつが回らない（構音障害）は脳卒中の代表的な症状。',
+  photophobia: '光や音への過敏は片頭痛や髄膜刺激（髄膜炎・くも膜下出血）で見られる。',
+  seizure: 'けいれん・意識消失。てんかんのほか、脳卒中・髄膜炎・低血糖・電解質異常でも起こる。',
   headache: '頭痛。発熱＋頭痛＋項部硬直なら髄膜炎を考える。',
   myalgia: '筋肉痛・倦怠感はウイルス感染などで多い非特異的な症状。',
   sorethroat: '咽頭痛・鼻汁などの上気道症状はウイルス感染（かぜ）を示唆する。',
@@ -90,6 +95,12 @@ export const EXAM_WHY = {
   leg_edema: '押すと跡が残る浮腫（圧痕性浮腫）は心不全・腎不全・低アルブミン血症などの体液貯留を示す。',
   calf: '片側の下腿の腫れ・圧痛は深部静脈血栓症を示唆し、肺塞栓症の手がかりになる。',
   periph: '手足の冷感・毛細血管再充満時間（CRT）の延長は循環不全（ショック）のサイン。',
+  pupils: '瞳孔の大きさと対光反射。片側の散大は脳ヘルニアや動眼神経麻痺（動脈瘤）を示唆する危険なサイン。',
+  facial: '顔の左右差（口角下垂・鼻唇溝の浅さ）。脳卒中の簡便なチェック（FASTのF）。',
+  speech: '失語（言葉が出ない・理解できない）や構音障害（ろれつ）。左大脳半球の障害では失語が出やすい。',
+  motor: '腕を前に出して目を閉じると片側が下がる（Barré徴候）など。片麻痺は脳卒中を強く示唆する。',
+  jolt: '首を素早く横に振ると頭痛が強くなるか。陰性なら髄膜炎の可能性は低い（感度が高い）。',
+  skin: '皮膚の発疹・紫斑・発赤。髄膜炎菌の点状出血、アナフィラキシーの膨疹、蜂窩織炎などの手がかり。',
   neuro_basic: '麻痺や瞳孔異常は脳卒中など中枢神経疾患の手がかり。',
 };
 
@@ -104,6 +115,7 @@ export const TEST_WHY = {
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
   hba1c: '過去1〜2か月の平均血糖。糖尿病のコントロール状態がわかる。',
   bhb: '血中ケトン体。DKAの診断と治療効果の判定に使う。',
+  bs_poct: '指先から1分で血糖がわかる。意識障害・けいれん・脳卒中疑いでは真っ先に測る。',
   ua: '尿試験紙。白血球反応・亜硝酸塩（尿路感染）、尿糖・ケトン（高血糖・飢餓）、潜血（結石など）がわかる。',
   used: '尿の顕微鏡検査。白血球（膿尿）・細菌の数で尿路感染を評価する。',
   uhcg: '妊娠反応。妊娠可能年齢の女性では、薬や放射線検査の前、腹痛の鑑別のために確認する。',
@@ -125,6 +137,9 @@ export const TEST_WHY = {
   abd_ct_plain: '造影剤を使わない腹部CT。腎機能が悪いときや結石の評価に。',
   abd_ct_contrast: '造影剤で臓器や炎症を詳しく評価できる。造影剤アレルギー・腎機能低下・妊娠に注意。',
   leg_us: '下肢の深部静脈に血栓がないかを調べる。肺塞栓症の原因検索や、造影CTが使えないときの手がかりに。',
+  head_ct: '頭蓋内出血（脳出血・くも膜下出血）を短時間で見つけられる。脳梗塞は発症早期には写らないことが多い。',
+  head_mri: '拡散強調像で発症早期の脳梗塞がわかる。MRAで血管の閉塞や動脈瘤を評価する。時間がかかる。',
+  lp: '髄液を採って調べる。髄膜炎（細胞数・蛋白・糖・グラム染色）や、CTで見えないくも膜下出血（キサントクロミー）の診断に。',
   ecg: '不整脈・心筋虚血・高K血症（テント状T波）などを数分で評価できる。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
@@ -201,6 +216,18 @@ export const DRUG_ROLE = {
   morphine: '強い痛みを抑える麻薬性鎮痛薬。少量ずつ静注する。血圧低下・呼吸抑制に注意。',
   nicardipine: '血圧を下げる点滴（Ca拮抗薬）。大動脈解離や高血圧緊急症で使う。',
   landiolol: '心拍数を下げる点滴のβ遮断薬（効果が短く調節しやすい）。大動脈解離では心拍数60前後を目標に。ショックには使わない。',
+  alteplase: '脳梗塞の血栓を溶かす薬（rt-PA）。発症4.5時間以内に0.6mg/kg。出血の危険があり、禁忌の確認が必須。',
+  glucose50: '低血糖を素早く治すブドウ糖の静注。20〜40mL。',
+  thiamine: 'ビタミンB1。アルコール多飲・低栄養の患者では、ブドウ糖の前に投与してWernicke脳症を防ぐ。',
+  vcm: 'MRSAや耐性肺炎球菌に効く抗菌薬。腎障害に注意し、血中濃度を測って量を調節する。',
+  abpc: 'ペニシリン系の点滴。髄膜炎ではリステリア（高齢者・免疫不全）のカバーに追加する。',
+  dexa: 'ステロイド。細菌性髄膜炎では抗菌薬と同時に使うと後遺症・死亡が減る。',
+  sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
+  levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
+  oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
+  salbutamol: '気管支を広げる吸入薬（SABA）。喘息発作・COPD増悪の第一選択で、繰り返し使える。',
+  prednisolone: '飲み薬のステロイド。喘息発作・COPD増悪の炎症を抑える（5日間程度）。',
+  mpsl: '点滴のステロイド。飲めない重い喘息発作・COPD増悪などに。',
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
@@ -234,6 +261,8 @@ export const DEPT_ROLE = {
   uro: '尿路の閉塞（結石・水腎症）などドレナージが必要か相談する。',
   obgyn: '妊娠・婦人科疾患を相談する。',
   icu: '重症患者の集中治療が必要か相談する。',
+  neuro: '脳卒中（rt-PA・血栓回収）・髄膜炎・てんかんなどを相談する。',
+  nsurg: 'くも膜下出血・脳出血・頭部外傷など、手術や血管内治療が必要な頭の病気を相談する。',
   cvs: '大動脈解離・大動脈瘤など、心臓や大血管の手術を相談する。',
 };
 
@@ -251,7 +280,7 @@ export const APPROACHES = {
       { id: 'cap', point: '発熱・膿性痰・局所のcrackles・胸部X線の浸潤影', clues: ['q:sputum', 'q:chills', 'e:lung_ausc', 'e:chest_perc', 't:cxr', 't:chest_ct', 't:sputum_gram', 't:u_pneumo_ag', 'H:CRP', 'H:WBC'] },
       { id: 'uri', point: '咽頭痛・鼻汁が主体で、肺の所見がない', clues: ['q:sorethroat', 'e:pharynx'] },
       { id: 'bronchitis', point: '咳・痰はあるが、胸部X線で浸潤影がない', clues: ['q:cough'] },
-      { id: 'influenza', point: '流行期・急な高熱・筋肉痛・迅速検査陽性', clues: ['q:myalgia', 't:flu_ag'] },
+      { id: 'influenza', tests: ['flu_ag'], point: '流行期・急な高熱・悪寒・全身の筋肉痛・周囲の流行、迅速検査陽性（早期は偽陰性あり）', clues: ['q:myalgia', 'q:headache', 'q:sickcontact', 't:flu_ag'] },
       { id: 'covid', point: '流行状況・抗原検査', clues: ['t:covid_ag'] },
       { id: 'adhf', point: '発熱なし・起座呼吸・両側のcrackles・下腿浮腫・BNP高値', clues: ['q:orthopnea', 'e:jvd', 'e:leg_edema', 'H:BNP'] },
       { id: 'aspiration', point: '高齢・嚥下障害・寝たきり、背側の肺の浸潤影' },
@@ -303,8 +332,8 @@ export const APPROACHES = {
       { id: 'adhf', point: '起座呼吸・頸静脈怒張・両側のcrackles・III音・下腿浮腫・BNP高値・心拡大', clues: ['q:orthopnea', 'q:pnd', 'q:edema', 'q:weightgain', 'e:jvd', 'e:lung_ausc', 'e:heart_ausc', 'e:leg_edema', 'H:BNP', 't:cxr', 't:echo'] },
       { id: 'cap', point: '発熱・膿性痰・片側の局所的なcrackles・浸潤影', clues: ['q:fever', 'q:sputum'] },
       { id: 'acs', point: '胸の圧迫感・心電図変化・トロポニン上昇', clues: ['q:chestpain', 'H:TNT'] },
-      { id: 'copd', point: '喫煙歴・wheezes・CO2貯留', clues: ['q:smoking'] },
-      { id: 'asthma', point: '喘息の既往・wheezes・若年' },
+      { id: 'copd', point: '高齢の喫煙者、口すぼめ呼吸・樽状胸郭・wheezes、血液ガスでpCO2上昇、X線で過膨張', clues: ['q:smoking', 'q:sputum', 'e:chest_insp', 'e:lung_ausc', 'H:PCO2', 't:cxr'] },
+      { id: 'asthma', point: '喘息の既往・若年、呼気性wheezes・呼気延長、誘因（かぜ・アレルゲン）、吸入の中断', clues: ['q:pmh', 'q:trigger', 'q:adherence', 'e:lung_ausc', 'e:chest_insp'] },
       { id: 'pe', point: '突然発症・頻脈・片側の下肢腫脹・Dダイマー上昇', clues: ['H:DDIMER'] },
       { id: 'af_rvr', point: '動悸・脈の不整・心電図で心房細動', clues: ['q:palpitation'] },
     ],
@@ -341,7 +370,7 @@ export const APPROACHES = {
       { id: 'ovarian_torsion', point: '女性・突然の下腹部痛・嘔吐' },
       { id: 'pid', point: '女性・下腹部痛・帯下異常・子宮頸部の圧痛' },
       { id: 'ureteral', point: '突然の側腹部の激痛・血尿・CVA叩打痛', clues: ['e:cva', 'H:U_RBC'] },
-      { id: 'cholecystitis', point: '右上腹部痛・Murphy徴候・エコーで胆嚢腫大', clues: ['e:murphy'] },
+      { id: 'cholecystitis', tests: ['abd_us'], point: '脂っこい食事後の右季肋部痛・発熱・Murphy徴候、エコーで胆嚢腫大と壁肥厚・結石', clues: ['q:trigger', 'q:radiation', 'e:murphy', 't:abd_us', 'H:TBIL'] },
     ],
   },
 };
@@ -362,6 +391,89 @@ APPROACHES.chest_pain = {
     { id: 'gerd', point: '胸やけ・食後や横になると悪化、心電図・採血は正常' },
     { id: 'musculoskeletal', point: '押すと痛い・体をひねると痛い、ほかの検査は正常' },
     { id: 'panic', point: '若年・動悸や手足のしびれ、検査はすべて正常（除外診断）' },
+  ],
+};
+
+APPROACHES.neuro_deficit = {
+  title: '片麻痺・言葉の障害',
+  intro: '突然の片麻痺・顔面麻痺・言語障害は脳卒中を疑う。治療は時間との勝負なので「最終健常確認時刻」を真っ先に確認し、血糖測定→頭部CTを急ぐ。',
+  keyQ: ['lastnormal', 'onset', 'weakness', 'speechq', 'headache', 'seizure', 'pmh', 'meds', 'palpitation'],
+  keyE: ['gen_consc', 'facial', 'speech', 'motor', 'pupils', 'heart_ausc', 'neck_stiff'],
+  keyT: ['bs_poct', 'head_ct', 'cbc', 'chem', 'coag', 'ecg'],
+  redflags: ['最終健常から4.5時間以内 → rt-PAの適応を急いで判断（来院から60分以内に投与）', 'まず血糖：低血糖は脳卒中そっくりの症状を起こす', '抗凝固薬（ワルファリン・DOAC）内服の有無を確認', '主幹動脈閉塞が疑われれば血栓回収療法（MRI/MRAで評価）'],
+  ddx: [
+    { id: 'stroke', tests: ['head_mri'], point: '突然の片麻痺・失語、CTで出血なし、MRI拡散強調像で高信号', clues: ['q:weakness', 'q:speechq', 'e:facial', 'e:motor', 'e:speech', 't:head_mri'] },
+    { id: 'ich', point: '頭痛・嘔吐・意識障害を伴いやすい。頭部CTで高吸収域', clues: ['q:headache', 't:head_ct'] },
+    { id: 'hypoglycemia', point: '糖尿病治療中、冷汗、血糖低値。ブドウ糖で速やかに改善', clues: ['L:GLU', 'e:skin'] },
+    { id: 'epilepsy_sz', point: 'けいれん後の一過性麻痺（Todd麻痺）', clues: ['q:seizure'] },
+    { id: 'tia', point: '症状が数分〜1時間以内に完全に消える' },
+    { id: 'sah', point: '突然の激しい頭痛が主体' },
+  ],
+};
+APPROACHES.altered_mental = {
+  title: '意識障害',
+  intro: '意識障害では、まずABC（気道・呼吸・循環）を安定させ、すぐに血糖を測る。原因は「AIUEOTIPS」（アルコール・インスリン/低血糖・尿毒症・内分泌/電解質・酸素/中毒・外傷/体温・感染・精神/ポルフィリン・脳卒中/ショック/けいれん）で漏れなく考える。',
+  keyQ: ['lastnormal', 'onset', 'pmh', 'meds', 'adherence', 'anorexia', 'alcohol', 'seizure', 'weakness', 'fever', 'trigger'],
+  keyE: ['gen_consc', 'gen_appear', 'pupils', 'motor', 'neck_stiff', 'skin', 'gen_breath_odor', 'chest_insp'],
+  keyT: ['bs_poct', 'vbg', 'chem', 'cbc', 'ecg', 'head_ct'],
+  redflags: ['意識障害を見たら、まず血糖', 'アルコール多飲・低栄養ではブドウ糖の前にビタミンB1', '発熱＋意識障害 → 髄膜炎・敗血症を考え、抗菌薬を遅らせない', '片麻痺を伴う → 脳卒中（ただし低血糖でも起こる）'],
+  ddx: [
+    { id: 'hypoglycemia', point: '糖尿病治療中（特にスルホニル尿素薬・インスリン）、食事摂取不良、冷汗、血糖低値', clues: ['q:anorexia', 'q:adherence', 'q:sweating', 'e:skin', 'L:GLU'] },
+    { id: 'stroke', point: '片麻痺・失語など局所神経症状', clues: ['e:motor', 'e:facial', 'e:speech'] },
+    { id: 'dka', point: '1型糖尿病、Kussmaul呼吸、アセトン臭、高血糖', clues: ['e:gen_breath_odor', 'e:chest_insp', 'H:GLU'] },
+    { id: 'hhs', point: '高齢2型糖尿病、著明な高血糖と脱水' },
+    { id: 'sepsis', point: '発熱・頻脈・感染源', clues: ['q:fever'] },
+    { id: 'meningitis', point: '発熱・頭痛・項部硬直', clues: ['e:neck_stiff'] },
+    { id: 'intox', point: '飲酒・薬物の過量服薬の状況' },
+    { id: 'wernicke', point: 'アルコール多飲・低栄養、眼球運動障害・失調', clues: ['q:alcohol'] },
+  ],
+};
+APPROACHES.fever_headache = {
+  title: '発熱と頭痛',
+  intro: '発熱と頭痛では細菌性髄膜炎を見逃さないことが最重要。疑ったら血液培養→（必要なら頭部CT）→腰椎穿刺を進めつつ、抗菌薬とデキサメタゾンを遅らせない。',
+  keyQ: ['onset', 'course', 'character', 'headache', 'nausea', 'photophobia', 'seizure', 'sorethroat', 'sickcontact', 'pmh', 'allergy'],
+  keyE: ['gen_consc', 'gen_appear', 'neck_stiff', 'jolt', 'skin', 'pharynx', 'motor', 'lung_ausc'],
+  keyT: ['bcx', 'cbc', 'chem', 'crp', 'lp', 'bs_poct'],
+  redflags: ['意識障害・項部硬直・点状出血 → 細菌性髄膜炎を強く疑う', '血液培養を採ったら、腰椎穿刺やCTを待たずに抗菌薬（来院1時間以内）', 'デキサメタゾンは抗菌薬の直前・同時に'],
+  ddx: [
+    { id: 'meningitis', point: '発熱・激しい頭痛・項部硬直・jolt陽性・意識障害、髄液で多核球増多と糖低下', clues: ['q:photophobia', 'q:nausea', 'e:neck_stiff', 'e:jolt', 't:lp', 't:bcx'] },
+    { id: 'influenza', point: '流行期・筋肉痛・咳、項部硬直なし', clues: ['q:myalgia', 't:flu_ag'] },
+    { id: 'uri', point: '咽頭痛・鼻汁、頭痛は軽い', clues: ['q:sorethroat'] },
+    { id: 'sinusitis', point: '顔面痛・膿性鼻汁・前かがみで悪化' },
+    { id: 'encephalitis', point: '意識障害・人格変化・けいれん（単純ヘルペス脳炎など）', clues: ['q:seizure'] },
+  ],
+};
+APPROACHES.headache = {
+  title: '頭痛',
+  intro: '頭痛の多くは片頭痛や緊張型頭痛だが、くも膜下出血など危険な頭痛を見逃さないこと。危険なサイン（SNOOP：全身症状、神経症状、突然発症、50歳以降の初発、パターンの変化）があれば画像検査を。',
+  keyQ: ['onset', 'course', 'character', 'location', 'severity', 'nausea', 'photophobia', 'aggravating', 'trigger', 'pmh', 'family', 'fever', 'seizure'],
+  keyE: ['gen_consc', 'gen_appear', 'neck_stiff', 'jolt', 'pupils', 'motor', 'facial'],
+  keyT: [],
+  redflags: ['突然発症・人生最悪の頭痛 → くも膜下出血を疑い頭部CT（正常でも疑いが強ければ腰椎穿刺）', '発熱・項部硬直 → 髄膜炎', '神経症状・意識障害・瞳孔不同 → 頭蓋内病変', '典型的な片頭痛で危険なサインがなければ、画像検査は不要'],
+  ddx: [
+    { id: 'sah', tests: ['head_ct', 'lp', 'head_mri'], point: '突然の「人生最悪」の頭痛、嘔吐、項部硬直、CTで脳底槽の高吸収域', clues: ['q:onset', 'q:severity', 'q:nausea', 'e:neck_stiff', 'e:pupils', 't:head_ct', 't:lp', 't:head_mri'] },
+    { id: 'migraine', point: '若年女性に多い、片側性・拍動性、動くと悪化、吐き気・光過敏、以前から繰り返す', clues: ['q:photophobia', 'q:aggravating', 'q:relieving', 'q:trigger', 'q:pmh', 'q:family'] },
+    { id: 'tension_ha', point: '両側の締め付けられる頭痛、肩こり・ストレス、吐き気は乏しい' },
+    { id: 'cluster', point: '男性、片側の目の奥の激痛、涙・鼻水、毎日同じ時間' },
+    { id: 'meningitis', tests: ['lp'], point: '発熱・項部硬直・jolt陽性', clues: ['q:fever', 'e:jolt'] },
+    { id: 'ich', tests: ['head_ct'], point: '高血圧、神経症状・意識障害', clues: ['e:motor'] },
+  ],
+};
+
+APPROACHES.flank_pain = {
+  title: '突然の腰・脇腹の痛み',
+  intro: '突然の側腹部〜腰の激痛は尿管結石が多いが、高齢者では腹部大動脈瘤破裂など命に関わる病気を必ず除外する。発熱を伴う結石は緊急のドレナージが必要。',
+  keyQ: ['onset', 'character', 'location', 'radiation', 'relieving', 'hematuria', 'nausea', 'fever', 'pmh', 'lmp', 'allergy'],
+  keyE: ['gen_appear', 'cva', 'abd_palp', 'abd_rebound', 'bp_lr', 'periph'],
+  keyT: ['ua', 'abd_us', 'chem', 'cbc', 'uhcg'],
+  redflags: ['高齢・高血圧・ショック → 腹部大動脈瘤破裂を除外（エコー・CT）', '発熱＋結石 → 閉塞性腎盂腎炎：泌尿器科に緊急ドレナージを相談', '妊娠可能年齢の女性 → 妊娠反応（異所性妊娠・CTの被ばく）'],
+  ddx: [
+    { id: 'ureteral', tests: ['abd_ct_plain'], point: 'じっとしていられない波のある激痛・鼠径部への放散・血尿、エコーで水腎症、CTで結石', clues: ['q:radiation', 'q:relieving', 'q:hematuria', 'e:cva', 'H:U_RBC', 'H:U_BLD', 't:abd_us', 't:abd_ct_plain'] },
+    { id: 'aaa', point: '高齢・高血圧・喫煙、拍動性腫瘤・ショック' },
+    { id: 'pyelo', point: '発熱・悪寒・膿尿', clues: ['q:fever', 'H:U_LEU'] },
+    { id: 'obst_pyelo', point: '結石＋発熱（緊急ドレナージ）', clues: ['q:fever'] },
+    { id: 'appendicitis', point: '右下腹部の限局した圧痛・腹膜刺激徴候', clues: ['e:abd_rebound'] },
+    { id: 'lumbago', point: '体動で悪化し安静で軽快、尿所見は正常' },
   ],
 };
 
@@ -466,6 +578,56 @@ export const DISEASE_NOTES = {
       'ドレナージは必ず患側に',
     ],
     flow: '問診（突然の胸痛・息苦しさ）→ 呼吸音の左右差・打診 → 胸部X線（虚脱の程度）→ 気胸と診断 → 軽度なら経過観察、中等度以上なら胸腔ドレナージ → 入院',
+  },
+  stroke: {
+    overview: '脳の血管が詰まり、脳細胞が死んでいく病気。突然の片麻痺・言語障害・顔面麻痺。時間がたつほど脳が死ぬので、再開通療法は時間との勝負。',
+    treatment: ['最終健常確認時刻を確認 → 血糖測定 → 頭部CTで出血を除外', '発症4.5時間以内で禁忌がなければrt-PA（アルテプラーゼ 0.6mg/kg、最大60mg）', '主幹動脈閉塞（MRAで評価）なら脳神経内科に相談し血栓回収療法', 'rt-PAを行うなら血圧185/110未満に。行わないなら急性期は下げすぎない', '抗凝固薬内服中はrt-PAが原則禁忌'],
+    flow: '最終健常時刻の確認 → 血糖 → 神経診察（顔・腕・言葉）→ 頭部CT（出血の除外）→ rt-PA → MRI/MRA → 脳神経内科コンサルト → 血栓回収 → SCU',
+  },
+  hypoglycemia: {
+    overview: '血糖が下がりすぎて脳がエネルギー不足になる状態。糖尿病治療薬（スルホニル尿素薬・インスリン）＋食事摂取不良で起こりやすい。冷汗・動悸・意識障害、時に片麻痺。',
+    treatment: ['意識障害ではまず血糖測定', '50%ブドウ糖 20〜40mL 静注（アルコール多飲ならビタミンB1を先に）', 'スルホニル尿素薬が原因ならブドウ糖の持続点滴と入院（再発しやすい）', '原因（薬・食事・腎機能）を見直す'],
+    flow: '血糖測定 → ブドウ糖静注 → 意識の改善を確認 → 原因検索（内服薬・食事・腎機能）→ 持続点滴・入院',
+  },
+  meningitis: {
+    overview: '脳と脊髄を包む髄膜の細菌感染。発熱・激しい頭痛・項部硬直・意識障害。数時間で悪化し、治療の遅れが死亡や後遺症につながる。',
+    treatment: ['血液培養を採ったら、すぐに抗菌薬（来院1時間以内）', 'セフトリアキソン 2g 12時間毎＋バンコマイシン（15〜20mg/kg 12時間毎）', '50歳以上はアンピシリン 2g 4時間毎を追加', 'デキサメタゾン 0.15mg/kg 6時間毎を抗菌薬の直前・同時に', '意識障害などがあれば腰椎穿刺の前に頭部CT（抗菌薬は遅らせない）'],
+    flow: '発熱＋頭痛＋項部硬直・jolt → 血液培養 → デキサメタゾン＋抗菌薬 → 頭部CT → 腰椎穿刺 → ICU',
+  },
+  sah: {
+    overview: '脳動脈瘤が破れて、脳の表面（くも膜下腔）に出血する病気。突然の「人生最悪」の頭痛。再出血すると死亡率が非常に高い。',
+    treatment: ['頭部CTで診断（正常でも疑いが強ければ腰椎穿刺）', '鎮痛・安静・降圧（収縮期160mmHg未満）で再出血を防ぐ', '脳神経外科で動脈瘤の処置（コイル塞栓術・クリッピング）', '抗血小板薬・抗凝固薬は禁忌'],
+    flow: '突然の激しい頭痛 → 頭部CT → くも膜下出血と診断 → 鎮痛・降圧 → 脳神経外科コンサルト → 動脈瘤の処置 → ICU',
+  },
+  migraine: {
+    overview: '繰り返す片側性・拍動性の頭痛。吐き気や光・音過敏を伴い、動くと悪化する。若い女性に多い。命に関わる病気ではないが、つらさは大きい。',
+    treatment: ['危険な頭痛のサインがないことを確認（あれば画像検査）', '軽〜中等度：アセトアミノフェンやNSAIDs', '中等度以上：トリプタン（スマトリプタン 3mg 皮下注 など）', '吐き気にはメトクロプラミド', '帰宅時に誘因の回避・頭痛ダイアリーを指導'],
+    flow: '問診で頭痛の性状と危険なサインを確認 → 神経診察が正常 → 片頭痛と診断 → 鎮痛薬・トリプタン・制吐薬 → 帰宅',
+  },
+  cholecystitis: {
+    overview: '胆石が胆嚢の出口に詰まり、胆嚢に炎症・感染が起こる病気。脂っこい食事の後の右季肋部痛・発熱・Murphy徴候。',
+    treatment: ['腹部エコーで診断（胆嚢腫大・壁肥厚・結石・sonographic Murphy）', '絶飲食・輸液', '抗菌薬：セフメタゾール 1g 1日3回 など（腸内細菌＋嫌気性菌）', '外科にコンサルトし、早期（72時間以内が目安）に腹腔鏡下胆嚢摘出術', '黄疸・総胆管拡張があれば胆管炎・総胆管結石を考える'],
+    flow: '問診（食後の右上腹部痛・発熱）→ Murphy徴候 → 血算・生化学・CRP・腹部エコー・血液培養 → 急性胆嚢炎と診断 → 絶飲食・輸液・抗菌薬 → 外科コンサルト → 胆嚢摘出術',
+  },
+  ureteral: {
+    overview: '腎臓でできた石が尿管に詰まり、激しい痛み（疝痛）を起こす。じっとしていられない波のある痛み・血尿。命に関わることは少ないが、痛みは非常に強い。',
+    treatment: ['鎮痛：NSAIDs（ロキソプロフェンなど）が第一選択。使えなければアセトアミノフェン', '尿検査（血尿）と腹部エコー（水腎症）、必要なら非造影CT', '10mm未満は自然排石を待つ（飲水・鎮痛）', '発熱があれば閉塞性腎盂腎炎：泌尿器科で緊急ドレナージ', '高齢者では腹部大動脈瘤破裂を除外'],
+    flow: '問診（突然の側腹部痛・放散・血尿）→ CVA叩打痛 → 尿検査・腹部エコー → 尿管結石と診断 → NSAIDs → 帰宅（排石を待つ）',
+  },
+  influenza: {
+    overview: 'インフルエンザウイルスによる急性の呼吸器感染症。冬に流行。急な高熱・悪寒・全身の筋肉痛・頭痛・咳。',
+    treatment: ['流行状況と症状で疑い、迅速抗原検査（早期は偽陰性あり）', '高齢者・基礎疾患・入院例ではオセルタミビル 75mg 1日2回5日間（発症48時間以内）', '解熱はアセトアミノフェン、水分補給', '抗菌薬は不要（細菌性肺炎を合併した場合のみ）', '出席停止・感染対策の指導'],
+    flow: '問診（急な高熱・筋肉痛・周囲の流行）→ 診察（肺炎の所見がないか）→ 迅速抗原検査 → インフルエンザと診断 → 抗ウイルス薬（高リスク）・対症療法 → 帰宅',
+  },
+  copd: {
+    overview: '長年の喫煙で肺が壊れ、息を吐きにくくなる病気（COPD）が、かぜなどをきっかけに急に悪化した状態。高二酸化炭素血症に注意。',
+    treatment: ['酸素は目標SpO2 88〜92%（鼻カニュラ1〜2L/分など）。高濃度はCO2ナルコーシスの危険', '血液ガスでpH・pCO2を評価。呼吸性アシドーシスならNPPV', 'サルブタモール吸入（繰り返し）', 'プレドニゾロン 30〜40mg 1日1回 5日間', '膿性痰があれば抗菌薬'],
+    flow: '問診（息切れ・痰の増加・喫煙歴）→ 呼吸様式・聴診 → 血液ガス・胸部X線 → COPD増悪と診断 → 少量の酸素・気管支拡張薬・ステロイド → 重症ならNPPV・ICU',
+  },
+  asthma: {
+    overview: '気道の慢性炎症がある人で、かぜ・アレルゲン・吸入薬の中断などをきっかけに気道が狭くなる発作。ゼーゼー・ヒューヒュー（wheezes）と呼気の延長。',
+    treatment: ['話し方（文章・句・単語）とSpO2で重症度を評価', 'サルブタモール吸入を20分ごとに反復', '全身性ステロイド（プレドニゾロン 40mg 内服、またはメチルプレドニゾロン静注）', 'SpO2 93〜95%を目標に酸素', '重篤（silent chest・意識低下）はアドレナリン筋注・ICU', '帰宅時は吸入ステロイドの継続と吸入手技を指導'],
+    flow: '問診（喘息の既往・誘因・吸入の使用状況）→ 聴診（wheezes）→ SpO2・血液ガス → 喘息発作と判断 → サルブタモール吸入・ステロイド → 改善すれば帰宅',
   },
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',

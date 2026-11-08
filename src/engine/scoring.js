@@ -32,9 +32,11 @@ export function determineOutcome(enc) {
   if (st.anaphylaxis) comp.push('アナフィラキシー');
   if (st.hypoEvent) comp.push('薬剤性の重篤な低血圧');
   if (st.comp.iatrogenic) comp.push('医原性気胸');
+  if (st.comp.ich) comp.push('頭蓋内出血');
   const crNow = labValue(enc, 'CR', {});
   if ((st.comp.severeHypo || 0) >= 60) return { kind: 'sequela', notes: ['遷延する重症低血糖による神経学的後遺症'] };
   if (st.comp.aki && crNow >= p.crBase * 1.5) return { kind: 'sequela', notes: ['腎機能が元に戻らず、慢性腎臓病に移行しました。'] };
+  if (d.residualAbove != null && !st.cured && st.burden >= d.residualAbove) return { kind: 'sequela', notes: [d.residualText || '後遺症が残りました。'] };
   if (st.cured) {
     if (d.nonOperative && !st.surgeryDone && hashRand(p.seed, 'recur') < 0.25) return { kind: 'recurrence', notes: ['抗菌薬で軽快しましたが、数か月後に虫垂炎が再発しました（非手術治療の再発率は約2〜3割）。'] };
     if (comp.length) return { kind: 'complication', notes: comp };

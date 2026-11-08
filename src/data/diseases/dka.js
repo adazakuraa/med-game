@@ -73,7 +73,8 @@ export default {
     if (ins > 0) d -= 5.0 * Math.min(ins, 1.2) * (st.volume > 3000 ? 0.5 : 1);
     return d;
   },
-  gluSetpointDrift: 15, // 未治療時の血糖上昇（mg/dL/時）
+  gluSetpointDrift: 15,
+  kNoRegulate: true, // 未治療時の血糖上昇（mg/dL/時）
   harmTags: { bicarbonate: 'DKAでの重炭酸投与は pH<6.9（ADA 2009。2024年コンセンサスでは pH<7.0）以外では推奨されない（低K血症・脳浮腫のリスク）' },
   dispo: (enc) => (enc.patient.sev === 0 ? { ok: ['admit', 'icu'], best: 'admit', why: '軽症DKA：入院でインスリン持続静注' } : { ok: ['icu'], best: 'icu', why: '中等症以上のDKA：ICU/HCUで頻回モニタリング' }),
   useful: ['cbc', 'chem', 'vbg', 'bhb', 'ua', 'hba1c', 'ecg', 'crp', 'cxr', 'uhcg', 'lab_K', 'lab_GLU', 'lab_NA', 'lab_CR', 'lab_BUN', 'amy', 'lab_AMY', 'bcx', 'ucx'],

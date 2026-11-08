@@ -17,7 +17,7 @@ import { scoreCase } from '../src/engine/scoring.js';
 import { runIdeal, runUntreated } from './helpers.js';
 
 const ALL_TAGS = new Set(DRUGS.flatMap((d) => d.tags || []));
-const COVER_KEYS = new Set(['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'atypical']);
+const COVER_KEYS = new Set(['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'atypical', 'prsp', 'listeria', 'mrsa']);
 
 test('疾患データの参照先がすべて存在する', () => {
   for (const d of DISEASES) {
@@ -221,7 +221,7 @@ test('模範的な診療では大半が救命され、無治療では重症例�
         if (u.state.dead) dead++;
       }
       assert.ok(ok / M >= 0.8, `${d.id} sev${sev} 模範診療の生存率 ${ok / M}`);
-      if (sev === 2) assert.ok(dead / M >= 0.8, `${d.id} 重症の無治療死亡率 ${dead / M}`);
+      if (sev === 2 && d.untreatedFatal !== false) assert.ok(dead / M >= 0.8, `${d.id} 重症の無治療死亡率 ${dead / M}`);
       if (d.id === 'gastro' && sev === 0) assert.equal(dead, 0, '軽症の胃腸炎は自然軽快する');
     }
   }

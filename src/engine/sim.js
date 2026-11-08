@@ -21,7 +21,7 @@ export const PROCEDURES = [
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];
@@ -50,7 +50,7 @@ function orderActive(o, t, phase) {
   if (t < o.start) return false;
   if (o.stopT != null && t >= o.stopT) return false;
   if (o.end != null && t >= o.end) return false;
-  if (phase === 'home' && (o.kind !== 'rx' || o.route !== 'po')) return false;
+  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) return false;
   return true;
 }
 
@@ -221,7 +221,7 @@ function step(enc, dtMin) {
   // 治癒判定（抗菌薬は所定期間が必要）
   if (!st.cured && st.burden <= 3) {
     const needAbx = d.minAbxDays && !st.surgeryDone;
-    if (!needAbx || enc.abxHours >= d.minAbxDays * 24 - 12) st.cured = true;
+    if ((!needAbx || enc.abxHours >= d.minAbxDays * 24 - 12) && (!d.minHoursToCure || enc.t >= d.minHoursToCure * 60)) st.cured = true;
     else if (covered) st.burden = 3;
   }
   // 穿孔
@@ -241,15 +241,16 @@ function step(enc, dtMin) {
   // 血糖
   const ins = eff.tags.insulin || 0;
   const dka = !!d.gluSetpointDrift;
-  let dG = dka && !st.cured ? d.gluSetpointDrift : (gluSet(enc) - st.glu) * (dka ? 0.3 : 0.5);
+  const drift = typeof d.gluSetpointDrift === 'function' ? d.gluSetpointDrift(enc) : d.gluSetpointDrift;
+  let dG = dka && !st.cured ? drift : (gluSet(enc) - st.glu) * (dka ? 0.3 : 0.5);
   dG -= Math.min(75, 0.2 * st.glu) * ins;
   dG += eff.dextroseGph * (dka ? 4 : 1.2);
   if (dka) dG -= eff.ivRateTotal * 0.02;
   st.glu = clamp(st.glu + dG * dtH, 15, 1500);
   // カリウム
   let dK = -0.06 * ins - 0.03 * (eff.tags.diuretic || 0) + 0.01 * (eff.kRate + (eff.tags.potassium || 0));
-  if (dka && st.glu > 250 && !st.cured) dK -= 0.02;
-  if (!dka || st.cured) dK -= st.kDelta * 0.08;
+  if (d.kNoRegulate && st.glu > 250 && !st.cured) dK -= 0.02;
+  if (!d.kNoRegulate || st.cured) dK -= st.kDelta * 0.08;
   st.kDelta += dK * dtH;
   st.hco3Bonus *= Math.pow(0.85, dtH);
   // 腎障害
@@ -258,7 +259,7 @@ function step(enc, dtMin) {
   // 合併症の記録
   if (K < 3.0) st.comp.hypok ??= enc.t;
   if (K > 6.0) st.comp.hyperk ??= enc.t;
-  if (st.glu < 70) st.comp.hypoglycemia ??= enc.t;
+  if (st.glu < 70 && enc.initLabs.GLU >= 70) st.comp.hypoglycemia ??= enc.t;
   if (st.glu < 40) st.comp.severeHypo = (st.comp.severeHypo || 0) + dtMin;
   if (labValue(enc, 'CR', cache) >= p.crBase * 1.5 && enc.initLabs.CR < p.crBase * 1.5) st.comp.aki ??= enc.t;
   if (st.burden >= 100 && !st.dead) { st.dead = true; enc.deathT = enc.t; }
@@ -292,7 +293,7 @@ function nurseCheck(enc, vit) {
     fired = true;
   }
   const insulinOn = (effects(enc).tags.insulin || 0) > 0;
-  if (insulinOn && st.glu < 80 && (enc.nurseT.glu == null || enc.t - enc.nurseT.glu >= 120)) {
+  if ((insulinOn || disease(enc).id === 'hypoglycemia') && st.glu < 80 && (enc.nurseT.glu == null || enc.t - enc.nurseT.glu >= 120)) {
     enc.nurseT.glu = enc.t;
     alert(enc, 'nurse', `看護師：簡易血糖測定で${Math.round(st.glu)}mg/dLです。`, true);
     fired = true;
@@ -463,9 +464,11 @@ export function prescribe(enc, o) {
   recordIssues(enc, ev.issues, d.generic);
   for (const e of ev.events) {
     if ((e === 'anaphylaxis' || e === 'bronchospasm') && !enc.state.anaphylaxis) enc.state.anaphylaxis = { t: start + 10, cause: d.generic };
+    if (e === 'ich' && !enc.state.comp.ich) { enc.state.comp.ich = enc.t; enc.state.burden = Math.min(100, enc.state.burden + 25); }
     if (e === 'hypotension' && !enc.state.hypoEvent) enc.state.hypoEvent = { t: start + 10, until: start + 190 };
   }
   if (d.id === 'bicarb') enc.state.hco3Bonus += o.dose / (0.5 * enc.patient.weight);
+  if (d.id === 'glucose50') enc.state.glu += o.dose * 2.5;
   const r = d.routes[o.route];
   addLog(enc, 'rx', `処方：${d.generic} ${o.dose}${r.unit} ${ROUTE_LABEL[o.route]} ${FREQS[o.freq].label}${o.days && o.freq !== 'once' ? ` ${o.days}日間` : ''}`);
   advance(enc, 2);
@@ -551,6 +554,14 @@ export function consult(enc, dept) {
 function consultReply(enc, dept) {
   const p = enc.patient, d = disease(enc), st = enc.state;
   const name = DEPTS[dept];
+  const pr = (d.procedures || []).find((x) => x.depts.includes(dept));
+  if (pr) {
+    if (st.procAt[pr.id] != null) return `${name}：すでに${pr.label}の準備を進めています。`;
+    const res = pr.decide(enc, currentVitals(enc));
+    if (res.reveal) enc.consultRevealT ??= enc.t;
+    if (res.accept) st.procAt[pr.id] = enc.t + pr.delay;
+    return `${name}：${fmt(res.text, enc.patient.vars)}`;
+  }
   if (dept === 'surgery') {
     if (!d.surgeon) return '外科：現時点で外科的治療を要する所見は乏しいと考えます。内科的な精査・治療をお願いします。';
     if (st.surgeryAt || st.surgeryDone) return '外科：手術の予定はすでに組んでいます。';
@@ -573,14 +584,6 @@ function consultReply(enc, dept) {
     if (p.sex === 'M') return '産婦人科：男性の患者さんですので、当科の対象ではありません。';
     if (p.pregnant) return '産婦人科：経腟超音波で子宮内に胎嚢を確認、妊娠7週相当です。妊娠中でも使用可能な薬剤（セフトリアキソン等）で治療を。レボフロキサシンやCTは避けてください。';
     return '産婦人科：経腟超音波で子宮・付属器に明らかな異常はありません。婦人科疾患は否定的です。';
-  }
-  const pr = (d.procedures || []).find((x) => x.depts.includes(dept));
-  if (pr) {
-    if (st.procAt[pr.id] != null) return `${name}：すでに${pr.label}の準備を進めています。`;
-    const res = pr.decide(enc, currentVitals(enc));
-    if (res.reveal) enc.consultRevealT ??= enc.t;
-    if (res.accept) st.procAt[pr.id] = enc.t + pr.delay;
-    return `${name}：${fmt(res.text, enc.patient.vars)}`;
   }
   if (d.consult?.[dept]) {
     enc.consultRevealT ??= enc.t;
@@ -620,7 +623,7 @@ export function discharge(enc) {
   if (!enc.dispo) enc.dispo = { type: 'home', t: enc.t };
   enc.dischargeT = enc.t;
   addLog(enc, 'dispo', enc.phase === 'er' ? '外来治療で帰宅' : '退院');
-  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || o.route !== 'po')) o.stopT = enc.t;
+  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) o.stopT = enc.t;
   enc.phase = 'home';
   // 自宅での経過（最大14日）
   const until = enc.t + 14 * 1440;
