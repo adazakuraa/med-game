@@ -12,7 +12,7 @@ import { DISEASE_BY_ID } from '../data/diseases/index.js';
 import { COMORB } from '../engine/patient.js';
 import { load, save, resetSave, levelOf, levelProgress } from './store.js';
 import { MODES, recommended, nextSteps, ddxReasoning, treatmentThinking, attendingAnswer, approachOf } from '../engine/hints.js';
-import { QUESTION_WHY, EXAM_WHY, TEST_WHY, LAB_MEANING, DRUG_ROLE, FLUID_ROLE, O2_ROLE, DEPT_ROLE, APPROACHES, DISEASE_NOTES } from '../data/teaching.js';
+import { PROC_ROLE, QUESTION_WHY, EXAM_WHY, TEST_WHY, LAB_MEANING, DRUG_ROLE, FLUID_ROLE, O2_ROLE, DEPT_ROLE, APPROACHES, DISEASE_NOTES } from '../data/teaching.js';
 import { evaluateRx, evaluateFluid } from '../engine/pharm.js';
 import { DISEASES } from '../data/diseases/index.js';
 
@@ -279,6 +279,7 @@ function tabTreat() {
     <button class="act" data-a="o2"><span class="ic">🫁</span>酸素</button>
     <button class="act" data-a="npo"><span class="ic">🍽</span>${enc.orders.some((o) => o.kind === 'npo' && S.isOrderActive(enc, o)) ? '絶飲食解除' : '絶飲食'}</button>
     <button class="act" data-a="consult"><span class="ic">📞</span>コンサルト</button>
+    <button class="act" data-a="proc"><span class="ic">🔧</span>処置</button>
     <button class="act" data-a="dispo"><span class="ic">🏥</span>${ward ? '退院' : '方針決定'}</button>
   </div>
   ${ward ? `<div class="card"><b>${enc.phase === 'icu' ? 'ICU' : '病棟'}管理</b> ${ready ? '<span class="badge good">退院可能</span>' : ''}
@@ -356,7 +357,7 @@ function viewLibrary() {
       return `<details class="card tight"><summary><b>${esc(d.name)}</b> <span class="star">${stars}</span> <span class="sub small">${ms.n}回・最高${ms.best}点</span></summary><div class="small" style="margin-top:6px">${esc(n.overview)}<b style="display:block;margin-top:6px">治療</b><ul class="clean">${n.treatment.map((t) => `<li>${esc(t)}</li>`).join('')}</ul><b>流れ</b><div>${esc(n.flow)}</div><b style="display:block;margin-top:6px">ポイント</b><ul class="clean">${d.teaching.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div></details>`;
     }).join('') + '<div class="sub small">★1：65点以上 ★2：専攻医以上で80点以上 ★3：専門医で80点以上（答えを見ずに）</div>';
   } else if (ui.libTab === 'cc') {
-    body = Object.values(APPROACHES).map((a) => `<details class="card tight"><summary><b>${esc(a.title)}</b></summary><div class="small" style="margin-top:6px">${esc(a.intro)}<b style="display:block;margin-top:6px">危険なサイン</b><ul class="clean">${a.redflags.map((r) => `<li>${esc(r)}</li>`).join('')}</ul><b>鑑別</b><ul class="clean">${a.ddx.map((d) => `<li><b>${esc(DDX_BY_ID[d.id].name)}</b>：${esc(d.point)}</li>`).join('')}</ul><b>重要な問診</b><div>${a.keyQ.map((q) => esc(QUESTIONS.find((x) => x.id === q).text)).join(' / ')}</div><b style="display:block;margin-top:6px">重要な診察</b><div>${a.keyE.map((e) => esc(EXAMS.find((x) => x.id === e).name)).join(' / ')}</div><b style="display:block;margin-top:6px">基本の検査</b><div>${a.keyT.map((t) => esc(TEST_BY_ID[t].name)).join(' / ')}</div></div></details>`).join('');
+    body = Object.values(APPROACHES).map((a) => `<details class="card tight"><summary><b>${esc(a.title)}</b></summary><div class="small" style="margin-top:6px">${esc(a.intro)}<b style="display:block;margin-top:6px">危険なサイン</b><ul class="clean">${a.redflags.map((r) => `<li>${esc(r)}</li>`).join('')}</ul><b>鑑別</b><ul class="clean">${a.ddx.map((d) => `<li><b>${esc(DDX_BY_ID[d.id].name)}</b>：${esc(d.point)}${d.tests ? `<br><span class="sub">→ 疑ったら：${d.tests.map((t) => esc(TEST_BY_ID[t].name)).join('、')}</span>` : ''}</li>`).join('')}</ul><b>重要な問診</b><div>${a.keyQ.map((q) => esc(QUESTIONS.find((x) => x.id === q).text)).join(' / ')}</div><b style="display:block;margin-top:6px">重要な診察</b><div>${a.keyE.map((e) => esc(EXAMS.find((x) => x.id === e).name)).join(' / ')}</div><b style="display:block;margin-top:6px">基本の検査</b><div>${a.keyT.map((t) => esc(TEST_BY_ID[t].name)).join(' / ')}</div></div></details>`).join('');
   } else if (ui.libTab === 'test') {
     body = TESTS.filter((t) => t.cat !== 'single').map((t) => `<details class="card tight"><summary><b>${esc(t.name)}</b> <span class="sub small">¥${t.cost.toLocaleString()}・${t.timeMin >= 1440 ? Math.round(t.timeMin / 1440) + '日' : t.timeMin + '分'}</span></summary><div class="small" style="margin-top:6px">${esc(TEST_WHY[t.id] || '')}${t.items ? `<ul class="clean">${t.items.map((i) => { const L = LABS[i]; const mm = LAB_MEANING[i] || {}; const r = refFor(L, 'M'); return `<li><b>${esc(L.name)}</b>${L.ord ? '' : ` <span class="sub">基準 ${r[0]}–${r[1]} ${L.unit || ''}</span>`}${mm.H ? `<br>↑ ${esc(mm.H)}` : ''}${mm.L ? `<br>↓ ${esc(mm.L)}` : ''}</li>`; }).join('')}</ul>` : ''}</div></details>`).join('');
   } else {
@@ -458,6 +459,9 @@ function renderModal() {
       <button class="btn primary block" data-a="ook">開始・変更</button>${cur ? '<button class="btn block danger" data-a="ostop">酸素を中止</button>' : ''}`;
       break;
     }
+    case 'proc':
+      inner = hd('処置') + `<div class="sub small">自分で行う処置です（約20分）。必要性と部位をよく確認しましょう。</div>` + S.PROCEDURES.map((x) => `<button class="drug" data-a="ppick" data-v="${x.id}"><b>${esc(x.name)}</b>${isRes() ? `<div class="why">${esc(PROC_ROLE[x.id])}</div>` : ''}</button>`).join('');
+      break;
     case 'consult':
       inner = hd('コンサルト') + `<div class="sub small">専門医に相談します。返信まで30〜60分かかります。</div>` + Object.entries(S.DEPTS).map(([k, v]) => `<button class="drug" data-a="cpick" data-v="${k}"><b>${v}</b>${isRes() ? `<div class="why">${esc(DEPT_ROLE[k])}</div>` : ''}</button>`).join('');
       break;
@@ -496,7 +500,7 @@ function modalHint(m, hd) {
   const cost = (lv) => (res ? (lv === 1 ? '無料' : lv === 2 ? '経験値 −5%' : '経験値 −15%') : (lv === 1 ? '経験値 −5%' : lv === 2 ? '経験値 −10%' : '経験値 −25%'));
   const sec = (key, lv, title, body) => `<div class="card tight"><div class="row"><b class="grow">${title}</b>${open[key] ? '' : `<button class="chip" data-a="hintopen" data-k="${key}" data-l="${lv}">見る（${cost(lv)}）</button>`}</div>${open[key] ? `<div class="small" style="margin-top:6px">${body()}</div>` : ''}</div>`;
   const steps = () => { const n = nextSteps(enc); return n.length ? `<ul class="clean">${n.map((x) => `<li>${esc(x.text)}</li>`).join('')}</ul>` : '今の流れで大丈夫。焦らず進めよう。'; };
-  const appr = () => a ? `<div>${esc(a.intro)}</div><b>危険なサイン</b><ul class="clean">${a.redflags.map((r) => `<li>${esc(r)}</li>`).join('')}</ul><b>主な鑑別</b><ul class="clean">${a.ddx.map((d) => `<li><b>${esc(DDX_BY_ID[d.id].name)}</b>：${esc(d.point)}</li>`).join('')}</ul>` : '';
+  const appr = () => a ? `<div>${esc(a.intro)}</div><b>危険なサイン</b><ul class="clean">${a.redflags.map((r) => `<li>${esc(r)}</li>`).join('')}</ul><b>主な鑑別</b><ul class="clean">${a.ddx.map((d) => `<li><b>${esc(DDX_BY_ID[d.id].name)}</b>：${esc(d.point)}${d.tests ? `<br><span class="sub">→ 疑ったら：${d.tests.map((t) => esc(TEST_BY_ID[t].name)).join('、')}</span>` : ''}</li>`).join('')}</ul>` : '';
   const reason = () => `<div class="sub small">主訴「${esc(a.title)}」の鑑別に、あなたが集めた所見を当てはめました。</div>` + ddxReasoning(enc).map((x) => `<div style="margin:8px 0"><b>${esc(x.name)}</b> <span class="sub small">${esc(x.point)}</span><div>${x.pro.map((t) => `<span class="tag pro">＋ ${esc(t)}</span>`).join('')}${x.con.map((t) => `<span class="tag con">− ${esc(t)}</span>`).join('')}</div>${x.unknown.length ? `<div class="sub small">未確認：${x.unknown.slice(0, 4).map(esc).join('、')}</div>` : ''}</div>`).join('');
   const tx = () => { const t = treatmentThinking(enc); return `${t.id ? `<div class="sub small">あなたの考える診断「${esc(DDX_BY_ID[t.id].name)}」の場合：</div>` : ''}<ul class="clean">${t.text.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`; };
   const ans = () => { const x = attendingAnswer(enc); return `<div style="font-size:16px"><b>${esc(x.name)}</b> だと思う。</div>${x.reasons.length ? `<div>根拠：${x.reasons.map(esc).join('、')}</div>` : ''}${x.look.length ? `<div class="sub small">確認するとよい所見：${x.look.map(esc).join('、')}</div>` : ''}<div style="margin-top:6px">${esc(x.overview || '')}</div><b>治療</b><ul class="clean">${x.treatment.map((t) => `<li>${esc(t)}</li>`).join('')}</ul><div>方針：${esc(x.dispo)}</div>`; };
@@ -716,6 +720,8 @@ const handlers = {
   npo: () => act(() => S.setNPO(game.enc, !game.enc.orders.some((o) => o.kind === 'npo' && S.isOrderActive(game.enc, o)))),
   stop: (el) => { if (confirm('この指示を中止しますか？')) act(() => S.stopOrder(game.enc, +el.dataset.v)); },
   consult: () => openModal({ type: 'consult' }),
+  proc: () => openModal({ type: 'proc' }),
+  ppick: (el) => { const P = S.PROCEDURES.find((x) => x.id === el.dataset.v); if (!confirm(`${P.name}を行いますか？`)) return; closeModal(); act(() => S.procedure(game.enc, P.id)); },
   cpick: (el) => { closeModal(); act(() => S.consult(game.enc, el.dataset.v)); },
   dispo: () => openModal({ type: 'dispo' }),
   dpick: (el) => { const v = el.dataset.v; closeModal(); act(() => (v === 'home' ? S.discharge(game.enc) : S.dispose(game.enc, v))); },

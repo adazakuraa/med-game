@@ -13,6 +13,8 @@ function cond(enc, when) {
     case 'vol>1500': return enc.state.volume > 1500;
     case 'sev>=1': return p.sev >= 1;
     case 'sbp<90': return v.SBP < 90 && enc.state.ivCryst >= 1000;
+    case 'sbp>=100': return v.SBP >= 100;
+    case 'shock': return v.SBP < 90;
     case 'k<5': return labValue(enc, 'K', {}) < 5.0;
     case 'glu<250': return enc.state.glu < 250;
     case 'cs1_nopde5': return p.vars.cs1 && !p.homeMeds.includes('sildenafil') && v.SBP > 110;
@@ -26,7 +28,8 @@ export function runIdeal(enc, { dispo = true } = {}) {
   const done = new Set();
   const doAction = (a, i) => {
     if (done.has(i) || !cond(enc, a.when)) return;
-    if (a.a === 'rx' && enc.patient.allergies.includes(require_allergy(a.drugId))) {
+    if (a.a === 'test' && enc.patient.allergies.includes('contrast')) a = { ...a, ids: a.ids.flatMap((id) => (id === 'chest_cta' ? ['echo', 'leg_us', 'chest_ct'] : id === 'abd_ct_contrast' ? ['abd_us'] : [id])) };
+    if (a.a === 'rx' && (enc.patient.allergies.includes(require_allergy(a.drugId)) || (a.drugId === 'aspirin' && enc.patient.comorb.includes('asthma_nsaid')))) {
       // アレルギーがあれば代替薬
       a = { ...a, drugId: alt(a.drugId), dose: altDose(a.drugId, a.dose), freq: altFreq(a.drugId, a.freq) };
     }
@@ -36,6 +39,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
     else if (a.a === 'fluid') S.addFluid(enc, a);
     else if (a.a === 'o2') S.setO2(enc, a.device, a.flow);
     else if (a.a === 'npo') S.setNPO(enc, true);
+    else if (a.a === 'proc') S.procedure(enc, a.id);
     else if (a.a === 'consult') {
       S.advance(enc, a.delayMin || 0);
       S.consult(enc, a.dept);
@@ -67,8 +71,17 @@ export function runIdeal(enc, { dispo = true } = {}) {
     if (enc.patient.diseaseId === 'adhf' && enc.state.volume > -300) {
       for (const o of enc.orders) if (o.drugId === 'furosemide_iv' && S.isOrderActive(enc, o)) S.stopOrder(enc, o.oid);
     }
+    // 処置が必要なのに予定されていなければ再検査・再コンサルト
+    for (const pr of d.procedures || []) {
+      if (enc.state.procAt[pr.id] == null && h % 3 === 0 && !enc.consults.some((c) => !c.replied)) {
+        S.orderTests(enc, ['tnt', 'ecg']);
+        S.advance(enc, 50);
+        S.consult(enc, pr.depts[0]);
+      }
+    }
     // 有能な主治医としての調整
     const v = S.currentVitals(enc);
+    if (v.SBP < 95) for (const o of enc.orders) if (o.kind === 'rx' && S.isOrderActive(enc, o) && ['landiolol', 'nicardipine', 'ntg', 'carperitide'].includes(o.drugId)) S.stopOrder(enc, o.oid);
     const o2 = enc.orders.find((o) => o.kind === 'o2' && S.isOrderActive(enc, o));
     if (v.SpO2 < 90 && (!o2 || o2.device === 'nc')) S.setO2(enc, 'mask', 7);
     if (o2 && v.rawSpO2 >= 94) S.setO2(enc, null);
@@ -88,11 +101,11 @@ export function runIdeal(enc, { dispo = true } = {}) {
 function stopIV(enc) {
   for (const o of enc.orders) if (o.kind === 'rx' && o.route === 'iv' && S.isOrderActive(enc, o)) o.stopT = enc.t;
 }
-const ALLERGY_OF = { ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone' };
+const ALLERGY_OF = { aspirin: 'nsaid', ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone' };
 function require_allergy(id) { return ALLERGY_OF[id] || '__none'; }
-function alt(id) { return { ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
-function altDose(id, dose) { return { ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
-function altFreq(id, f) { return { ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
+function alt(id) { return { aspirin: 'prasugrel', ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
+function altDose(id, dose) { return { aspirin: 20, ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
+function altFreq(id, f) { return { aspirin: 'once', ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
 
 export function runUntreated(enc) {
   S.advance(enc, 14 * 1440);

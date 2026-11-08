@@ -31,6 +31,7 @@ export function determineOutcome(enc) {
   if (st.comp.hypoglycemia) comp.push('低血糖');
   if (st.anaphylaxis) comp.push('アナフィラキシー');
   if (st.hypoEvent) comp.push('薬剤性の重篤な低血圧');
+  if (st.comp.iatrogenic) comp.push('医原性気胸');
   const crNow = labValue(enc, 'CR', {});
   if ((st.comp.severeHypo || 0) >= 60) return { kind: 'sequela', notes: ['遷延する重症低血糖による神経学的後遺症'] };
   if (st.comp.aki && crNow >= p.crBase * 1.5) return { kind: 'sequela', notes: ['腎機能が元に戻らず、慢性腎臓病に移行しました。'] };
@@ -81,7 +82,7 @@ export function scoreCase(enc) {
     if (need == null) continue;
     const startFrom = th.startFromNeed ? need : 0;
     const done = enc.thStart[th.id];
-    const dl = th.deadlineH[p.sev] * 60;
+    const dl = (typeof th.deadlineH === 'function' ? th.deadlineH(enc) : th.deadlineH)[p.sev] * 60;
     let status, pts;
     if (done == null) { status = 'missing'; pts = 0; }
     else if (done - startFrom <= dl) { status = 'ontime'; pts = 1; }

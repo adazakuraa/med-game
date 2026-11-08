@@ -51,7 +51,8 @@ test('推奨（★）の検査には疾患の重要検査が含まれる', () =>
   for (const d of DISEASES) {
     const e = S.newEncounter({ seed: 1, diseaseId: d.id, level: 9 });
     const rec = recommended(e);
-    for (const g of d.key || []) assert.ok(g.some((id) => rec.t.has(id)), `${d.id} の重要検査 ${g.join('/')} が★にない`);
+    const extra = new Set(APPROACHES[d.ccKey].ddx.find((x) => x.id === d.id).tests || []);
+    for (const g of d.key || []) assert.ok(g.some((id) => rec.t.has(id) || extra.has(id)), `${d.id} の重要検査 ${g.join('/')} が★にも「疑ったら」にもない`);
   }
 });
 
@@ -66,7 +67,7 @@ test('ヒント関数がどの段階でも例外なく動き、模範診療後�
     const rec = recommended(e);
     for (const q of rec.q) S.ask(e, q);
     for (const x of rec.e) S.examine(e, x);
-    S.orderTests(e, [...rec.t]);
+    S.orderTests(e, [...rec.t, ...(APPROACHES[d.ccKey].ddx.find((x) => x.id === d.id).tests || [])].filter((id) => !(id.includes('cta') && e.patient.allergies.includes('contrast'))));
     S.advance(e, 90);
     const r = ddxReasoning(e);
     const rank = r.findIndex((x) => x.id === d.id);

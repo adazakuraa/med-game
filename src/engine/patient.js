@@ -19,6 +19,7 @@ export const COMORB = {
   constip: { name: '便秘症', meds: ['mgo'] },
   ed: { name: '勃起不全', meds: ['sildenafil'], sex: 'M', minAge: 45, hidden: true },
   epilepsy: { name: 'てんかん', meds: ['valproate'] },
+  cancer: { name: '大腸がん（化学療法中）', meds: [], minAge: 40 },
 };
 
 // 一般的な背景疾患の付与確率（年齢で補正）
@@ -101,7 +102,7 @@ export function generatePatient(o) {
 
   // 体格
   const weight = Math.round(
-    sex === 'M' ? rng.normal(age > 75 ? 58 : 67, 8) : rng.normal(age > 75 ? 47 : 54, 7)
+    (sex === 'M' ? rng.normal(age > 75 ? 58 : 67, 8) : rng.normal(age > 75 ? 47 : 54, 7)) + (d.weightAdj || 0)
   );
   const pregnant = sex === 'F' && age >= 18 && age <= 42 && rng.chance(d.id === 'pyelo' ? 0.1 : 0.04);
 
@@ -117,7 +118,7 @@ export function generatePatient(o) {
   const hba1cBase = comorb.includes('t1dm') ? rng.range(8.5, 11.5) : comorb.includes('dm2') ? rng.range(6.8, 8.6) : 5.5 + z.HBA1C * 0.25;
 
   // 疾患固有の変数
-  const vars = d.vars ? d.vars(rng, sev, { age, sex, comorb }) : {};
+  const vars = d.vars ? d.vars(rng, sev, { age, sex, comorb, homeMeds }) : {};
   if (d.postVars) d.postVars(vars, sev);
 
   // 病状の重さ（burden）
@@ -132,10 +133,10 @@ export function generatePatient(o) {
   }
   for (const [eid, e] of Object.entries(d.exam || {})) {
     const arr = Array.isArray(e) ? e : [e];
-    rolls.exam[eid] = arr.map((f) => rng.chance(pv(f.p, sev)));
+    rolls.exam[eid] = arr.map((f) => (f.ifVar ? !!vars[f.ifVar] : true) && rng.chance(pv(f.p, sev)));
   }
   for (const [tid, t] of Object.entries(d.tests || {})) {
-    if (Array.isArray(t)) rolls.tests[tid] = t.map((f) => (f.fecalith ? !!vars.fecalith : true) && rng.chance(pv(f.p, sev)));
+    if (Array.isArray(t)) rolls.tests[tid] = t.map((f) => (f.fecalith ? !!vars.fecalith : true) && (f.ifVar ? !!vars[f.ifVar] : true) && rng.chance(pv(f.p, sev)));
     else rolls.tests[tid] = rng.chance(pv(t.p, sev));
   }
   for (const [lid, l] of Object.entries(d.labs || {})) {
@@ -145,7 +146,7 @@ export function generatePatient(o) {
       g: l.ord ? rng.int(l.ord[0], l.ord[1]) : 0,
     };
   }
-  rolls.ecg = (d.ecg || []).map((f) => rng.chance(pv(f.p, sev)));
+  rolls.ecg = (d.ecg || []).map((f) => (f.ifVar ? !!vars[f.ifVar] : true) && rng.chance(pv(f.p, sev)));
 
   // バイタルの基礎値・疾患の目標値
   const baseVitals = {
@@ -165,7 +166,8 @@ export function generatePatient(o) {
 
   // プロフィール
   const surgeryHx = rng.chance(0.2) ? [rng.pick(SURGERY_HX.filter((s) => !(s === '帝王切開' && sex === 'M') && !(s === '虫垂切除術' && d.id === 'appendicitis')))] : [];
-  const smoking = rng.weighted(['never', 'former', 'current'], (x) => ({ never: sex === 'M' ? 0.45 : 0.75, former: 0.25, current: sex === 'M' ? 0.3 : 0.1 }[x]));
+  const cur = d.smokeP ?? (sex === 'M' ? 0.3 : 0.1);
+  const smoking = rng.weighted(['never', 'former', 'current'], (x) => ({ never: (1 - cur) * 0.7, former: (1 - cur) * 0.3, current: cur }[x]));
   const alcohol = rng.weighted(['none', 'social', 'daily'], (x) => ({ none: 0.4, social: 0.45, daily: 0.15 }[x]));
   const occupation = rng.pick(age < 30 ? OCCUPATIONS.young : age < 65 ? OCCUPATIONS.mid : OCCUPATIONS.old);
   const family = rng.pick(['父が高血圧、母が糖尿病です。', '特にありません。', '父が脳梗塞をしています。', '母が高血圧です。', '父が胃がんでした。']);

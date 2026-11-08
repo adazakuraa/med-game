@@ -24,6 +24,8 @@ export const CONTRA_RULES = {
   sbp90: { level: 'harm', msg: '収縮期血圧90mmHg未満では禁忌', check: (c) => c.vit.SBP < 90 },
   pde5: { level: 'harm', msg: 'PDE5阻害薬（シルデナフィル等）使用中は併用禁忌：重篤な低血圧', check: (c) => c.p.homeMeds.includes('sildenafil'), event: 'hypotension' },
   hyperk: { level: 'harm', msg: '高カリウム血症（K≥5.0）では禁忌', check: (c) => c.lab('K') >= 5.0 },
+  rv_infarct: { level: 'harm', msg: '右室梗塞の合併が疑われる下壁梗塞では硝酸薬で高度の低血圧を起こしうる', check: (c) => !!c.p.vars.rvInfarct, event: 'hypotension' },
+  cardiogenic: { level: 'harm', msg: '心原性ショック・急性心不全ではβ遮断薬が心機能をさらに低下させる', check: (c) => c.vit.SBP < 90 || c.p.diseaseId === 'adhf' },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 
@@ -56,6 +58,10 @@ export function evaluateRx(enc, order, vit, activeOrders = []) {
     perKg = dose / p.weight;
     if (perKg < 0.05) { doseFactor = 0.4; issues.push({ level: 'warn', code: 'underdose', msg: `インスリン ${perKg.toFixed(2)}単位/kg/時は少なすぎる（目安0.1単位/kg/時）` }); }
     else if (perKg > 0.16) issues.push({ level: 'harm', code: 'overdose', msg: `インスリン ${perKg.toFixed(2)}単位/kg/時は過量（低血糖・低K血症のリスク）` });
+  } else if (r.perKg) {
+    perKg = dose / p.weight;
+    if (perKg < r.perKg[0] * 0.8) { doseFactor = 0.45; issues.push({ level: 'warn', code: 'underdose', msg: `${perKg.toFixed(1)}${r.unit}/kgは少なすぎる（目安 ${r.perKg[0]}〜${r.perKg[1]}${r.unit}/kg）` }); }
+    else if (perKg > r.perKg[1] * 1.25) issues.push({ level: 'harm', code: 'overdose', msg: `${perKg.toFixed(1)}${r.unit}/kgは過量（目安 ${r.perKg[0]}〜${r.perKg[1]}${r.unit}/kg）` });
   } else if (dose < r.min) {
     doseFactor = 0.45;
     issues.push({ level: 'warn', code: 'underdose', msg: `1回量が少ない（通常 ${r.min}〜${r.max}${r.unit}）` });

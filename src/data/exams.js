@@ -18,7 +18,9 @@ export const EXAMS = [
   { id: 'pharynx', region: 'headneck', method: '視診', name: '咽頭・扁桃', normal: '咽頭発赤なし。扁桃腫大なし。' },
   { id: 'neck_ln', region: 'headneck', method: '触診', name: '頸部リンパ節', normal: '頸部リンパ節腫脹なし。' },
   { id: 'jvd', region: 'headneck', method: '視診', name: '頸静脈', normal: '頸静脈怒張なし（座位45°）。' },
+  { id: 'trachea', region: 'headneck', method: '視診', name: '気管の位置', normal: '気管は正中。' },
   { id: 'neck_stiff', region: 'headneck', method: '触診', name: '項部硬直', normal: '項部硬直なし。' },
+  { id: 'bp_lr', region: 'chest', method: '触診', name: '上肢血圧の左右差・脈の触知', normal: '上肢血圧に明らかな左右差なし。橈骨動脈の触知良好。' },
   { id: 'chest_insp', region: 'chest', method: '視診', name: '胸郭・呼吸様式', normal: '胸郭運動は左右対称。呼吸補助筋の使用なし。' },
   { id: 'chest_palp', region: 'chest', method: '触診', name: '声音振盪', normal: '声音振盪に左右差なし。' },
   { id: 'chest_perc', region: 'chest', method: '打診', name: '胸部打診', normal: '両側清音。' },
@@ -36,6 +38,7 @@ export const EXAMS = [
   { id: 'murphy', region: 'abdomen', method: '触診', name: 'Murphy徴候', normal: 'Murphy徴候陰性。', pain: 1 },
   { id: 'cva', region: 'back', method: '打診', name: 'CVA叩打痛', normal: '両側CVA叩打痛なし。', pain: 1 },
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
+  { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];

@@ -108,6 +108,7 @@ export function labValue(enc, id, cache = {}) {
       else v = applyDisease(enc, id, baseOf(p, id));
     }
   }
+  if (d.labHook) v = d.labHook(enc, id, v);
   if (L.abs) v = clamp(v, L.abs[0], L.abs[1]);
   cache[id] = v;
   return v;
@@ -172,6 +173,9 @@ export function vitals(enc, eff, noiseKey) {
   if (st.volume > 1500) SBP -= ((st.volume - 1500) / 100) * 2.0;
   if (eff.tags.nitrate) SBP -= 18;
   if (eff.tags.vasodilator) SBP -= 8;
+  if (eff.tags.betablocker) { HR -= Math.min(35, eff.tags.betablocker * 8); SBP -= Math.min(15, eff.tags.betablocker * 4); }
+  if (eff.tags.bp_lower) SBP -= Math.min(55, eff.tags.bp_lower * 16);
+  if (eff.tags.opioid) { SBP -= 5; HR -= 4; }
   if (eff.tags.vasopressor) SBP += Math.min(40, (eff.tags.vasopressor / 0.1) * 22);
   let SpO2raw = bv.SpO2 - (tg.SpO2?.drop ?? 0) * Math.pow(f, tg.SpO2?.k ?? 1);
   if (st.anaphylaxis && !st.anaphylaxis.resolved && enc.t >= st.anaphylaxis.t) {
