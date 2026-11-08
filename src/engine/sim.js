@@ -19,6 +19,8 @@ export const PROCEDURES = [
   { id: 'ng', name: '胃管（経鼻胃管）挿入・減圧', min: 10 },
   { id: 'cooling', name: '積極的冷却（冷水噴霧・送風・氷嚢）', min: 10 },
   { id: 'foley', name: '尿道カテーテル留置', min: 10 },
+  { id: 'epley', name: 'Epley法（浮遊耳石置換法）', min: 10 },
+  { id: 'enema', name: 'グリセリン浣腸・摘便', min: 15 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
@@ -547,6 +549,8 @@ export function procedure(enc, procId) {
     if (P.id === 'ng' && d.id === 'ugib') addLog(enc, 'exam', '胃管からコーヒー残渣様〜暗赤色の排液。', { label: '胃管排液', positive: true });
     else if (P.id === 'ng' && d.id === 'sbo') addLog(enc, 'exam', '胃管から胆汁様の排液が多量（約800mL）。', { label: '胃管排液', positive: true });
     else if (P.id === 'ng') addLog(enc, 'exam', '胃管から少量の胃液のみ。', { label: '胃管排液', positive: false });
+    else if (P.id === 'epley') addLog(enc, 'exam', d.id === 'bppv' ? 'Epley法を行った。直後からめまいが軽くなった。' : 'Epley法を行ったが、めまいは変わらない。', { label: 'Epley法', positive: d.id === 'bppv' });
+    else if (P.id === 'enema') addLog(enc, 'exam', d.id === 'impaction' ? '摘便・浣腸で多量の硬便が排出された。腹痛が軽くなった。' : '浣腸で少量の便が出た。', { label: '浣腸・摘便', positive: d.id === 'impaction' });
     else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
     advance(enc, P.min);
     return;

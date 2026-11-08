@@ -35,6 +35,13 @@ import aspiration from './aspiration.js';
 import hyponatremia from './hyponatremia.js';
 import retention from './retention.js';
 import hip_fx from './hip_fx.js';
+import bppv from './bppv.js';
+import cerebellar from './cerebellar.js';
+import vasovagal from './vasovagal.js';
+import avb from './avb.js';
+import zoster from './zoster.js';
+import compression_fx from './compression_fx.js';
+import impaction from './impaction.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

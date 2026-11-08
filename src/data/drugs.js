@@ -311,6 +311,18 @@ export const DRUGS = [
     info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',
   },
   {
+    id: 'atropine', generic: 'アトロピン硫酸塩', brands: ['アトロピン注'], cls: '抗コリン薬（徐脈治療）', tags: ['atropine'],
+    routes: { iv: { unit: 'mg', min: 0.5, max: 1, freqs: ['once', 'prn'], maxDaily: 3 } },
+    contra: ['glaucoma'], effectHours: 1,
+    info: '症候性徐脈に0.5mgを静注、3〜5分ごとに反復（最大3mg）。完全房室ブロックでは効かないことが多く、ペーシングの準備を。',
+  },
+  {
+    id: 'valacyclovir', generic: 'バラシクロビル', brands: ['バルトレックス'], cls: '抗ヘルペスウイルス薬', tags: ['antiviral_hsv'],
+    routes: { po: { unit: 'mg', min: 500, max: 1000, freqs: ['q8h', 'q12h', 'q24h'], maxDaily: 3000 } },
+    renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 30〜49: 1000mg 12時間毎' }, { crclBelow: 30, maxDaily: 1000, text: 'CrCl 10〜29: 1000mg 24時間毎' }],
+    info: '帯状疱疹に1000mg 1日3回7日間（発疹出現72時間以内が望ましい）。腎機能低下で減量しないと精神神経症状（せん妄など）を起こす。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],

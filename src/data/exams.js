@@ -49,6 +49,11 @@ export const EXAMS = [
   { id: 'motor', region: 'neuro', method: '触診', name: '上下肢の麻痺（Barré・Mingazzini）', normal: '上下肢に麻痺なし（Barré徴候・Mingazzini徴候陰性）。' },
   { id: 'jolt', region: 'neuro', method: '視診', name: 'jolt accentuation（首振りで頭痛増強）', normal: 'jolt accentuation 陰性。' },
   { id: 'skin', region: 'general', method: '視診', name: '皮膚（発疹・紫斑・発赤）', normal: '皮疹・紫斑・発赤なし。' },
+  { id: 'nystagmus', region: 'neuro', method: '視診', name: '眼振', normal: '眼振なし。' },
+  { id: 'dix_hallpike', region: 'neuro', method: '視診', name: 'Dix-Hallpike試験（頭位変換）', normal: '頭位変換で眼振・めまいは誘発されない。', pain: 1 },
+  { id: 'ataxia', region: 'neuro', method: '視診', name: '小脳症状（指鼻試験・歩行・体幹）', normal: '指鼻試験は正常。歩行・座位保持は安定。' },
+  { id: 'spine', region: 'back', method: '打診', name: '脊椎の叩打痛', normal: '脊椎の叩打痛なし。', pain: 1 },
+  { id: 'rectal', region: 'abdomen', method: '触診', name: '直腸診', normal: '直腸内に便塊・腫瘤なし。指に血液の付着なし。', pain: 1 },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];
 

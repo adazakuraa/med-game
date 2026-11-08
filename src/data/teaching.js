@@ -64,6 +64,12 @@ export const QUESTION_WHY = {
   retention: '尿が出ない・出にくい。前立腺肥大の男性に、風邪薬（抗コリン薬）や飲酒が加わると尿閉になりやすい。',
   vagbleed: '性器出血・おりもの。妊娠初期の出血は異所性妊娠・流産、膿性のおりものは骨盤内炎症性疾患を示唆する。',
   adl: '普段の生活機能（ADL）と認知機能。高齢者では「いつもと違う」ことが最も重要な手がかり。',
+  vertigo: '回転性めまい（周りが回る）は前庭系（耳・小脳・脳幹）の障害。ふらつき・気が遠くなる感じとは区別する。',
+  positional: '頭の向きで数十秒のめまいが起こるのは良性発作性頭位めまい症（BPPV）に典型的。',
+  hearing: '難聴・耳鳴りを伴うめまいはメニエール病や突発性難聴など内耳の病気を示唆する。',
+  syncope: '失神の状況（立位・排尿後・痛み・運動中・前兆の有無）。前兆なく突然・運動中・胸痛や動悸を伴う失神は心原性を疑う。',
+  constipation: '排便状況。高齢者の腹痛・食欲低下・せん妄の原因として便秘（宿便）は多い。',
+  rash: '発疹の有無と分布。片側の帯状の水疱は帯状疱疹。',
   travel: '旅行歴は輸入感染症などの鑑別に関わる。',
 };
 
@@ -107,6 +113,11 @@ export const EXAM_WHY = {
   motor: '腕を前に出して目を閉じると片側が下がる（Barré徴候）など。片麻痺は脳卒中を強く示唆する。',
   jolt: '首を素早く横に振ると頭痛が強くなるか。陰性なら髄膜炎の可能性は低い（感度が高い）。',
   skin: '皮膚の発疹・紫斑・発赤。髄膜炎菌の点状出血、アナフィラキシーの膨疹、蜂窩織炎などの手がかり。',
+  nystagmus: '眼振の向きと性状。一方向性の水平眼振は末梢性、方向が変わる・垂直の眼振は中枢性（小脳・脳幹）を疑う。',
+  dix_hallpike: '頭を45度回して後ろに倒し、回旋性の眼振とめまいが数十秒出ればBPPV（後半規管型）。',
+  ataxia: '指鼻試験の拙劣さや、座っていられない・歩けない（体幹失調）は小脳の障害を示唆する危険なサイン。',
+  spine: '背骨を叩いて痛む部位は圧迫骨折や化膿性脊椎炎の手がかり。',
+  rectal: '直腸内の便塊（宿便）・血液・腫瘤を確認する。',
   neuro_basic: '麻痺や瞳孔異常は脳卒中など中枢神経疾患の手がかり。',
 };
 
@@ -144,6 +155,8 @@ export const TEST_WHY = {
   abd_ct_contrast: '造影剤で臓器や炎症を詳しく評価できる。造影剤アレルギー・腎機能低下・妊娠に注意。',
   tvus: '腟から子宮・卵巣を詳しく見る超音波。異所性妊娠（子宮内に胎嚢がない）・卵巣の腫大や捻転・腹腔内出血がわかる。',
   hip_xr: '大腿骨頸部骨折・骨盤骨折の確認。転位がわずかだと見逃すことがあり、疑わしければCT・MRI。',
+  orthostatic: '臥位から立位で収縮期血圧が20以上下がる・脈拍が大きく増えるなら起立性低血圧（脱水・薬剤・自律神経障害）。',
+  spine_xr: '椎体の圧迫骨折（くさび状変形）などを評価。新しい骨折かどうかはMRIが確実。',
   leg_us: '下肢の深部静脈に血栓がないかを調べる。肺塞栓症の原因検索や、造影CTが使えないときの手がかりに。',
   head_ct: '頭蓋内出血（脳出血・くも膜下出血）を短時間で見つけられる。脳梗塞は発症早期には写らないことが多い。',
   head_mri: '拡散強調像で発症早期の脳梗塞がわかる。MRAで血管の閉塞や動脈瘤を評価する。時間がかかる。',
@@ -246,6 +259,8 @@ export const DRUG_ROLE = {
   szc: '腸の中でKを吸着して便に出す飲み薬。高K血症で体からKを減らす。',
   bisoprolol: '飲み薬のβ遮断薬。心房細動の心拍数を下げる。喘息には注意。',
   doxy: 'クラミジアなどに効く飲み薬の抗菌薬。骨盤内炎症性疾患でセフトリアキソンと併用。妊婦には使えない。',
+  atropine: '脈を速くする薬。症候性の徐脈に使うが、完全房室ブロックでは効かないことが多い。',
+  valacyclovir: '帯状疱疹・ヘルペスの抗ウイルス薬。腎機能が悪いと減量が必要（過量でせん妄）。',
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
@@ -263,6 +278,8 @@ export const FLUID_ROLE = {
 export const PROC_ROLE = {
   cooling: '熱中症で体温を急いで下げる（冷水を噴霧して送風、首・脇・鼠径部に氷嚢）。深部体温39℃以下を目標に。',
   foley: '尿道から膀胱にカテーテルを入れて尿を出す。尿閉の解除や、尿量の正確な測定に。',
+  epley: '頭の位置を順に変えて、半規管に入り込んだ耳石を元に戻す手技。BPPVに効果的。',
+  enema: 'グリセリン浣腸や摘便で直腸の便塊を出す。',
   ng: '鼻から胃にチューブを入れる。腸閉塞での減圧や、上部消化管出血の確認に使う。',
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
   drain_L: '左の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
@@ -599,8 +616,8 @@ APPROACHES.lower_abd_f = {
 APPROACHES.elderly_decline = {
   title: '高齢者の「元気がない」',
   intro: '高齢者は典型的な症状が出にくく、「食べない」「元気がない」「ぼんやり」「転んだ」で重い病気が隠れている。感染症（肺炎・尿路感染）・脱水・電解質異常・薬の副作用・心不全・低血糖などを系統的に探す。',
-  keyQ: ['lastnormal', 'onset', 'adl', 'anorexia', 'fever', 'cough', 'dysuria', 'retention', 'dizziness', 'meds', 'diet', 'pmh'],
-  keyE: ['gen_consc', 'gen_appear', 'oral_mucosa', 'lung_ausc', 'chest_insp', 'abd_palp', 'bladder', 'cva', 'skin', 'leg_edema'],
+  keyQ: ['lastnormal', 'onset', 'adl', 'anorexia', 'fever', 'cough', 'dysuria', 'retention', 'constipation', 'dizziness', 'meds', 'diet', 'pmh'],
+  keyE: ['gen_consc', 'gen_appear', 'oral_mucosa', 'lung_ausc', 'chest_insp', 'abd_palp', 'rectal', 'bladder', 'cva', 'skin', 'leg_edema'],
   keyT: ['bs_poct', 'cbc', 'chem', 'crp', 'ua', 'cxr', 'ecg', 'vbg'],
   redflags: ['「いつもと違う」を家族・施設職員から具体的に聞く（最終健常時刻）', '発熱がなくても感染症（肺炎・尿路感染）はありうる', '内服薬（利尿薬・降圧薬・睡眠薬・抗コリン薬）の副作用を疑う', '血糖・Na・脱水・尿閉を確認'],
   ddx: [
@@ -610,6 +627,7 @@ APPROACHES.elderly_decline = {
     { id: 'dehydration', point: '口腔乾燥・BUN/Cr比の上昇', clues: ['e:oral_mucosa', 'H:BUN'] },
     { id: 'retention', point: '下腹部の膨隆、抗コリン薬', clues: ['e:bladder'] },
     { id: 'hypoglycemia', point: '糖尿病治療中・食事摂取不良', clues: ['L:GLU'] },
+    { id: 'impaction', tests: ['axr'], point: '数日以上の便秘・オピオイドなどの薬・活動量低下、直腸診で便塊、少量の水様便の漏れ', clues: ['q:constipation', 'e:rectal', 'e:abd_palp', 't:axr'] },
     { id: 'delirium', point: '急に始まり変動する注意障害。必ず原因（感染・薬・脱水など）がある' },
     { id: 'adhf', point: '息切れ・浮腫・体重増加', clues: ['e:leg_edema'] },
   ],
@@ -639,6 +657,55 @@ APPROACHES.fall = {
     { id: 'stroke', point: '転倒の前後に片麻痺・言語障害', clues: ['e:motor', 'e:facial'] },
     { id: 'hypoglycemia', point: '糖尿病治療中、冷汗', clues: ['L:GLU'] },
     { id: 'af_rvr', point: '動悸・脈の不整', clues: ['t:ecg'] },
+  ],
+};
+
+APPROACHES.dizziness = {
+  title: 'めまい',
+  intro: 'めまいは「回転性か」「頭位で誘発されるか」「持続時間」「神経症状・難聴」で整理する。多くは良性発作性頭位めまい症（BPPV）だが、小脳・脳幹の脳卒中を見逃さないことが最重要。',
+  keyQ: ['onset', 'course', 'character', 'vertigo', 'positional', 'hearing', 'nausea', 'headache', 'speechq', 'weakness', 'lastnormal', 'pmh'],
+  keyE: ['nystagmus', 'dix_hallpike', 'ataxia', 'speech', 'motor', 'facial', 'gen_appear'],
+  keyT: ['bs_poct', 'ecg'],
+  redflags: ['歩けない・座っていられない（体幹失調）、方向が変わる眼振、構音障害・麻痺、強い頭痛 → 小脳・脳幹梗塞を疑いMRI（CTでは見逃しやすい）', 'ふらつき・失神感なら不整脈・貧血・低血糖も考える', '典型的なBPPV（頭位で数十秒、Dix-Hallpike陽性）なら画像は不要'],
+  ddx: [
+    { id: 'bppv', point: '頭の向きで誘発される数十秒の回転性めまい、Dix-Hallpike試験で回旋性眼振', clues: ['q:positional', 'q:vertigo', 'e:dix_hallpike'] },
+    { id: 'cerebellar', tests: ['head_mri'], point: '持続するめまい・体幹失調で歩けない・方向交代性眼振・高血圧/心房細動などのリスク', clues: ['e:ataxia', 'e:nystagmus', 'q:headache', 't:head_mri'] },
+    { id: 'vestibular', point: '持続する回転性めまい・一方向性の眼振、歩行は何とか可能、難聴なし' },
+    { id: 'meniere', point: '難聴・耳鳴り・耳閉感を伴う数十分〜数時間の回転性めまいを繰り返す', clues: ['q:hearing'] },
+    { id: 'hypoglycemia', point: '糖尿病治療中・冷汗', clues: ['L:GLU'] },
+  ],
+};
+APPROACHES.syncope = {
+  title: '失神',
+  intro: '失神は一時的な脳血流の低下で起こる短時間の意識消失。まず「危険な失神（心原性）」を見つけることが目的。全例に12誘導心電図。けいれん・低血糖・脳卒中による意識障害とも区別する。',
+  keyQ: ['syncope', 'onset', 'character', 'sweating', 'nausea', 'palpitation', 'chestpain', 'dyspnea', 'seizure', 'meds', 'pmh', 'family'],
+  keyE: ['gen_appear', 'gen_consc', 'heart_ausc', 'motor', 'periph'],
+  keyT: ['ecg', 'bs_poct', 'cbc', 'chem', 'orthostatic'],
+  redflags: ['運動中・臥位での失神、前兆のない突然の失神 → 心原性を疑う', '胸痛・動悸・息切れ、心疾患の既往、突然死の家族歴', '心電図異常（徐脈・ブロック・頻脈・QT延長・ブルガダ型）', '貧血・下血（消化管出血）、妊娠反応（異所性妊娠）'],
+  ddx: [
+    { id: 'vasovagal', point: '長時間の立位・痛み・採血などの誘因、気分不良・冷汗・視野が暗くなる前兆、速やかな回復、心電図正常', clues: ['q:syncope', 'q:sweating', 'q:nausea', 'q:pmh'] },
+    { id: 'avb', point: '高齢者、前兆のない突然の失神、徐脈、心電図で完全房室ブロック', clues: ['q:dizziness', 'e:heart_ausc', 't:ecg'] },
+    { id: 'orthostatic', point: '立ち上がったときの失神、脱水・降圧薬・利尿薬、起立試験で血圧低下', clues: ['t:orthostatic'] },
+    { id: 'as', point: '労作時の失神、収縮期駆出性雑音' },
+    { id: 'pe', point: '突然の呼吸困難・頻脈・低酸素' },
+    { id: 'epilepsy_sz', point: '発作後のもうろう状態が長い、舌咬傷、けいれんが長い', clues: ['q:seizure'] },
+  ],
+};
+APPROACHES.back_pain = {
+  title: '腰背部痛',
+  intro: '腰背部痛の多くは筋骨格系だが、危険な原因（Red flags）を除外する：大動脈解離・腹部大動脈瘤、腎盂腎炎・尿管結石、化膿性脊椎炎・硬膜外膿瘍（発熱）、がんの骨転移、脊髄圧迫（麻痺・排尿障害）。帯状疱疹は発疹の前に痛みが先行することがある。',
+  keyQ: ['onset', 'character', 'location', 'aggravating', 'radiation', 'rash', 'fever', 'weakness', 'retention', 'pmh', 'meds'],
+  keyE: ['spine', 'skin', 'cva', 'motor', 'bp_lr', 'abd_palp'],
+  keyT: ['ua', 'cbc', 'crp'],
+  redflags: ['突然の激痛・血圧の左右差 → 大動脈解離・瘤破裂', '発熱 → 化膿性脊椎炎・硬膜外膿瘍・腎盂腎炎', '下肢の麻痺・しびれ・排尿障害 → 脊髄・馬尾の圧迫（緊急MRI）', 'がんの既往・体重減少 → 骨転移'],
+  ddx: [
+    { id: 'compression_fx', tests: ['spine_xr'], point: '骨粗鬆症の高齢女性、軽い外力、動作時痛、棘突起の叩打痛', clues: ['q:aggravating', 'q:pmh', 'e:spine', 't:spine_xr'] },
+    { id: 'zoster', point: '片側の帯状のピリピリした痛み、遅れて水疱', clues: ['q:rash', 'q:character', 'e:skin'] },
+    { id: 'pyelo', point: '発熱・CVA叩打痛・膿尿', clues: ['e:cva', 'q:fever'] },
+    { id: 'ureteral', point: '波のある激痛・血尿', clues: ['H:U_RBC'] },
+    { id: 'aortic_dissection', point: '突然の引き裂かれるような痛み', clues: ['e:bp_lr'] },
+    { id: 'epidural', point: '発熱＋強い背部痛＋神経症状' },
+    { id: 'lumbago', point: '体動で悪化し安静で軽快、危険なサインがない' },
   ],
 };
 
@@ -878,6 +945,41 @@ export const DISEASE_NOTES = {
     overview: '高齢者の転倒で起こる太ももの付け根（大腿骨頸部・転子部）の骨折。骨粗鬆症が背景。寝たきりの大きな原因。',
     treatment: ['股関節X線で診断（疑わしければCT・MRI）', 'アセトアミノフェンなどで十分な鎮痛', '整形外科で48時間以内の早期手術・早期リハビリ', '転倒の原因（失神・低血糖・薬剤など）の評価', '骨粗鬆症の治療と転倒予防'],
     flow: '転倒・股関節痛 → 下肢の短縮と外旋 → 股関節X線 → 骨折と診断 → 鎮痛 → 転倒の原因評価（心電図・血糖）→ 整形外科コンサルト → 手術',
+  },
+  bppv: {
+    overview: '内耳の耳石のかけらが半規管に入り込み、頭の向きを変えると数十秒の回転性めまいが起こる。めまいの原因として最も多い。',
+    treatment: ['Dix-Hallpike試験で回旋性眼振を確認', 'Epley法（浮遊耳石置換法）', '典型例では画像検査は不要', '持続するめまい・神経症状があれば小脳梗塞を考える'],
+    flow: '頭位で起こる短いめまい → 神経所見に異常なし → Dix-Hallpike陽性 → BPPV → Epley法 → 帰宅',
+  },
+  cerebellar: {
+    overview: '小脳の血管が詰まる脳梗塞。めまい・嘔吐・歩けない（体幹失調）で来ることがあり、「めまい」と思って見逃されやすい。',
+    treatment: ['持続するめまい・体幹失調・方向交代性眼振・構音障害は中枢性を疑う', 'MRI（拡散強調像）で診断（CTでは見えにくい）', '入院して浮腫による脳幹圧迫に注意', '発症時刻によってはrt-PAや血栓回収も検討'],
+    flow: '持続するめまい → 眼振・小脳症状の診察 → 血糖 → 頭部CT（出血除外）→ MRI → 小脳梗塞 → 入院',
+  },
+  vasovagal: {
+    overview: '長時間の立位・痛み・緊張などで自律神経の反射が起こり、血圧と脈拍が下がって一時的に意識を失う。最も多い失神。',
+    treatment: ['心電図で心原性を除外', '危険なサインがなければ大がかりな検査は不要', '前兆時はしゃがむ・横になる、水分・塩分、誘因の回避を指導'],
+    flow: '失神 → 状況と前兆の確認 → 心電図・血糖 → 危険なサインなし → 血管迷走神経性失神 → 帰宅',
+  },
+  avb: {
+    overview: '心房から心室への電気の伝わりが完全に途絶え、心室がゆっくりしか動かなくなる状態。高齢者の失神（Adams-Stokes発作）の原因。',
+    treatment: ['12誘導心電図で診断', '高K血症・薬剤（β遮断薬など）・心筋梗塞を確認', 'アトロピンは効かないことが多い', '循環器内科で一時的ペーシング→恒久的ペースメーカー'],
+    flow: '前兆のない失神・徐脈 → 心電図で完全房室ブロック → K・薬剤の確認 → 循環器内科コンサルト → ペーシング → CCU',
+  },
+  zoster: {
+    overview: '子どもの頃にかかった水ぼうそうのウイルスが神経に潜み、免疫が落ちたときに再活性化する。神経に沿った帯状の痛みと水疱。',
+    treatment: ['バラシクロビル 1000mg 1日3回 7日間（腎機能で減量）', '十分な鎮痛（アセトアミノフェンなど）', '顔面（眼の周囲）は眼科へ', '50歳以上にはワクチンで予防'],
+    flow: '片側の帯状の痛み・発疹 → 皮膚の診察 → 腎機能の確認 → 帯状疱疹 → 抗ウイルス薬・鎮痛 → 帰宅',
+  },
+  compression_fx: {
+    overview: '骨粗鬆症でもろくなった背骨が、尻もちなどの軽い力でつぶれる骨折。高齢女性に多い。',
+    treatment: ['危険な腰痛（発熱・麻痺・がん・大動脈）を除外', 'X線（新しいかどうかはMRI）', '鎮痛・コルセット・早期離床', '骨粗鬆症の治療'],
+    flow: '高齢者の腰痛 → Red flagsの確認 → 叩打痛 → 胸腰椎X線 → 圧迫骨折 → 鎮痛 → 帰宅または入院',
+  },
+  impaction: {
+    overview: '便が長く出ずに直腸に硬くたまった状態。高齢者の腹痛・食欲低下・せん妄の原因になる。',
+    treatment: ['直腸診・腹部X線で確認（腸閉塞・穿孔の除外）', '浣腸・摘便', '原因（オピオイドなどの薬・水分不足・活動量低下）の見直し', '下剤の調整（腎機能低下では酸化マグネシウムに注意）'],
+    flow: '腹痛・食欲低下 → 排便状況の確認 → 腹部診察・直腸診 → 腹部X線 → 宿便 → 浣腸・摘便 → 帰宅',
   },
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',

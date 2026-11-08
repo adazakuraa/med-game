@@ -48,6 +48,8 @@ export const TESTS = [
   { id: 'head_ct', cat: 'image', name: '頭部単純CT', kind: 'report', cost: 14000, timeMin: 20, inv: 0, radiation: true, normal: '頭蓋内に出血・腫瘤・明らかな低吸収域なし。正中偏位なし。' },
   { id: 'head_mri', cat: 'image', name: '頭部MRI（拡散強調像・MRA）', kind: 'report', cost: 25000, timeMin: 60, inv: 0, normal: '拡散強調像で異常信号なし。MRAで主幹動脈の閉塞・狭窄・動脈瘤なし。' },
   { id: 'lp', cat: 'micro', name: '腰椎穿刺（髄液検査・グラム染色）', kind: 'report', cost: 3500, timeMin: 60, inv: 2, normal: '初圧 14cmH2O。無色透明。細胞数 2/μL、蛋白 30mg/dL、糖 65mg/dL（血糖比 0.6以上）。グラム染色で菌を認めない。' },
+  { id: 'orthostatic', cat: 'physio', name: '起立試験（臥位→立位の血圧・脈拍）', kind: 'report', cost: 0, timeMin: 10, inv: 0, normal: '臥位→立位で血圧・脈拍に有意な変化なし。' },
+  { id: 'spine_xr', cat: 'image', name: '胸腰椎X線', kind: 'report', cost: 2600, timeMin: 20, inv: 0, radiation: true, normal: '明らかな骨折・すべりなし。' },
   { id: 'ecg', cat: 'physio', name: '12誘導心電図', kind: 'ecg', cost: 1300, timeMin: 5, inv: 0 },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
