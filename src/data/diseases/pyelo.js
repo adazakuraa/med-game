@@ -24,6 +24,7 @@ export default {
     };
   },
   cc: () => '発熱と腰の痛み',
+  ccKey: 'fever_flank',
   arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
   history: {
     onset: { p: 1, text: '{days}日前からおしっこの時に少ししみて、昨日から熱が出てきました。' },

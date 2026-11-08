@@ -24,6 +24,7 @@ export default {
     };
   },
   cc: () => '息苦しさ',
+  ccKey: 'dyspnea',
   arrival: (sev) => (sev >= 1 ? 'ambulance' : 'walk'),
   initVolume: [[-2200, -1500], [-3200, -2200], [-4500, -3200]],
   history: {

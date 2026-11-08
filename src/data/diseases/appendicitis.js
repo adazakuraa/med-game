@@ -18,6 +18,7 @@ export default {
     v.migText = v.migrated ? 'はい、最初はみぞおちのあたりでした。今は右の下腹です。' : 'ずっと右の下腹です。';
   },
   cc: () => '腹痛',
+  ccKey: 'abd_pain',
   arrival: () => 'walk',
   initVolume: [[300, 700], [600, 1200], [1000, 1800]],
   history: {
