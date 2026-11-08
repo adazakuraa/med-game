@@ -19,6 +19,7 @@ export function visibleNow(enc, f) {
   if (f.ifDrain && !st.drains?.[side]) return false;
   if (f.unlessDrain && st.drains?.[side]) return false;
   if (f.maxBurden != null && st.burden > f.maxBurden) return false;
+  if (f.unlessFoley && st.procs?.foley != null) return false;
   return true;
 }
 
@@ -31,7 +32,7 @@ function pickText(entry, sev, idx) {
 const PMH_SPEAK = {
   htn: '高血圧', dm2: '糖尿病（飲み薬で治療中）', chf: '心不全（以前入院したことがあります）', af: '不整脈（心房細動）',
   ckd: '腎臓の機能が悪いと言われています', dyslip: 'コレステロールが高いこと', bph: '前立腺肥大', glaucoma: '緑内障（眼科で治療中）',
-  pud: '胃潰瘍（今も薬を飲んでいます）', cancer: '大腸がんで抗がん剤治療中です', asthma: '喘息で吸入薬を使っています', copd: 'COPD（肺気腫）と言われています', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
+  pud: '胃潰瘍（今も薬を飲んでいます）', cancer: '大腸がんで抗がん剤治療中です', dementia: '（家族）認知症があります', old_stroke: '脳梗塞をしたことがあります（右半身に軽い麻痺が残っています）', asthma: '喘息で吸入薬を使っています', copd: 'COPD（肺気腫）と言われています', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
 };
 
 function profileAnswer(enc, qid) {

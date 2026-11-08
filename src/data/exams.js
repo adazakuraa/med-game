@@ -36,8 +36,11 @@ export const EXAMS = [
   { id: 'rovsing', region: 'abdomen', method: '触診', name: 'Rovsing徴候', normal: 'Rovsing徴候陰性。', pain: 1 },
   { id: 'psoas', region: 'abdomen', method: '触診', name: '腸腰筋徴候', normal: '腸腰筋徴候陰性。', pain: 1 },
   { id: 'murphy', region: 'abdomen', method: '触診', name: 'Murphy徴候', normal: 'Murphy徴候陰性。', pain: 1 },
+  { id: 'bladder', region: 'abdomen', method: '打診', name: '恥骨上部（膀胱）の膨隆・打診', normal: '恥骨上部に膨隆・濁音なし。' },
+  { id: 'pelvic', region: 'abdomen', method: '触診', name: '内診（子宮頸部の移動痛・付属器）', normal: '子宮頸部の移動痛なし。付属器に腫瘤・圧痛なし。', pain: 2, female: true },
   { id: 'cva', region: 'back', method: '打診', name: 'CVA叩打痛', normal: '両側CVA叩打痛なし。', pain: 1 },
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
+  { id: 'hip', region: 'limbs', method: '視診', name: '下肢の長さ・回旋、股関節の圧痛', normal: '下肢長差・回旋なし。股関節の圧痛・運動時痛なし。', pain: 1 },
   { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
   { id: 'pupils', region: 'neuro', method: '視診', name: '瞳孔・対光反射', normal: '瞳孔 3mm/3mm 同大、対光反射は両側迅速。' },
@@ -46,6 +49,11 @@ export const EXAMS = [
   { id: 'motor', region: 'neuro', method: '触診', name: '上下肢の麻痺（Barré・Mingazzini）', normal: '上下肢に麻痺なし（Barré徴候・Mingazzini徴候陰性）。' },
   { id: 'jolt', region: 'neuro', method: '視診', name: 'jolt accentuation（首振りで頭痛増強）', normal: 'jolt accentuation 陰性。' },
   { id: 'skin', region: 'general', method: '視診', name: '皮膚（発疹・紫斑・発赤）', normal: '皮疹・紫斑・発赤なし。' },
+  { id: 'nystagmus', region: 'neuro', method: '視診', name: '眼振', normal: '眼振なし。' },
+  { id: 'dix_hallpike', region: 'neuro', method: '視診', name: 'Dix-Hallpike試験（頭位変換）', normal: '頭位変換で眼振・めまいは誘発されない。', pain: 1 },
+  { id: 'ataxia', region: 'neuro', method: '視診', name: '小脳症状（指鼻試験・歩行・体幹）', normal: '指鼻試験は正常。歩行・座位保持は安定。' },
+  { id: 'spine', region: 'back', method: '打診', name: '脊椎の叩打痛', normal: '脊椎の叩打痛なし。', pain: 1 },
+  { id: 'rectal', region: 'abdomen', method: '触診', name: '直腸診', normal: '直腸内に便塊・腫瘤なし。指に血液の付着なし。', pain: 1 },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];
 

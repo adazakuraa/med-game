@@ -24,7 +24,7 @@ export const DRUGS = [
   {
     id: 'ctrx', generic: 'セフトリアキソン', brands: ['ロセフィン'], cls: '抗菌薬（第3世代セフェム）', allergy: 'cephem', abx: true,
     routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q24h', 'q12h'], maxDaily: 4000 } },
-    covers: ['spn', 'hinf', 'ecoli', 'gpc'],
+    covers: ['spn', 'hinf', 'ecoli', 'gpc', 'gc'],
     interact: [{ tag: 'warfarin', level: 'warn', msg: 'ワルファリンの作用増強（PT-INR上昇）に注意' }],
     info: '通常1日1〜2gを1〜2回に分割して静注・点滴。重症では1日4gまで。腎機能による調節は通常不要。',
   },
@@ -61,7 +61,7 @@ export const DRUGS = [
   {
     id: 'lvfx', generic: 'レボフロキサシン', brands: ['クラビット'], cls: '抗菌薬（ニューキノロン系）', allergy: 'quinolone', abx: true,
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q24h'], maxDaily: 500 }, iv: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['spn', 'hinf', 'ecoli', 'atypical'], resistKey: 'fqR',
+    covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia'], resistKey: 'fqR',
     renal: [{ crclBelow: 50, maxDaily: 250, text: 'CrCl 20〜49: 初日500mg、以後250mg 1日1回' }, { crclBelow: 20, maxDaily: 125, text: 'CrCl <20: 初日500mg、以後250mg 2日に1回' }],
     contra: ['pregnancy', 'quinolone_child'],
     interact: [
@@ -88,7 +88,7 @@ export const DRUGS = [
   {
     id: 'azm', generic: 'アジスロマイシン', brands: ['ジスロマック'], cls: '抗菌薬（マクロライド系）', allergy: 'macrolide', abx: true,
     routes: { po: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['atypical'],
+    covers: ['atypical', 'chlamydia'],
     interact: [{ tag: 'qt', level: 'warn', msg: 'QT延長作用のある薬剤との併用に注意' }],
     info: '1回500mgを1日1回、3日間。国内の肺炎球菌はマクロライド耐性率が高く、単独での肺炎球菌治療は不適。',
   },
@@ -303,6 +303,26 @@ export const DRUGS = [
     info: '心房細動の心拍数調節に0.625〜5mg 1日1回。喘息・高度徐脈・低血圧には注意。',
   },
   {
+    id: 'doxy', generic: 'ドキシサイクリン', brands: ['ビブラマイシン'], cls: '抗菌薬（テトラサイクリン系）', allergy: 'tetracycline', abx: true,
+    routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q12h', 'q24h'], maxDaily: 200 } },
+    covers: ['chlamydia', 'atypical'],
+    contra: ['pregnancy'],
+    interact: [{ tag: 'mgo', level: 'warn', msg: 'Mg・Al含有製剤で吸収低下', reduceRoute: 'po' }],
+    info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',
+  },
+  {
+    id: 'atropine', generic: 'アトロピン硫酸塩', brands: ['アトロピン注'], cls: '抗コリン薬（徐脈治療）', tags: ['atropine'],
+    routes: { iv: { unit: 'mg', min: 0.5, max: 1, freqs: ['once', 'prn'], maxDaily: 3 } },
+    contra: ['glaucoma'], effectHours: 1,
+    info: '症候性徐脈に0.5mgを静注、3〜5分ごとに反復（最大3mg）。完全房室ブロックでは効かないことが多く、ペーシングの準備を。',
+  },
+  {
+    id: 'valacyclovir', generic: 'バラシクロビル', brands: ['バルトレックス'], cls: '抗ヘルペスウイルス薬', tags: ['antiviral_hsv'],
+    routes: { po: { unit: 'mg', min: 500, max: 1000, freqs: ['q8h', 'q12h', 'q24h'], maxDaily: 3000 } },
+    renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 30〜49: 1000mg 12時間毎' }, { crclBelow: 30, maxDaily: 1000, text: 'CrCl 10〜29: 1000mg 24時間毎' }],
+    info: '帯状疱疹に1000mg 1日3回7日間（発疹出現72時間以内が望ましい）。腎機能低下で減量しないと精神神経症状（せん妄など）を起こす。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],
@@ -350,6 +370,7 @@ export const FLUIDS = [
   { id: 'ns', name: '生理食塩液', brands: ['生理食塩液'], na: 154, k: 0, glucose: 0, vol: 1 },
   { id: 'lr', name: '乳酸リンゲル液', brands: ['ラクテック'], na: 130, k: 4, glucose: 0, vol: 1 },
   { id: 'd5w', name: '5%ブドウ糖液', brands: ['大塚糖液5%'], na: 0, k: 0, glucose: 50, vol: 0.3 },
+  { id: 'ns3', name: '3%食塩水', brands: ['10%食塩水を生理食塩液で希釈'], na: 513, k: 0, glucose: 0, vol: 1 },
   { id: 'rbc', name: '赤血球液（輸血）', brands: ['赤血球液-LR「日赤」'], na: 0, k: 0, glucose: 0, vol: 1, blood: true },
   { id: 'sol3', name: '3号維持液', brands: ['ソリタ-T3号'], na: 35, k: 20, glucose: 43, vol: 0.5 },
 ];
@@ -386,5 +407,8 @@ export const HOME_MEDS = {
   ics: { name: 'ブデソニド・ホルモテロール吸入（シムビコート）', tags: ['ics'] },
   lama: { name: 'チオトロピウム吸入（スピリーバ）', tags: [] },
   nsaid_home: { name: 'ロキソプロフェン 60mg（腰痛で毎日）', tags: ['nsaid'] },
+  thiazide: { name: 'トリクロルメチアジド 2mg 1日1回（サイアザイド系利尿薬）', tags: ['thiazide'] },
+  donepezil: { name: 'ドネペジル 5mg 1日1回（認知症）', tags: [] },
+  antichol: { name: '市販の総合感冒薬（抗コリン成分を含む）', tags: ['anticholinergic'] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };

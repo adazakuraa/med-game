@@ -21,6 +21,8 @@ export const COMORB = {
   epilepsy: { name: 'てんかん', meds: ['valproate'] },
   cancer: { name: '大腸がん（化学療法中）', meds: [], minAge: 40 },
   asthma: { name: '気管支喘息', meds: ['ics'] },
+  dementia: { name: '認知症', meds: ['donepezil'], minAge: 65 },
+  old_stroke: { name: '脳梗塞後遺症', meds: [], minAge: 55 },
   copd: { name: 'COPD（慢性閉塞性肺疾患）', meds: ['lama'], minAge: 50 },
 };
 
@@ -103,10 +105,10 @@ export function generatePatient(o) {
   for (const a of ALLERGIES) if (rng.chance(a.p)) allergies.push(a.id);
 
   // 体格
-  const weight = Math.round(
+  const weight = Math.max(36, Math.round(
     (sex === 'M' ? rng.normal(age > 75 ? 58 : 67, 8) : rng.normal(age > 75 ? 47 : 54, 7)) + (d.weightAdj || 0)
-  );
-  const pregnant = sex === 'F' && age >= 18 && age <= 42 && rng.chance(d.id === 'pyelo' ? 0.1 : 0.04);
+  ));
+  const pregnant = d.forcePregnant || (sex === 'F' && age >= 18 && age <= 42 && !d.noPregnancy && rng.chance(d.id === 'pyelo' ? 0.1 : 0.04));
 
   // 検査の個体差（zスコア・反応性）
   const z = {}, r = {};

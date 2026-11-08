@@ -189,7 +189,7 @@ function tabQuestions() {
 
 function tabExam() {
   const enc = game.enc;
-  const ex = EXAMS.filter((e) => e.region === ui.region);
+  const ex = EXAMS.filter((e) => e.region === ui.region && (!e.female || enc.patient.sex === 'F'));
   const rec = isRes() ? recommended(enc) : null;
   const regStar = (r) => rec && EXAMS.some((e) => e.region === r && rec.e.has(e.id) && !enc.examined[e.id]) ? '★' : '';
   return `<div class="chips">${EXAM_REGIONS.map((r) => `<button class="chip ${ui.region === r.id ? 'on' : ''}" data-a="region" data-v="${r.id}">${regStar(r.id)}${r.name}</button>`).join('')}</div>
@@ -205,7 +205,7 @@ function tabTests() {
   const enc = game.enc;
   const done = enc.tests.filter((x) => x.done);
   const pend = enc.tests.filter((x) => !x.done);
-  const list = TESTS.filter((t) => t.cat === ui.tcat);
+  const list = TESTS.filter((t) => t.cat === ui.tcat && (!t.female || enc.patient.sex === 'F'));
   const rec = isRes() ? recommended(enc) : null;
   const catStar = (c) => rec && TESTS.some((t) => t.cat === c && rec.t.has(t.id) && !enc.tests.some((x) => x.id === t.id)) ? '★' : '';
   const selCost = [...ui.sel].reduce((a, id) => a + TEST_BY_ID[id].cost, 0);

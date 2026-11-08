@@ -34,6 +34,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
   const done = new Set();
   const doAction = (a, i) => {
     if (done.has(i) || !cond(enc, a.when)) return;
+    if (a.a === 'consult' && a.delayMin) { done.add(i); S.advance(enc, a.delayMin); S.consult(enc, a.dept); return; }
     if (a.a === 'test' && enc.patient.allergies.includes('contrast')) a = { ...a, ids: a.ids.flatMap((id) => (id === 'chest_cta' ? ['echo', 'leg_us', 'chest_ct'] : id === 'abd_ct_contrast' ? ['abd_us'] : [id])) };
     if (a.a === 'rx' && (enc.patient.allergies.includes(require_allergy(a.drugId)) || (a.drugId === 'aspirin' && enc.patient.comorb.includes('asthma_nsaid')))) {
       if (!alt(a.drugId)) { done.add(i); return; }

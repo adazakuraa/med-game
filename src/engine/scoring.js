@@ -34,6 +34,7 @@ export function determineOutcome(enc) {
   if (st.comp.iatrogenic) comp.push('医原性気胸');
   if (st.comp.ich) comp.push('頭蓋内出血');
   const crNow = labValue(enc, 'CR', {});
+  if (st.comp.ods) return { kind: 'sequela', notes: ['Naを急に上げすぎて浸透圧性脱髄症候群（構音障害・嚥下障害・四肢麻痺）を起こしました。'] };
   if ((st.comp.severeHypo || 0) >= 60) return { kind: 'sequela', notes: ['遷延する重症低血糖による神経学的後遺症'] };
   if (st.comp.aki && crNow >= p.crBase * 1.5) return { kind: 'sequela', notes: ['腎機能が元に戻らず、慢性腎臓病に移行しました。'] };
   if (d.residualAbove != null && !st.cured && st.burden >= d.residualAbove) return { kind: 'sequela', notes: [d.residualText || '後遺症が残りました。'] };
