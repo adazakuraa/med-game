@@ -7,7 +7,7 @@ export default {
   weight: 10, season: { winter: 1.5, summer: 0.7 }, minLevel: 1,
   demo: { age: [25, 92], ageMode: 'old', male: 0.55 },
   sev: { p: [0.45, 0.4, 0.15], burden: [[22, 38], [42, 58], [64, 78]] },
-  refractoryP: [0, 0.03, 0.15],
+  refractoryP: [0, 0.03, 0.1],
   comorb: { extra: { htn: 0.35, dm2: 0.2, ckd: 0.12, af: 0.08, constip: 0.15, dyslip: 0.2, bph: 0.15 } },
   organisms: ['spn'],
   minAbxDays: 5,

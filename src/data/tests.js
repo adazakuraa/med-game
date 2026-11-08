@@ -11,12 +11,14 @@ export const TEST_CATS = [
 ];
 
 export const TESTS = [
-  { id: 'cbc', cat: 'blood', name: '血算セット', kind: 'lab', items: ['WBC', 'NEUT', 'HB', 'PLT'], cost: 210, timeMin: 30, inv: 1, sample: 'blood' },
-  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'LIP', 'CK'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'cbc', cat: 'blood', name: '血算セット', kind: 'lab', items: ['WBC', 'NEUT', 'HB', 'MCV', 'PLT'], cost: 210, timeMin: 30, inv: 1, sample: 'blood' },
+  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'LIP', 'CK', 'URIC'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'crp', cat: 'blood', name: 'CRP', kind: 'lab', items: ['CRP'], cost: 160, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },
   { id: 'vbg', cat: 'blood', name: '静脈血液ガス（POCT）', kind: 'lab', items: ['PH', 'PCO2', 'HCO3', 'LAC', 'NA', 'K', 'CL', 'AG', 'GLU'], cost: 1450, timeMin: 5, inv: 1, sample: 'blood' },
+  { id: 'thyroid', cat: 'blood', name: '甲状腺機能（TSH・FT4）', kind: 'lab', items: ['TSH', 'FT4'], cost: 2700, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'ferritin', cat: 'blood', name: 'フェリチン（鉄の貯蔵）', kind: 'lab', items: ['FER'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'bnp', cat: 'blood', name: 'BNP', kind: 'lab', items: ['BNP'], cost: 1300, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'tnt', cat: 'blood', name: '高感度トロポニンT', kind: 'lab', items: ['TNT'], cost: 1200, timeMin: 45, inv: 1, sample: 'blood' },
   { id: 'hba1c', cat: 'blood', name: 'HbA1c', kind: 'lab', items: ['HBA1C'], cost: 490, timeMin: 60, inv: 1, sample: 'blood' },
@@ -33,6 +35,8 @@ export const TESTS = [
   { id: 'stool_cx', cat: 'micro', name: '便培養', kind: 'report', cost: 1800, timeMin: 4320, inv: 0, normal: '病原菌は検出されず（常在菌のみ）。' },
   { id: 'u_pneumo_ag', cat: 'micro', name: '尿中肺炎球菌抗原', kind: 'qual', cost: 2050, timeMin: 20, inv: 0, sample: 'urine', pos: '陽性', neg: '陰性', spec: 0.95 },
   { id: 'u_legion_ag', cat: 'micro', name: '尿中レジオネラ抗原', kind: 'qual', cost: 2050, timeMin: 20, inv: 0, sample: 'urine', pos: '陽性', neg: '陰性', spec: 0.99 },
+  { id: 'strep_ag', cat: 'micro', name: '溶連菌迅速抗原', kind: 'qual', cost: 1360, timeMin: 10, inv: 0, pos: '陽性', neg: '陰性', spec: 0.95 },
+  { id: 'fobt', cat: 'micro', name: '便潜血（2回法）', kind: 'qual', cost: 370, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.93 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
   { id: 'cxr', cat: 'image', name: '胸部X線', kind: 'report', cost: 2100, timeMin: 20, inv: 0, radiation: true, normal: '心胸郭比 48%。肺野に明らかな浸潤影なし。肋骨横隔膜角は鋭。' },

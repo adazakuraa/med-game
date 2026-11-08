@@ -74,7 +74,7 @@ export const DRUGS = [
   {
     id: 'ampc', generic: 'アモキシシリン', brands: ['サワシリン', 'パセトシン'], cls: '抗菌薬（ペニシリン系・経口）', allergy: 'penicillin', abx: true,
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q8h', 'q6h'], maxDaily: 2000 } },
-    covers: ['spn', 'hinf'],
+    covers: ['spn', 'hinf', 'gpc'],
     renal: [{ crclBelow: 30, maxDaily: 1000, text: 'CrCl <30: 投与間隔を12時間毎に延長' }],
     info: '通常1回250mgを1日3〜4回。肺炎球菌性肺炎の外来治療では高用量（1回500mg 1日3〜4回）が推奨される。',
   },
@@ -234,7 +234,7 @@ export const DRUGS = [
   {
     id: 'abpc', generic: 'アンピシリン', brands: ['ビクシリン'], cls: '抗菌薬（ペニシリン系）', allergy: 'penicillin', abx: true,
     routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q6h', 'q4h'], maxDaily: 12000 } },
-    covers: ['spn', 'listeria'], tags: ['listeria_cover'],
+    covers: ['spn', 'listeria', 'gpc'], tags: ['listeria_cover'],
     renal: [{ crclBelow: 30, maxDaily: 6000, text: 'CrCl<30: 投与間隔を延長' }],
     info: '細菌性髄膜炎では1回2gを4時間毎。50歳以上・免疫不全ではリステリアをカバーするため追加する。',
   },
@@ -321,6 +321,33 @@ export const DRUGS = [
     routes: { po: { unit: 'mg', min: 500, max: 1000, freqs: ['q8h', 'q12h', 'q24h'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 30〜49: 1000mg 12時間毎' }, { crclBelow: 30, maxDaily: 1000, text: 'CrCl 10〜29: 1000mg 24時間毎' }],
     info: '帯状疱疹に1000mg 1日3回7日間（発疹出現72時間以内が望ましい）。腎機能低下で減量しないと精神神経症状（せん妄など）を起こす。',
+  },
+  {
+    id: 'colchicine', generic: 'コルヒチン', brands: ['コルヒチン錠'], cls: '痛風発作治療薬', tags: ['colchicine', 'analgesic'],
+    routes: { po: { unit: 'mg', min: 0.5, max: 1, freqs: ['once', 'q12h', 'q24h'], maxDaily: 1.8 } },
+    contra: ['severe_renal'],
+    info: '痛風発作の前兆期〜初期に0.5mgを1回（必要に応じて追加、少量で）。腎・肝障害、CYP3A4阻害薬との併用に注意。',
+  },
+  {
+    id: 'ferrous', generic: 'クエン酸第一鉄', brands: ['フェロミア'], cls: '鉄剤（経口）', tags: ['iron'],
+    routes: { po: { unit: 'mg', min: 50, max: 100, freqs: ['q24h', 'q12h'], maxDaily: 200 } },
+    info: '鉄欠乏性貧血に50〜100mg/日。悪心・便秘・黒色便が出る。原因（月経過多・消化管出血）の検索が必須。',
+  },
+  {
+    id: 'levothyroxine', generic: 'レボチロキシン', brands: ['チラーヂンS'], cls: '甲状腺ホルモン薬', tags: ['thyroxine'],
+    routes: { po: { unit: 'μg', min: 12.5, max: 100, freqs: ['q24h'], maxDaily: 200 } },
+    info: '甲状腺機能低下症に少量（高齢者・心疾患では12.5〜25μg）から開始し、TSHを見ながら増量する。',
+  },
+  {
+    id: 'thiamazole', generic: 'チアマゾール', brands: ['メルカゾール'], cls: '抗甲状腺薬', tags: ['antithyroid'],
+    routes: { po: { unit: 'mg', min: 5, max: 30, freqs: ['q24h', 'q12h'], maxDaily: 30 } },
+    contra: ['pregnancy'],
+    info: 'バセドウ病に15mg/日（重症30mg）。無顆粒球症（発熱・咽頭痛で受診するよう説明）・肝障害に注意。妊娠初期は避ける。',
+  },
+  {
+    id: 'vonoprazan', generic: 'ボノプラザン', brands: ['タケキャブ'], cls: '胃酸分泌抑制薬（P-CAB）', tags: ['ppi'],
+    routes: { po: { unit: 'mg', min: 10, max: 20, freqs: ['q24h'], maxDaily: 20 } },
+    info: '逆流性食道炎に20mg 1日1回4週間（維持は10mg）。胃・十二指腸潰瘍にも使う。',
   },
   {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],

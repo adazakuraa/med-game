@@ -70,3 +70,16 @@ export function procByImaging({ id, depts, label, tests, delay = 90, duration = 
     onDone: onDone || ((enc) => { enc.state.burden = Math.min(enc.state.burden, 22); }),
   };
 }
+
+/** 外来でよく見る軽症疾患の既定値（必要な項目だけ上書きする） */
+export function outpatient(o) {
+  return {
+    dept: '内科', weight: 6, season: {}, minLevel: 1,
+    sev: { p: [0.6, 0.35, 0.05], burden: [[15, 22], [22, 30], [30, 38]] },
+    refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.2, dyslip: 0.15 } }, organisms: [], untreatedFatal: false,
+    arrival: () => 'walk', vitals: {}, labs: {}, tests: {}, natural: -0.2, therapies: [],
+    dispo: () => ({ ok: ['home'], best: 'home', why: '外来で治療・経過観察' }),
+    useful: [], key: [], extrasOk: () => [],
+    ...o,
+  };
+}
