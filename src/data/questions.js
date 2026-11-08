@@ -1,0 +1,66 @@
+// 問診項目カタログ。疾患データ(history)が該当キーを持てばその回答、なければ no（陰性回答）を返す。
+// profile: true の項目は患者プロフィール（既往・内服など）から回答を組み立てる。
+export const Q_CATS = [
+  { id: 'hpi', name: '現病歴' },
+  { id: 'assoc', name: '随伴症状' },
+  { id: 'pmh', name: '既往・薬' },
+  { id: 'social', name: '生活・家族' },
+];
+
+export const QUESTIONS = [
+  // 現病歴 (OPQRST)
+  { id: 'onset', cat: 'hpi', text: 'いつから症状がありますか？', no: 'はっきりとは覚えていません。' },
+  { id: 'course', cat: 'hpi', text: '症状はどう変化していますか？', no: 'あまり変わりません。' },
+  { id: 'character', cat: 'hpi', text: 'どんな症状ですか？詳しく教えてください', no: 'うまく説明できません。' },
+  { id: 'location', cat: 'hpi', text: 'どこが一番つらいですか？（痛む場所は？）', no: '特にどこというのはありません。' },
+  { id: 'migration', cat: 'hpi', text: '痛む場所は移動しましたか？', no: '場所は変わっていません。' },
+  { id: 'severity', cat: 'hpi', text: 'つらさは10段階でどのくらいですか？', no: '3くらいです。' },
+  { id: 'aggravating', cat: 'hpi', text: '悪化させる要因はありますか？', no: '特に思い当たりません。' },
+  { id: 'relieving', cat: 'hpi', text: '楽になる姿勢や要因はありますか？', no: '特にありません。' },
+  { id: 'trigger', cat: 'hpi', text: '何かきっかけに心当たりはありますか？', no: '心当たりはありません。' },
+  // 随伴症状
+  { id: 'fever', cat: 'assoc', text: '熱はありますか？', no: '熱はないと思います。' },
+  { id: 'chills', cat: 'assoc', text: '寒気や震えはありましたか？', no: 'ありません。' },
+  { id: 'cough', cat: 'assoc', text: '咳は出ますか？', no: '咳は出ません。' },
+  { id: 'sputum', cat: 'assoc', text: '痰は出ますか？色は？', no: '痰は出ません。' },
+  { id: 'dyspnea', cat: 'assoc', text: '息苦しさはありますか？', no: '息苦しくはないです。' },
+  { id: 'chestpain', cat: 'assoc', text: '胸の痛みはありますか？', no: '胸は痛くないです。' },
+  { id: 'orthopnea', cat: 'assoc', text: '横になると息苦しくなりますか？', no: 'いいえ、横になっても大丈夫です。' },
+  { id: 'pnd', cat: 'assoc', text: '夜中に息苦しくて目が覚めることは？', no: 'ありません。' },
+  { id: 'palpitation', cat: 'assoc', text: '動悸はありますか？', no: 'ありません。' },
+  { id: 'edema', cat: 'assoc', text: '足のむくみはありますか？', no: 'むくんではいないと思います。' },
+  { id: 'weightgain', cat: 'assoc', text: '最近体重は増えましたか？', no: '特に変わりません。' },
+  { id: 'weightloss', cat: 'assoc', text: '最近体重が減りましたか？', no: '特に減っていません。' },
+  { id: 'abdpain', cat: 'assoc', text: 'お腹は痛いですか？', no: 'お腹は痛くないです。' },
+  { id: 'nausea', cat: 'assoc', text: '吐き気や嘔吐はありますか？', no: 'ありません。' },
+  { id: 'diarrhea', cat: 'assoc', text: '下痢はありますか？', no: 'お通じは普段通りです。' },
+  { id: 'bloodystool', cat: 'assoc', text: '便に血が混じりますか？', no: '血は混じっていません。' },
+  { id: 'anorexia', cat: 'assoc', text: '食欲はありますか？', no: '食欲は普段通りあります。' },
+  { id: 'dysuria', cat: 'assoc', text: '排尿時の痛みはありますか？', no: 'ありません。' },
+  { id: 'frequency', cat: 'assoc', text: 'トイレが近い、残尿感はありますか？', no: 'ありません。' },
+  { id: 'hematuria', cat: 'assoc', text: '尿の色がおかしいことはありますか？', no: '普段通りの色です。' },
+  { id: 'flankpain', cat: 'assoc', text: '腰や背中の痛みはありますか？', no: 'ありません。' },
+  { id: 'polyuria', cat: 'assoc', text: '喉の渇きや尿の量が多いことは？', no: '特にありません。' },
+  { id: 'headache', cat: 'assoc', text: '頭痛はありますか？', no: 'ありません。' },
+  { id: 'myalgia', cat: 'assoc', text: '体の節々の痛みやだるさは？', no: '特にありません。' },
+  { id: 'sorethroat', cat: 'assoc', text: '喉の痛みや鼻水はありますか？', no: 'ありません。' },
+  { id: 'dizziness', cat: 'assoc', text: 'ふらつきや立ちくらみはありますか？', no: 'ありません。' },
+  // 既往・薬
+  { id: 'pmh', cat: 'pmh', text: '今までにかかった病気はありますか？', profile: true },
+  { id: 'surgery', cat: 'pmh', text: '手術を受けたことはありますか？', profile: true },
+  { id: 'meds', cat: 'pmh', text: '普段使っている薬はありますか？', profile: true },
+  { id: 'adherence', cat: 'pmh', text: '薬はきちんと使えていますか？', profile: true },
+  { id: 'allergy', cat: 'pmh', text: '薬や食べ物でアレルギーはありますか？', profile: true },
+  { id: 'lmp', cat: 'pmh', text: '最終月経はいつですか？妊娠の可能性は？', profile: true, female: true },
+  // 生活・家族
+  { id: 'smoking', cat: 'social', text: 'タバコは吸いますか？', profile: true },
+  { id: 'alcohol', cat: 'social', text: 'お酒は飲みますか？', profile: true },
+  { id: 'occupation', cat: 'social', text: 'お仕事は何をされていますか？', profile: true },
+  { id: 'family', cat: 'social', text: 'ご家族に病気の方はいますか？', profile: true },
+  { id: 'sickcontact', cat: 'social', text: '周りに同じような症状の人はいますか？', no: 'いないと思います。' },
+  { id: 'food', cat: 'social', text: '最近、生ものなど普段と違うものを食べましたか？', no: '特にありません。' },
+  { id: 'diet', cat: 'social', text: '最近の食事や塩分・水分の摂り方は？', no: '普段通りです。' },
+  { id: 'travel', cat: 'social', text: '最近、旅行や遠出はしましたか？', no: '行っていません。' },
+];
+
+export const QUESTION_BY_ID = Object.fromEntries(QUESTIONS.map((q) => [q.id, q]));

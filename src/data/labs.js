@@ -1,0 +1,52 @@
+// 検査項目。基準範囲は日本臨床検査標準協議会(JCCLS)共用基準範囲を中心に設定。
+// base: 健常者の分布（患者ごとにzスコアを固定）。abs: 生成値の生理学的上下限（整合性テストで使用）
+export const ORD = ['−', '±', '1+', '2+', '3+', '4+'];
+
+export const LABS = {
+  WBC: { name: '白血球数', unit: '/μL', ref: [3300, 8600], dp: -2, base: { m: 6000, sd: 1100 }, abs: [500, 60000] },
+  NEUT: { name: '好中球', unit: '%', ref: [40, 70], dp: 1, base: { m: 58, sd: 6 }, abs: [10, 98] },
+  HB: { name: 'ヘモグロビン', unit: 'g/dL', ref: { M: [13.7, 16.8], F: [11.6, 14.8] }, dp: 1, base: { M: { m: 14.9, sd: 0.8 }, F: { m: 13.1, sd: 0.8 } }, abs: [4, 22] },
+  PLT: { name: '血小板', unit: '万/μL', ref: [15.8, 34.8], dp: 1, base: { m: 24, sd: 4 }, abs: [1, 100] },
+  NA: { name: 'Na', unit: 'mEq/L', ref: [138, 145], dp: 0, base: { m: 141, sd: 1.2 }, abs: [110, 170] },
+  K: { name: 'K', unit: 'mEq/L', ref: [3.6, 4.8], dp: 1, base: { m: 4.1, sd: 0.25 }, abs: [1.5, 8.5] },
+  CL: { name: 'Cl', unit: 'mEq/L', ref: [101, 108], dp: 0, base: { m: 104, sd: 1.5 }, abs: [80, 130] },
+  BUN: { name: 'BUN', unit: 'mg/dL', ref: [8, 20], dp: 1, base: { m: 14, sd: 3 }, abs: [2, 200] },
+  CR: { name: 'Cr', unit: 'mg/dL', ref: { M: [0.65, 1.07], F: [0.46, 0.79] }, dp: 2, base: { M: { m: 0.85, sd: 0.1 }, F: { m: 0.62, sd: 0.08 } }, abs: [0.2, 15] },
+  GLU: { name: '血糖', unit: 'mg/dL', ref: [73, 109], dp: 0, base: { m: 95, sd: 8 }, abs: [15, 1500] },
+  AST: { name: 'AST', unit: 'U/L', ref: [13, 30], dp: 0, base: { m: 21, sd: 4 }, abs: [5, 5000] },
+  ALT: { name: 'ALT', unit: 'U/L', ref: { M: [10, 42], F: [7, 23] }, dp: 0, base: { M: { m: 22, sd: 6 }, F: { m: 15, sd: 4 } }, abs: [3, 5000] },
+  TBIL: { name: 'T-Bil', unit: 'mg/dL', ref: [0.4, 1.5], dp: 1, base: { m: 0.8, sd: 0.2 }, abs: [0.1, 30] },
+  ALB: { name: 'Alb', unit: 'g/dL', ref: [4.1, 5.1], dp: 1, base: { m: 4.4, sd: 0.25 }, abs: [1.0, 5.8] },
+  AMY: { name: 'アミラーゼ', unit: 'U/L', ref: [44, 132], dp: 0, base: { m: 80, sd: 18 }, abs: [10, 5000] },
+  CK: { name: 'CK', unit: 'U/L', ref: { M: [59, 248], F: [41, 153] }, dp: 0, base: { M: { m: 120, sd: 35 }, F: { m: 85, sd: 25 } }, abs: [10, 50000] },
+  CRP: { name: 'CRP', unit: 'mg/dL', ref: [0, 0.14], dp: 2, base: { m: 0.06, sd: 0.03 }, abs: [0, 50] },
+  PCT: { name: 'プロカルシトニン', unit: 'ng/mL', ref: [0, 0.05], dp: 2, base: { m: 0.03, sd: 0.01 }, abs: [0, 200] },
+  BNP: { name: 'BNP', unit: 'pg/mL', ref: [0, 18.4], dp: 1, base: { m: 10, sd: 4 }, abs: [0, 10000] },
+  TNT: { name: '高感度トロポニンT', unit: 'ng/mL', ref: [0, 0.014], dp: 3, base: { m: 0.005, sd: 0.002 }, abs: [0, 20] },
+  PT_INR: { name: 'PT-INR', unit: '', ref: [0.9, 1.1], dp: 2, base: { m: 1.0, sd: 0.04 }, abs: [0.8, 10] },
+  APTT: { name: 'APTT', unit: '秒', ref: [24, 34], dp: 1, base: { m: 29, sd: 2 }, abs: [18, 150] },
+  DDIMER: { name: 'Dダイマー', unit: 'μg/mL', ref: [0, 1.0], dp: 1, base: { m: 0.4, sd: 0.15 }, abs: [0, 100] },
+  PH: { name: 'pH（静脈）', unit: '', ref: [7.31, 7.41], dp: 2, derived: true, abs: [6.7, 7.7] },
+  PCO2: { name: 'pCO2（静脈）', unit: 'mmHg', ref: [41, 51], dp: 0, derived: true, abs: [8, 120] },
+  HCO3: { name: 'HCO3-', unit: 'mEq/L', ref: [22, 26], dp: 1, derived: true, abs: [2, 45] },
+  LAC: { name: '乳酸', unit: 'mmol/L', ref: [0.5, 2.0], dp: 1, base: { m: 1.0, sd: 0.25 }, abs: [0.3, 20] },
+  AG: { name: 'アニオンギャップ', unit: 'mEq/L', ref: [8, 12], dp: 0, derived: true, abs: [0, 50] },
+  BHB: { name: '血中β-ヒドロキシ酪酸', unit: 'μmol/L', ref: [0, 85], dp: 0, base: { m: 40, sd: 15 }, abs: [0, 15000] },
+  HBA1C: { name: 'HbA1c', unit: '%', ref: [4.9, 6.0], dp: 1, base: { m: 5.5, sd: 0.25 }, abs: [4, 16] },
+  EGFR: { name: 'eGFR', unit: 'mL/分/1.73m²', ref: [60, 200], dp: 0, derived: true, abs: [2, 200] },
+  // 尿（定性は順序尺度 0:− 1:± 2:1+ 3:2+ 4:3+ 5:4+）
+  U_PRO: { name: '尿蛋白', ord: true, ref: [0, 1], abs: [0, 5] },
+  U_GLU: { name: '尿糖', ord: true, ref: [0, 0], abs: [0, 5] },
+  U_KET: { name: '尿ケトン体', ord: true, ref: [0, 0], abs: [0, 5] },
+  U_BLD: { name: '尿潜血', ord: true, ref: [0, 0], abs: [0, 5] },
+  U_LEU: { name: '白血球反応', ord: true, ref: [0, 0], abs: [0, 5] },
+  U_NIT: { name: '亜硝酸塩', ord: true, ref: [0, 0], abs: [0, 2] },
+  U_WBC: { name: '尿沈渣 白血球', unit: '/HPF', ref: [0, 4], dp: 0, base: { m: 1.5, sd: 0.8 }, abs: [0, 200] },
+  U_RBC: { name: '尿沈渣 赤血球', unit: '/HPF', ref: [0, 4], dp: 0, base: { m: 1, sd: 0.6 }, abs: [0, 200] },
+  U_BACT: { name: '尿沈渣 細菌', ord: true, ref: [0, 1], abs: [0, 4] },
+};
+
+export function refFor(lab, sex) {
+  const r = lab.ref;
+  return Array.isArray(r) ? r : r[sex];
+}

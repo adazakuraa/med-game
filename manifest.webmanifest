@@ -1,0 +1,17 @@
+{
+  "name": "メディカル・ローテーション",
+  "short_name": "メドローテ",
+  "description": "医師として患者を診察・診断・治療する医療シミュレーションゲーム（教育・娯楽用）",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1b2d",
+  "theme_color": "#0f1b2d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
