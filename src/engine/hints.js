@@ -70,7 +70,7 @@ export function ddxReasoning(enc) {
       else unknown.push(clueLabel(c));
     }
     return { id: d.id, name: DDX_BY_ID[d.id].name, point: d.point, pro, con, unknown };
-  }).sort((x, y) => y.pro.length - x.pro.length);
+  }).sort((x, y) => (y.pro.length - 0.6 * y.con.length) - (x.pro.length - 0.6 * x.con.length));
 }
 
 // ---- 次にやるべきこと ----

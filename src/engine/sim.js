@@ -12,10 +12,16 @@ import { answer, examFinding, testReport, fmt } from './findings.js';
 import { evaluateRx, evaluateFluid } from './pharm.js';
 import { clamp, hashRand } from './rng.js';
 
+// プレイヤー自身が行う処置
+export const PROCEDURES = [
+  { id: 'drain_R', name: '胸腔ドレナージ（右）', side: '右', min: 20 },
+  { id: 'drain_L', name: '胸腔ドレナージ（左）', side: '左', min: 20 },
+];
+
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];
@@ -64,7 +70,7 @@ export function effects(enc, t = enc.t) {
         let v = 1;
         if (tag === 'insulin') v = o.dose / (0.1 * p.weight);
         else if (tag === 'potassium') v = o.dose;
-        else if (tag === 'vasopressor') v = o.dose;
+        else if (tag === 'vasopressor' || tag === 'betablocker' || tag === 'bp_lower') v = o.dose;
         else if (tag === 'diuretic') v = Math.min(1.5, (o.dose / diureticNeed(p)) * f);
         else if (tag === 'nitrate') v = o.route === 'sl' || o.dose >= 0.5 ? 1 : 0.5;
         eff.tags[tag] = (eff.tags[tag] || 0) + v;
@@ -102,6 +108,8 @@ export function therapySatisfied(th, eff, enc) {
   if (r.fluidTotal) return enc.state.ivCryst >= r.fluidTotal;
   if (r.dextrose) return eff.dextroseGph >= 3;
   if (r.surgery) return !!enc.state.surgeryDone;
+  if (r.procDone) return !!enc.state.procDone?.[r.procDone];
+  if (r.fn) return r.fn(enc, eff);
   return false;
 }
 
@@ -121,6 +129,7 @@ export function newEncounter(o) {
   enc.state = {
     burden: patient.burden0, volume: patient.initVolume, glu: 0, kDelta: 0, hco3Bonus: 0, ivCryst: 0, crInjury: 0,
     perforated: false, comp: {}, cured: false, dead: false, surgeryDone: null, surgeryAt: null, anaphylaxis: null, hypoEvent: null,
+    procAt: {}, procDone: {}, drains: {},
   };
   enc.state.glu = patient.initGlu ?? gluSet(enc);
   const eff = effects(enc);
@@ -175,11 +184,13 @@ function step(enc, dtMin) {
 
   // 病勢（burden）の変化
   let dB;
+  const fixedByProc = d.curedBy && st.procDone?.[d.curedBy];
   if (st.cured) dB = -1.0;
+  else if (fixedByProc) dB = -1.2;
   else if (st.surgeryDone) dB = st.perforated ? -0.8 : -1.3;
   else if (st.perforated) dB = 0.9;
   else dB = d.natural * (p.refractory && d.natural > 0 ? 1.4 : 1);
-  if (!st.cured && !st.surgeryDone) {
+  if (!st.cured && !st.surgeryDone && !fixedByProc) {
     for (const th of d.therapies) {
       if (!th.effect || !sat[th.id] || enc.t - enc.thStart[th.id] < th.lagH * 60) continue;
       const fac = th.req.coverage ? Math.min(1, ...th.req.coverage.map((k) => eff.covers[k] || 0)) : 1;
@@ -307,6 +318,16 @@ function processEvents(enc) {
     }
   }
   const st = enc.state;
+  const d = disease(enc);
+  for (const pr of d.procedures || []) {
+    if (st.procAt?.[pr.id] != null && !st.procDone[pr.id] && enc.t >= st.procAt[pr.id] + pr.duration) {
+      st.procDone[pr.id] = enc.t;
+      pr.onDone(enc);
+      alert(enc, 'consult', fmt(pr.doneText, enc.patient.vars), true);
+      if (enc.phase === 'er') { enc.phase = pr.after || 'icu'; enc.dispo ??= { type: pr.after === 'ward' ? 'admit' : 'icu', t: enc.t, auto: true }; }
+      important = true;
+    }
+  }
   if (st.surgeryAt && !st.surgeryDone && enc.t >= st.surgeryAt + 60) {
     st.surgeryDone = enc.t;
     st.burden = Math.min(st.burden, st.perforated ? 45 : 22);
@@ -505,6 +526,20 @@ export function isOrderActive(enc, o) {
   return true;
 }
 
+export function procedure(enc, procId) {
+  const P = PROCEDURES.find((x) => x.id === procId);
+  const p = enc.patient, st = enc.state, d = disease(enc);
+  st.drains[P.side] = enc.t + P.min;
+  enc.discomfort += 2;
+  addLog(enc, 'rx', `処置：${P.name}`);
+  if (!(d.id === 'ptx' && p.vars.side === P.side)) {
+    recordIssues(enc, [{ level: 'harm', code: 'drain_wrong', msg: `気胸のない側への胸腔ドレナージ（${P.name}）：医原性の気胸・出血の危険` }], P.name);
+    st.burden = Math.min(100, st.burden + 12);
+    st.comp.iatrogenic ??= enc.t;
+  }
+  advance(enc, P.min);
+}
+
 export function consult(enc, dept) {
   if (enc.consults.some((c) => c.dept === dept && !c.replied)) return;
   const delay = dept === 'surgery' ? 45 : dept === 'icu' ? 30 : 60;
@@ -538,6 +573,14 @@ function consultReply(enc, dept) {
     if (p.sex === 'M') return '産婦人科：男性の患者さんですので、当科の対象ではありません。';
     if (p.pregnant) return '産婦人科：経腟超音波で子宮内に胎嚢を確認、妊娠7週相当です。妊娠中でも使用可能な薬剤（セフトリアキソン等）で治療を。レボフロキサシンやCTは避けてください。';
     return '産婦人科：経腟超音波で子宮・付属器に明らかな異常はありません。婦人科疾患は否定的です。';
+  }
+  const pr = (d.procedures || []).find((x) => x.depts.includes(dept));
+  if (pr) {
+    if (st.procAt[pr.id] != null) return `${name}：すでに${pr.label}の準備を進めています。`;
+    const res = pr.decide(enc, currentVitals(enc));
+    if (res.reveal) enc.consultRevealT ??= enc.t;
+    if (res.accept) st.procAt[pr.id] = enc.t + pr.delay;
+    return `${name}：${fmt(res.text, enc.patient.vars)}`;
   }
   if (d.consult?.[dept]) {
     enc.consultRevealT ??= enc.t;

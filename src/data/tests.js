@@ -36,19 +36,21 @@ export const TESTS = [
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
   { id: 'cxr', cat: 'image', name: '胸部X線', kind: 'report', cost: 2100, timeMin: 20, inv: 0, radiation: true, normal: '心胸郭比 48%。肺野に明らかな浸潤影なし。肋骨横隔膜角は鋭。' },
   { id: 'chest_ct', cat: 'image', name: '胸部単純CT', kind: 'report', cost: 14000, timeMin: 45, inv: 0, radiation: true, normal: '肺野に明らかな浸潤影・結節影なし。胸水なし。縦隔リンパ節腫大なし。' },
+  { id: 'chest_cta', cat: 'image', name: '胸部造影CT（CTアンギオ）', kind: 'report', cost: 22000, timeMin: 45, inv: 2, radiation: true, contrast: true, normal: '大動脈に解離・瘤なし。肺動脈に造影欠損なし。肺野に明らかな異常なし。' },
   { id: 'axr', cat: 'image', name: '腹部X線', kind: 'report', cost: 2100, timeMin: 20, inv: 0, radiation: true, normal: '異常ガス像なし。ニボーなし。遊離ガスは指摘できない。' },
   { id: 'abd_us', cat: 'image', name: '腹部超音波', kind: 'report', cost: 5300, timeMin: 20, inv: 0, normal: '肝・胆・膵・腎に明らかな異常なし。水腎症なし。腹水なし。虫垂は同定できず。' },
   { id: 'abd_ct_plain', cat: 'image', name: '腹部単純CT', kind: 'report', cost: 14000, timeMin: 45, inv: 0, radiation: true, normal: '腹腔内に明らかな異常所見なし。遊離ガス・腹水なし。' },
   { id: 'abd_ct_contrast', cat: 'image', name: '腹部造影CT', kind: 'report', cost: 22000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '腹腔内に明らかな異常所見なし。虫垂正常。腎の造影不良域なし。' },
+  { id: 'leg_us', cat: 'physio', name: '下肢静脈エコー', kind: 'report', cost: 5300, timeMin: 30, inv: 0, normal: '両下肢の深部静脈に血栓なし。圧迫で良好に虚脱する。' },
   { id: 'ecg', cat: 'physio', name: '12誘導心電図', kind: 'ecg', cost: 1300, timeMin: 5, inv: 0 },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 
 // 個別項目（血算・生化学の単項目）を自動生成
-const SINGLE_ITEMS = ['NA', 'K', 'CL', 'BUN', 'CR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'CK', 'WBC', 'HB', 'PLT', 'LAC'];
+const SINGLE_ITEMS = ['NA', 'K', 'CL', 'BUN', 'CR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'CK', 'WBC', 'HB', 'PLT', 'LAC', 'TNT', 'DDIMER'];
 import { LABS } from './labs.js';
 for (const id of SINGLE_ITEMS) {
-  TESTS.push({ id: 'lab_' + id, cat: 'single', name: LABS[id].name, kind: 'lab', items: id === 'CR' ? ['CR', 'EGFR'] : [id], cost: 110, timeMin: id === 'LAC' ? 15 : 45, inv: 1, sample: 'blood' });
+  TESTS.push({ id: 'lab_' + id, cat: 'single', name: LABS[id].name, kind: 'lab', items: id === 'CR' ? ['CR', 'EGFR'] : [id], cost: id === 'TNT' ? 1200 : id === 'DDIMER' ? 1300 : 110, timeMin: id === 'LAC' ? 15 : id === 'TNT' ? 20 : 45, inv: 1, sample: 'blood' });
 }
 
 export const TEST_BY_ID = Object.fromEntries(TESTS.map((t) => [t.id, t]));

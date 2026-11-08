@@ -11,6 +11,17 @@ export function fmt(s, vars) {
   return String(s).replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? vars[k] : `{${k}}`));
 }
 
+/** 処置・ドレナージの有無で表示を切り替える所見の判定 */
+export function visibleNow(enc, f) {
+  const st = enc.state, side = enc.patient.vars.side;
+  if (f.ifProc && !st.procDone?.[f.ifProc]) return false;
+  if (f.unlessProc && st.procDone?.[f.unlessProc]) return false;
+  if (f.ifDrain && !st.drains?.[side]) return false;
+  if (f.unlessDrain && st.drains?.[side]) return false;
+  if (f.maxBurden != null && st.burden > f.maxBurden) return false;
+  return true;
+}
+
 function pickText(entry, sev, idx) {
   if (entry.bySev) return entry.bySev[sev];
   if (entry.texts) return entry.texts[idx % entry.texts.length];
@@ -20,7 +31,7 @@ function pickText(entry, sev, idx) {
 const PMH_SPEAK = {
   htn: '高血圧', dm2: '糖尿病（飲み薬で治療中）', chf: '心不全（以前入院したことがあります）', af: '不整脈（心房細動）',
   ckd: '腎臓の機能が悪いと言われています', dyslip: 'コレステロールが高いこと', bph: '前立腺肥大', glaucoma: '緑内障（眼科で治療中）',
-  pud: '胃潰瘍（今も薬を飲んでいます）', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
+  pud: '胃潰瘍（今も薬を飲んでいます）', cancer: '大腸がんで抗がん剤治療中です', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
 };
 
 function profileAnswer(enc, qid) {
@@ -97,10 +108,11 @@ export function examFinding(enc, eid, vit) {
     const arr = Array.isArray(e) ? e : [e];
     arr.forEach((f, i) => {
       if (!p.rolls.exam[eid]?.[i]) return;
+      if (!visibleNow(enc, f)) return;
       if (f.minBurden && st.burden < f.minBurden) return;
       if (!f.minBurden && st.burden < 8 && eid !== 'gen_appear') return; // 治癒後は所見消失
       const t = pickText(f, p.sev, i);
-      if (t) out.push(fmt(t, p.vars));
+      if (t) out.push(fmt(t, { ...p.vars, SBP: vit.SBP, SBPL: vit.SBP - (p.vars.bpDiff || 0) }));
     });
   }
   // 治療・回復で全身状態の表現を変える
@@ -135,6 +147,7 @@ export function examFinding(enc, eid, vit) {
       if (st.anaphylaxis && !st.anaphylaxis.resolved && enc.t >= st.anaphylaxis.t) derived.push('全身に膨疹・紅潮。喘鳴あり。');
       break;
     case 'leg_edema': if (p.homeMeds.includes('amlodipine') && hashRand(p.seed, 'amlo') < 0.15 && !out.length) derived.push('両足首に軽度の圧痕性浮腫。'); break;
+    case 'bp_lr': if (!out.length) derived.push(`上肢血圧に明らかな左右差なし（右 ${vit.SBP} / 左 ${vit.SBP - 3}mmHg）。橈骨動脈の触知良好。`); break;
     case 'lung_ausc': if (st.anaphylaxis && !st.anaphylaxis.resolved && enc.t >= st.anaphylaxis.t) derived.push('両側で呼気性wheezes。'); break;
   }
   const all = out.concat(derived);
@@ -158,7 +171,7 @@ export function testReport(enc, tid, vit, k) {
     const parts = [];
     const af = p.comorb.includes('af');
     parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
-    (d.ecg || []).forEach((f, i) => { if (p.rolls.ecg[i]) parts.push(f.text); });
+    (d.ecg || []).forEach((f, i) => { if (p.rolls.ecg[i] && visibleNow(enc, f)) parts.push(fmt(f.text, p.vars)); });
     if (k >= 6.0) parts.push('テント状T波。');
     else if (k < 3.0) parts.push('T波平低化、U波あり。QT延長傾向。');
     if (parts.length === 1) parts.push('明らかなST-T変化なし。');
@@ -170,8 +183,9 @@ export function testReport(enc, tid, vit, k) {
   if (Array.isArray(fs)) {
     fs.forEach((f, i) => {
       if (!p.rolls.tests[tid]?.[i]) return;
+      if (!visibleNow(enc, f)) return;
       if (f.minBurden && st.burden < f.minBurden) return;
-      if (!f.minBurden && st.burden < 6 && !['ucx', 'bcx', 'sputum_cx'].includes(tid)) return;
+      if (!f.minBurden && !f.persist && st.burden < 6 && !['ucx', 'bcx', 'sputum_cx'].includes(tid)) return;
       if (['ucx', 'bcx', 'sputum_cx', 'urine_gram', 'sputum_gram'].includes(tid) && enc.abxStartT != null && enc.t - enc.abxStartT > 360 && hashRand(p.seed, 'cxneg', tid) < 0.6) return; // 抗菌薬投与後の検体は陰性化しやすい
       out.push(fmt(f.text, p.vars));
     });

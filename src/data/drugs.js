@@ -165,6 +165,46 @@ export const DRUGS = [
     contra: ['glaucoma', 'bph'], effectHours: 6,
     info: '1回5mgを静注。アナフィラキシーでは補助薬（第一選択はアドレナリン筋注）。',
   },
+  {
+    id: 'aspirin', generic: 'アスピリン', brands: ['バイアスピリン'], cls: '抗血小板薬', allergy: 'nsaid', tags: ['antiplatelet'],
+    routes: { po: { unit: 'mg', min: 100, max: 330, freqs: ['once', 'q24h'], maxDaily: 330 } },
+    contra: ['aspirin_asthma', 'pud'],
+    info: '急性冠症候群では初回162〜330mgを噛み砕いて服用し、以後100mg 1日1回。アスピリン喘息・消化性潰瘍・出血傾向には禁忌。大動脈解離では禁忌。',
+  },
+  {
+    id: 'prasugrel', generic: 'プラスグレル', brands: ['エフィエント'], cls: '抗血小板薬（P2Y12阻害薬）', tags: ['antiplatelet'],
+    routes: { po: { unit: 'mg', min: 3.75, max: 20, freqs: ['once', 'q24h'], maxDaily: 20 } },
+    info: 'PCIを行う急性冠症候群で、初回20mg、以後3.75mg 1日1回。アスピリンと併用（DAPT）。出血に注意。',
+  },
+  {
+    id: 'heparin_bolus', generic: 'ヘパリン（静注ボーラス）', brands: ['ヘパリンNa注'], cls: '抗凝固薬', tags: ['anticoag_bolus'],
+    routes: { iv: { unit: '単位', min: 3000, max: 10000, freqs: ['once'], maxDaily: 10000 } },
+    effectHours: 2,
+    info: '肺塞栓症では80単位/kg（目安5000単位）を静注し、続けて持続静注を開始する。出血傾向・大動脈解離には禁忌。',
+  },
+  {
+    id: 'heparin', generic: 'ヘパリン（持続静注）', brands: ['ヘパリンNa注'], cls: '抗凝固薬', tags: ['anticoag'],
+    routes: { iv: { unit: '単位/時', min: 400, max: 2500, freqs: ['cont'], perKg: [12, 20] } },
+    info: '肺塞栓症では18単位/kg/時（12〜20単位/kg/時）で持続静注し、APTTで調節する。出血傾向・大動脈解離には禁忌。',
+  },
+  {
+    id: 'morphine', generic: 'モルヒネ塩酸塩（注）', brands: ['モルヒネ塩酸塩注射液'], cls: '麻薬性鎮痛薬', tags: ['analgesic', 'opioid'],
+    routes: { iv: { unit: 'mg', min: 2, max: 10, freqs: ['once', 'prn'], maxDaily: 30 } },
+    contra: ['sbp90'], effectHours: 3,
+    info: '強い痛みに少量ずつ静注（例：2〜4mg）。呼吸抑制・血圧低下・嘔気に注意。',
+  },
+  {
+    id: 'nicardipine', generic: 'ニカルジピン（注）', brands: ['ペルジピン'], cls: 'Ca拮抗薬（降圧薬）', tags: ['bp_lower'],
+    routes: { iv: { unit: 'μg/kg/分', min: 0.5, max: 6, freqs: ['cont'] } },
+    contra: ['sbp90'],
+    info: '高血圧緊急症に0.5〜6μg/kg/分で持続静注。大動脈解離ではβ遮断薬と併用して収縮期血圧100〜120mmHgを目標にする。',
+  },
+  {
+    id: 'landiolol', generic: 'ランジオロール', brands: ['オノアクト'], cls: 'β遮断薬（短時間作用型）', tags: ['betablocker'],
+    routes: { iv: { unit: 'μg/kg/分', min: 1, max: 10, freqs: ['cont'] } },
+    contra: ['sbp90', 'cardiogenic'],
+    info: '頻脈の心拍数コントロールに1〜10μg/kg/分で持続静注（心機能低下例の頻脈性不整脈など）。大動脈解離では心拍数60/分前後を目標に用いられる。心原性ショック・高度徐脈には禁忌。',
+  },
   // ===== 代謝・電解質 =====
   {
     id: 'insulin_r', generic: '速効型インスリン（静注持続）', brands: ['ヒューマリンR'], cls: 'インスリン', tags: ['insulin'],
@@ -222,4 +262,5 @@ export const HOME_MEDS = {
   montelukast: { name: 'モンテルカスト 10mg 1日1回', tags: [] },
   latanoprost: { name: '点眼薬（緑内障）', tags: [] },
   valproate: { name: 'バルプロ酸 200mg 1日2回', tags: ['valproate'] },
+  ocp: { name: '低用量ピル（避妊目的）', tags: ['ocp'] },
 };

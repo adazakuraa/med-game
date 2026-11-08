@@ -4,6 +4,10 @@ import gastro from './gastro.js';
 import adhf from './adhf.js';
 import dka from './dka.js';
 import appendicitis from './appendicitis.js';
+import acs from './acs.js';
+import aortic_dissection from './aortic_dissection.js';
+import pe from './pe.js';
+import ptx from './ptx.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

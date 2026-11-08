@@ -35,7 +35,7 @@ test('疾患データの参照先がすべて存在する', () => {
       if (th.req.tag) assert.ok(ALL_TAGS.has(th.req.tag), `${d.id}.${th.id} tag ${th.req.tag}`);
       for (const t of th.req.anyTag || []) assert.ok(ALL_TAGS.has(t), `${d.id}.${th.id} tag ${t}`);
       for (const k of th.req.coverage || []) assert.ok(DRUGS.some((x) => x.covers?.includes(k)), `${k} をカバーする薬がない`);
-      assert.equal(th.deadlineH.length, 3);
+      assert.equal((typeof th.deadlineH === 'function' ? th.deadlineH(S.newEncounter({ seed: 1, diseaseId: d.id, level: 9 })) : th.deadlineH).length, 3);
     }
     for (const k of Object.keys(d.harmTags || {})) assert.ok(ALL_TAGS.has(k) || k === 'abx', `${d.id}.harmTags.${k}`);
     assert.equal(d.sev.p.length, 3);

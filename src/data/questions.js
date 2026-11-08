@@ -14,6 +14,7 @@ export const QUESTIONS = [
   { id: 'character', cat: 'hpi', text: 'どんな症状ですか？詳しく教えてください', no: 'うまく説明できません。' },
   { id: 'location', cat: 'hpi', text: 'どこが一番つらいですか？（痛む場所は？）', no: '特にどこというのはありません。' },
   { id: 'migration', cat: 'hpi', text: '痛む場所は移動しましたか？', no: '場所は変わっていません。' },
+  { id: 'radiation', cat: 'hpi', text: '痛みは他の場所に広がりますか？', no: 'ほかには広がりません。' },
   { id: 'severity', cat: 'hpi', text: 'つらさは10段階でどのくらいですか？', no: '3くらいです。' },
   { id: 'aggravating', cat: 'hpi', text: '悪化させる要因はありますか？', no: '特に思い当たりません。' },
   { id: 'relieving', cat: 'hpi', text: '楽になる姿勢や要因はありますか？', no: '特にありません。' },
@@ -27,6 +28,7 @@ export const QUESTIONS = [
   { id: 'chestpain', cat: 'assoc', text: '胸の痛みはありますか？', no: '胸は痛くないです。' },
   { id: 'orthopnea', cat: 'assoc', text: '横になると息苦しくなりますか？', no: 'いいえ、横になっても大丈夫です。' },
   { id: 'pnd', cat: 'assoc', text: '夜中に息苦しくて目が覚めることは？', no: 'ありません。' },
+  { id: 'sweating', cat: 'assoc', text: '冷や汗は出ましたか？', no: '冷や汗は出ていません。' },
   { id: 'palpitation', cat: 'assoc', text: '動悸はありますか？', no: 'ありません。' },
   { id: 'edema', cat: 'assoc', text: '足のむくみはありますか？', no: 'むくんではいないと思います。' },
   { id: 'weightgain', cat: 'assoc', text: '最近体重は増えましたか？', no: '特に変わりません。' },
@@ -60,6 +62,7 @@ export const QUESTIONS = [
   { id: 'sickcontact', cat: 'social', text: '周りに同じような症状の人はいますか？', no: 'いないと思います。' },
   { id: 'food', cat: 'social', text: '最近、生ものなど普段と違うものを食べましたか？', no: '特にありません。' },
   { id: 'diet', cat: 'social', text: '最近の食事や塩分・水分の摂り方は？', no: '普段通りです。' },
+  { id: 'immobility', cat: 'social', text: '最近、手術や長時間の移動、寝たきりの期間はありましたか？', no: '特にありません。普段通り動いています。' },
   { id: 'travel', cat: 'social', text: '最近、旅行や遠出はしましたか？', no: '行っていません。' },
 ];
 
