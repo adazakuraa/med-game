@@ -50,7 +50,7 @@ function orderActive(o, t, phase) {
   if (t < o.start) return false;
   if (o.stopT != null && t >= o.stopT) return false;
   if (o.end != null && t >= o.end) return false;
-  if (phase === 'home' && (o.kind !== 'rx' || o.route !== 'po')) return false;
+  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) return false;
   return true;
 }
 
@@ -554,6 +554,14 @@ export function consult(enc, dept) {
 function consultReply(enc, dept) {
   const p = enc.patient, d = disease(enc), st = enc.state;
   const name = DEPTS[dept];
+  const pr = (d.procedures || []).find((x) => x.depts.includes(dept));
+  if (pr) {
+    if (st.procAt[pr.id] != null) return `${name}：すでに${pr.label}の準備を進めています。`;
+    const res = pr.decide(enc, currentVitals(enc));
+    if (res.reveal) enc.consultRevealT ??= enc.t;
+    if (res.accept) st.procAt[pr.id] = enc.t + pr.delay;
+    return `${name}：${fmt(res.text, enc.patient.vars)}`;
+  }
   if (dept === 'surgery') {
     if (!d.surgeon) return '外科：現時点で外科的治療を要する所見は乏しいと考えます。内科的な精査・治療をお願いします。';
     if (st.surgeryAt || st.surgeryDone) return '外科：手術の予定はすでに組んでいます。';
@@ -576,14 +584,6 @@ function consultReply(enc, dept) {
     if (p.sex === 'M') return '産婦人科：男性の患者さんですので、当科の対象ではありません。';
     if (p.pregnant) return '産婦人科：経腟超音波で子宮内に胎嚢を確認、妊娠7週相当です。妊娠中でも使用可能な薬剤（セフトリアキソン等）で治療を。レボフロキサシンやCTは避けてください。';
     return '産婦人科：経腟超音波で子宮・付属器に明らかな異常はありません。婦人科疾患は否定的です。';
-  }
-  const pr = (d.procedures || []).find((x) => x.depts.includes(dept));
-  if (pr) {
-    if (st.procAt[pr.id] != null) return `${name}：すでに${pr.label}の準備を進めています。`;
-    const res = pr.decide(enc, currentVitals(enc));
-    if (res.reveal) enc.consultRevealT ??= enc.t;
-    if (res.accept) st.procAt[pr.id] = enc.t + pr.delay;
-    return `${name}：${fmt(res.text, enc.patient.vars)}`;
   }
   if (d.consult?.[dept]) {
     enc.consultRevealT ??= enc.t;
@@ -623,7 +623,7 @@ export function discharge(enc) {
   if (!enc.dispo) enc.dispo = { type: 'home', t: enc.t };
   enc.dischargeT = enc.t;
   addLog(enc, 'dispo', enc.phase === 'er' ? '外来治療で帰宅' : '退院');
-  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || o.route !== 'po')) o.stopT = enc.t;
+  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) o.stopT = enc.t;
   enc.phase = 'home';
   // 自宅での経過（最大14日）
   const until = enc.t + 14 * 1440;

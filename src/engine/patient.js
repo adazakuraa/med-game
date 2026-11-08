@@ -20,6 +20,8 @@ export const COMORB = {
   ed: { name: '勃起不全', meds: ['sildenafil'], sex: 'M', minAge: 45, hidden: true },
   epilepsy: { name: 'てんかん', meds: ['valproate'] },
   cancer: { name: '大腸がん（化学療法中）', meds: [], minAge: 40 },
+  asthma: { name: '気管支喘息', meds: ['ics'] },
+  copd: { name: 'COPD（慢性閉塞性肺疾患）', meds: ['lama'], minAge: 50 },
 };
 
 // 一般的な背景疾患の付与確率（年齢で補正）

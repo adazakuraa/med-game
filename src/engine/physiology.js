@@ -148,6 +148,7 @@ export function computeJCS(enc, sbp) {
   if (b >= 92 + off) j = 10; else if (b >= 82 + off) j = 3; else if (b >= 72 + off) j = 1;
   if (st.volume > 4500) j = Math.max(j, 1);
   if (sbp < 70) j = Math.max(j, 3);
+  if ((st.co2x || 0) > 20) j = Math.max(j, 10); else if ((st.co2x || 0) > 10) j = Math.max(j, 3);
   if (st.glu < 35) j = 100; else if (st.glu < 50) j = Math.max(j, 10); else if (st.glu < 60) j = Math.max(j, 1);
   if (st.dead) j = 300;
   return j;

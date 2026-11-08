@@ -224,6 +224,10 @@ export const DRUG_ROLE = {
   dexa: 'ステロイド。細菌性髄膜炎では抗菌薬と同時に使うと後遺症・死亡が減る。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
+  oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
+  salbutamol: '気管支を広げる吸入薬（SABA）。喘息発作・COPD増悪の第一選択で、繰り返し使える。',
+  prednisolone: '飲み薬のステロイド。喘息発作・COPD増悪の炎症を抑える（5日間程度）。',
+  mpsl: '点滴のステロイド。飲めない重い喘息発作・COPD増悪などに。',
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
@@ -276,7 +280,7 @@ export const APPROACHES = {
       { id: 'cap', point: '発熱・膿性痰・局所のcrackles・胸部X線の浸潤影', clues: ['q:sputum', 'q:chills', 'e:lung_ausc', 'e:chest_perc', 't:cxr', 't:chest_ct', 't:sputum_gram', 't:u_pneumo_ag', 'H:CRP', 'H:WBC'] },
       { id: 'uri', point: '咽頭痛・鼻汁が主体で、肺の所見がない', clues: ['q:sorethroat', 'e:pharynx'] },
       { id: 'bronchitis', point: '咳・痰はあるが、胸部X線で浸潤影がない', clues: ['q:cough'] },
-      { id: 'influenza', point: '流行期・急な高熱・筋肉痛・迅速検査陽性', clues: ['q:myalgia', 't:flu_ag'] },
+      { id: 'influenza', tests: ['flu_ag'], point: '流行期・急な高熱・悪寒・全身の筋肉痛・周囲の流行、迅速検査陽性（早期は偽陰性あり）', clues: ['q:myalgia', 'q:headache', 'q:sickcontact', 't:flu_ag'] },
       { id: 'covid', point: '流行状況・抗原検査', clues: ['t:covid_ag'] },
       { id: 'adhf', point: '発熱なし・起座呼吸・両側のcrackles・下腿浮腫・BNP高値', clues: ['q:orthopnea', 'e:jvd', 'e:leg_edema', 'H:BNP'] },
       { id: 'aspiration', point: '高齢・嚥下障害・寝たきり、背側の肺の浸潤影' },
@@ -328,8 +332,8 @@ export const APPROACHES = {
       { id: 'adhf', point: '起座呼吸・頸静脈怒張・両側のcrackles・III音・下腿浮腫・BNP高値・心拡大', clues: ['q:orthopnea', 'q:pnd', 'q:edema', 'q:weightgain', 'e:jvd', 'e:lung_ausc', 'e:heart_ausc', 'e:leg_edema', 'H:BNP', 't:cxr', 't:echo'] },
       { id: 'cap', point: '発熱・膿性痰・片側の局所的なcrackles・浸潤影', clues: ['q:fever', 'q:sputum'] },
       { id: 'acs', point: '胸の圧迫感・心電図変化・トロポニン上昇', clues: ['q:chestpain', 'H:TNT'] },
-      { id: 'copd', point: '喫煙歴・wheezes・CO2貯留', clues: ['q:smoking'] },
-      { id: 'asthma', point: '喘息の既往・wheezes・若年' },
+      { id: 'copd', point: '高齢の喫煙者、口すぼめ呼吸・樽状胸郭・wheezes、血液ガスでpCO2上昇、X線で過膨張', clues: ['q:smoking', 'q:sputum', 'e:chest_insp', 'e:lung_ausc', 'H:PCO2', 't:cxr'] },
+      { id: 'asthma', point: '喘息の既往・若年、呼気性wheezes・呼気延長、誘因（かぜ・アレルゲン）、吸入の中断', clues: ['q:pmh', 'q:trigger', 'q:adherence', 'e:lung_ausc', 'e:chest_insp'] },
       { id: 'pe', point: '突然発症・頻脈・片側の下肢腫脹・Dダイマー上昇', clues: ['H:DDIMER'] },
       { id: 'af_rvr', point: '動悸・脈の不整・心電図で心房細動', clues: ['q:palpitation'] },
     ],
@@ -366,7 +370,7 @@ export const APPROACHES = {
       { id: 'ovarian_torsion', point: '女性・突然の下腹部痛・嘔吐' },
       { id: 'pid', point: '女性・下腹部痛・帯下異常・子宮頸部の圧痛' },
       { id: 'ureteral', point: '突然の側腹部の激痛・血尿・CVA叩打痛', clues: ['e:cva', 'H:U_RBC'] },
-      { id: 'cholecystitis', point: '右上腹部痛・Murphy徴候・エコーで胆嚢腫大', clues: ['e:murphy'] },
+      { id: 'cholecystitis', tests: ['abd_us'], point: '脂っこい食事後の右季肋部痛・発熱・Murphy徴候、エコーで胆嚢腫大と壁肥厚・結石', clues: ['q:trigger', 'q:radiation', 'e:murphy', 't:abd_us', 'H:TBIL'] },
     ],
   },
 };
@@ -453,6 +457,23 @@ APPROACHES.headache = {
     { id: 'cluster', point: '男性、片側の目の奥の激痛、涙・鼻水、毎日同じ時間' },
     { id: 'meningitis', tests: ['lp'], point: '発熱・項部硬直・jolt陽性', clues: ['q:fever', 'e:jolt'] },
     { id: 'ich', tests: ['head_ct'], point: '高血圧、神経症状・意識障害', clues: ['e:motor'] },
+  ],
+};
+
+APPROACHES.flank_pain = {
+  title: '突然の腰・脇腹の痛み',
+  intro: '突然の側腹部〜腰の激痛は尿管結石が多いが、高齢者では腹部大動脈瘤破裂など命に関わる病気を必ず除外する。発熱を伴う結石は緊急のドレナージが必要。',
+  keyQ: ['onset', 'character', 'location', 'radiation', 'relieving', 'hematuria', 'nausea', 'fever', 'pmh', 'lmp', 'allergy'],
+  keyE: ['gen_appear', 'cva', 'abd_palp', 'abd_rebound', 'bp_lr', 'periph'],
+  keyT: ['ua', 'abd_us', 'chem', 'cbc', 'uhcg'],
+  redflags: ['高齢・高血圧・ショック → 腹部大動脈瘤破裂を除外（エコー・CT）', '発熱＋結石 → 閉塞性腎盂腎炎：泌尿器科に緊急ドレナージを相談', '妊娠可能年齢の女性 → 妊娠反応（異所性妊娠・CTの被ばく）'],
+  ddx: [
+    { id: 'ureteral', tests: ['abd_ct_plain'], point: 'じっとしていられない波のある激痛・鼠径部への放散・血尿、エコーで水腎症、CTで結石', clues: ['q:radiation', 'q:relieving', 'q:hematuria', 'e:cva', 'H:U_RBC', 'H:U_BLD', 't:abd_us', 't:abd_ct_plain'] },
+    { id: 'aaa', point: '高齢・高血圧・喫煙、拍動性腫瘤・ショック' },
+    { id: 'pyelo', point: '発熱・悪寒・膿尿', clues: ['q:fever', 'H:U_LEU'] },
+    { id: 'obst_pyelo', point: '結石＋発熱（緊急ドレナージ）', clues: ['q:fever'] },
+    { id: 'appendicitis', point: '右下腹部の限局した圧痛・腹膜刺激徴候', clues: ['e:abd_rebound'] },
+    { id: 'lumbago', point: '体動で悪化し安静で軽快、尿所見は正常' },
   ],
 };
 
@@ -582,6 +603,31 @@ export const DISEASE_NOTES = {
     overview: '繰り返す片側性・拍動性の頭痛。吐き気や光・音過敏を伴い、動くと悪化する。若い女性に多い。命に関わる病気ではないが、つらさは大きい。',
     treatment: ['危険な頭痛のサインがないことを確認（あれば画像検査）', '軽〜中等度：アセトアミノフェンやNSAIDs', '中等度以上：トリプタン（スマトリプタン 3mg 皮下注 など）', '吐き気にはメトクロプラミド', '帰宅時に誘因の回避・頭痛ダイアリーを指導'],
     flow: '問診で頭痛の性状と危険なサインを確認 → 神経診察が正常 → 片頭痛と診断 → 鎮痛薬・トリプタン・制吐薬 → 帰宅',
+  },
+  cholecystitis: {
+    overview: '胆石が胆嚢の出口に詰まり、胆嚢に炎症・感染が起こる病気。脂っこい食事の後の右季肋部痛・発熱・Murphy徴候。',
+    treatment: ['腹部エコーで診断（胆嚢腫大・壁肥厚・結石・sonographic Murphy）', '絶飲食・輸液', '抗菌薬：セフメタゾール 1g 1日3回 など（腸内細菌＋嫌気性菌）', '外科にコンサルトし、早期（72時間以内が目安）に腹腔鏡下胆嚢摘出術', '黄疸・総胆管拡張があれば胆管炎・総胆管結石を考える'],
+    flow: '問診（食後の右上腹部痛・発熱）→ Murphy徴候 → 血算・生化学・CRP・腹部エコー・血液培養 → 急性胆嚢炎と診断 → 絶飲食・輸液・抗菌薬 → 外科コンサルト → 胆嚢摘出術',
+  },
+  ureteral: {
+    overview: '腎臓でできた石が尿管に詰まり、激しい痛み（疝痛）を起こす。じっとしていられない波のある痛み・血尿。命に関わることは少ないが、痛みは非常に強い。',
+    treatment: ['鎮痛：NSAIDs（ロキソプロフェンなど）が第一選択。使えなければアセトアミノフェン', '尿検査（血尿）と腹部エコー（水腎症）、必要なら非造影CT', '10mm未満は自然排石を待つ（飲水・鎮痛）', '発熱があれば閉塞性腎盂腎炎：泌尿器科で緊急ドレナージ', '高齢者では腹部大動脈瘤破裂を除外'],
+    flow: '問診（突然の側腹部痛・放散・血尿）→ CVA叩打痛 → 尿検査・腹部エコー → 尿管結石と診断 → NSAIDs → 帰宅（排石を待つ）',
+  },
+  influenza: {
+    overview: 'インフルエンザウイルスによる急性の呼吸器感染症。冬に流行。急な高熱・悪寒・全身の筋肉痛・頭痛・咳。',
+    treatment: ['流行状況と症状で疑い、迅速抗原検査（早期は偽陰性あり）', '高齢者・基礎疾患・入院例ではオセルタミビル 75mg 1日2回5日間（発症48時間以内）', '解熱はアセトアミノフェン、水分補給', '抗菌薬は不要（細菌性肺炎を合併した場合のみ）', '出席停止・感染対策の指導'],
+    flow: '問診（急な高熱・筋肉痛・周囲の流行）→ 診察（肺炎の所見がないか）→ 迅速抗原検査 → インフルエンザと診断 → 抗ウイルス薬（高リスク）・対症療法 → 帰宅',
+  },
+  copd: {
+    overview: '長年の喫煙で肺が壊れ、息を吐きにくくなる病気（COPD）が、かぜなどをきっかけに急に悪化した状態。高二酸化炭素血症に注意。',
+    treatment: ['酸素は目標SpO2 88〜92%（鼻カニュラ1〜2L/分など）。高濃度はCO2ナルコーシスの危険', '血液ガスでpH・pCO2を評価。呼吸性アシドーシスならNPPV', 'サルブタモール吸入（繰り返し）', 'プレドニゾロン 30〜40mg 1日1回 5日間', '膿性痰があれば抗菌薬'],
+    flow: '問診（息切れ・痰の増加・喫煙歴）→ 呼吸様式・聴診 → 血液ガス・胸部X線 → COPD増悪と診断 → 少量の酸素・気管支拡張薬・ステロイド → 重症ならNPPV・ICU',
+  },
+  asthma: {
+    overview: '気道の慢性炎症がある人で、かぜ・アレルゲン・吸入薬の中断などをきっかけに気道が狭くなる発作。ゼーゼー・ヒューヒュー（wheezes）と呼気の延長。',
+    treatment: ['話し方（文章・句・単語）とSpO2で重症度を評価', 'サルブタモール吸入を20分ごとに反復', '全身性ステロイド（プレドニゾロン 40mg 内服、またはメチルプレドニゾロン静注）', 'SpO2 93〜95%を目標に酸素', '重篤（silent chest・意識低下）はアドレナリン筋注・ICU', '帰宅時は吸入ステロイドの継続と吸入手技を指導'],
+    flow: '問診（喘息の既往・誘因・吸入の使用状況）→ 聴診（wheezes）→ SpO2・血液ガス → 喘息発作と判断 → サルブタモール吸入・ステロイド → 改善すれば帰宅',
   },
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',

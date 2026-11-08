@@ -17,7 +17,7 @@ export const FREQS = {
   cont: { label: '持続投与', perDay: 24 },
 };
 
-export const ROUTE_LABEL = { iv: '静注/点滴', po: '内服', im: '筋注', sl: '舌下/噴霧', sc: '皮下注' };
+export const ROUTE_LABEL = { iv: '静注/点滴', po: '内服', im: '筋注', sl: '舌下/噴霧', sc: '皮下注', inh: '吸入' };
 
 export const DRUGS = [
   // ===== 抗菌薬 =====
@@ -203,7 +203,7 @@ export const DRUGS = [
   {
     id: 'landiolol', generic: 'ランジオロール', brands: ['オノアクト'], cls: 'β遮断薬（短時間作用型）', tags: ['betablocker'],
     routes: { iv: { unit: 'μg/kg/分', min: 1, max: 10, freqs: ['cont'] } },
-    contra: ['sbp90', 'cardiogenic'],
+    contra: ['sbp90', 'cardiogenic', 'asthma_bb'],
     info: '頻脈の心拍数コントロールに1〜10μg/kg/分で持続静注（心機能低下例の頻脈性不整脈など）。大動脈解離では心拍数60/分前後を目標に用いられる。心原性ショック・高度徐脈には禁忌。',
   },
   {
@@ -254,6 +254,28 @@ export const DRUGS = [
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
     info: '1回500〜1500mgを1日2回点滴。けいれんの再発予防に。',
+  },
+  {
+    id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
+    routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
+    renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],
+    info: '成人は75mgを1日2回、5日間。発症48時間以内の開始で効果が大きい。高齢者・基礎疾患・入院例では積極的に使う。',
+  },
+  {
+    id: 'salbutamol', generic: 'サルブタモール（吸入）', brands: ['ベネトリン吸入液', 'サルタノールインヘラー'], cls: '短時間作用性β2刺激薬（SABA）', tags: ['bronchodilator'],
+    routes: { inh: { unit: 'mg', min: 1.5, max: 5, freqs: ['once', 'prn', 'q6h', 'q4h'], maxDaily: 30 } },
+    effectHours: 4,
+    info: '喘息発作・COPD増悪の第一選択。ネブライザーで1回2.5〜5mg（ベネトリン吸入液0.3〜0.5mL）、発作時は20〜30分ごとに反復。動悸・低K血症に注意。',
+  },
+  {
+    id: 'prednisolone', generic: 'プレドニゾロン', brands: ['プレドニン'], cls: '副腎皮質ステロイド（内服）', tags: ['steroid_sys'],
+    routes: { po: { unit: 'mg', min: 20, max: 60, freqs: ['q24h'], maxDaily: 60 } },
+    info: 'COPD増悪・喘息発作に30〜40mg 1日1回、5日間程度。高血糖・不眠などに注意。',
+  },
+  {
+    id: 'mpsl', generic: 'メチルプレドニゾロン', brands: ['ソル・メドロール'], cls: '副腎皮質ステロイド（注射）', tags: ['steroid_sys'],
+    routes: { iv: { unit: 'mg', min: 40, max: 125, freqs: ['q24h', 'q12h', 'q6h', 'once'], maxDaily: 500 } },
+    info: '内服できない喘息発作・COPD増悪に40〜125mgを静注。',
   },
   // ===== 代謝・電解質 =====
   {
@@ -313,5 +335,7 @@ export const HOME_MEDS = {
   latanoprost: { name: '点眼薬（緑内障）', tags: [] },
   valproate: { name: 'バルプロ酸 200mg 1日2回', tags: ['valproate'] },
   ocp: { name: '低用量ピル（避妊目的）', tags: ['ocp'] },
+  ics: { name: 'ブデソニド・ホルモテロール吸入（シムビコート）', tags: ['ics'] },
+  lama: { name: 'チオトロピウム吸入（スピリーバ）', tags: [] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };

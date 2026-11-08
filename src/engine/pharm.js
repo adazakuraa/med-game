@@ -30,6 +30,7 @@ export const CONTRA_RULES = {
   tpa_anticoag: { level: 'harm', msg: '抗凝固薬内服中の血栓溶解療法（出血リスク）', check: (c) => c.p.homeMeds.some((m) => ['warfarin', 'apixaban'].includes(m)) },
   tpa_glucose: { level: 'harm', msg: '低血糖（<50mg/dL）は脳卒中と似た症状を起こす。血糖を確認・補正してから', check: (c) => c.lab('GLU') < 50 },
   coronary: { level: 'harm', msg: '虚血性心疾患・脳血管障害には禁忌', check: (c) => ['acs', 'stroke'].includes(c.p.diseaseId) },
+  asthma_bb: { level: 'harm', msg: '気管支喘息・COPDの増悪にβ遮断薬（気管支攣縮の悪化）', check: (c) => c.p.comorb.includes('asthma') || c.p.comorb.includes('asthma_nsaid') || ['asthma', 'copd'].includes(c.p.diseaseId) },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 

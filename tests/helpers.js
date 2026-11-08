@@ -91,7 +91,8 @@ export function runIdeal(enc, { dispo = true } = {}) {
     if (enc.state.glu < 70) { S.prescribe(enc, { drugId: 'glucose50', route: 'iv', dose: 40, freq: 'once', days: 1 }); if (!enc.orders.some((o) => o.fluidId === 'd5w' && S.isOrderActive(enc, o))) S.addFluid(enc, { fluidId: 'd5w', mode: 'cont', rate: 80 }); }
     if (v.SBP < 95) for (const o of enc.orders) if (o.kind === 'rx' && S.isOrderActive(enc, o) && ['landiolol', 'nicardipine', 'ntg', 'carperitide'].includes(o.drugId)) S.stopOrder(enc, o.oid);
     const o2 = enc.orders.find((o) => o.kind === 'o2' && S.isOrderActive(enc, o));
-    if (v.SpO2 < 90 && (!o2 || o2.device === 'nc')) S.setO2(enc, 'mask', 7);
+    if (d.id === 'copd') { if (v.SpO2 < 88 && !o2) S.setO2(enc, 'nc', 1); }
+    else if (v.SpO2 < 90 && (!o2 || o2.device === 'nc')) S.setO2(enc, 'mask', 7);
     if (o2 && v.rawSpO2 >= 94) S.setO2(enc, null);
     const ivOn = enc.orders.some((o) => o.kind === 'fluid' && S.isOrderActive(enc, o));
     if (!ivOn && enc.state.volume > 1200 && enc.patient.diseaseId !== 'adhf') S.addFluid(enc, { fluidId: 'lr', mode: 'cont', rate: 100 });

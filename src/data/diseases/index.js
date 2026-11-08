@@ -13,6 +13,11 @@ import hypoglycemia from './hypoglycemia.js';
 import meningitis from './meningitis.js';
 import sah from './sah.js';
 import migraine from './migraine.js';
+import cholecystitis from './cholecystitis.js';
+import ureteral from './ureteral.js';
+import influenza from './influenza.js';
+import copd from './copd.js';
+import asthma from './asthma.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));
