@@ -12,7 +12,7 @@ export const TEST_CATS = [
 
 export const TESTS = [
   { id: 'cbc', cat: 'blood', name: '血算セット', kind: 'lab', items: ['WBC', 'NEUT', 'HB', 'PLT'], cost: 210, timeMin: 30, inv: 1, sample: 'blood' },
-  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'CK'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'ALB', 'AMY', 'LIP', 'CK'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'crp', cat: 'blood', name: 'CRP', kind: 'lab', items: ['CRP'], cost: 160, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },

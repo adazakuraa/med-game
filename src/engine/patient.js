@@ -167,10 +167,11 @@ export function generatePatient(o) {
   const initGlu = d.initGlu ? rng.val(d.initGlu[sev]) : null;
 
   // プロフィール
-  const surgeryHx = rng.chance(0.2) ? [rng.pick(SURGERY_HX.filter((s) => !(s === '帝王切開' && sex === 'M') && !(s === '虫垂切除術' && d.id === 'appendicitis')))] : [];
+  const surgeryHx = vars.forceSurgery ? [vars.forceSurgery] : rng.chance(0.2) ? [rng.pick(SURGERY_HX.filter((s) => !(s === '帝王切開' && sex === 'M') && !(s === '虫垂切除術' && d.id === 'appendicitis')))] : [];
   const cur = d.smokeP ?? (sex === 'M' ? 0.3 : 0.1);
   const smoking = rng.weighted(['never', 'former', 'current'], (x) => ({ never: (1 - cur) * 0.7, former: (1 - cur) * 0.3, current: cur }[x]));
-  const alcohol = rng.weighted(['none', 'social', 'daily'], (x) => ({ none: 0.4, social: 0.45, daily: 0.15 }[x]));
+  let alcohol = rng.weighted(['none', 'social', 'daily'], (x) => ({ none: 0.4, social: 0.45, daily: 0.15 }[x]));
+  if (vars.forceAlcohol) alcohol = 'daily';
   const occupation = rng.pick(age < 30 ? OCCUPATIONS.young : age < 65 ? OCCUPATIONS.mid : OCCUPATIONS.old);
   const family = rng.pick(['父が高血圧、母が糖尿病です。', '特にありません。', '父が脳梗塞をしています。', '母が高血圧です。', '父が胃がんでした。']);
   const name = rng.pick(SURNAMES) + ' ' + rng.pick(sex === 'M' ? GIVEN_M : GIVEN_F);

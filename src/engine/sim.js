@@ -16,12 +16,14 @@ import { clamp, hashRand } from './rng.js';
 export const PROCEDURES = [
   { id: 'drain_R', name: '胸腔ドレナージ（右）', side: '右', min: 20 },
   { id: 'drain_L', name: '胸腔ドレナージ（左）', side: '左', min: 20 },
+  { id: 'ng', name: '胃管（経鼻胃管）挿入・減圧', min: 10 },
+  { id: 'cooling', name: '積極的冷却（冷水噴霧・送風・氷嚢）', min: 10 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];
@@ -68,7 +70,7 @@ export function effects(enc, t = enc.t) {
       if (windowed && t >= o.start + d.effectHours * 60) continue;
       for (const tag of d.tags || []) {
         let v = 1;
-        if (tag === 'insulin') v = o.dose / (0.1 * p.weight);
+        if (tag === 'insulin') v = d.id === 'insulin_bolus' ? 0.6 : o.dose / (0.1 * p.weight);
         else if (tag === 'potassium') v = o.dose;
         else if (tag === 'vasopressor' || tag === 'betablocker' || tag === 'bp_lower') v = o.dose;
         else if (tag === 'diuretic') v = Math.min(1.5, (o.dose / diureticNeed(p)) * f);
@@ -83,6 +85,7 @@ export function effects(enc, t = enc.t) {
       eff.ivRateTotal += rate;
       eff.dextroseGph += (rate / 1000) * F.glucose;
       eff.kRate += (rate / 1000) * F.k;
+      if (F.blood) eff.rbcRate = (eff.rbcRate || 0) + rate;
     } else if (o.kind === 'o2') {
       eff.o2Device = o.device; eff.o2Flow = o.flow; eff.nppv = o.device === 'nppv';
       eff.o2Label = O2_DEVICES.find((x) => x.id === o.device).name + (o.device === 'nppv' ? '' : ` ${o.flow}L/分`);
@@ -132,6 +135,8 @@ export function newEncounter(o) {
     procAt: {}, procDone: {}, drains: {},
   };
   enc.state.glu = patient.initGlu ?? gluSet(enc);
+  const dz0 = DISEASE_BY_ID[patient.diseaseId];
+  if (dz0.initHbLoss) enc.state.hbLoss = dz0.initHbLoss(patient);
   const eff = effects(enc);
   enc.initVit = vitals(enc, eff);
   const cache = {};
@@ -214,7 +219,7 @@ function step(enc, dtMin) {
   }
   if (st.hypoEvent && enc.t >= st.hypoEvent.t && enc.t < st.hypoEvent.until) dB += 2;
   const K = labValue(enc, 'K', cache);
-  if (K < 2.5 || K > 7.0) dB += 6;
+  if ((K < 2.5 || K > 7.0) && !eff.tags.calcium) dB += 6;
   if (st.glu < 40) dB += 4;
   st.burden = clamp(st.burden + dB * dtH, 0, 100);
 
@@ -238,6 +243,7 @@ function step(enc, dtMin) {
   st.volume += dV * dtH;
   st.ivCryst += eff.ivVolRate * dtH;
   st.diuresed = (st.diuresed || 0) + eff.diuresis * dtH;
+  st.rbcIn = (st.rbcIn || 0) + (eff.rbcRate || 0) * dtH;
   // 血糖
   const ins = eff.tags.insulin || 0;
   const dka = !!d.gluSetpointDrift;
@@ -532,9 +538,17 @@ export function isOrderActive(enc, o) {
 export function procedure(enc, procId) {
   const P = PROCEDURES.find((x) => x.id === procId);
   const p = enc.patient, st = enc.state, d = disease(enc);
-  st.drains[P.side] = enc.t + P.min;
-  enc.discomfort += 2;
+  enc.discomfort += P.side ? 2 : 1;
   addLog(enc, 'rx', `処置：${P.name}`);
+  if (!P.side) {
+    st.procs = { ...(st.procs || {}), [P.id]: enc.t + P.min };
+    if (P.id === 'ng' && d.id === 'ugib') addLog(enc, 'exam', '胃管からコーヒー残渣様〜暗赤色の排液。', { label: '胃管排液', positive: true });
+    else if (P.id === 'ng' && d.id === 'sbo') addLog(enc, 'exam', '胃管から胆汁様の排液が多量（約800mL）。', { label: '胃管排液', positive: true });
+    else if (P.id === 'ng') addLog(enc, 'exam', '胃管から少量の胃液のみ。', { label: '胃管排液', positive: false });
+    advance(enc, P.min);
+    return;
+  }
+  st.drains[P.side] = enc.t + P.min;
   if (!(d.id === 'ptx' && p.vars.side === P.side)) {
     recordIssues(enc, [{ level: 'harm', code: 'drain_wrong', msg: `気胸のない側への胸腔ドレナージ（${P.name}）：医原性の気胸・出血の危険` }], P.name);
     st.burden = Math.min(100, st.burden + 12);

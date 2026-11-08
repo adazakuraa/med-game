@@ -18,6 +18,7 @@ function cond(enc, when) {
     case 'sbp>160': return v.SBP > 160;
     case 'alcohol': return p.alcohol === 'daily';
     case 'su': return !!p.vars.su;
+    case 'hb<7': return labValue(enc, 'HB', {}) < 7.5;
     case 'age50': return p.age >= 50;
     case 'tpa_ok': return p.vars.lastNormalH + enc.t / 60 < 4.5 && !p.homeMeds.some((m) => ['warfarin', 'apixaban'].includes(m)) && v.SBP <= 185 && labValue(enc, 'GLU', {}) >= 50;
     case 'k<5': return labValue(enc, 'K', {}) < 5.0;
@@ -88,6 +89,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
     }
     // 有能な主治医としての調整
     const v = S.currentVitals(enc);
+    if (d.id === 'ugib' && labValue(enc, 'HB', {}) < 7.5 && !enc.orders.some((o) => o.fluidId === 'rbc' && S.isOrderActive(enc, o))) S.addFluid(enc, { fluidId: 'rbc', mode: 'bolus', volume: 280 });
     if (enc.state.glu < 70) { S.prescribe(enc, { drugId: 'glucose50', route: 'iv', dose: 40, freq: 'once', days: 1 }); if (!enc.orders.some((o) => o.fluidId === 'd5w' && S.isOrderActive(enc, o))) S.addFluid(enc, { fluidId: 'd5w', mode: 'cont', rate: 80 }); }
     if (v.SBP < 95) for (const o of enc.orders) if (o.kind === 'rx' && S.isOrderActive(enc, o) && ['landiolol', 'nicardipine', 'ntg', 'carperitide'].includes(o.drugId)) S.stopOrder(enc, o.oid);
     const o2 = enc.orders.find((o) => o.kind === 'o2' && S.isOrderActive(enc, o));

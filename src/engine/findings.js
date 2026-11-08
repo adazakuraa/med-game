@@ -137,8 +137,8 @@ export function examFinding(enc, eid, vit) {
       break;
     case 'chest_insp': if (!out.length && vit.RR >= 24) derived.push(`頻呼吸（呼吸数 ${vit.RR}回/分）。`); break;
     case 'heart_ausc':
-      if (p.comorb.includes('af')) derived.unshift('心音不整（絶対性不整脈）。');
-      if (vit.HR > 110 && !p.comorb.includes('af')) derived.push(`頻脈（${vit.HR}/分）。`);
+      if (p.comorb.includes('af') || (d.id === 'af_rvr' && !st.procDone?.dcv)) derived.unshift(`心音不整（絶対性不整脈、${vit.HR}/分）。`);
+      else if (vit.HR > 110) derived.push(`頻脈（${vit.HR}/分）。`);
       break;
     case 'abd_insp': if (p.surgeryHx.length) derived.push(`腹部平坦。${p.surgeryHx[0]}の手術痕あり。`); break;
     case 'gen_appear':
@@ -169,10 +169,11 @@ export function testReport(enc, tid, vit, k) {
   }
   if (T.kind === 'ecg') {
     const parts = [];
-    const af = p.comorb.includes('af');
+    const af = p.comorb.includes('af') || (d.id === 'af_rvr' && !st.procDone?.dcv);
     parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
     (d.ecg || []).forEach((f, i) => { if (p.rolls.ecg[i] && visibleNow(enc, f)) parts.push(fmt(f.text, p.vars)); });
-    if (k >= 6.0) parts.push('テント状T波。');
+    if (k >= 7.0) parts.push('テント状T波、P波の消失、QRS幅の拡大。');
+    else if (k >= 6.0) parts.push('テント状T波。');
     else if (k < 3.0) parts.push('T波平低化、U波あり。QT延長傾向。');
     if (parts.length === 1) parts.push('明らかなST-T変化なし。');
     return { text: parts.join(' '), abnormal: parts.length > 1 && !parts[1].startsWith('明らか') || af || vit.HR > 100 };

@@ -24,14 +24,14 @@ export const DRUGS = [
   {
     id: 'ctrx', generic: 'セフトリアキソン', brands: ['ロセフィン'], cls: '抗菌薬（第3世代セフェム）', allergy: 'cephem', abx: true,
     routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q24h', 'q12h'], maxDaily: 4000 } },
-    covers: ['spn', 'hinf', 'ecoli'],
+    covers: ['spn', 'hinf', 'ecoli', 'gpc'],
     interact: [{ tag: 'warfarin', level: 'warn', msg: 'ワルファリンの作用増強（PT-INR上昇）に注意' }],
     info: '通常1日1〜2gを1〜2回に分割して静注・点滴。重症では1日4gまで。腎機能による調節は通常不要。',
   },
   {
     id: 'abpc_sbt', generic: 'アンピシリン・スルバクタム', brands: ['ユナシン-S'], cls: '抗菌薬（β-ラクタマーゼ阻害薬配合ペニシリン）', allergy: 'penicillin', abx: true,
     routes: { iv: { unit: 'mg', min: 1500, max: 3000, freqs: ['q12h', 'q8h', 'q6h'], maxDaily: 12000 } },
-    covers: ['spn', 'hinf', 'ecoli', 'anaerobe'], resistKey: 'sbtR',
+    covers: ['spn', 'hinf', 'ecoli', 'anaerobe', 'gpc'], resistKey: 'sbtR',
     renal: [{ crclBelow: 30, maxDaily: 6000, text: 'CrCl 15〜29: 3g 12時間毎' }, { crclBelow: 15, maxDaily: 3000, text: 'CrCl <15: 3g 24時間毎' }],
     info: '肺炎では1回3gを1日4回まで（添付文書）。腎機能低下時は投与間隔を延長。国内の大腸菌は耐性率が高い点に注意。',
   },
@@ -46,7 +46,7 @@ export const DRUGS = [
   {
     id: 'mepm', generic: 'メロペネム', brands: ['メロペン'], cls: '抗菌薬（カルバペネム系）', allergy: 'carbapenem', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 1000, freqs: ['q12h', 'q8h'], maxDaily: 3000 } },
-    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe'],
+    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'gpc'],
     renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 26〜50: 1g 12時間毎' }, { crclBelow: 26, maxDaily: 1000, text: 'CrCl 10〜25: 0.5g 12時間毎' }],
     interact: [{ tag: 'valproate', level: 'harm', msg: 'バルプロ酸の血中濃度低下（併用禁忌）' }],
     info: '通常1日1.5〜3gを3回に分割。広域抗菌薬であり、狭域薬で治療可能な場合は温存すべき。',
@@ -81,7 +81,7 @@ export const DRUGS = [
   {
     id: 'cex', generic: 'セファレキシン', brands: ['ケフレックス'], cls: '抗菌薬（第1世代セフェム・経口）', allergy: 'cephem', abx: true,
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q6h', 'q8h'], maxDaily: 2000 } },
-    covers: ['ecoli'],
+    covers: ['ecoli', 'gpc'],
     renal: [{ crclBelow: 30, maxDaily: 1000, text: 'CrCl <30: 投与間隔を延長（8〜12時間毎）' }],
     info: '通常1回250mgを6時間毎、重症例では1回500mgを6時間毎。感受性のある大腸菌による尿路感染症の経口治療に用いる。',
   },
@@ -227,7 +227,7 @@ export const DRUGS = [
   {
     id: 'vcm', generic: 'バンコマイシン', brands: ['塩酸バンコマイシン'], cls: '抗菌薬（グリコペプチド系）', allergy: 'glycopeptide', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 4000, perKgOnce: [12, 22] } },
-    covers: ['prsp', 'mrsa'],
+    covers: ['prsp', 'mrsa', 'gpc'],
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 投与間隔を延長し、血中濃度（TDM）で調節' }],
     info: '1回15〜20mg/kgを12時間毎（重症は負荷投与）。腎障害に注意し、トラフ値（TDM）で調節。細菌性髄膜炎ではペニシリン耐性肺炎球菌（PRSP）をカバーするためセフトリアキソンと併用する。',
   },
@@ -254,6 +254,53 @@ export const DRUGS = [
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
     info: '1回500〜1500mgを1日2回点滴。けいれんの再発予防に。',
+  },
+  {
+    id: 'ppi', generic: 'オメプラゾール（注）', brands: ['オメプラール注用'], cls: 'プロトンポンプ阻害薬（PPI）', tags: ['ppi'],
+    routes: { iv: { unit: 'mg', min: 20, max: 40, freqs: ['q12h', 'q24h'], maxDaily: 80 } },
+    info: '出血性胃・十二指腸潰瘍に1回20mgを1日2回静注。内視鏡的止血の前後に使用し再出血を減らす。',
+  },
+  {
+    id: 'cez', generic: 'セファゾリン', brands: ['セファメジンα'], cls: '抗菌薬（第1世代セフェム）', allergy: 'cephem', abx: true,
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q8h', 'q12h'], maxDaily: 6000 } },
+    covers: ['gpc', 'ecoli'], resistKey: 'sbtR',
+    renal: [{ crclBelow: 35, maxDaily: 2000, text: 'CrCl<35: 投与間隔を延長（1g 12〜24時間毎）' }],
+    info: '蜂窩織炎（溶連菌・黄色ブドウ球菌）の点滴治療に1〜2g 8時間毎。',
+  },
+  {
+    id: 'diltiazem', generic: 'ジルチアゼム（注）', brands: ['ヘルベッサー注射用'], cls: 'Ca拮抗薬（心拍数調節）', tags: ['rate_ccb'],
+    routes: { iv: { unit: 'mg', min: 5, max: 15, freqs: ['once', 'prn'], maxDaily: 60 } },
+    contra: ['sbp90', 'hfref'], effectHours: 4,
+    info: '頻脈性心房細動の心拍数調節に10mg程度を3分かけて静注、必要なら持続静注へ。心機能低下（収縮不全）・低血圧には禁忌。',
+  },
+  {
+    id: 'apixaban', generic: 'アピキサバン', brands: ['エリキュース'], cls: '抗凝固薬（DOAC）', tags: ['anticoag'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q12h'], maxDaily: 20 } },
+    renal: [{ crclBelow: 15, maxDaily: 0, text: 'CrCl<15: 禁忌' }],
+    info: '心房細動の脳梗塞予防に5mg 1日2回（80歳以上・体重60kg以下・Cr1.5以上のうち2つ以上で2.5mg 1日2回）。深部静脈血栓症・肺塞栓症は10mg 1日2回を7日間、その後5mg 1日2回。出血に注意。',
+  },
+  {
+    id: 'calcium', generic: 'グルコン酸カルシウム', brands: ['カルチコール注射液8.5%'], cls: '電解質補正（心筋保護）', tags: ['calcium'],
+    routes: { iv: { unit: 'mL', min: 10, max: 30, freqs: ['once'], maxDaily: 60 } },
+    effectHours: 1,
+    info: '高K血症で心電図変化があるとき、心筋を保護するため10〜20mLを数分かけて静注（効果は30〜60分）。Kは下がらないので、インスリン＋ブドウ糖などと併用する。',
+  },
+  {
+    id: 'insulin_bolus', generic: '速効型インスリン（静注・単回）', brands: ['ヒューマリンR'], cls: 'インスリン', tags: ['insulin', 'k_shift'],
+    routes: { iv: { unit: '単位', min: 4, max: 10, freqs: ['once'], maxDaily: 20 } },
+    effectHours: 4,
+    info: '高K血症にKを細胞内へ移動させる目的で10単位を静注（ブドウ糖25gと併用：50%ブドウ糖50mL）。低血糖に注意し血糖を頻回に確認。',
+  },
+  {
+    id: 'szc', generic: 'ジルコニウムシクロケイ酸ナトリウム', brands: ['ロケルマ'], cls: 'カリウム吸着薬', tags: ['k_binder'],
+    routes: { po: { unit: 'g', min: 5, max: 10, freqs: ['q8h', 'q24h'], maxDaily: 30 } },
+    info: '高K血症に1回10gを1日3回（最長3日間）、その後は維持量5g 1日1回。腸管でKを吸着して体外へ排泄する。',
+  },
+  {
+    id: 'bisoprolol', generic: 'ビソプロロール', brands: ['メインテート'], cls: 'β遮断薬（内服）', tags: ['betablocker'],
+    routes: { po: { unit: 'mg', min: 0.625, max: 5, freqs: ['q24h'], maxDaily: 5 } },
+    contra: ['sbp90', 'asthma_bb'],
+    info: '心房細動の心拍数調節に0.625〜5mg 1日1回。喘息・高度徐脈・低血圧には注意。',
   },
   {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
@@ -303,6 +350,7 @@ export const FLUIDS = [
   { id: 'ns', name: '生理食塩液', brands: ['生理食塩液'], na: 154, k: 0, glucose: 0, vol: 1 },
   { id: 'lr', name: '乳酸リンゲル液', brands: ['ラクテック'], na: 130, k: 4, glucose: 0, vol: 1 },
   { id: 'd5w', name: '5%ブドウ糖液', brands: ['大塚糖液5%'], na: 0, k: 0, glucose: 50, vol: 0.3 },
+  { id: 'rbc', name: '赤血球液（輸血）', brands: ['赤血球液-LR「日赤」'], na: 0, k: 0, glucose: 0, vol: 1, blood: true },
   { id: 'sol3', name: '3号維持液', brands: ['ソリタ-T3号'], na: 35, k: 20, glucose: 43, vol: 0.5 },
 ];
 export const FLUID_BY_ID = Object.fromEntries(FLUIDS.map((f) => [f.id, f]));
@@ -337,5 +385,6 @@ export const HOME_MEDS = {
   ocp: { name: '低用量ピル（避妊目的）', tags: ['ocp'] },
   ics: { name: 'ブデソニド・ホルモテロール吸入（シムビコート）', tags: ['ics'] },
   lama: { name: 'チオトロピウム吸入（スピリーバ）', tags: [] },
+  nsaid_home: { name: 'ロキソプロフェン 60mg（腰痛で毎日）', tags: ['nsaid'] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };
