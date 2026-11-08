@@ -380,6 +380,27 @@ export const DRUGS = [
     info: 'アレルギー性鼻炎・じんましんに60mg 1日2回。眠気が少ない第2世代。',
   },
   {
+    id: 'lactulose', generic: 'ラクツロース', brands: ['モニラック'], cls: '肝性脳症治療薬・下剤', tags: ['lactulose'],
+    routes: { po: { unit: 'mL', min: 10, max: 30, freqs: ['q8h', 'q12h'], maxDaily: 90 } },
+    info: '肝性脳症に1回10〜30mLを1日2〜3回。1日2〜3回の軟便を目標に調整し、腸管でのアンモニア産生・吸収を減らす。',
+  },
+  {
+    id: 'flumazenil', generic: 'フルマゼニル', brands: ['アネキセート'], cls: 'ベンゾジアゼピン拮抗薬', tags: ['flumazenil'],
+    routes: { iv: { unit: 'mg', min: 0.2, max: 1, freqs: ['once', 'prn'], maxDaily: 2 } },
+    contra: ['seizure_risk'], effectHours: 1,
+    info: 'ベンゾジアゼピンによる呼吸抑制に0.2mgずつ静注。作用時間が短く再鎮静に注意。ベンゾジアゼピン常用者・三環系抗うつ薬併用・けいれんの既往ではけいれんを誘発するため原則使わない。',
+  },
+  {
+    id: 'charcoal', generic: '活性炭', brands: ['薬用炭'], cls: '吸着剤（中毒）', tags: ['charcoal'],
+    routes: { po: { unit: 'g', min: 25, max: 50, freqs: ['once'], maxDaily: 100 } },
+    info: '服薬から1時間以内で、吸着される薬物の中毒に50g程度。意識障害で誤嚥のリスクがある場合は気道確保が前提。ルーチンには行わない。',
+  },
+  {
+    id: 'trimebutine', generic: 'トリメブチン', brands: ['セレキノン'], cls: '消化管運動調整薬', tags: ['ibs'],
+    routes: { po: { unit: 'mg', min: 100, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: '過敏性腸症候群に1回100〜200mgを1日3回。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],
@@ -467,5 +488,6 @@ export const HOME_MEDS = {
   thiazide: { name: 'トリクロルメチアジド 2mg 1日1回（サイアザイド系利尿薬）', tags: ['thiazide'] },
   donepezil: { name: 'ドネペジル 5mg 1日1回（認知症）', tags: [] },
   antichol: { name: '市販の総合感冒薬（抗コリン成分を含む）', tags: ['anticholinergic'] },
+  benzo_home: { name: 'ブロチゾラム 0.25mg 就寝前（睡眠薬）', tags: ['benzo_home'] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };

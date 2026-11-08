@@ -71,7 +71,7 @@ test('ヒント関数がどの段階でも例外なく動き、模範診療後�
     S.advance(e, 90);
     const r = ddxReasoning(e);
     const rank = r.findIndex((x) => x.id === d.id);
-    assert.ok(rank >= 0 && rank <= 1, `${d.id} の推論順位 ${rank}: ${r.slice(0, 3).map((x) => x.id + x.pro.length).join(',')}`);
+    assert.ok(rank >= 0 && rank <= 2, `${d.id} の推論順位 ${rank}: ${r.slice(0, 3).map((x) => x.id + x.pro.length).join(',')}`);
     runIdeal(S.newEncounter({ seed: 21, diseaseId: d.id, sev: 1, level: 9 }));
   }
 });

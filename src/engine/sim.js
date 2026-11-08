@@ -21,6 +21,7 @@ export const PROCEDURES = [
   { id: 'foley', name: '尿道カテーテル留置', min: 10 },
   { id: 'epley', name: 'Epley法（浮遊耳石置換法）', min: 10 },
   { id: 'enema', name: 'グリセリン浣腸・摘便', min: 15 },
+  { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
