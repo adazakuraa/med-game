@@ -15,6 +15,8 @@ export const EXAMS = [
   { id: 'gen_breath_odor', region: 'general', method: '嗅診', name: '呼気臭', normal: '特記すべき呼気臭なし。' },
   { id: 'skin_turgor', region: 'general', method: '触診', name: '皮膚ツルゴール', normal: 'ツルゴール低下なし。' },
   { id: 'oral_mucosa', region: 'headneck', method: '視診', name: '口腔粘膜・舌', normal: '口腔粘膜は湿潤。' },
+  { id: 'conjunctiva', region: 'headneck', method: '視診', name: '眼瞼結膜・眼球', normal: '眼瞼結膜に貧血なし。眼球突出なし。' },
+  { id: 'thyroid_palp', region: 'headneck', method: '触診', name: '甲状腺の触診', normal: '甲状腺の腫大・結節・圧痛なし。' },
   { id: 'pharynx', region: 'headneck', method: '視診', name: '咽頭・扁桃', normal: '咽頭発赤なし。扁桃腫大なし。' },
   { id: 'neck_ln', region: 'headneck', method: '触診', name: '頸部リンパ節', normal: '頸部リンパ節腫脹なし。' },
   { id: 'jvd', region: 'headneck', method: '視診', name: '頸静脈', normal: '頸静脈怒張なし（座位45°）。' },
@@ -41,6 +43,7 @@ export const EXAMS = [
   { id: 'cva', region: 'back', method: '打診', name: 'CVA叩打痛', normal: '両側CVA叩打痛なし。', pain: 1 },
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
   { id: 'hip', region: 'limbs', method: '視診', name: '下肢の長さ・回旋、股関節の圧痛', normal: '下肢長差・回旋なし。股関節の圧痛・運動時痛なし。', pain: 1 },
+  { id: 'joint', region: 'limbs', method: '視診', name: '関節（腫脹・発赤・熱感）', normal: '関節の腫脹・発赤・熱感なし。' },
   { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
   { id: 'pupils', region: 'neuro', method: '視診', name: '瞳孔・対光反射', normal: '瞳孔 3mm/3mm 同大、対光反射は両側迅速。' },
@@ -54,6 +57,7 @@ export const EXAMS = [
   { id: 'ataxia', region: 'neuro', method: '視診', name: '小脳症状（指鼻試験・歩行・体幹）', normal: '指鼻試験は正常。歩行・座位保持は安定。' },
   { id: 'spine', region: 'back', method: '打診', name: '脊椎の叩打痛', normal: '脊椎の叩打痛なし。', pain: 1 },
   { id: 'rectal', region: 'abdomen', method: '触診', name: '直腸診', normal: '直腸内に便塊・腫瘤なし。指に血液の付着なし。', pain: 1 },
+  { id: 'tremor', region: 'neuro', method: '視診', name: '手指振戦・腱反射', normal: '手指振戦なし。腱反射は正常。' },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];
 

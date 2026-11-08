@@ -70,7 +70,12 @@ export function ddxReasoning(enc) {
       else unknown.push(clueLabel(c));
     }
     return { id: d.id, name: DDX_BY_ID[d.id].name, point: d.point, pro, con, unknown };
-  }).sort((x, y) => (y.pro.length - 0.6 * y.con.length) - (x.pro.length - 0.6 * x.con.length));
+  }).sort((x, y) => score(y) - score(x));
+}
+
+// 支持所見がまったくない鑑別は下位に
+function score(x) {
+  return x.pro.length - 0.6 * x.con.length - (x.pro.length === 0 ? 0.5 : 0);
 }
 
 // ---- 次にやるべきこと ----

@@ -20,6 +20,7 @@ function cond(enc, when) {
     case 'su': return !!p.vars.su;
     case 'hb<7': return labValue(enc, 'HB', {}) < 7.5;
     case 'age50': return p.age >= 50;
+    case 'sev0': return p.sev === 0;
     case 'tpa_ok': return p.vars.lastNormalH + enc.t / 60 < 4.5 && !p.homeMeds.some((m) => ['warfarin', 'apixaban'].includes(m)) && v.SBP <= 185 && labValue(enc, 'GLU', {}) >= 50;
     case 'k<5': return labValue(enc, 'K', {}) < 5.0;
     case 'glu<250': return enc.state.glu < 250;
@@ -83,7 +84,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
     // 処置が必要なのに予定されていなければ再検査・再コンサルト
     for (const pr of d.procedures || []) {
       if (enc.state.procAt[pr.id] == null && h % 3 === 0 && h < 12 && !enc.consults.some((c) => !c.replied)) {
-        S.orderTests(enc, d.id === 'acs' ? ['tnt', 'ecg'] : ['head_mri', 'head_ct']);
+        S.orderTests(enc, d.id === 'acs' ? ['tnt', 'ecg'] : ['head_mri', 'abd_ct_contrast', 'tvus']);
         S.advance(enc, 50);
         S.consult(enc, pr.depts[0]);
       }

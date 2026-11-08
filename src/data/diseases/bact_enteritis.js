@@ -1,0 +1,40 @@
+// 細菌性腸炎（カンピロバクター）
+// 出典: JAID/JSC感染症治療ガイド2023, 抗微生物薬適正使用の手引き 第三版
+import { outpatient } from './common.js';
+export default outpatient({
+  id: 'bact_enteritis', name: '細菌性腸炎（カンピロバクター）', dept: '内科', weight: 4, season: { summer: 1.6 },
+  demo: { age: [16, 60], ageMode: 'young', male: 0.55 },
+  sev: { p: [0.6, 0.35, 0.05], burden: [[22, 30], [30, 40], [40, 50]] },
+  initVolume: [[300, 800], [800, 1500], [1500, 2200]],
+  vars: (rng) => ({ days: rng.int(2, 5) }),
+  cc: () => '下痢と腹痛と発熱', ccKey: 'vomit_diarrhea',
+  history: {
+    onset: { p: 1, text: '昨日から熱が出て、お腹が痛く、下痢が何回もあります。' },
+    character: { p: 1, text: 'お腹がギューっと痛くなって、水のような下痢が出ます。' },
+    diarrhea: { p: 1, text: '1日10回近く下痢をしています。' },
+    bloodystool: { p: 0.4, text: '今朝の便に少し血が混じっていました。' },
+    fever: { p: 0.9, text: '38度台の熱があります。' },
+    abdpain: { p: 1, text: 'お腹全体、特におへその周りが痛いです。' },
+    nausea: { p: 0.3, text: '少し吐き気があります。' },
+    food: { p: 1, text: '{days}日前に、焼き鳥屋で鶏のたたき（半生）を食べました。' },
+    sickcontact: { p: 0.4, text: '一緒に食べた友人も下痢をしているそうです。' },
+  },
+  exam: { abd_palp: { p: 0.8, text: '下腹部〜臍周囲に軽い圧痛。腹膜刺激徴候なし。' }, abd_ausc: { p: 0.7, text: '腸蠕動音は亢進。' } },
+  vitals: { T: { to: [38.0, 38.9], k: 0.5 }, HR: { to: [95, 110], k: 1 } },
+  labs: { WBC: { to: [10000, 14000], k: 1 }, CRP: { to: [3, 10], k: 1 } },
+  tests: { stool_cx: [{ p: 0.75, text: 'Campylobacter jejuni 検出。' }] },
+  natural: -0.3,
+  fluidLoss: (b) => 50 * (b / 30),
+  therapies: [{ id: 'fluid', label: '補液（経口補水または点滴）', req: { fluidTotal: 500 }, when: (c) => c.state.volume > 1200, required: true, deadlineH: [6, 4, 2], startFromNeed: true }],
+  harmTags: { abx: '軽症の細菌性腸炎の多くは抗菌薬なしで自然に治る（重症・免疫不全などを除く）' },
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['admit'], best: 'admit', why: '高度脱水：入院で補液' } : { ok: ['home', 'admit'], best: 'home', why: '経口補水ができれば外来' }),
+  useful: ['stool_cx', 'cbc', 'chem', 'crp'], key: [],
+  teaching: [
+    '鶏肉の生食・加熱不足の2〜5日後の発熱・腹痛・下痢（ときに血便）はカンピロバクター腸炎が多い。',
+    '多くは自然に治るため、治療の中心は補液。抗菌薬は重症・高熱が続く・免疫不全などに限る（使うならマクロライド）。',
+    '止痢薬（ロペラミド）は発熱や血便があるときは使わない。',
+    '回復後、数週間でギラン・バレー症候群（手足の脱力）を起こすことがある。',
+  ],
+  sources: ['JAID/JSC感染症治療ガイド2023', '抗微生物薬適正使用の手引き 第三版（厚生労働省 2023）'],
+  ideal: () => [{ a: 'test', ids: ['stool_cx'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000, when: 'vol>1500' }],
+});
