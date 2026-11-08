@@ -1,0 +1,40 @@
+// COVID-19
+// 出典: 厚生労働省『新型コロナウイルス感染症（COVID-19）診療の手引き 第10.1版』
+import { outpatient } from './common.js';
+export default outpatient({
+  id: 'covid', name: 'COVID-19', weight: 6, season: { winter: 1.4, summer: 1.2 },
+  demo: { age: [16, 90], ageMode: 'uniform', male: 0.5 },
+  sev: { p: [0.65, 0.28, 0.07], burden: [[18, 26], [30, 40], [48, 58]] },
+  untreatedFatal: false,
+  vars: (rng) => ({ days: rng.int(1, 4) }),
+  cc: () => '発熱と喉の痛み', ccKey: 'fever_cough',
+  history: {
+    onset: { p: 1, text: '{days}日前から熱と喉の痛みがあります。' },
+    character: { p: 1, text: '喉がひりひりして、熱とだるさがあります。' },
+    fever: { p: 0.9, text: '38度台の熱です。' },
+    sorethroat: { p: 0.85, text: '喉がとても痛いです。' },
+    cough: { p: 0.7, text: '乾いた咳が出ます。' },
+    myalgia: { p: 0.5, text: '体がだるく、節々が痛みます。' },
+    headache: { p: 0.5, text: '頭痛があります。' },
+    dyspnea: { p: [0, 0.4, 0.9], text: '少し息苦しいです。' },
+    sickcontact: { p: 0.7, text: '職場でコロナにかかった人がいます。' },
+  },
+  exam: { pharynx: { p: 0.7, text: '咽頭の発赤。' }, lung_ausc: { p: [0, 0.3, 0.8], text: '両側でわずかにfine crackles。' } },
+  vitals: { T: { to: [38.2, 39.2], k: 0.4 }, HR: { to: [95, 115], k: 1 }, RR: { to: [20, 28], k: 1.2 }, SpO2: { drop: [4, 12], k: 2 } },
+  labs: { WBC: { to: [3500, 6000], k: 1 }, CRP: { to: [1, 8], k: 1.2 }, DDIMER: { to: [0.8, 3], k: 2 } },
+  tests: { covid_ag: { p: [0.8, 0.85, 0.85] }, cxr: [{ p: [0, 0.4, 0.9], text: '両側末梢優位のすりガラス影。' }], chest_ct: [{ p: [0.1, 0.7, 1], text: '両肺の胸膜直下に多発するすりガラス影（COVID-19肺炎として矛盾しない）。' }] },
+  natural: -0.25,
+  dynamics: (enc) => (enc.patient.sev === 2 && enc.t < 72 * 60 ? 0.45 : 0),
+  therapies: [{ id: 'o2', label: '酸素投与（SpO2<93%）', req: { o2: true }, when: (c) => c.rawSpO2 < 93, required: true, deadlineH: [1, 1, 0.5] }, { id: 'steroid', label: '酸素が必要な中等症II以上：デキサメタゾン', req: { anyTag: ['steroid', 'steroid_sys'] }, when: (c) => c.rawSpO2 < 93, required: (enc) => enc.patient.sev === 2, deadlineH: [24, 24, 12], effect: -0.5, lagH: 6, startFromNeed: true }],
+  harmTags: { abx: 'COVID-19（ウイルス感染）に抗菌薬は無効（細菌感染の合併がなければ不要）' },
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['admit', 'icu'], best: 'admit', why: '酸素が必要：入院' } : { ok: ['home', 'admit'], best: 'home', why: '軽症：自宅療養（重症化リスクが高ければ抗ウイルス薬を検討）' }),
+  useful: ['covid_ag', 'flu_ag', 'cxr', 'chest_ct', 'cbc', 'chem', 'crp', 'coag', 'vbg'], key: [['covid_ag']],
+  teaching: [
+    '発熱・咽頭痛・咳・倦怠感で、流行状況や接触歴があればCOVID-19を検査する。',
+    '重症度は主にSpO2で判断する（93%以下は酸素が必要な中等症II）。高齢・基礎疾患は重症化しやすい。',
+    '軽症は対症療法と自宅療養。重症化リスクが高い人には抗ウイルス薬を検討（ニルマトレルビルは併用薬との相互作用が非常に多い）。',
+    '酸素が必要な患者にはデキサメタゾン。抗菌薬は細菌感染の合併がなければ不要。',
+  ],
+  sources: ['新型コロナウイルス感染症（COVID-19）診療の手引き 第10.1版（厚生労働省）'],
+  ideal: (p) => [{ a: 'test', ids: ['covid_ag'] }, { a: 'o2', device: 'nc', flow: 3, when: 'spo2<92' }, { a: 'rx', drugId: 'dexa', route: 'iv', dose: 6.6, freq: 'q24h', days: 7, when: 'sev2' }, { a: 'rx', drugId: 'apap_po', route: 'po', dose: 500, freq: 'prn', days: 3 }],
+});

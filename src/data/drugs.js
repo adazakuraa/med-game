@@ -86,6 +86,13 @@ export const DRUGS = [
     info: '通常1回250mgを6時間毎、重症例では1回500mgを6時間毎。感受性のある大腸菌による尿路感染症の経口治療に用いる。',
   },
   {
+    id: 'amox_clav', generic: 'アモキシシリン・クラブラン酸', brands: ['オーグメンチン'], cls: '抗菌薬（β-ラクタマーゼ阻害薬配合ペニシリン・経口）', allergy: 'penicillin', abx: true,
+    routes: { po: { unit: 'mg', min: 375, max: 375, freqs: ['q8h', 'q6h'], maxDaily: 1500 } },
+    covers: ['spn', 'hinf', 'ecoli', 'anaerobe', 'gpc'], resistKey: 'sbtR',
+    renal: [{ crclBelow: 30, maxDaily: 750, text: 'CrCl<30: 投与間隔を延長' }],
+    info: '1錠375mg（アモキシシリン250mg＋クラブラン酸125mg）を1日3〜4回。嫌気性菌もカバーし、軽症の腹腔内感染・動物咬傷・副鼻腔炎などに。下痢に注意（国内ではアモキシシリンを追加して高用量にすることも）。',
+  },
+  {
     id: 'azm', generic: 'アジスロマイシン', brands: ['ジスロマック'], cls: '抗菌薬（マクロライド系）', allergy: 'macrolide', abx: true,
     routes: { po: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
     covers: ['atypical', 'chlamydia'],
@@ -350,6 +357,12 @@ export const DRUGS = [
     info: '逆流性食道炎に20mg 1日1回4週間（維持は10mg）。胃・十二指腸潰瘍にも使う。',
   },
   {
+    id: 'diazepam', generic: 'ジアゼパム', brands: ['セルシン', 'ホリゾン'], cls: 'ベンゾジアゼピン系', tags: ['benzo'],
+    routes: { iv: { unit: 'mg', min: 5, max: 10, freqs: ['once', 'prn'], maxDaily: 40 }, po: { unit: 'mg', min: 2, max: 10, freqs: ['q8h', 'q6h', 'prn'], maxDaily: 40 } },
+    contra: ['resp_failure'], effectHours: 8,
+    info: 'アルコール離脱症候群の第一選択（症状に応じて投与：CIWA-Arに基づく）。けいれん重積には5〜10mgを緩徐に静注。呼吸抑制・過鎮静に注意（高齢者・肝障害では少量）。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],
@@ -396,10 +409,10 @@ export const DRUG_BY_ID = Object.fromEntries(DRUGS.map((d) => [d.id, d]));
 export const FLUIDS = [
   { id: 'ns', name: '生理食塩液', brands: ['生理食塩液'], na: 154, k: 0, glucose: 0, vol: 1 },
   { id: 'lr', name: '乳酸リンゲル液', brands: ['ラクテック'], na: 130, k: 4, glucose: 0, vol: 1 },
-  { id: 'd5w', name: '5%ブドウ糖液', brands: ['大塚糖液5%'], na: 0, k: 0, glucose: 50, vol: 0.3 },
+  { id: 'd5w', name: '5%ブドウ糖液', brands: ['大塚糖液5%'], na: 0, k: 0, glucose: 50, vol: 0.6 },
   { id: 'ns3', name: '3%食塩水', brands: ['10%食塩水を生理食塩液で希釈'], na: 513, k: 0, glucose: 0, vol: 1 },
   { id: 'rbc', name: '赤血球液（輸血）', brands: ['赤血球液-LR「日赤」'], na: 0, k: 0, glucose: 0, vol: 1, blood: true },
-  { id: 'sol3', name: '3号維持液', brands: ['ソリタ-T3号'], na: 35, k: 20, glucose: 43, vol: 0.5 },
+  { id: 'sol3', name: '3号維持液', brands: ['ソリタ-T3号'], na: 35, k: 20, glucose: 43, vol: 0.9 },
 ];
 export const FLUID_BY_ID = Object.fromEntries(FLUIDS.map((f) => [f.id, f]));
 

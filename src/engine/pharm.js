@@ -32,6 +32,7 @@ export const CONTRA_RULES = {
   coronary: { level: 'harm', msg: '虚血性心疾患・脳血管障害には禁忌', check: (c) => ['acs', 'stroke'].includes(c.p.diseaseId) },
   asthma_bb: { level: 'harm', msg: '気管支喘息・COPDの増悪にβ遮断薬（気管支攣縮の悪化）', check: (c) => c.p.comorb.includes('asthma') || c.p.comorb.includes('asthma_nsaid') || ['asthma', 'copd'].includes(c.p.diseaseId) },
   hfref: { level: 'harm', msg: '心機能低下（収縮不全・心不全）ではCa拮抗薬（ジルチアゼム）が心不全を悪化させる', check: (c) => c.p.comorb.includes('chf') || c.p.diseaseId === 'adhf' },
+  resp_failure: { level: 'warn', msg: '呼吸不全・CO2貯留がある患者に鎮静薬（呼吸抑制）', check: (c) => c.p.diseaseId === 'copd' || c.vit.SpO2 < 90 },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 

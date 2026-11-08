@@ -1,0 +1,42 @@
+// 急性細菌性前立腺炎
+// 出典: JAID/JSC感染症治療ガイド2023
+import { T, sepsisExtras } from './common.js';
+export default {
+  id: 'prostatitis', name: '急性前立腺炎', dept: '泌尿器科',
+  weight: 3, season: {}, minLevel: 2,
+  demo: { age: [45, 85], ageMode: 'uniform', male: 1 },
+  sev: { p: [0.45, 0.4, 0.15], burden: [[25, 35], [40, 52], [58, 70]] },
+  refractoryP: [0, 0, 0.05],
+  comorb: { extra: { bph: 0.5, dm2: 0.25, htn: 0.4 } },
+  organisms: ['ecoli'], minAbxDays: 14,
+  vars: (rng) => ({ res: { esbl: rng.chance(0.08), fqR: rng.chance(0.35), sbtR: rng.chance(0.35) } }),
+  cc: () => '発熱と排尿時の痛み', ccKey: 'urinary_sx',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '2日前からおしっこの時に痛くて、昨日から高い熱が出ました。' },
+    character: { p: 1, text: 'おしっこが出にくく、出すときに焼けるように痛いです。' },
+    dysuria: { p: 1, text: '排尿時にとても痛いです。' },
+    frequency: { p: 0.8, text: 'トイレが近く、残っている感じがします。' },
+    retention: { p: 0.5, text: 'おしっこが出にくくなっています。' },
+    fever: { p: 0.95, text: '39度近い熱があります。' },
+    chills: { p: 0.7, text: 'ガタガタ震えました。' },
+    location: { p: 1, text: '下腹部と、肛門のあたりが痛重いです。' },
+    flankpain: { p: 0.1, text: '腰は痛くありません。' },
+  },
+  exam: { rectal: { p: 0.9, text: '前立腺は腫大し、著明な圧痛と熱感（強いマッサージは菌血症を起こすため禁忌）。' }, cva: { p: 0, text: '' }, bladder: { p: 0.3, text: '恥骨上部が軽度膨隆。' } },
+  vitals: { T: { to: [38.8, 40], k: 0.4 }, HR: { to: [105, 125], k: 0.8 }, SBP: { to: [70, 85], k: 2.4 } },
+  labs: { WBC: { to: [14000, 22000], k: 0.6 }, CRP: { to: [8, 25], k: 0.7 }, PCT: { to: [1, 15], k: 1.5 }, U_LEU: { ord: [3, 4], p: 0.95 }, U_NIT: { ord: [1, 1], p: 0.5 }, U_WBC: { to: [50, 100], k: 0.2, p: 0.95 }, U_BACT: { ord: [2, 3], p: 0.9 } },
+  tests: { ucx: [{ p: 0.9, text: 'Escherichia coli ≧10^5 CFU/mL。' }], urine_gram: [{ p: 0.85, text: 'グラム陰性桿菌を多数認める。' }], bcx: [{ p: [0.15, 0.25, 0.45], text: '2セット中1セットからEscherichia coli。' }], abd_us: [{ p: 0.7, text: '前立腺の腫大。残尿 約150mL。' }] },
+  natural: 0.45,
+  therapies: [T.abx(['ecoli'], '前立腺に移行する抗菌薬（2〜4週間）', [8, 4, 1], -1.1, 5), T.fluid(1000)],
+  dispo: (enc, ctx) => (ctx.initVit.SBP < 90 ? { ok: ['icu', 'admit'], best: 'icu', why: '敗血症性ショック：ICU' } : enc.patient.sev === 0 ? { ok: ['home', 'admit'], best: 'admit', why: '発熱があれば入院が望ましい（軽症は外来も）' } : { ok: ['admit'], best: 'admit', why: '急性前立腺炎：入院で点滴抗菌薬' }),
+  useful: ['ua', 'used', 'urine_gram', 'ucx', 'bcx', 'cbc', 'chem', 'crp', 'pct', 'abd_us', 'vbg'], key: [['ua', 'used'], ['ucx'], ['cbc']],
+  extrasOk: sepsisExtras,
+  teaching: [
+    '男性の発熱＋排尿時痛・排尿困難・会陰部痛は急性前立腺炎。直腸診で圧痛を伴う腫大した前立腺（強いマッサージは禁忌）。',
+    '尿培養・血液培養を採ってから抗菌薬。前立腺に移行する薬（キノロン・ST合剤、重症はセフトリアキソンなどで開始）を2〜4週間。',
+    '尿閉を合併しやすい（膀胱留置カテーテルより恥骨上カテーテルが望ましいことも）。',
+  ],
+  sources: ['JAID/JSC感染症治療ガイド2023'],
+  ideal: (p) => [{ a: 'test', ids: ['ua', 'used', 'ucx', 'bcx', 'cbc', 'chem'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000, when: 'sev2' }, { a: 'rx', drugId: p.vars.res.esbl ? 'cmz' : 'ctrx', route: 'iv', dose: p.vars.res.esbl ? 1000 : 2000, freq: p.vars.res.esbl ? 'q8h' : 'q24h', days: 14 }],
+};
