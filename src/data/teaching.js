@@ -114,6 +114,7 @@ export const EXAM_WHY = {
   hip: '転倒後に患側の脚が短く外旋していれば大腿骨頸部骨折を疑う。',
   cva: '肋骨脊柱角（背中の腎臓のあたり）の叩打痛。腎盂腎炎や尿管結石で陽性になる。',
   leg_edema: '押すと跡が残る浮腫（圧痕性浮腫）は心不全・腎不全・低アルブミン血症などの体液貯留を示す。',
+  slr: '仰向けで脚を伸ばしたまま挙げて、坐骨神経に沿って痛みが走れば椎間板ヘルニアを疑う。',
   calf: '片側の下腿の腫れ・圧痛は深部静脈血栓症を示唆し、肺塞栓症の手がかりになる。',
   periph: '手足の冷感・毛細血管再充満時間（CRT）の延長は循環不全（ショック）のサイン。',
   pupils: '瞳孔の大きさと対光反射。片側の散大は脳ヘルニアや動眼神経麻痺（動脈瘤）を示唆する危険なサイン。',
@@ -286,6 +287,9 @@ export const DRUG_ROLE = {
   thiamazole: 'バセドウ病の甲状腺ホルモン産生を抑える薬。まれに白血球が極端に減る（発熱・喉の痛みで受診）。',
   vonoprazan: '胃酸を強く抑える飲み薬。逆流性食道炎や潰瘍に。',
   diazepam: 'ベンゾジアゼピン系の鎮静薬。アルコール離脱の第一選択、けいれんにも。呼吸抑制に注意。',
+  amlodipine_rx: '血管を広げて血圧を下げる飲み薬。高血圧の第一選択の一つ。',
+  metformin_rx: '2型糖尿病の基本の飲み薬。腎機能が悪い・脱水・造影検査の前後では乳酸アシドーシスに注意。',
+  fexofenadine: '眠気の少ない抗ヒスタミン薬。花粉症・じんましんに。',
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
@@ -328,6 +332,7 @@ export const DEPT_ROLE = {
   icu: '重症患者の集中治療が必要か相談する。',
   neuro: '脳卒中（rt-PA・血栓回収）・髄膜炎・てんかんなどを相談する。',
   nsurg: 'くも膜下出血・脳出血・頭部外傷など、手術や血管内治療が必要な頭の病気を相談する。',
+  ent: '扁桃周囲膿瘍の切開排膿や、喉頭蓋炎など喉の病気を相談する。',
   ortho: '骨折（特に高齢者の大腿骨近位部骨折）の手術を相談する。',
   nephro: '腎不全・電解質異常で緊急透析が必要かを相談する。',
   cvs: '大動脈解離・大動脈瘤など、心臓や大血管の手術を相談する。',
@@ -451,7 +456,7 @@ export const APPROACHES = {
 APPROACHES.chest_pain = {
   title: '胸痛',
   intro: '胸痛ではまず「命に関わる4つ」＝急性冠症候群・大動脈解離・肺塞栓症・緊張性気胸を考える。来院10分以内に心電図をとり、バイタルと身体所見で緊急度を判断する。',
-  keyQ: ['onset', 'character', 'location', 'radiation', 'severity', 'aggravating', 'sweating', 'dyspnea', 'migration', 'immobility', 'pmh', 'meds', 'smoking'],
+  keyQ: ['onset', 'character', 'location', 'radiation', 'severity', 'aggravating', 'relieving', 'sweating', 'dyspnea', 'migration', 'immobility', 'sorethroat', 'pmh', 'meds', 'smoking'],
   keyE: ['gen_appear', 'bp_lr', 'trachea', 'jvd', 'chest_insp', 'chest_perc', 'lung_ausc', 'heart_ausc', 'calf', 'periph'],
   keyT: ['ecg', 'tnt', 'cxr', 'cbc', 'chem', 'coag', 'vbg', 'echo'],
   redflags: ['心電図でST上昇 → 循環器内科へ緊急コンサルト（再灌流まで90分以内）', '突然の引き裂かれるような痛み・血圧の左右差 → 大動脈解離を疑い、抗血小板薬・抗凝固薬の前に造影CT', '気管偏位・頸静脈怒張・低血圧・片側の呼吸音消失 → 緊張性気胸：すぐに脱気', '突然の呼吸困難・頻脈・低酸素で肺がきれい → 肺塞栓症を疑う'],
@@ -460,7 +465,7 @@ APPROACHES.chest_pain = {
     { id: 'aortic_dissection', tests: ['chest_cta'], point: '突然の引き裂かれるような胸背部痛・痛みの移動、血圧の左右差、縦隔拡大、Dダイマー上昇', clues: ['q:migration', 'q:radiation', 'e:bp_lr', 'e:heart_ausc', 't:cxr', 't:chest_cta', 'H:DDIMER'] },
     { id: 'pe', tests: ['chest_cta', 'leg_us'], point: '突然の呼吸困難・胸膜痛・頻脈・低酸素、リスク因子、片側の下腿腫脹、Dダイマー上昇', clues: ['q:immobility', 'q:edema', 'e:calf', 'H:DDIMER', 't:chest_cta', 't:leg_us', 't:echo'] },
     { id: 'ptx', tests: ['chest_ct'], point: '若いやせ型男性・突然の胸痛、片側の呼吸音減弱・鼓音、胸部X線で虚脱', clues: ['q:aggravating', 'e:lung_ausc', 'e:chest_perc', 'e:trachea', 't:cxr', 't:chest_ct'] },
-    { id: 'pericarditis', point: '前かがみで楽になる胸痛、広範なST上昇、心膜摩擦音' },
+    { id: 'pericarditis', tests: ['echo'], point: 'かぜの後、深呼吸・仰臥位で悪化し前かがみで楽になる胸痛、広範なST上昇とPR低下、心膜摩擦音', clues: ['q:relieving', 'q:aggravating', 'q:sorethroat', 'e:heart_ausc', 't:ecg', 't:echo'] },
     { id: 'gerd', point: '胸やけ・食後や横になると悪化、心電図・採血は正常' },
     { id: 'musculoskeletal', point: '押すと痛い・体をひねると痛い、ほかの検査は正常' },
     { id: 'panic', point: '若年・動悸や手足のしびれ、検査はすべて正常（除外診断）' },
@@ -555,13 +560,13 @@ APPROACHES.flank_pain = {
 APPROACHES.rash_dyspnea = {
   title: '全身のじんましんと息苦しさ',
   intro: '皮膚症状に呼吸器症状・血圧低下・消化器症状が加わればアナフィラキシー。診断がつき次第、アドレナリン筋注を最優先する（迷ったら打つ）。',
-  keyQ: ['onset', 'trigger', 'dyspnea', 'sorethroat', 'dizziness', 'nausea', 'abdpain', 'allergy', 'meds', 'pmh'],
+  keyQ: ['onset', 'character', 'rash', 'trigger', 'dyspnea', 'sorethroat', 'dizziness', 'nausea', 'abdpain', 'allergy', 'meds', 'pmh'],
   keyE: ['gen_appear', 'skin', 'pharynx', 'lung_ausc', 'chest_insp', 'periph'],
   keyT: [],
   redflags: ['声のかすれ・喉の詰まり・喘鳴・血圧低下 → すぐにアドレナリン0.5mg筋注（大腿外側）', '低血圧には細胞外液の急速投与と下肢挙上', 'β遮断薬内服中はアドレナリンが効きにくい'],
   ddx: [
     { id: 'anaphylaxis', point: 'アレルゲン曝露後数分〜数十分で、皮膚症状＋呼吸困難・血圧低下・腹痛', clues: ['q:trigger', 'q:dyspnea', 'q:dizziness', 'e:skin', 'e:pharynx', 'e:lung_ausc'] },
-    { id: 'urticaria', point: '皮膚症状のみで呼吸・循環・消化器症状がない' },
+    { id: 'urticaria', point: '出たり消えたりする膨疹のみで、呼吸・循環・消化器症状がない', clues: ['q:rash', 'e:skin'] },
     { id: 'angioedema', point: '唇・まぶたの腫れが主体、じんましんを伴わないこともある（ACE阻害薬など）' },
     { id: 'asthma', point: '喘息の既往、皮膚症状がない' },
   ],
@@ -647,7 +652,7 @@ APPROACHES.lower_abd_f = {
 APPROACHES.elderly_decline = {
   title: '高齢者の「元気がない」',
   intro: '高齢者は典型的な症状が出にくく、「食べない」「元気がない」「ぼんやり」「転んだ」で重い病気が隠れている。感染症（肺炎・尿路感染）・脱水・電解質異常・薬の副作用・心不全・低血糖などを系統的に探す。',
-  keyQ: ['lastnormal', 'onset', 'adl', 'anorexia', 'fever', 'cough', 'dysuria', 'retention', 'constipation', 'dizziness', 'meds', 'diet', 'pmh'],
+  keyQ: ['lastnormal', 'onset', 'adl', 'anorexia', 'fever', 'cough', 'dysuria', 'retention', 'polyuria', 'constipation', 'dizziness', 'meds', 'diet', 'pmh'],
   keyE: ['gen_consc', 'gen_appear', 'oral_mucosa', 'lung_ausc', 'chest_insp', 'abd_palp', 'rectal', 'bladder', 'cva', 'skin', 'leg_edema'],
   keyT: ['bs_poct', 'cbc', 'chem', 'crp', 'ua', 'cxr', 'ecg', 'vbg'],
   redflags: ['「いつもと違う」を家族・施設職員から具体的に聞く（最終健常時刻）', '発熱がなくても感染症（肺炎・尿路感染）はありうる', '内服薬（利尿薬・降圧薬・睡眠薬・抗コリン薬）の副作用を疑う', '血糖・Na・脱水・尿閉を確認'],
@@ -661,6 +666,7 @@ APPROACHES.elderly_decline = {
     { id: 'impaction', tests: ['axr'], point: '数日以上の便秘・オピオイドなどの薬・活動量低下、直腸診で便塊、少量の水様便の漏れ', clues: ['q:constipation', 'e:rectal', 'e:abd_palp', 't:axr'] },
     { id: 'delirium', point: '急に始まり変動する注意障害。必ず原因（感染・薬・脱水など）がある' },
     { id: 'adhf', point: '息切れ・浮腫・体重増加', clues: ['e:leg_edema'] },
+    { id: 'aki', tests: ['abd_us'], point: '脱水＋ACE阻害薬/ARB・利尿薬・NSAIDs、尿量減少、Cr・BUN上昇', clues: ['q:meds', 'q:polyuria', 'e:oral_mucosa', 'H:CR', 'H:BUN'] },
   ],
 };
 APPROACHES.urinary = {
@@ -736,20 +742,21 @@ APPROACHES.back_pain = {
     { id: 'ureteral', point: '波のある激痛・血尿', clues: ['H:U_RBC'] },
     { id: 'aortic_dissection', point: '突然の引き裂かれるような痛み', clues: ['e:bp_lr'] },
     { id: 'epidural', point: '発熱＋強い背部痛＋神経症状' },
-    { id: 'lumbago', point: '体動で悪化し安静で軽快、危険なサインがない' },
+    { id: 'lumbago', point: '重い物を持ったなどのきっかけ、体動で悪化し安静で軽快、危険なサインがない', clues: ['q:onset', 'q:aggravating', 'e:spine'] },
   ],
 };
 
 APPROACHES.sore_throat = {
   title: '喉の痛み',
   intro: '喉の痛みの多くはウイルス性のかぜで抗菌薬は不要。Centor基準で溶連菌の可能性を見積もり、高ければ迅速検査。気道が危険になる病気（急性喉頭蓋炎・扁桃周囲膿瘍）を見逃さない。',
-  keyQ: ['onset', 'character', 'sorethroat', 'fever', 'cough', 'sickcontact', 'allergy'],
+  keyQ: ['onset', 'character', 'sorethroat', 'fever', 'cough', 'radiation', 'anorexia', 'sickcontact', 'allergy'],
   keyE: ['pharynx', 'neck_ln', 'gen_appear'],
   keyT: [],
   redflags: ['唾も飲めない・声がこもる・口が開かない・呼吸が苦しい → 急性喉頭蓋炎・扁桃周囲膿瘍（気道緊急）', 'Centor基準（発熱・咳なし・前頸部リンパ節の圧痛・扁桃の白苔）が高ければ溶連菌検査'],
   ddx: [
     { id: 'uri', point: '鼻水・咳・喉の痛みが同時にある、周囲のかぜ、扁桃の白苔なし', clues: ['q:cough', 'q:sickcontact'] },
     { id: 'strep', tests: ['strep_ag'], point: '発熱・咳がない・前頸部リンパ節の圧痛・扁桃の腫大と白苔（Centor基準）', clues: ['q:fever', 'e:pharynx', 'e:neck_ln', 't:strep_ag'] },
+    { id: 'pta', tests: ['cbc', 'crp'], point: '片側の激しい咽頭痛・開口障害・含み声・口蓋垂の偏位', clues: ['q:radiation', 'q:anorexia', 'e:pharynx', 'e:neck_ln'] },
     { id: 'mono', point: '若年、強い倦怠感、後頸部リンパ節腫脹、肝脾腫' },
     { id: 'influenza', point: '流行期の急な高熱・筋肉痛', clues: ['q:myalgia'] },
   ],
@@ -825,6 +832,61 @@ APPROACHES.facial_palsy = {
     { id: 'zoster', point: '耳の痛み・耳介の水疱（Ramsay Hunt症候群）', clues: ['q:rash'] },
   ],
 };
+APPROACHES.bp_high = {
+  title: '血圧が高い（健診）',
+  intro: '健診で血圧が高いと言われた人では、家庭血圧を確認し、臓器障害と心血管リスクを評価し、二次性高血圧を見逃さない。頭痛・胸痛・神経症状を伴う著明な高血圧は高血圧緊急症。',
+  keyQ: ['onset', 'headache', 'chestpain', 'family', 'diet', 'alcohol', 'smoking', 'weightgain', 'meds', 'pmh'],
+  keyE: ['heart_ausc', 'leg_edema', 'neuro_basic'],
+  keyT: ['ecg', 'chem', 'ua'],
+  redflags: ['頭痛・胸痛・呼吸困難・神経症状・視力障害を伴う → 高血圧緊急症', '若年発症・急な悪化・低K血症 → 二次性高血圧'],
+  ddx: [
+    { id: 'htn', point: '家族歴・塩分・飲酒・肥満、症状なし', clues: ['q:family', 'q:diet', 'q:alcohol', 'q:weightgain'] },
+    { id: 'secondary_htn', point: '若年発症・低K血症・腎機能障害・いびき' },
+  ],
+};
+APPROACHES.polyuria = {
+  title: '口渇・多尿',
+  intro: '口渇・多飲・多尿は高血糖が最も多い。血糖・尿糖・尿ケトンを確認し、DKAや高浸透圧高血糖状態などの急性合併症がないかを評価する。',
+  keyQ: ['onset', 'polyuria', 'weightloss', 'fatigue', 'nausea', 'abdpain', 'family', 'diet', 'meds'],
+  keyE: ['gen_appear', 'oral_mucosa', 'skin', 'chest_insp'],
+  keyT: ['bs_poct', 'ua', 'chem', 'hba1c'],
+  redflags: ['嘔吐・腹痛・Kussmaul呼吸・意識障害 → DKA・高浸透圧高血糖状態', '尿ケトン陽性なら血液ガスを'],
+  ddx: [
+    { id: 'dm2', point: '家族歴・肥満・甘い飲料、HbA1c 6.5%以上', clues: ['q:polyuria', 'q:family', 'q:diet', 'H:HBA1C', 'H:GLU'] },
+    { id: 'dka', point: '若年・1型、嘔吐・腹痛・ケトン', clues: ['H:U_KET'] },
+    { id: 'hhs', point: '高齢者、著明な高血糖・脱水・意識障害' },
+  ],
+};
+APPROACHES.nasal = {
+  title: 'くしゃみ・鼻水・鼻づまり',
+  intro: '鼻症状はかぜ・アレルギー性鼻炎が多い。季節性・水様性鼻汁・くしゃみ・目のかゆみならアレルギー、10日以上続く膿性鼻汁・顔面痛・二峰性の悪化なら細菌性副鼻腔炎を考える。',
+  keyQ: ['onset', 'course', 'character', 'sorethroat', 'fever', 'location', 'aggravating', 'trigger', 'pmh'],
+  keyE: ['pharynx', 'conjunctiva', 'skin'],
+  keyT: [],
+  redflags: ['目の周りの腫れ・視力障害・複視・強い頭痛 → 眼窩・頭蓋内合併症'],
+  ddx: [
+    { id: 'allergic_rhinitis', point: '毎年同じ季節、くしゃみ・水様性鼻汁・目のかゆみ、発熱なし', clues: ['q:trigger', 'q:pmh', 'e:conjunctiva'] },
+    { id: 'sinusitis', point: 'かぜの後10日以上続く膿性鼻汁・顔面痛・前かがみで悪化・二峰性', clues: ['q:course', 'q:location', 'q:aggravating', 'e:skin'] },
+    { id: 'uri', point: '発症数日以内、喉の痛み・鼻水・咳', clues: ['q:sorethroat'] },
+  ],
+};
+APPROACHES.seizure = {
+  title: 'けいれん',
+  intro: 'けいれんでは、まず続いているかを確認（5分以上続けばてんかん重積：ベンゾジアゼピン）。次に血糖・電解質・発熱・外傷・飲酒・服薬状況から原因を探す。失神による短いけいれんとも区別する。',
+  keyQ: ['seizure', 'lastnormal', 'trigger', 'adherence', 'alcohol', 'fever', 'headache', 'pmh', 'meds'],
+  keyE: ['gen_consc', 'oral_mucosa', 'motor', 'neck_stiff', 'pupils', 'skin'],
+  keyT: ['bs_poct', 'chem', 'vbg'],
+  redflags: ['5分以上続く・意識が戻らないまま繰り返す → てんかん重積：ジアゼパム静注', '発熱・項部硬直 → 髄膜炎・脳炎', '頭部外傷・抗凝固薬・初発・局所神経症状 → 頭部画像', '低血糖・低Na・アルコール離脱'],
+  ddx: [
+    { id: 'epilepsy_sz', point: 'てんかんの既往・服薬中断・睡眠不足、発作後のもうろう、舌の側面の咬傷', clues: ['q:seizure', 'q:adherence', 'q:trigger', 'e:oral_mucosa', 'H:CK'] },
+    { id: 'hypoglycemia', point: '糖尿病治療中、低血糖', clues: ['L:GLU'] },
+    { id: 'hyponatremia', point: '低Na（高齢・利尿薬）', clues: ['L:NA'] },
+    { id: 'alcohol_withdrawal', point: '大量飲酒者の断酒後', clues: ['q:alcohol'] },
+    { id: 'vasovagal', point: '前兆（気分不良・冷汗）の後の短いけいれんで速やかに回復（失神）' },
+    { id: 'meningitis', point: '発熱・頭痛・項部硬直', clues: ['e:neck_stiff'] },
+  ],
+};
+
 // ---- 疾患ノート ----
 export const DISEASE_NOTES = {
   cap: {
@@ -1117,6 +1179,16 @@ export const DISEASE_NOTES = {
   hyperemesis: { overview: '妊娠初期のつわりが重症化し、脱水・体重減少・ケトーシスになった状態。', treatment: ['補液（ブドウ糖を含む）', 'ブドウ糖の前にビタミンB1（Wernicke脳症の予防）', '電解質の補正、制吐薬', '他の原因（胃腸炎・甲状腺など）の除外'], flow: '妊娠初期の頻回嘔吐 → 脱水の評価・尿ケトン → 妊娠悪阻 → ビタミンB1・補液 → 入院' },
   prostatitis: { overview: '前立腺の細菌感染。男性の発熱・排尿時痛・排尿困難・会陰部痛。尿閉を起こしやすい。', treatment: ['尿培養・血液培養', '抗菌薬（重症はセフトリアキソンなどで開始し、前立腺に移行する薬で2〜4週間）', '尿閉の管理', '前立腺マッサージは禁忌'], flow: '男性の発熱・排尿症状 → 直腸診 → 尿検査・培養 → 急性前立腺炎 → 抗菌薬 → 入院' },
   alcohol_withdrawal: { overview: '大量飲酒者が急に飲酒をやめたときに起こる自律神経の過活動。振戦・発汗・頻脈から、けいれん・振戦せん妄へ進むことがある。', treatment: ['ベンゾジアゼピン系（ジアゼパムなど）を症状に応じて', 'ブドウ糖の前にビタミンB1', '低血糖・電解質異常・感染・頭部外傷の評価', '断酒支援につなぐ'], flow: '断酒後の振戦・発汗 → 最終飲酒の確認 → 血糖・電解質 → アルコール離脱 → ビタミンB1・ベンゾジアゼピン → 入院' },
+  htn: { overview: "原因のはっきりしない（本態性）高血圧。自覚症状はほとんどないが、脳卒中・心臓病・腎臓病の大きなリスク。", treatment: ["家庭血圧で確認", "臓器障害（心電図・尿・腎機能）とリスク因子の評価", "減塩6g/日未満・減量・節酒・運動", "リスクが高い・160/100以上なら降圧薬（Ca拮抗薬など）"], flow: "健診で高血圧 → 家庭血圧・生活歴 → 心電図・採血・尿検査 → 本態性高血圧 → 生活習慣の修正±降圧薬" },
+  dm2: { overview: "インスリンの効きが悪くなり血糖が高くなる病気。合併症（網膜・腎臓・神経・動脈硬化）を防ぐことが治療の目的。", treatment: ["HbA1c・血糖で診断、急性合併症（DKA・HHS）を除外", "食事・運動療法", "必要に応じてメトホルミンなど（腎機能・脱水・造影剤に注意）", "合併症と動脈硬化リスクの評価"], flow: "口渇・多尿 → 血糖・尿検査 → HbA1c → 2型糖尿病 → 食事・運動±内服 → 合併症の評価" },
+  lumbago: { overview: "原因を特定できない急性の腰痛（ぎっくり腰など）。多くは数週間で自然に治る。", treatment: ["危険な腰痛のサインの確認（なければ画像不要）", "NSAIDs・アセトアミノフェン", "安静にしすぎず、動ける範囲で活動"], flow: "腰痛 → Red flagsの確認 → 非特異的腰痛 → 鎮痛薬・活動の継続 → 帰宅" },
+  allergic_rhinitis: { overview: "花粉やダニなどに対するアレルギーで、くしゃみ・水様性鼻汁・鼻づまりが起こる。", treatment: ["第2世代抗ヒスタミン薬", "鼻噴霧用ステロイド", "抗原の回避", "抗菌薬は不要"], flow: "季節性のくしゃみ・鼻水 → 発熱・膿性鼻汁がないことを確認 → アレルギー性鼻炎 → 抗ヒスタミン薬" },
+  urticaria: { overview: "皮膚に一時的な膨疹（盛り上がったかゆい赤み）が出ては消える。原因不明のことも多い。", treatment: ["アナフィラキシーの症状がないことを確認", "第2世代抗ヒスタミン薬", "原因（薬・食物・感染）の確認"], flow: "かゆい発疹 → 呼吸・循環・消化器症状の確認 → じんましん → 抗ヒスタミン薬 → 帰宅" },
+  sinusitis: { overview: "かぜの後などに副鼻腔に炎症が起こり、膿性鼻汁・顔面痛・鼻づまりが続く。多くはウイルス性。", treatment: ["軽症は対症療法で経過観察", "10日以上持続・二峰性・重症ならアモキシシリン", "眼窩・頭蓋内合併症のサインに注意"], flow: "かぜ後の膿性鼻汁・顔面痛 → 経過と重症度 → 急性副鼻腔炎 → 経過観察またはアモキシシリン" },
+  pta: { overview: "扁桃炎が進んで扁桃の周りに膿がたまった状態。片側の激しい喉の痛み・開口障害・含み声。", treatment: ["耳鼻咽喉科で穿刺・切開排膿", "アンピシリン・スルバクタムなどの抗菌薬", "気道の評価（喉頭蓋炎の除外）"], flow: "激しい片側の咽頭痛 → 咽頭所見（口蓋垂の偏位）→ 扁桃周囲膿瘍 → 耳鼻咽喉科コンサルト → 排膿・抗菌薬" },
+  epilepsy_sz: { overview: "脳の神経細胞の過剰な興奮で起こる発作。服薬の中断・睡眠不足・飲酒が誘因になる。", treatment: ["続いていればジアゼパム静注（てんかん重積）", "血糖・電解質の確認", "抗てんかん薬の再開・調整", "服薬と運転などの生活指導"], flow: "けいれん → 持続しているか確認 → 血糖・電解質 → 誘因の確認 → てんかん発作 → 抗てんかん薬の調整" },
+  aki: { overview: "数時間〜数日で腎機能が急に悪くなる状態。高齢者の脱水と薬剤（ACE阻害薬/ARB・利尿薬・NSAIDs）による腎前性が多い。", treatment: ["腎前性・腎性・腎後性を区別（エコーで閉塞の除外）", "補液", "原因薬の中止", "高K・アシドーシス・溢水は緊急透析を検討"], flow: "食欲低下・尿量減少 → 採血（Cr・K）・尿検査・エコー → 腎前性AKI → 補液・原因薬の中止 → 入院" },
+  pericarditis: { overview: "心臓を包む膜（心膜）の炎症。ウイルス感染の後に多い。前かがみで楽になる胸痛。", treatment: ["心電図（広範なST上昇・PR低下）で心筋梗塞と区別", "心エコーで心嚢液・タンポナーデの確認", "NSAIDs＋コルヒチン"], flow: "かぜ後の胸痛 → 体位での変化 → 心電図・トロポニン・心エコー → 急性心膜炎 → NSAIDs＋コルヒチン" },
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

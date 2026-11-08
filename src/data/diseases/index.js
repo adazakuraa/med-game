@@ -62,6 +62,16 @@ import miscarriage from './miscarriage.js';
 import hyperemesis from './hyperemesis.js';
 import prostatitis from './prostatitis.js';
 import alcohol_withdrawal from './alcohol_withdrawal.js';
+import htn from './htn.js';
+import dm2 from './dm2.js';
+import lumbago from './lumbago.js';
+import allergic_rhinitis from './allergic_rhinitis.js';
+import urticaria from './urticaria.js';
+import sinusitis from './sinusitis.js';
+import pta from './pta.js';
+import seizure from './seizure.js';
+import aki from './aki.js';
+import pericarditis from './pericarditis.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal, htn, dm2, lumbago, allergic_rhinitis, urticaria, sinusitis, pta, seizure, aki, pericarditis];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

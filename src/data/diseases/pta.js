@@ -1,0 +1,48 @@
+// 扁桃周囲膿瘍
+// 出典: JAID/JSC感染症治療ガイド2023, 日本耳鼻咽喉科頭頸部外科学会
+import { T } from './common.js';
+export default {
+  id: 'pta', name: '扁桃周囲膿瘍', dept: '耳鼻咽喉科',
+  weight: 2, season: { winter: 1.2 }, minLevel: 2,
+  demo: { age: [18, 50], ageMode: 'young', male: 0.6 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [38, 48], [52, 62]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} },
+  organisms: ['gpc', 'anaerobe'], minAbxDays: 7,
+  untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']) }),
+  cc: () => '喉の激しい痛み', ccKey: 'sore_throat',
+  arrival: () => 'walk',
+  initVolume: [[300, 700], [600, 1200], [1000, 1600]],
+  history: {
+    onset: { p: 1, text: '5日前から喉が痛く、ここ2日でどんどん悪化しています。' },
+    character: { p: 1, text: '{side}の喉がものすごく痛くて、唾も飲み込めません。口が開けにくいです。' },
+    sorethroat: { p: 1, text: '{side}の喉が激しく痛みます。声がこもります。' },
+    fever: { p: 0.9, text: '38度台の熱があります。' },
+    anorexia: { p: 1, text: '痛くて何も食べられません。' },
+    radiation: { p: 0.6, text: '{side}の耳にも響きます。' },
+    dyspnea: { p: 0, text: '' },
+  },
+  exam: { pharynx: { p: 1, text: '{side}軟口蓋の著明な腫脹と発赤、口蓋垂が反対側へ偏位。開口障害あり。含み声。' }, neck_ln: { p: 0.9, text: '{side}前頸部リンパ節の腫脹と圧痛。' } },
+  vitals: { T: { to: [38.2, 39.2], k: 0.5 }, HR: { to: [100, 115], k: 1 } },
+  labs: { WBC: { to: [14000, 20000], k: 0.6 }, CRP: { to: [8, 20], k: 0.8 } },
+  tests: { chest_ct: [], head_ct: [] },
+  natural: 0.3,
+  curedBy: 'drain',
+  therapies: [T.abx(['gpc', 'anaerobe'], '抗菌薬（アンピシリン・スルバクタムなど）', [12, 6, 4], -0.4, 6), T.proc('drain', '耳鼻咽喉科コンサルト→穿刺・切開排膿', [24, 12, 6])],
+  procedures: [{
+    id: 'drain', depts: ['ent'], label: '切開排膿', delay: 60, duration: 30, after: 'ward',
+    decide: () => ({ accept: true, reveal: true, text: '{side}扁桃周囲膿瘍です。穿刺・切開排膿を行います（約60分後）。点滴抗菌薬をお願いします。' }),
+    onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 20); },
+    doneText: '耳鼻咽喉科：{side}扁桃周囲を切開し、膿を排出しました。',
+  }],
+  dispo: () => ({ ok: ['admit', 'home'], best: 'admit', why: '扁桃周囲膿瘍：排膿のうえ入院で点滴抗菌薬（軽症は外来も）' }),
+  useful: ['cbc', 'crp', 'chem', 'strep_ag'], key: [['cbc', 'crp']],
+  extrasOk: () => ['strep'],
+  teaching: [
+    '強い片側の咽頭痛・嚥下困難・開口障害・含み声・口蓋垂の偏位は扁桃周囲膿瘍を疑う。',
+    '治療は耳鼻咽喉科での穿刺・切開排膿と抗菌薬（アンピシリン・スルバクタムなど）。',
+    '呼吸困難・流涎・強い咽頭痛なのに咽頭所見が乏しい場合は急性喉頭蓋炎（気道閉塞の危険）を疑う。',
+  ],
+  sources: ['JAID/JSC感染症治療ガイド2023'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'crp'] }, { a: 'rx', drugId: 'abpc_sbt', route: 'iv', dose: 3000, freq: 'q8h', days: 7 }, { a: 'fluid', fluidId: 'lr', mode: 'cont', rate: 80 }, { a: 'consult', dept: 'ent', delayMin: 10 }],
+};

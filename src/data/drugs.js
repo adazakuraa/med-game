@@ -363,6 +363,23 @@ export const DRUGS = [
     info: 'アルコール離脱症候群の第一選択（症状に応じて投与：CIWA-Arに基づく）。けいれん重積には5〜10mgを緩徐に静注。呼吸抑制・過鎮静に注意（高齢者・肝障害では少量）。',
   },
   {
+    id: 'amlodipine_rx', generic: 'アムロジピン', brands: ['アムロジン', 'ノルバスク'], cls: '降圧薬（Ca拮抗薬）', tags: ['antihtn'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '高血圧に2.5〜5mg 1日1回から。下腿浮腫・歯肉増殖・頭痛に注意。',
+  },
+  {
+    id: 'metformin_rx', generic: 'メトホルミン', brands: ['メトグルコ'], cls: '糖尿病治療薬（ビグアナイド）', tags: ['metformin_rx'],
+    routes: { po: { unit: 'mg', min: 250, max: 1000, freqs: ['q12h', 'q8h'], maxDaily: 2250 } },
+    contra: ['severe_renal', 'dehydration_aki'],
+    renal: [{ crclBelow: 45, maxDaily: 1500, text: 'eGFR 30〜45: 最大1500mg/日（慎重投与）' }],
+    info: '2型糖尿病の第一選択薬の一つ。500mg/日から開始。eGFR<30・脱水・ヨード造影剤の前後・大量飲酒では乳酸アシドーシスに注意（中止）。',
+  },
+  {
+    id: 'fexofenadine', generic: 'フェキソフェナジン', brands: ['アレグラ'], cls: '抗ヒスタミン薬（第2世代）', tags: ['antihistamine'],
+    routes: { po: { unit: 'mg', min: 60, max: 60, freqs: ['q12h'], maxDaily: 120 } },
+    info: 'アレルギー性鼻炎・じんましんに60mg 1日2回。眠気が少ない第2世代。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],

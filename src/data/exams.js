@@ -44,6 +44,7 @@ export const EXAMS = [
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
   { id: 'hip', region: 'limbs', method: '視診', name: '下肢の長さ・回旋、股関節の圧痛', normal: '下肢長差・回旋なし。股関節の圧痛・運動時痛なし。', pain: 1 },
   { id: 'joint', region: 'limbs', method: '視診', name: '関節（腫脹・発赤・熱感）', normal: '関節の腫脹・発赤・熱感なし。' },
+  { id: 'slr', region: 'limbs', method: '触診', name: '下肢伸展挙上テスト（SLR）・下肢の神経所見', normal: 'SLRテスト陰性。下肢の筋力・感覚・反射に異常なし。' },
   { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
   { id: 'pupils', region: 'neuro', method: '視診', name: '瞳孔・対光反射', normal: '瞳孔 3mm/3mm 同大、対光反射は両側迅速。' },
