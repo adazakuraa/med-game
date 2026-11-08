@@ -268,6 +268,41 @@ export const DRUGS = [
     info: '蜂窩織炎（溶連菌・黄色ブドウ球菌）の点滴治療に1〜2g 8時間毎。',
   },
   {
+    id: 'diltiazem', generic: 'ジルチアゼム（注）', brands: ['ヘルベッサー注射用'], cls: 'Ca拮抗薬（心拍数調節）', tags: ['rate_ccb'],
+    routes: { iv: { unit: 'mg', min: 5, max: 15, freqs: ['once', 'prn'], maxDaily: 60 } },
+    contra: ['sbp90', 'hfref'], effectHours: 4,
+    info: '頻脈性心房細動の心拍数調節に10mg程度を3分かけて静注、必要なら持続静注へ。心機能低下（収縮不全）・低血圧には禁忌。',
+  },
+  {
+    id: 'apixaban', generic: 'アピキサバン', brands: ['エリキュース'], cls: '抗凝固薬（DOAC）', tags: ['anticoag'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q12h'], maxDaily: 20 } },
+    renal: [{ crclBelow: 15, maxDaily: 0, text: 'CrCl<15: 禁忌' }],
+    info: '心房細動の脳梗塞予防に5mg 1日2回（80歳以上・体重60kg以下・Cr1.5以上のうち2つ以上で2.5mg 1日2回）。深部静脈血栓症・肺塞栓症は10mg 1日2回を7日間、その後5mg 1日2回。出血に注意。',
+  },
+  {
+    id: 'calcium', generic: 'グルコン酸カルシウム', brands: ['カルチコール注射液8.5%'], cls: '電解質補正（心筋保護）', tags: ['calcium'],
+    routes: { iv: { unit: 'mL', min: 10, max: 30, freqs: ['once'], maxDaily: 60 } },
+    effectHours: 1,
+    info: '高K血症で心電図変化があるとき、心筋を保護するため10〜20mLを数分かけて静注（効果は30〜60分）。Kは下がらないので、インスリン＋ブドウ糖などと併用する。',
+  },
+  {
+    id: 'insulin_bolus', generic: '速効型インスリン（静注・単回）', brands: ['ヒューマリンR'], cls: 'インスリン', tags: ['insulin', 'k_shift'],
+    routes: { iv: { unit: '単位', min: 4, max: 10, freqs: ['once'], maxDaily: 20 } },
+    effectHours: 4,
+    info: '高K血症にKを細胞内へ移動させる目的で10単位を静注（ブドウ糖25gと併用：50%ブドウ糖50mL）。低血糖に注意し血糖を頻回に確認。',
+  },
+  {
+    id: 'szc', generic: 'ジルコニウムシクロケイ酸ナトリウム', brands: ['ロケルマ'], cls: 'カリウム吸着薬', tags: ['k_binder'],
+    routes: { po: { unit: 'g', min: 5, max: 10, freqs: ['q8h', 'q24h'], maxDaily: 30 } },
+    info: '高K血症に1回10gを1日3回（最長3日間）、その後は維持量5g 1日1回。腸管でKを吸着して体外へ排泄する。',
+  },
+  {
+    id: 'bisoprolol', generic: 'ビソプロロール', brands: ['メインテート'], cls: 'β遮断薬（内服）', tags: ['betablocker'],
+    routes: { po: { unit: 'mg', min: 0.625, max: 5, freqs: ['q24h'], maxDaily: 5 } },
+    contra: ['sbp90', 'asthma_bb'],
+    info: '心房細動の心拍数調節に0.625〜5mg 1日1回。喘息・高度徐脈・低血圧には注意。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],

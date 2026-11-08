@@ -17,12 +17,13 @@ export const PROCEDURES = [
   { id: 'drain_R', name: '胸腔ドレナージ（右）', side: '右', min: 20 },
   { id: 'drain_L', name: '胸腔ドレナージ（左）', side: '左', min: 20 },
   { id: 'ng', name: '胃管（経鼻胃管）挿入・減圧', min: 10 },
+  { id: 'cooling', name: '積極的冷却（冷水噴霧・送風・氷嚢）', min: 10 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];
@@ -69,7 +70,7 @@ export function effects(enc, t = enc.t) {
       if (windowed && t >= o.start + d.effectHours * 60) continue;
       for (const tag of d.tags || []) {
         let v = 1;
-        if (tag === 'insulin') v = o.dose / (0.1 * p.weight);
+        if (tag === 'insulin') v = d.id === 'insulin_bolus' ? 0.6 : o.dose / (0.1 * p.weight);
         else if (tag === 'potassium') v = o.dose;
         else if (tag === 'vasopressor' || tag === 'betablocker' || tag === 'bp_lower') v = o.dose;
         else if (tag === 'diuretic') v = Math.min(1.5, (o.dose / diureticNeed(p)) * f);
@@ -218,7 +219,7 @@ function step(enc, dtMin) {
   }
   if (st.hypoEvent && enc.t >= st.hypoEvent.t && enc.t < st.hypoEvent.until) dB += 2;
   const K = labValue(enc, 'K', cache);
-  if (K < 2.5 || K > 7.0) dB += 6;
+  if ((K < 2.5 || K > 7.0) && !eff.tags.calcium) dB += 6;
   if (st.glu < 40) dB += 4;
   st.burden = clamp(st.burden + dB * dtH, 0, 100);
 

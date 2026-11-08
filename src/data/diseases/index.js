@@ -23,6 +23,11 @@ import ugib from './ugib.js';
 import pancreatitis from './pancreatitis.js';
 import sbo from './sbo.js';
 import cellulitis from './cellulitis.js';
+import af_rvr from './af_rvr.js';
+import hyperk from './hyperk.js';
+import hhs from './hhs.js';
+import dvt from './dvt.js';
+import heatstroke from './heatstroke.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

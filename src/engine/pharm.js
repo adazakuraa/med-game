@@ -31,6 +31,7 @@ export const CONTRA_RULES = {
   tpa_glucose: { level: 'harm', msg: '低血糖（<50mg/dL）は脳卒中と似た症状を起こす。血糖を確認・補正してから', check: (c) => c.lab('GLU') < 50 },
   coronary: { level: 'harm', msg: '虚血性心疾患・脳血管障害には禁忌', check: (c) => ['acs', 'stroke'].includes(c.p.diseaseId) },
   asthma_bb: { level: 'harm', msg: '気管支喘息・COPDの増悪にβ遮断薬（気管支攣縮の悪化）', check: (c) => c.p.comorb.includes('asthma') || c.p.comorb.includes('asthma_nsaid') || ['asthma', 'copd'].includes(c.p.diseaseId) },
+  hfref: { level: 'harm', msg: '心機能低下（収縮不全・心不全）ではCa拮抗薬（ジルチアゼム）が心不全を悪化させる', check: (c) => c.p.comorb.includes('chf') || c.p.diseaseId === 'adhf' },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 

@@ -176,6 +176,7 @@ export function vitals(enc, eff, noiseKey) {
   if (eff.tags.nitrate) SBP -= 18;
   if (eff.tags.vasodilator) SBP -= 8;
   if (eff.tags.betablocker) { HR -= Math.min(35, eff.tags.betablocker * 8); SBP -= Math.min(15, eff.tags.betablocker * 4); }
+  if (eff.tags.rate_ccb) { HR -= 25; SBP -= 8; }
   if (eff.tags.bp_lower) SBP -= Math.min(55, eff.tags.bp_lower * 16);
   if (eff.tags.opioid) { SBP -= 5; HR -= 4; }
   if (eff.tags.vasopressor) SBP += Math.min(40, (eff.tags.vasopressor / 0.1) * 22);
