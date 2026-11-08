@@ -1,0 +1,11 @@
+{
+  "name": "med-rotation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "スマホ向け医療シミュレーションゲーム（教育・娯楽用）",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "serve": "python3 -m http.server 8080"
+  }
+}

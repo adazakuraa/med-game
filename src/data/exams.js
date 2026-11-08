@@ -1,0 +1,43 @@
+// 身体診察カタログ。method: 視診/触診/打診/聴診/嗅診。pain: 患者負担（0-2）
+export const EXAM_REGIONS = [
+  { id: 'general', name: '全身' },
+  { id: 'headneck', name: '頭頸部' },
+  { id: 'chest', name: '胸部' },
+  { id: 'abdomen', name: '腹部' },
+  { id: 'back', name: '背部' },
+  { id: 'limbs', name: '四肢' },
+  { id: 'neuro', name: '神経' },
+];
+
+export const EXAMS = [
+  { id: 'gen_appear', region: 'general', method: '視診', name: '全身状態・顔貌', normal: '落ち着いて会話可能。苦悶様顔貌なし。' },
+  { id: 'gen_consc', region: 'general', method: '視診', name: '意識レベル', normal: '意識清明（JCS 0）。見当識良好。' },
+  { id: 'gen_breath_odor', region: 'general', method: '嗅診', name: '呼気臭', normal: '特記すべき呼気臭なし。' },
+  { id: 'skin_turgor', region: 'general', method: '触診', name: '皮膚ツルゴール', normal: 'ツルゴール低下なし。' },
+  { id: 'oral_mucosa', region: 'headneck', method: '視診', name: '口腔粘膜・舌', normal: '口腔粘膜は湿潤。' },
+  { id: 'pharynx', region: 'headneck', method: '視診', name: '咽頭・扁桃', normal: '咽頭発赤なし。扁桃腫大なし。' },
+  { id: 'neck_ln', region: 'headneck', method: '触診', name: '頸部リンパ節', normal: '頸部リンパ節腫脹なし。' },
+  { id: 'jvd', region: 'headneck', method: '視診', name: '頸静脈', normal: '頸静脈怒張なし（座位45°）。' },
+  { id: 'neck_stiff', region: 'headneck', method: '触診', name: '項部硬直', normal: '項部硬直なし。' },
+  { id: 'chest_insp', region: 'chest', method: '視診', name: '胸郭・呼吸様式', normal: '胸郭運動は左右対称。呼吸補助筋の使用なし。' },
+  { id: 'chest_palp', region: 'chest', method: '触診', name: '声音振盪', normal: '声音振盪に左右差なし。' },
+  { id: 'chest_perc', region: 'chest', method: '打診', name: '胸部打診', normal: '両側清音。' },
+  { id: 'lung_ausc', region: 'chest', method: '聴診', name: '呼吸音', normal: '両側肺胞呼吸音清。副雑音なし。' },
+  { id: 'heart_ausc', region: 'chest', method: '聴診', name: '心音', normal: '心音整。心雑音・過剰心音なし。' },
+  { id: 'abd_insp', region: 'abdomen', method: '視診', name: '腹部視診', normal: '腹部平坦。手術痕なし。' },
+  { id: 'abd_ausc', region: 'abdomen', method: '聴診', name: '腸蠕動音', normal: '腸蠕動音は正常。血管雑音なし。' },
+  { id: 'abd_perc', region: 'abdomen', method: '打診', name: '腹部打診', normal: '鼓音。打診痛なし。' },
+  { id: 'abd_palp', region: 'abdomen', method: '触診', name: '腹部触診（圧痛）', normal: '平坦・軟。圧痛なし。腫瘤触知せず。', pain: 1 },
+  { id: 'abd_rebound', region: 'abdomen', method: '触診', name: '反跳痛（Blumberg）', normal: '反跳痛なし。', pain: 2 },
+  { id: 'abd_guard', region: 'abdomen', method: '触診', name: '筋性防御', normal: '筋性防御なし。', pain: 1 },
+  { id: 'mcburney', region: 'abdomen', method: '触診', name: 'McBurney点圧痛', normal: 'McBurney点圧痛なし。', pain: 1 },
+  { id: 'rovsing', region: 'abdomen', method: '触診', name: 'Rovsing徴候', normal: 'Rovsing徴候陰性。', pain: 1 },
+  { id: 'psoas', region: 'abdomen', method: '触診', name: '腸腰筋徴候', normal: '腸腰筋徴候陰性。', pain: 1 },
+  { id: 'murphy', region: 'abdomen', method: '触診', name: 'Murphy徴候', normal: 'Murphy徴候陰性。', pain: 1 },
+  { id: 'cva', region: 'back', method: '打診', name: 'CVA叩打痛', normal: '両側CVA叩打痛なし。', pain: 1 },
+  { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },
+  { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
+  { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
+];
+
+export const EXAM_BY_ID = Object.fromEntries(EXAMS.map((e) => [e.id, e]));
