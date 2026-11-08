@@ -28,6 +28,13 @@ import hyperk from './hyperk.js';
 import hhs from './hhs.js';
 import dvt from './dvt.js';
 import heatstroke from './heatstroke.js';
+import ectopic from './ectopic.js';
+import torsion from './torsion.js';
+import pid from './pid.js';
+import aspiration from './aspiration.js';
+import hyponatremia from './hyponatremia.js';
+import retention from './retention.js';
+import hip_fx from './hip_fx.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

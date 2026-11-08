@@ -40,6 +40,8 @@ export const TESTS = [
   { id: 'chest_cta', cat: 'image', name: '胸部造影CT（CTアンギオ）', kind: 'report', cost: 22000, timeMin: 45, inv: 2, radiation: true, contrast: true, normal: '大動脈に解離・瘤なし。肺動脈に造影欠損なし。肺野に明らかな異常なし。' },
   { id: 'axr', cat: 'image', name: '腹部X線', kind: 'report', cost: 2100, timeMin: 20, inv: 0, radiation: true, normal: '異常ガス像なし。ニボーなし。遊離ガスは指摘できない。' },
   { id: 'abd_us', cat: 'image', name: '腹部超音波', kind: 'report', cost: 5300, timeMin: 20, inv: 0, normal: '肝・胆・膵・腎に明らかな異常なし。水腎症なし。腹水なし。虫垂は同定できず。' },
+  { id: 'tvus', cat: 'image', name: '経腟超音波', kind: 'report', cost: 5300, timeMin: 20, inv: 1, female: true, normal: '子宮・両側付属器に明らかな異常なし。ダグラス窩に液体貯留なし。' },
+  { id: 'hip_xr', cat: 'image', name: '股関節・骨盤X線', kind: 'report', cost: 2600, timeMin: 20, inv: 0, radiation: true, normal: '骨折・脱臼なし。' },
   { id: 'abd_ct_plain', cat: 'image', name: '腹部単純CT', kind: 'report', cost: 14000, timeMin: 45, inv: 0, radiation: true, normal: '腹腔内に明らかな異常所見なし。遊離ガス・腹水なし。' },
   { id: 'abd_ct_contrast', cat: 'image', name: '腹部造影CT', kind: 'report', cost: 22000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '腹腔内に明らかな異常所見なし。虫垂正常。腎の造影不良域なし。' },
   { id: 'leg_us', cat: 'physio', name: '下肢静脈エコー', kind: 'report', cost: 5300, timeMin: 30, inv: 0, normal: '両下肢の深部静脈に血栓なし。圧迫で良好に虚脱する。' },

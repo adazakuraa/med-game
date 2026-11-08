@@ -43,6 +43,8 @@ export const QUESTIONS = [
   { id: 'frequency', cat: 'assoc', text: 'トイレが近い、残尿感はありますか？', no: 'ありません。' },
   { id: 'hematuria', cat: 'assoc', text: '尿の色がおかしいことはありますか？', no: '普段通りの色です。' },
   { id: 'flankpain', cat: 'assoc', text: '腰や背中の痛みはありますか？', no: 'ありません。' },
+  { id: 'retention', cat: 'assoc', text: '尿が出にくい、出ないことはありますか？', no: '普段通り出ています。' },
+  { id: 'vagbleed', cat: 'assoc', text: '性器出血やおりものの異常はありますか？', no: 'ありません。', female: true },
   { id: 'polyuria', cat: 'assoc', text: '喉の渇きや尿の量が多いことは？', no: '特にありません。' },
   { id: 'weakness', cat: 'assoc', text: '手足の力が入りにくい、しびれはありますか？', no: 'ありません。' },
   { id: 'speechq', cat: 'assoc', text: '言葉が出にくい、ろれつが回らないことは？', no: 'ありません。' },
@@ -60,6 +62,7 @@ export const QUESTIONS = [
   { id: 'allergy', cat: 'pmh', text: '薬や食べ物でアレルギーはありますか？', profile: true },
   { id: 'lmp', cat: 'pmh', text: '最終月経はいつですか？妊娠の可能性は？', profile: true, female: true },
   // 生活・家族
+  { id: 'adl', cat: 'social', text: '普段の生活の様子は？（一人で歩ける・もの忘れなど）', no: '一人で何でもできます。もの忘れもありません。' },
   { id: 'smoking', cat: 'social', text: 'タバコは吸いますか？', profile: true },
   { id: 'alcohol', cat: 'social', text: 'お酒は飲みますか？', profile: true },
   { id: 'occupation', cat: 'social', text: 'お仕事は何をされていますか？', profile: true },
