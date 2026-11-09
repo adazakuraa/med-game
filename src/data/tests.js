@@ -86,6 +86,8 @@ export const TESTS = [
   { id: 'hdsr', cat: 'physio', name: '認知機能検査（改訂長谷川式・MMSE）', kind: 'report', cost: 800, timeMin: 15, inv: 0, normal: '改訂長谷川式 29/30点、MMSE 29/30点（正常範囲）。' },
   { id: 'audiometry', cat: 'physio', name: '純音聴力検査', kind: 'report', cost: 1100, timeMin: 20, inv: 0, normal: '両耳とも聴力正常。' },
   { id: 'breast_us', cat: 'image', name: '乳腺エコー', kind: 'report', cost: 3500, timeMin: 20, inv: 0, normal: '両側乳腺に腫瘤・膿瘍なし。' },
+  { id: 'spirometry', cat: 'physio', name: '呼吸機能検査（気道可逆性試験・呼気NO）', kind: 'report', cost: 2800, timeMin: 30, inv: 0, normal: '1秒率 80%。気道可逆性なし。呼気NO 15ppb（正常）。' },
+  { id: 'dexa', cat: 'image', name: '骨密度検査（DXA：腰椎・大腿骨）', kind: 'report', cost: 4500, timeMin: 20, inv: 0, radiation: true, normal: '骨密度は若年成人平均の90%（正常）。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

@@ -228,6 +228,8 @@ export const TEST_WHY = {
   hdsr: '認知機能のスクリーニング。改訂長谷川式20点以下で認知症の疑い。',
   audiometry: '難聴の程度と種類（感音性・伝音性）を調べる。',
   breast_us: '乳房のしこり・膿瘍を評価する。',
+  spirometry: '喘息の診断（気道可逆性・呼気NO）とCOPD（1秒率<70%）の評価。',
+  dexa: '骨粗鬆症の診断。若年成人平均の70%以下（Tスコア−2.5以下）で骨粗鬆症。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -366,6 +368,12 @@ export const DRUG_ROLE = {
   carbamazepine: '三叉神経痛の第一選択薬。',
   mgso4: '妊娠高血圧腎症の子癇（けいれん）を予防する。',
   tetanus: '汚染された傷・咬傷での破傷風予防。接種歴を必ず確認する。',
+  ics_laba: '喘息の長期管理の吸入薬（ステロイド＋気管支拡張薬）。',
+  mgo_rx: '便を柔らかくする便秘薬。高齢者・腎機能低下では高Mg血症に注意。',
+  mirabegron: '膀胱をゆるめて尿をためやすくする過活動膀胱の薬。',
+  heparinoid: '皮膚の保湿剤。アトピー性皮膚炎のスキンケアの基本。',
+  alendronate: '骨を壊す働きを抑えて骨折を防ぐ薬（週1回の内服）。',
+  febuxostat: '尿酸をつくる働きを抑える薬。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -787,17 +795,18 @@ APPROACHES.vaginal = {
 APPROACHES.itch_rash = {
   title: 'かゆい発疹',
   intro: 'かゆい発疹は、分布（接触部位・趾間・指間/陰部）、経過、周囲の同症状、使っている外用薬で整理する。ステロイドで悪化する真菌・疥癬を見逃さないために鏡検（KOH）を。息苦しさや血圧低下を伴えばアナフィラキシー。',
-  keyQ: ['onset', 'character', 'location', 'itch', 'trigger', 'sickcontact', 'meds', 'fever', 'dyspnea'],
+  keyQ: ['onset', 'character', 'location', 'itch', 'trigger', 'sickcontact', 'meds', 'pmh', 'family', 'fever', 'dyspnea'],
   keyE: ['skin'],
   keyT: ['koh'],
   redflags: ['息苦しさ・血圧低下・嘔吐を伴う → アナフィラキシー', '発熱・粘膜疹・皮膚のただれ → 重症薬疹（SJS/TEN）', '施設内で多発する夜間のかゆみ → 疥癬（感染対策）'],
   ddx: [
-    { id: 'contact_derm', point: '原因物質の接触部位に一致した境界明瞭な紅斑・小水疱、新しい物の使用', clues: ['q:trigger', 'e:skin', '!t:koh'] },
-    { id: 'tinea', tests: ['koh'], point: '足趾間の浸軟・鱗屑・小水疱、蒸れる靴・家族も、ステロイドで悪化、鏡検で菌糸', clues: ['q:location', 'q:meds', 'q:trigger', 'e:skin', 't:koh'] },
-    { id: 'scabies', tests: ['koh'], point: '施設・家族内で多発、夜間の強いかゆみ、指間・手掌・腋窩・陰部の丘疹と疥癬トンネル、鏡検でヒゼンダニ', clues: ['q:sickcontact', 'q:itch', 'q:meds', 'e:skin', 't:koh'] },
+    { id: 'contact_derm', point: '原因物質の接触部位に一致した境界明瞭な紅斑・小水疱、新しい物の使用', clues: ['q:trigger', '!t:koh', '!q:pmh', '!q:meds'] },
+    { id: 'tinea', tests: ['koh'], point: '足趾間の浸軟・鱗屑・小水疱、蒸れる靴・家族も、ステロイドで悪化、鏡検で菌糸', clues: ['t:koh', 'q:meds', 'q:trigger', '!q:sickcontact'] },
+    { id: 'scabies', tests: ['koh'], point: '施設・家族内で多発、夜間の強いかゆみ、指間・手掌・腋窩・陰部の丘疹と疥癬トンネル、鏡検でヒゼンダニ', clues: ['t:koh', 'q:sickcontact', 'q:itch', 'q:meds'] },
     { id: 'urticaria', point: '数時間で消えては出る膨疹', clues: ['q:course'] },
-    { id: 'atopic', point: '幼少期からの慢性・再発性の湿疹、肘窩・膝窩、アレルギー疾患の家族歴' },
-    { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', 'q:onset', 'e:skin', '!q:sickcontact', '!t:koh'] },
+    { id: 'atopic', point: '幼少期からの慢性・再発性の湿疹、首・肘窩・膝窩に左右対称、乾燥肌、アレルギー疾患の既往・家族歴 → ステロイド外用と保湿', clues: ['q:pmh', 'q:family', '!t:koh', '!q:sickcontact'] },
+    { id: 'herpes_labialis', point: '同じ部位に繰り返す、ピリピリした前駆症状の後の集簇する小水疱（口唇）、疲労・紫外線 → 早期の抗ウイルス薬', clues: ['q:pmh', 'q:trigger', '!q:meds', '!q:family', '!t:koh'] },
+    { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', '!t:koh', '!q:pmh', '!q:family', '!q:sickcontact'] },
     { id: 'sjs', point: '高熱・口唇や眼の粘膜疹・水疱・皮膚の剥離（重症薬疹）→ 入院' },
   ],
 };
@@ -810,7 +819,9 @@ APPROACHES.red_eye = {
   redflags: ['視力低下・強い眼痛・頭痛と嘔吐・角膜混濁・瞳孔散大 → 急性緑内障発作（眼圧測定・眼科へ緊急）', 'コンタクトレンズ使用者の眼痛 → 角膜潰瘍', '外傷・薬品が目に入った → すぐに大量の水で洗眼'],
   ddx: [
     { id: 'conjunctivitis', tests: ['adeno_ag'], point: '片眼から両眼へ、水様の眼脂・流涙・異物感、耳前リンパ節腫脹、周囲の流行 → 感染対策', clues: ['q:sickcontact', 'q:onset', 'e:eye', 'e:neck_ln', 't:adeno_ag', '!q:vision'] },
-    { id: 'allergic_conj', point: '両眼の強いかゆみ・季節性・花粉症', clues: ['q:itch'] },
+    { id: 'allergic_conj', point: '両眼の強いかゆみ・季節性・花粉症、水様の眼脂 → 抗アレルギー点眼', clues: ['q:itch', 'q:allergy', 'q:onset', 'e:eye', '!q:sickcontact'] },
+    { id: 'stye', point: 'まぶたの縁の限局した発赤・腫脹・圧痛と膿点、視力・眼球運動は正常 → 抗菌点眼', clues: ['q:character', 'e:eye', '!q:vision'] },
+    { id: 'orbital_cellulitis', point: 'まぶた全体の腫れ・発熱・眼球運動痛・視力低下 → 緊急' },
     { id: 'bact_conj', point: '膿性の眼脂でまぶたがくっつく' },
     { id: 'aacg', tests: ['iop'], point: '強い眼痛・頭痛・嘔吐・かすみ・虹視、中等度散瞳、眼圧上昇', clues: ['q:vision', 'q:headache', 'e:pupils', 't:iop'] },
   ],
@@ -858,6 +869,8 @@ APPROACHES.checkup = {
     { id: 'dyslipidemia', tests: ['lipid', 'thyroid'], point: 'LDL高値、冠動脈疾患の家族歴・喫煙・高血圧などのリスク → 生活指導とスタチン', clues: ['q:family', 'q:diet', 'H:LDL', '!H:TSH'] },
     { id: 'hepatitis', point: '輸血歴・母子感染、HBs抗原・HCV抗体陽性' },
     { id: 'dm2', point: 'HbA1c・血糖高値', clues: ['H:HBA1C'] },
+    { id: 'osteoporosis', tests: ['dexa'], point: '閉経後女性・やせ・脆弱性骨折の既往・家族歴、身長の低下・円背、骨密度低下 → 薬物療法と転倒予防', clues: ['q:pmh', 'q:family', 'q:onset', 'e:spine', 't:dexa'] },
+    { id: 'hyperuricemia', point: '尿酸高値、痛風発作の既往、飲酒・肥満・利尿薬 → 尿酸降下薬（6以下）と生活指導', clues: ['q:pmh', 'q:alcohol', 'q:meds', 'H:URIC'] },
   ],
 };
 APPROACHES.injury = {
@@ -950,6 +963,37 @@ APPROACHES.numbness = {
     { id: 'stroke', point: '突然の片側のしびれ・脱力', clues: ['e:facial', 'e:speech'] },
   ],
 };
+APPROACHES.chronic_cough = {
+  title: '長引く咳',
+  intro: '3週間以上続く咳では、まず胸部X線で肺がん・結核・間質性肺炎・心不全を除外する。X線が正常なら、咳喘息・アトピー咳嗽・副鼻腔気管支症候群（後鼻漏）・逆流性食道炎・ACE阻害薬・百日咳を考える。',
+  keyQ: ['onset', 'cough', 'sputum', 'character', 'fever', 'dyspnea', 'weightloss', 'nightsweat', 'heartburn', 'smoking', 'meds', 'pmh', 'sickcontact'],
+  keyE: ['lung_ausc', 'pharynx'],
+  keyT: ['cxr'],
+  redflags: ['血痰・体重減少・喫煙 → 肺がん', '寝汗・微熱・体重減少 → 肺結核（隔離）', '息切れ・捻髪音 → 間質性肺炎', 'ACE阻害薬の内服 → 薬剤性の咳'],
+  ddx: [
+    { id: 'cva_cough', tests: ['spirometry'], point: 'かぜの後に続く乾いた咳、夜間〜明け方に悪化、冷気・会話で誘発、喘鳴なし、アレルギー歴、呼気NO上昇 → 吸入ステロイド', clues: ['q:character', 'q:pmh', 'q:onset', '!q:fever', '!q:smoking', 't:spirometry'] },
+    { id: 'upper_airway_cough', point: '鼻汁・後鼻漏・痰がらみの咳、副鼻腔炎' },
+    { id: 'gerd', point: '胸やけ・呑酸を伴う咳', clues: ['q:heartburn'] },
+    { id: 'acei_cough', point: 'ACE阻害薬の内服中の乾いた咳' },
+    { id: 'pertussis', point: '発作性の連続する咳・吸気時の笛声・咳き込んだ後の嘔吐' },
+    { id: 'tb', point: '寝汗・微熱・体重減少', clues: ['q:nightsweat', 'q:weightloss'] },
+    { id: 'lung_ca', point: '喫煙者の血痰・体重減少', clues: ['q:smoking'] },
+  ],
+};
+APPROACHES.bowel = {
+  title: '便秘・便通の異常',
+  intro: '便秘では、まず警告症状（血便・体重減少・貧血・50歳以上の新たな便通変化・家族歴）を確認し、あれば大腸がんを除外する。二次性（甲状腺機能低下症・薬剤・高Ca血症など）も考える。',
+  keyQ: ['onset', 'character', 'constipation', 'bloodystool', 'weightloss', 'abdpain', 'diet', 'meds', 'family', 'pmh'],
+  keyE: ['abd_palp', 'rectal'],
+  keyT: ['cbc', 'chem', 'thyroid'],
+  redflags: ['血便・体重減少・貧血・新しい便通の変化 → 大腸内視鏡（大腸がん）', '嘔吐・腹部膨満・排ガス停止 → 腸閉塞', 'オピオイド・抗コリン薬などの薬剤'],
+  ddx: [
+    { id: 'constipation', point: '長年の便秘、硬便・残便感、警告症状なし、食事・運動不足、刺激性下剤の常用 → 生活指導と浸透圧性下剤', clues: ['q:onset', 'q:diet', 'q:meds', '!q:bloodystool', '!q:weightloss', '!L:HB'] },
+    { id: 'colorectal_ca', point: '血便・体重減少・貧血・便が細い', clues: ['q:bloodystool', 'L:HB'] },
+    { id: 'hypothyroid', point: '寒がり・むくみ・体重増加、TSH高値', clues: ['H:TSH'] },
+    { id: 'ibs', point: '腹痛が排便で軽快、ストレスで悪化、下痢と便秘を繰り返す' },
+  ],
+};
 APPROACHES.leg_red = {
   title: '足の赤みと腫れ',
   intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
@@ -964,6 +1008,7 @@ APPROACHES.leg_red = {
     { id: 'gout', point: '足の親指の付け根などの関節の急な激痛と発赤' },
     { id: 'limb_ischemia', tests: ['leg_cta', 'coag', 'ecg'], point: '心房細動（抗凝固薬の中断）、突然の激痛・蒼白・冷感・脈拍消失・しびれ（6P）、腫れや赤みはない → ヘパリンと緊急血行再建', clues: ['q:pmh', 'q:meds', 'e:leg_pulse', 'e:calf', 't:leg_cta'] },
     { id: 'diabetic_foot', tests: ['joint_xr'], point: '長い糖尿病歴・神経障害、治らない足の潰瘍から広がる発赤・膿、骨に届く潰瘍、X線で骨破壊（骨髄炎）→ 抗菌薬・デブリードマン', clues: ['q:pmh', 'q:trigger', 'e:skin', 't:joint_xr', 'H:GLU'] },
+    { id: 'paronychia', point: '深爪・きつい靴、爪の縁の食い込みと発赤・膿、糖尿病なし、発赤は趾先にとどまる → 抗菌薬と爪の処置', clues: ['q:trigger', 'e:skin', '!q:fever'] },
   ],
 };
 
@@ -1153,7 +1198,7 @@ APPROACHES.urinary_sx = {
     { id: 'bph', tests: ['pvr', 'psa'], point: '高齢男性、尿勢低下・排尿開始の遅れ・残尿感・夜間頻尿、排尿時痛や発熱はない、前立腺の腫大・残尿 → α1遮断薬', clues: ['q:retention', 'q:frequency', '!q:dysuria', '!q:fever', 'e:rectal', 't:pvr'] },
     { id: 'urethritis', tests: ['sti_pcr'], point: '若い男性、排尿時痛と尿道からの膿、1〜2週前の性交渉、発熱なし → 淋菌とクラミジアの両方を治療、パートナーも', clues: ['q:dysuria', 'q:character', 'q:trigger', '!q:fever', 't:sti_pcr', 't:urine_gram'] },
     { id: 'prostate_ca', point: 'PSA高値、直腸診で硬い結節', clues: ['H:PSA'] },
-    { id: 'oab', point: '急に我慢できない尿意（尿意切迫感）・頻尿、残尿は少ない' },
+    { id: 'oab', tests: ['pvr'], point: '急に我慢できない尿意（尿意切迫感）・頻尿・切迫性尿失禁、排尿時痛・血尿なし、残尿は少ない → 行動療法とβ3作動薬', clues: ['q:character', 'q:frequency', '!q:dysuria', '!q:retention', '!t:pvr'] },
   ],
 };
 APPROACHES.joint_pain = {
@@ -1688,6 +1733,16 @@ export const DISEASE_NOTES = {
   diabetic_foot: {"overview":"糖尿病の神経障害・血流障害による足の潰瘍に感染が起こり、骨髄炎や壊疽に進む。","treatment":["抗菌薬（ブドウ球菌・腸内細菌・嫌気性菌）","外科的デブリードマン","血流評価と血行再建","血糖管理・免荷"],"flow":"治らない足の傷＋発赤・膿 → X線で骨髄炎 → 糖尿病足感染症 → 抗菌薬とデブリードマン"},
   hypernatremia: {"overview":"体の水が不足して血液のNaが高くなる状態。自分で水を飲めない高齢者に多い。","treatment":["自由水（5%ブドウ糖液など）の補充","1日10mEq/L以内でゆっくり補正","循環不全があれば先に細胞外液","原因（感染症など）の治療"],"flow":"寝たきり高齢者の意識障害・脱水 → Na高値 → 高ナトリウム血症 → 自由水をゆっくり補充"},
   drug_eruption: {"overview":"薬に対するアレルギーで起こる発疹。抗菌薬や解熱鎮痛薬が多い。","treatment":["原因薬の中止","抗ヒスタミン薬・ステロイド外用","重症薬疹（SJS/TEN・DIHS）のサインを確認","お薬手帳に記録"],"flow":"新しい薬の数日後の全身の発疹 → 粘膜疹・水疱なし → 薬疹 → 原因薬の中止と対症療法"},
+  cva_cough: {"overview":"喘鳴や息苦しさのない、咳だけが続く喘息の仲間。長引く咳の原因として最も多い。","treatment":["胸部X線で他の病気を除外","吸入ステロイド（＋長時間作用性β2刺激薬）","症状がなくなっても一定期間続ける"],"flow":"3週以上の乾いた咳・夜間に悪化 → X線正常・呼気NO上昇 → 咳喘息 → 吸入ステロイド"},
+  constipation: {"overview":"排便の回数が少ない・硬い・出しにくいなどで困っている状態が続くもの。","treatment":["警告症状の確認","二次性便秘の除外","食物繊維・水分・運動・排便習慣","浸透圧性下剤（酸化マグネシウムなど）を基本に"],"flow":"長年の便秘 → 警告症状なし・二次性を除外 → 慢性便秘症 → 生活指導と浸透圧性下剤"},
+  oab: {"overview":"膀胱が勝手に縮もうとして、急な強い尿意・頻尿・尿漏れが起こる病気。","treatment":["尿検査・残尿測定で他の病気を除外","行動療法（膀胱訓練・骨盤底筋訓練）","β3作動薬（高齢者には抗コリン薬より安全）"],"flow":"尿意切迫感・頻尿 → 感染・残尿を除外 → 過活動膀胱 → 行動療法とβ3作動薬"},
+  atopic: {"overview":"かゆみのある湿疹が良くなったり悪くなったりを繰り返す病気。皮膚のバリア機能の低下とアレルギーが関わる。","treatment":["ステロイド外用（部位と重症度に合わせて）","保湿剤によるスキンケア","悪化因子（汗・乾燥・ストレス）の対策","重症は生物学的製剤など"],"flow":"慢性・反復性のかゆい湿疹 → 左右対称・アレルギー歴 → アトピー性皮膚炎 → 外用療法とスキンケア"},
+  herpes_labialis: {"overview":"単純ヘルペスウイルスが神経に潜み、疲れたときなどに唇に水疱を作る。","treatment":["早期の抗ウイルス薬","ステロイドは使わない","水疱に触れない・タオルを共有しない"],"flow":"唇のピリピリ感の後の小水疱・繰り返す → 口唇ヘルペス → 抗ウイルス薬"},
+  osteoporosis: {"overview":"骨がもろくなり、軽い力で骨折しやすくなる病気。閉経後の女性に多い。","treatment":["骨密度検査（DXA）","二次性の除外","ビスホスホネートなどの薬","カルシウム・ビタミンD・運動・転倒予防"],"flow":"閉経後女性・骨折歴・身長低下 → 骨密度低下 → 骨粗鬆症 → 薬物療法と転倒予防"},
+  allergic_conj: {"overview":"花粉などのアレルギーで結膜に炎症が起こり、強いかゆみと充血が出る。","treatment":["抗アレルギー点眼薬","抗原の回避（眼鏡・洗顔）","重症は眼科で免疫抑制点眼"],"flow":"両眼のかゆみ・季節性 → アレルギー性結膜炎 → 抗アレルギー点眼"},
+  stye: {"overview":"まぶたの分泌腺や毛根に細菌が感染して腫れる。いわゆる「ものもらい」。","treatment":["抗菌点眼・眼軟膏","温罨法","膿点があれば切開","眼窩蜂窩織炎のサインに注意"],"flow":"まぶたの縁の限局した腫れと痛み → 視力・眼球運動は正常 → 麦粒腫 → 抗菌点眼"},
+  hyperuricemia: {"overview":"血液中の尿酸が多い状態。痛風・尿路結石・腎障害の原因になる。","treatment":["節酒・減量・プリン体や果糖を控える","痛風発作を繰り返せば尿酸降下薬（6以下を目標）","利尿薬の見直し","合併症（腎・メタボ）の評価"],"flow":"尿酸高値・痛風発作の既往 → 高尿酸血症 → 生活指導と尿酸降下薬"},
+  paronychia: {"overview":"爪が皮膚に食い込み（陥入爪）、細菌感染して爪の周りが腫れる。","treatment":["抗菌薬と排膿","コットンパッキング・テーピングなどの爪の処置","重症は部分抜爪","正しい爪の切り方・靴の指導"],"flow":"足の爪の縁の発赤・腫れ・膿 → 陥入爪・爪囲炎 → 抗菌薬と爪の処置"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

@@ -455,6 +455,36 @@ export const DRUGS = [
     info: '汚染創・咬傷で、破傷風の予防接種歴が不明・10年以上前なら0.5mL筋注（深い汚染創で未接種なら破傷風免疫グロブリンも）。',
   },
   {
+    id: 'ics_laba', generic: 'ブデソニド・ホルモテロール吸入', brands: ['シムビコート'], cls: '吸入ステロイド・長時間作用性β2刺激薬', tags: ['ics'],
+    routes: { inh: { unit: '吸入', min: 1, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '喘息（咳喘息を含む）の長期管理に1回1〜2吸入を1日2回。吸入後はうがい（口腔カンジダ予防）。',
+  },
+  {
+    id: 'mgo_rx', generic: '酸化マグネシウム', brands: ['マグミット'], cls: '緩下薬（浸透圧性）', tags: ['laxative'],
+    routes: { po: { unit: 'mg', min: 330, max: 660, freqs: ['q8h', 'q12h'], maxDaily: 2000 } },
+    info: '便秘に1日1〜2gを分割。腎機能低下・高齢者では高Mg血症に注意（定期的に血清Mg）。',
+  },
+  {
+    id: 'mirabegron', generic: 'ミラベグロン', brands: ['ベタニス'], cls: '過活動膀胱治療薬（β3作動薬）', tags: ['beta3'],
+    routes: { po: { unit: 'mg', min: 25, max: 50, freqs: ['q24h'], maxDaily: 50 } },
+    info: '過活動膀胱に50mg 1日1回（高齢者・腎機能低下は25mg）。抗コリン薬と違い認知機能・口渇・便秘への影響が少ない。',
+  },
+  {
+    id: 'heparinoid', generic: 'ヘパリン類似物質（保湿剤）', brands: ['ヒルドイド'], cls: '保湿剤', tags: ['emollient'],
+    routes: { top: { unit: 'g', min: 1, max: 10, freqs: ['q12h', 'q24h'], maxDaily: 25 } },
+    info: 'アトピー性皮膚炎・乾燥肌に1日1〜数回塗布。入浴後すぐに塗ると効果的。',
+  },
+  {
+    id: 'alendronate', generic: 'アレンドロン酸', brands: ['フォサマック', 'ボナロン'], cls: '骨粗鬆症治療薬（ビスホスホネート）', tags: ['bisphosphonate_po'],
+    routes: { po: { unit: 'mg', min: 35, max: 35, freqs: ['once'], maxDaily: 35 } }, effectHours: 168,
+    info: '骨粗鬆症に週1回35mg。起床時に水180mLで内服し、30分は横にならず飲食しない（食道潰瘍予防）。顎骨壊死に注意（歯科治療前に相談）。',
+  },
+  {
+    id: 'febuxostat', generic: 'フェブキソスタット', brands: ['フェブリク'], cls: '尿酸降下薬', tags: ['urate_lowering'],
+    routes: { po: { unit: 'mg', min: 10, max: 60, freqs: ['q24h'], maxDaily: 60 } },
+    info: '高尿酸血症・痛風に10mgから開始し、尿酸値を見ながら40mgまで増量（急に下げると痛風発作）。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
