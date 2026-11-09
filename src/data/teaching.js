@@ -192,6 +192,14 @@ export const TEST_WHY = {
   renin_aldo: '原発性アルドステロン症のスクリーニング（アルドステロン/レニン比が高い）。若年・低K・治療抵抗性の高血圧で測る。',
   upcr: '尿蛋白の量（1日量の目安）と沈渣（赤血球円柱など）で腎炎・ネフローゼを評価する。',
   urine_cyto: '尿路上皮がん（膀胱がんなど）のスクリーニング。',
+  pap: '子宮頸がんのスクリーニング（細胞診・HPV）。',
+  hiv: 'HIV感染症の検査。急性感染期の伝染性単核球症様の症状・性感染症の既往では積極的に検査する。',
+  ebv: '伝染性単核球症（EBウイルス初感染）の確認。',
+  dengue_ag: '熱帯地域からの帰国後の発熱でデング熱を調べる（発症早期にNS1抗原）。',
+  ace_kl: 'サルコイドーシスの補助診断（血清ACE）。',
+  ca125: '卵巣腫瘍の良性・悪性の推定に使う。',
+  hormone: '月経異常の原因検索（多嚢胞性卵巣症候群・高プロラクチン血症・早発卵巣不全など）。',
+  paracentesis: '新しい腹水の原因検索と、特発性細菌性腹膜炎（好中球250/μL以上）の診断。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -299,6 +307,8 @@ export const LAB_MEANING = {
   LDH: { H: '細胞が壊れると上昇（溶血・悪性リンパ腫・白血病・心筋梗塞・肝障害など）' },
   TP: { H: '総蛋白が高くアルブミンが低い（グロブリン増加）→ 多発性骨髄腫などを考える', L: '低栄養・ネフローゼ症候群・肝硬変' },
   PHOS: { L: '低リン血症（再栄養症候群・アルコール多飲・DKA治療中）。重度では筋力低下・呼吸不全・心不全' },
+  ACE: { H: 'サルコイドーシスで上昇する' },
+  CA125: { H: '卵巣がんで上昇する（子宮内膜症・月経・腹水でも上がる）' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -496,6 +506,7 @@ export const DEPT_ROLE = {
   nsurg: 'くも膜下出血・脳出血・頭部外傷など、手術や血管内治療が必要な頭の病気を相談する。',
   ent: '扁桃周囲膿瘍の切開排膿や、喉頭蓋炎など喉の病気を相談する。',
   eye: '急性緑内障発作・網膜動脈閉塞・眼外傷など視力に関わる緊急疾患。',
+  infect: 'HIV・結核・輸入感染症・難治性の感染症など。抗菌薬の選択の相談にも。',
   hema: '白血病・リンパ腫・骨髄腫・血小板減少などの血液疾患。骨髄検査や化学療法を担当。',
   derm: '皮膚疾患（皮膚生検・重症薬疹・難治の湿疹など）。',
   dental: '歯・口腔・顎の病気（歯性感染症・智歯・顎関節症）。',
@@ -831,6 +842,7 @@ APPROACHES.vaginal = {
   redflags: ['発熱・下腹部痛・子宮頸部の移動痛 → 骨盤内炎症性疾患', '閉経後の性器出血 → 子宮体がんを除外', '新しいパートナー・膿性帯下 → 性感染症の検査とパートナーの治療'],
   ddx: [
     { id: 'vaginal_candida', tests: ['koh'], point: '強いかゆみと白い酒かす状の帯下、抗菌薬使用後・糖尿病、鏡検で仮性菌糸', clues: ['q:itch', 'q:vagbleed', 'e:speculum', 't:koh', '!q:fever'] },
+    { id: 'cervical_ca', tests: ['pap', 'uhcg'], point: '性交後出血・不正出血・帯下の増加、検診未受診、子宮頸部の易出血性病変 → 細胞診・組織診', clues: ['q:vagbleed', 'q:pmh', 'e:speculum', 't:pap', '!q:itch'] },
     { id: 'endometrial_ca', tests: ['tvus'], point: '閉経後の性器出血（少量でも）、肥満・糖尿病・未産、エコーで子宮内膜の肥厚 → 内膜の組織診', clues: ['q:lmp', 'q:vagbleed', 'q:pmh', 't:tvus', '!q:itch'] },
     { id: 'atrophic_vag', point: '閉経後の腟の乾燥・性交痛・少量の出血、内膜は薄い' },
     { id: 'bv', point: '魚のような臭いの灰色で均一な帯下、かゆみは軽い' },
@@ -1004,7 +1016,7 @@ APPROACHES.fever_unknown = {
     { id: 'gca', point: '高齢者の頭痛・顎跛行、赤沈高値', clues: ['e:temporal'] },
     { id: 'neutropenic_fever', tests: ['bcx', 'cbc'], point: 'がん化学療法中（7〜14日後）の発熱、好中球500未満 → 血液培養後1時間以内に緑膿菌をカバーする抗菌薬', clues: ['q:pmh', 'q:meds', 'L:WBC', 'q:chills'] },
     { id: 'malaria', tests: ['malaria'], point: '熱帯地域からの帰国後1か月以内の発熱・悪寒、血小板減少・溶血・脾腫 → 血液塗抹・迅速抗原、抗マラリア薬', clues: ['q:travel', 'q:chills', 'L:PLT', 'e:abd_palp', 't:malaria'] },
-    { id: 'dengue', point: '東南アジアなどからの帰国後の発熱・発疹・関節痛・白血球と血小板の減少' },
+    { id: 'dengue', tests: ['dengue_ag', 'malaria'], point: '東南アジアなどから帰国後2週間以内の高熱・目の奥や筋肉/関節の痛み・発疹、白血球と血小板の減少 → マラリアを除外、アセトアミノフェン（NSAIDsは避ける）', clues: ['q:travel', 'q:character', 'e:skin', 'L:WBC', 'L:PLT', 't:dengue_ag'] },
   ],
 };
 APPROACHES.breast = {
@@ -1017,7 +1029,7 @@ APPROACHES.breast = {
   ddx: [
     { id: 'mastitis', tests: ['breast_us'], point: '授乳期、乳汁のうっ滞・乳頭の傷、乳房の発赤・熱感・有痛性硬結と発熱 → 授乳の継続と抗菌薬', clues: ['q:pmh', 'q:fever', 'e:breast', 'H:CRP', 'H:WBC'] },
     { id: 'abscess', point: '波動を触れる、エコーで膿瘍' },
-    { id: 'breast_ca', point: '授乳期でない、硬く無痛性のしこり・皮膚のくぼみ・乳頭陥凹' },
+    { id: 'breast_ca', tests: ['breast_us'], point: '授乳期でない、硬く境界不明瞭で動きにくい無痛性のしこり、皮膚のくぼみ、家族歴・ホルモン補充療法 → 乳腺外科で針生検', clues: ['q:family', 'q:meds', 'e:breast', 't:breast_us', '!q:fever'] },
   ],
 };
 APPROACHES.hearing = {
@@ -1059,6 +1071,8 @@ APPROACHES.chronic_cough = {
   redflags: ['血痰・体重減少・喫煙 → 肺がん', '寝汗・微熱・体重減少 → 肺結核（隔離）', '息切れ・捻髪音 → 間質性肺炎', 'ACE阻害薬の内服 → 薬剤性の咳'],
   ddx: [
     { id: 'cva_cough', tests: ['spirometry'], point: 'かぜの後に続く乾いた咳、夜間〜明け方に悪化、冷気・会話で誘発、喘鳴なし、アレルギー歴、呼気NO上昇 → 吸入ステロイド', clues: ['q:character', 'q:pmh', 'q:onset', '!q:fever', '!q:smoking', 't:spirometry'] },
+    { id: 'sarcoid', tests: ['cxr', 'ace_kl', 'ecg'], point: '乾いた咳・目のかすみ（ぶどう膜炎）・結節性紅斑、両側肺門リンパ節腫脹、ACE高値 → 組織診断と心臓の評価', clues: ['q:character', 'e:eye', 't:cxr', 'H:ACE', '!q:smoking'] },
+    { id: 'ntm', tests: ['chest_ct', 'afb'], point: '中高年のやせ型女性、長く続く痰・血痰、中葉・舌区の気管支拡張と粒状影、抗酸菌陽性で結核菌PCR陰性 → 肺MAC症', clues: ['q:sputum', 'q:onset', '!q:smoking', 't:chest_ct', 't:afb'] },
     { id: 'upper_airway_cough', point: '鼻汁・後鼻漏・痰がらみの咳、副鼻腔炎' },
     { id: 'gerd', point: '胸やけ・呑酸を伴う咳', clues: ['q:heartburn'] },
     { id: 'acei_cough', point: 'ACE阻害薬の内服中の乾いた咳' },
@@ -1104,7 +1118,8 @@ APPROACHES.lymph = {
   redflags: ['2cm以上・硬い・可動性が悪い・4週以上続く・鎖骨上窩 → 生検', 'B症状（発熱・寝汗・体重減少）→ 悪性リンパ腫', '咳・寝汗・体重減少 → 結核'],
   ddx: [
     { id: 'lymphoma', point: '痛みのない弾性硬のリンパ節が数週で大きくなる・多発、B症状、LDH高値 → 生検', clues: ['q:nightsweat', 'q:weightloss', 'e:neck_ln', 'H:LDH', '!q:sorethroat'] },
-    { id: 'mono', point: '若年、発熱・咽頭痛・後頸部リンパ節腫脹・肝脾腫、異型リンパ球', clues: ['q:sorethroat'] },
+    { id: 'mono', tests: ['smear', 'ebv'], point: '若年、発熱・咽頭痛（扁桃の白苔）・後頸部リンパ節腫脹・肝脾腫・強い倦怠感、アモキシシリンで発疹、異型リンパ球・肝機能障害', clues: ['q:sorethroat', 'q:meds', 'e:pharynx', 'e:abd_palp', 'H:ALT', 't:ebv'] },
+    { id: 'hiv', tests: ['hiv'], point: 'リスクのある性交渉の2〜6週後の発熱・咽頭痛・発疹・全身のリンパ節腫脹・下痢、性感染症の既往 → 同意を得てHIV検査', clues: ['q:sickcontact', 'q:pmh', 'e:skin', 'e:oral_mucosa', 't:hiv', 'L:WBC'] },
     { id: 'reactive_ln', point: '痛みのある小さなリンパ節、感染症状に伴い、数週で縮小' },
     { id: 'tb', point: '頸部リンパ節結核、咳・寝汗' },
     { id: 'sarcoid', point: '両側肺門リンパ節腫脹、ぶどう膜炎' },
@@ -1119,6 +1134,7 @@ APPROACHES.edema = {
   redflags: ['起座呼吸・頸静脈怒張 → 心不全', '片側の腫脹・ふくらはぎの痛み → 深部静脈血栓症', '高度の蛋白尿・低アルブミン → ネフローゼ症候群（血栓症に注意）'],
   ddx: [
     { id: 'nephrotic', tests: ['upcr'], point: '急なまぶたと下腿のむくみ・泡立つ尿・体重増加、頸静脈怒張なし、高度の蛋白尿と低アルブミン・高LDL → 腎生検', clues: ['q:edema', 'q:character', '!q:orthopnea', '!e:jvd', 'H:U_PRO', 'L:ALB', 't:upcr'] },
+    { id: 'cirrhosis', tests: ['abd_us', 'paracentesis', 'chem', 'coag'], point: '大量飲酒・肝炎、腹部膨満（腹水）と下腿浮腫、黄疸・くも状血管腫・脾腫・血小板減少・低アルブミン → 腹水穿刺・利尿薬・禁酒', clues: ['q:alcohol', 'q:pmh', 'e:abd_insp', 'e:skin', 'L:PLT', 'L:ALB', '!e:jvd'] },
     { id: 'adhf', point: '起座呼吸・頸静脈怒張・BNP高値', clues: ['q:orthopnea', 'e:jvd', 'H:BNP'] },
     { id: 'hypothyroid', point: '寒がり・体重増加・圧痕を残さないむくみ、TSH高値', clues: ['q:heatcold'] },
     { id: 'dvt', point: '片側の腫脹・ふくらはぎの圧痛' },
@@ -1188,6 +1204,22 @@ APPROACHES.hematuria = {
     { id: 'cystitis', point: '排尿時痛・頻尿と血尿', clues: ['q:dysuria'] },
   ],
 };
+APPROACHES.menstrual = {
+  title: '月経の異常（生理不順・無月経）',
+  intro: '月経が来ない・不規則なときは、まず妊娠反応。次に体重の変化（やせ・肥満）、甲状腺、プロラクチン（乳汁分泌）、多嚢胞性卵巣症候群（多毛・ニキビ）、早発卵巣不全を考える。',
+  keyQ: ['onset', 'menses', 'lmp', 'character', 'weightgain', 'weightloss', 'heatcold', 'mood', 'meds', 'pmh'],
+  keyE: ['skin', 'thyroid_palp'],
+  keyT: ['uhcg', 'thyroid', 'hormone'],
+  redflags: ['妊娠反応は必ず確認', '著明なやせ → 摂食障害', '乳汁分泌・頭痛・視野障害 → プロラクチノーマ'],
+  ddx: [
+    { id: 'pcos', tests: ['tvus', 'hormone', 'uhcg'], point: '思春期からの月経不順・多毛・ニキビ・肥満、卵巣に多数の小卵胞、LH高値 → 婦人科で治療', clues: ['q:onset', 'q:character', 'q:weightgain', 'e:skin', 't:tvus', '!t:uhcg'] },
+    { id: 'pregnancy', point: '妊娠反応陽性', clues: ['t:uhcg'] },
+    { id: 'hypothyroid', point: '寒がり・体重増加・TSH高値', clues: ['H:TSH'] },
+    { id: 'hyperthyroid', point: '暑がり・体重減少・TSH低値', clues: ['L:TSH'] },
+    { id: 'hyperprolactinemia', point: '乳汁分泌・薬剤（制吐薬・抗精神病薬）' },
+    { id: 'anorexia_nervosa', point: '著明なやせ・体重への恐怖', clues: ['q:weightloss'] },
+  ],
+};
 APPROACHES.leg_red = {
   title: '足の赤みと腫れ',
   intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
@@ -1250,6 +1282,7 @@ APPROACHES.lower_abd_f = {
   ddx: [
     { id: 'ectopic', point: '月経の遅れ・少量の性器出血、妊娠反応陽性、子宮内に胎嚢なし、ダグラス窩の出血', clues: ['q:lmp', 'q:vagbleed', 'q:dizziness', 'q:radiation', 'e:pelvic', 't:uhcg', 't:tvus', 'L:HB'] },
     { id: 'ovarian_torsion', point: '突然の片側の激痛と嘔吐、卵巣嚢腫の既往、エコーで腫大した卵巣と血流低下', clues: ['q:onset', 'q:nausea', 'q:pmh', 'e:pelvic', 't:tvus'] },
+    { id: 'ovarian_tumor', tests: ['tvus', 'ca125', 'abd_us'], point: '腹部膨満・早期の満腹感・下腹部の重さが数か月、硬い腫瘤・腹水、CA125高値 → 婦人科腫瘍外来', clues: ['q:course', 'q:character', 'e:abd_palp', 't:tvus', 'H:CA125', '!q:fever'] },
     { id: 'pid', point: '発熱・膿性帯下・両側の下腹部痛・子宮頸部移動痛、新しいパートナー', clues: ['q:fever', 'q:vagbleed', 'q:trigger', 'e:pelvic', '!t:uhcg', 'H:CRP', 'H:WBC'] },
     { id: 'appendicitis', point: '心窩部から右下腹部への痛みの移動・McBurney点圧痛', clues: ['e:mcburney'] },
     { id: 'miscarriage', point: '妊娠初期の少量の性器出血、子宮内に胎嚢と心拍あり', clues: ['q:vagbleed', 't:tvus'] },
@@ -1996,6 +2029,16 @@ export const DISEASE_NOTES = {
   stress_incontinence: {"overview":"咳やくしゃみなどでお腹に力がかかったときに尿が漏れる。出産や加齢で骨盤底が弱って起こる。","treatment":["尿検査で感染を除外","骨盤底筋訓練（3か月以上）","減量・便秘の改善","改善しなければ中部尿道スリング手術"],"flow":"腹圧時の尿漏れ → 切迫性・溢流性と区別 → 腹圧性尿失禁 → 骨盤底筋訓練"},
   epididymitis: {"overview":"精巣上体に細菌が感染して、陰嚢の腫れ・痛み・発熱が起こる。","treatment":["ドプラエコーで精巣捻転を除外","抗菌薬（年齢で原因菌が違う）","陰嚢の挙上・安静"],"flow":"徐々に始まる陰嚢痛・発熱 → 精巣の血流は保たれる → 精巣上体炎 → 抗菌薬"},
   prostate_ca: {"overview":"前立腺にできるがん。早期は無症状でPSA検診で見つかることが多い。","treatment":["MRI・前立腺生検","病期診断（骨シンチ・CT）","監視療法・手術・放射線・ホルモン療法"],"flow":"PSA高値・直腸診で硬結 → MRI・生検 → 前立腺がん → 病期に応じた治療"},
+  breast_ca: {"overview":"乳腺にできるがん。日本の女性で最も多いがん。","treatment":["マンモグラフィ・エコー・針生検","サブタイプ（ホルモン受容体・HER2）と病期の評価","手術・薬物療法・放射線"],"flow":"無痛性の硬いしこり → エコーで悪性所見 → 針生検 → 乳がん → 乳腺外科"},
+  cervical_ca: {"overview":"ハイリスクHPVの持続感染で起こる子宮頸部のがん。検診とワクチンで予防できる。","treatment":["細胞診・HPV検査","コルポスコピー・組織診","病期に応じて手術・同時化学放射線療法"],"flow":"性交後出血・不正出血 → 子宮頸部の病変・細胞診異常 → 子宮頸がん → 婦人科"},
+  ovarian_tumor: {"overview":"卵巣にできる腫瘍。悪性（卵巣がん）は早期に症状が出にくい。","treatment":["経腟超音波・MRI・CT","CA125","手術で病理診断と治療、化学療法"],"flow":"腹部膨満・下腹部の重さ → エコーで充実部分を含む腫瘤・腹水 → 卵巣がんの疑い → 婦人科腫瘍外来"},
+  pcos: {"overview":"排卵がうまく起こらず、月経不順・多毛・ニキビ・肥満を起こす内分泌の病気。不妊の原因として多い。","treatment":["妊娠反応・甲状腺・プロラクチンで他の原因を除外","減量","妊娠希望なら排卵誘発、なければ月経調整","耐糖能・脂質の管理"],"flow":"月経不順・多毛・ニキビ → 卵巣の多数の小卵胞・LH高値 → 多嚢胞性卵巣症候群 → 婦人科"},
+  mono: {"overview":"EBウイルスの初感染で、発熱・咽頭痛・リンパ節腫脹・肝脾腫が起こる。若年者に多い。","treatment":["対症療法（解熱鎮痛・安静）","脾破裂予防のため激しい運動を控える","アモキシシリンは発疹を起こすので避ける"],"flow":"若年者の発熱・咽頭痛・後頸部リンパ節腫脹・肝脾腫 → 異型リンパ球・EBV抗体 → 伝染性単核球症 → 対症療法"},
+  hiv: {"overview":"HIVに感染して数週後に、発熱・発疹・リンパ節腫脹などが出る時期。早期診断・治療で予後は良好。","treatment":["同意を得てHIV抗原抗体検査（陰性でも疑えば再検査）","感染症内科で確認検査・抗HIV療法","他の性感染症の検査","全数届出"],"flow":"リスク行動後の発熱・発疹・リンパ節腫脹 → HIV検査陽性 → 急性HIV感染症 → 早期治療"},
+  dengue: {"overview":"蚊が媒介するデングウイルスの感染症。熱帯・亜熱帯で流行し、帰国後に発症する。","treatment":["マラリアの除外","アセトアミノフェン・補液（NSAIDsは避ける）","警告徴候・血小板の推移を監視","4類感染症として届出"],"flow":"帰国後の高熱・関節痛・発疹・血小板減少 → NS1抗原陽性 → デング熱 → 対症療法と監視"},
+  sarcoid: {"overview":"全身に肉芽腫ができる原因不明の病気。肺・眼・皮膚・心臓などに起こる。","treatment":["気管支鏡などで組織診断","結核・リンパ腫の除外","心臓・眼の評価","臓器障害があればステロイド"],"flow":"咳・ぶどう膜炎・両側肺門リンパ節腫脹 → ACE高値 → サルコイドーシス → 組織診断と臓器評価"},
+  ntm: {"overview":"土や水にいる非結核性抗酸菌（MAC）による慢性の肺感染症。中高年女性に多く、人にはうつらない。","treatment":["結核菌PCRで結核を除外","喀痰培養で診断基準を確認","多剤併用療法（クラリスロマイシンなど）の検討"],"flow":"長く続く痰・血痰＋中葉・舌区の気管支拡張 → 抗酸菌陽性・結核菌PCR陰性 → 肺MAC症"},
+  cirrhosis: {"overview":"慢性の肝障害で肝臓が硬く小さくなり、腹水・黄疸・静脈瘤・肝性脳症などを起こす状態。","treatment":["診断的腹水穿刺","塩分制限・利尿薬（スピロノラクトン）","禁酒・原因の治療","静脈瘤・肝がん・肝性脳症の管理"],"flow":"飲酒歴＋腹部膨満・浮腫 → エコーで肝硬変・腹水 → 腹水穿刺 → 利尿薬と禁酒"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

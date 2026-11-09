@@ -50,6 +50,8 @@ export const LABS = {
   LDH: { name: 'LDH', unit: 'U/L', ref: [124, 222], dp: 0, base: { m: 180, sd: 25 }, abs: [80, 10000] },
   TP: { name: '総蛋白', unit: 'g/dL', ref: [6.6, 8.1], dp: 1, base: { m: 7.2, sd: 0.3 }, abs: [3, 14] },
   PHOS: { name: 'リン', unit: 'mg/dL', ref: [2.7, 4.6], dp: 1, base: { m: 3.5, sd: 0.4 }, abs: [0.3, 12] },
+  ACE: { name: '血清ACE', unit: 'U/L', ref: [8.3, 21.4], dp: 1, base: { m: 14, sd: 3 }, abs: [1, 100] },
+  CA125: { name: 'CA125', unit: 'U/mL', ref: [0, 35], dp: 0, base: { m: 12, sd: 5 }, abs: [1, 10000] },
   LAC: { name: '乳酸', unit: 'mmol/L', ref: [0.5, 2.0], dp: 1, base: { m: 1.0, sd: 0.25 }, abs: [0.3, 20] },
   AG: { name: 'アニオンギャップ', unit: 'mEq/L', ref: [8, 12], dp: 0, derived: true, abs: [0, 50] },
   BHB: { name: '血中β-ヒドロキシ酪酸', unit: 'μmol/L', ref: [0, 85], dp: 0, base: { m: 40, sd: 15 }, abs: [0, 15000] },
