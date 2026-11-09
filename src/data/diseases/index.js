@@ -80,6 +80,15 @@ import ibs from './ibs.js';
 import vestibular from './vestibular.js';
 import mycoplasma from './mycoplasma.js';
 import pud from './pud.js';
+import nec_fasc from './nec_fasc.js';
+import epiglottitis from './epiglottitis.js';
+import epidural from './epidural.js';
+import gca from './gca.js';
+import pmr from './pmr.js';
+import pseudogout from './pseudogout.js';
+import septic_arthritis from './septic_arthritis.js';
+import hypok from './hypok.js';
+import insomnia from './insomnia.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal, htn, dm2, lumbago, allergic_rhinitis, urticaria, sinusitis, pta, seizure, aki, pericarditis, hypothermia, hepatic_enc, intox, herniated_disc, ibs, vestibular, mycoplasma, pud];
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal, htn, dm2, lumbago, allergic_rhinitis, urticaria, sinusitis, pta, seizure, aki, pericarditis, hypothermia, hepatic_enc, intox, herniated_disc, ibs, vestibular, mycoplasma, pud, nec_fasc, epiglottitis, epidural, gca, pmr, pseudogout, septic_arthritis, hypok, insomnia];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

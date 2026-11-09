@@ -401,6 +401,29 @@ export const DRUGS = [
     info: '過敏性腸症候群に1回100〜200mgを1日3回。',
   },
   {
+    id: 'clinda', generic: 'クリンダマイシン', brands: ['ダラシンS'], cls: '抗菌薬（リンコマイシン系）', allergy: 'lincosamide', abx: true,
+    routes: { iv: { unit: 'mg', min: 600, max: 900, freqs: ['q8h'], maxDaily: 2700 } },
+    covers: ['gpc', 'anaerobe'], tags: ['toxin_suppress'],
+    info: '壊死性筋膜炎（A群溶連菌）では毒素産生を抑えるため、ペニシリン系などと併用して600〜900mgを8時間毎。C. difficile腸炎に注意。',
+  },
+  {
+    id: 'kcl_po', generic: '塩化カリウム（内服）', brands: ['スローケー'], cls: '電解質補正', tags: ['potassium_po'],
+    routes: { po: { unit: 'mg', min: 600, max: 1200, freqs: ['q8h', 'q12h'], maxDaily: 3600 } },
+    contra: ['hyperk'],
+    info: '低K血症に1回600〜1200mg（K 8〜16mEq）を1日2〜3回。消化管の刺激に注意。',
+  },
+  {
+    id: 'lemborexant', generic: 'レンボレキサント', brands: ['デエビゴ'], cls: '睡眠薬（オレキシン受容体拮抗薬）', tags: ['hypnotic'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '不眠症に5mg（高齢者・肝障害は2.5mg〜）を就寝直前に。ベンゾジアゼピン系より転倒・依存のリスクが少ないとされる。',
+  },
+  {
+    id: 'brotizolam', generic: 'ブロチゾラム', brands: ['レンドルミン'], cls: '睡眠薬（ベンゾジアゼピン系）', tags: ['benzo', 'hypnotic'],
+    routes: { po: { unit: 'mg', min: 0.125, max: 0.25, freqs: ['q24h'], maxDaily: 0.25 } },
+    contra: ['elderly_benzo'],
+    info: '0.25mgを就寝前。高齢者では転倒・骨折・せん妄・依存のリスクが高く、できるだけ避ける（Beers基準・高齢者の安全な薬物療法ガイドライン）。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],

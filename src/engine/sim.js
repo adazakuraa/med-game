@@ -27,7 +27,7 @@ export const PROCEDURES = [
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科', ortho: '整形外科', ent: '耳鼻咽喉科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', rheum: '膠原病内科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科', ortho: '整形外科', ent: '耳鼻咽喉科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];

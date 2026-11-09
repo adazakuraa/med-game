@@ -17,6 +17,7 @@ export const EXAMS = [
   { id: 'oral_mucosa', region: 'headneck', method: '視診', name: '口腔粘膜・舌', normal: '口腔粘膜は湿潤。' },
   { id: 'conjunctiva', region: 'headneck', method: '視診', name: '眼瞼結膜・眼球', normal: '眼瞼結膜に貧血なし。眼球突出なし。' },
   { id: 'thyroid_palp', region: 'headneck', method: '触診', name: '甲状腺の触診', normal: '甲状腺の腫大・結節・圧痛なし。' },
+  { id: 'temporal', region: 'headneck', method: '触診', name: '側頭動脈の触診', normal: '側頭動脈の拍動は良好。圧痛・肥厚なし。' },
   { id: 'pharynx', region: 'headneck', method: '視診', name: '咽頭・扁桃', normal: '咽頭発赤なし。扁桃腫大なし。' },
   { id: 'neck_ln', region: 'headneck', method: '触診', name: '頸部リンパ節', normal: '頸部リンパ節腫脹なし。' },
   { id: 'jvd', region: 'headneck', method: '視診', name: '頸静脈', normal: '頸静脈怒張なし（座位45°）。' },
