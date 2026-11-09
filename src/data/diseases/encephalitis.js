@@ -5,7 +5,7 @@ export default {
   weight: 1.5, season: {}, minLevel: 3,
   demo: { age: [30, 80], ageMode: 'uniform', male: 0.5 },
   sev: { p: [0.3, 0.45, 0.25], burden: [[34, 44], [46, 56], [58, 68]] },
-  refractoryP: [0, 0.05, 0.12],
+  refractoryP: [0, 0.04, 0.08],
   comorb: { extra: { htn: 0.3 } },
   organisms: [],
   minHoursToCure: 96,

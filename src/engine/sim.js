@@ -58,7 +58,7 @@ function orderActive(o, t, phase) {
   if (t < o.start) return false;
   if (o.stopT != null && t >= o.stopT) return false;
   if (o.end != null && t >= o.end) return false;
-  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) return false;
+  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh', 'top', 'sl'].includes(o.route))) return false;
   return true;
 }
 
@@ -653,7 +653,7 @@ export function discharge(enc) {
   if (!enc.dispo) enc.dispo = { type: 'home', t: enc.t };
   enc.dischargeT = enc.t;
   addLog(enc, 'dispo', enc.phase === 'er' ? '外来治療で帰宅' : '退院');
-  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) o.stopT = enc.t;
+  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh', 'top', 'sl'].includes(o.route))) o.stopT = enc.t;
   enc.phase = 'home';
   // 自宅での経過（最大14日）
   const until = enc.t + 14 * 1440;

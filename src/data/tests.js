@@ -41,9 +41,12 @@ export const TESTS = [
   { id: 'strep_ag', cat: 'micro', name: '溶連菌迅速抗原', kind: 'qual', cost: 1360, timeMin: 10, inv: 0, pos: '陽性', neg: '陰性', spec: 0.95 },
   { id: 'fobt', cat: 'micro', name: '便潜血（2回法）', kind: 'qual', cost: 370, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.93 },
   { id: 'myco_ag', cat: 'micro', name: 'マイコプラズマ迅速抗原', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.95 },
-  { id: 'afb', cat: 'micro', name: '喀痰抗酸菌検査（塗抹・PCR・培養）', kind: 'report', cost: 4500, timeMin: 120, inv: 0, normal: '抗酸菌塗抹陰性。結核菌PCR陰性（培養は結果待ち）。' },
+  { id: 'afb', cat: 'micro', name: '喀痰抗酸菌検査（塗抹・PCR・培養）', kind: 'report', cost: 4500, timeMin: 60, inv: 0, normal: '抗酸菌塗抹陰性。結核菌PCR陰性（培養は結果待ち）。' },
   { id: 'igra', cat: 'micro', name: 'インターフェロンγ遊離試験（T-SPOT/QFT）', kind: 'qual', cost: 6000, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'cdiff', cat: 'micro', name: 'CDトキシン・抗原（便）', kind: 'qual', cost: 1000, timeMin: 60, inv: 0, pos: '陽性（GDH抗原・トキシンとも陽性）', neg: '陰性', spec: 0.98 },
+  { id: 'koh', cat: 'micro', name: 'KOH直接鏡検（皮膚・腟分泌物）', kind: 'report', cost: 610, timeMin: 15, inv: 0, normal: '真菌（菌糸・胞子）を認めない。ヒゼンダニ・虫卵なし。' },
+  { id: 'psa', cat: 'blood', name: 'PSA（前立腺特異抗原）', kind: 'lab', items: ['PSA'], cost: 1200, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'adeno_ag', cat: 'micro', name: 'アデノウイルス迅速抗原（結膜）', kind: 'qual', cost: 1900, timeMin: 15, inv: 0, pos: '陽性', neg: '陰性', spec: 0.98 },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
@@ -71,6 +74,8 @@ export const TESTS = [
   { id: 'iop', cat: 'physio', name: '眼圧測定', kind: 'report', cost: 820, timeMin: 10, inv: 0, normal: '眼圧 右15mmHg・左14mmHg（正常）。' },
   { id: 'scrotal_us', cat: 'image', name: '陰嚢エコー（カラードプラ）', kind: 'report', cost: 5300, timeMin: 20, inv: 0, normal: '両側精巣の血流は良好。精巣上体の腫大なし。' },
   { id: 'leg_cta', cat: 'image', name: '下肢動脈造影CT', kind: 'report', cost: 22000, timeMin: 45, inv: 2, radiation: true, contrast: true, normal: '下肢動脈に閉塞・狭窄なし。' },
+  { id: 'pvr', cat: 'physio', name: '残尿測定（膀胱エコー）', kind: 'report', cost: 550, timeMin: 10, inv: 0, normal: '排尿後残尿 20mL（正常）。' },
+  { id: 'psg', cat: 'physio', name: '簡易睡眠検査（携帯型・自宅）', kind: 'report', cost: 7200, timeMin: 1440, inv: 0, normal: '無呼吸低呼吸指数（AHI）3回/時（正常）。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

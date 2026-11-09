@@ -42,6 +42,7 @@ export const EXAMS = [
   { id: 'psoas', region: 'abdomen', method: '触診', name: '腸腰筋徴候', normal: '腸腰筋徴候陰性。', pain: 1 },
   { id: 'murphy', region: 'abdomen', method: '触診', name: 'Murphy徴候', normal: 'Murphy徴候陰性。', pain: 1 },
   { id: 'bladder', region: 'abdomen', method: '打診', name: '恥骨上部（膀胱）の膨隆・打診', normal: '恥骨上部に膨隆・濁音なし。' },
+  { id: 'speculum', region: 'abdomen', method: '視診', name: '腟鏡診（帯下・腟壁・子宮下垂）', normal: '帯下は正常。腟壁に発赤なし。子宮・腟壁の下垂なし。', female: true },
   { id: 'pelvic', region: 'abdomen', method: '触診', name: '内診（子宮頸部の移動痛・付属器）', normal: '子宮頸部の移動痛なし。付属器に腫瘤・圧痛なし。', pain: 2, female: true },
   { id: 'cva', region: 'back', method: '打診', name: 'CVA叩打痛', normal: '両側CVA叩打痛なし。', pain: 1 },
   { id: 'leg_edema', region: 'limbs', method: '触診', name: '下腿浮腫', normal: '下腿浮腫なし。' },

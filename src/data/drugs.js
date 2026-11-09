@@ -358,6 +358,52 @@ export const DRUGS = [
     info: '食道静脈瘤破裂で門脈圧を下げて出血を減らす。虚血性心疾患に注意。',
   },
   {
+    id: 'limaprost', generic: 'リマプロスト', brands: ['オパルモン'], cls: '血管拡張薬（プロスタグランジンE1）', tags: ['lss_tx'],
+    routes: { po: { unit: 'μg', min: 5, max: 5, freqs: ['q8h'], maxDaily: 15 } },
+    info: '腰部脊柱管狭窄症の下肢のしびれ・間欠性跛行に1回5μgを1日3回。出血傾向に注意。',
+  },
+  {
+    id: 'silodosin', generic: 'シロドシン', brands: ['ユリーフ'], cls: '前立腺肥大症治療薬（α1遮断薬）', tags: ['alpha1'],
+    routes: { po: { unit: 'mg', min: 4, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '前立腺肥大症の排尿障害に1回4mgを1日2回。射精障害・起立性低血圧に注意。',
+  },
+  {
+    id: 'relugolix', generic: 'レルゴリクス', brands: ['レルミナ'], cls: '子宮筋腫治療薬（GnRHアンタゴニスト）', tags: ['fibroid_tx'],
+    routes: { po: { unit: 'mg', min: 40, max: 40, freqs: ['q24h'], maxDaily: 40 } },
+    contra: ['pregnancy'],
+    info: '子宮筋腫の過多月経・貧血・疼痛に40mg 1日1回（最長6か月：骨量減少）。更年期様症状に注意。',
+  },
+  {
+    id: 'clotrimazole_vag', generic: 'クロトリマゾール腟錠', brands: ['エンペシド腟錠'], cls: '抗真菌薬（腟錠）', tags: ['antifungal_vag'],
+    routes: { top: { unit: 'mg', min: 100, max: 100, freqs: ['q24h'], maxDaily: 100 } },
+    info: '外陰腟カンジダ症に1日1回100mgを腟内に6日間。外陰部にはクリームを併用。',
+  },
+  {
+    id: 'steroid_oint', generic: 'ベタメタゾン吉草酸エステル軟膏', brands: ['リンデロンV軟膏'], cls: 'ステロイド外用薬（strong）', tags: ['topical_steroid'],
+    routes: { top: { unit: 'g', min: 0.5, max: 5, freqs: ['q12h', 'q24h'], maxDaily: 10 } },
+    info: '湿疹・皮膚炎に1日1〜2回塗布。顔面・陰部は弱めのランクを。真菌感染・疥癬には悪化させるので使わない。',
+  },
+  {
+    id: 'terbinafine_cream', generic: 'テルビナフィンクリーム', brands: ['ラミシールクリーム'], cls: '抗真菌薬（外用）', tags: ['topical_antifungal'],
+    routes: { top: { unit: 'g', min: 0.5, max: 2, freqs: ['q24h'], maxDaily: 2 } },
+    info: '足白癬に1日1回、症状がない部分も含めて足全体に塗る。治っても1〜2か月続ける。',
+  },
+  {
+    id: 'ivermectin', generic: 'イベルメクチン', brands: ['ストロメクトール'], cls: '駆虫薬（疥癬）', tags: ['scabicide'],
+    routes: { po: { unit: 'μg/kg', min: 200, max: 200, freqs: ['once'], maxDaily: 200 } }, effectHours: 336,
+    info: '疥癬に約200μg/kgを空腹時に1回内服し、1週間後にもう1回。フェノトリンローションも有効。',
+  },
+  {
+    id: 'eye_abx', generic: 'レボフロキサシン点眼', brands: ['クラビット点眼液'], cls: '抗菌点眼薬', tags: ['eye_abx'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q8h', 'q6h'], maxDaily: 4 } },
+    info: '細菌性結膜炎に1回1滴を1日3回。',
+  },
+  {
+    id: 'eye_antiallergy', generic: 'オロパタジン点眼', brands: ['パタノール点眼液'], cls: '抗アレルギー点眼薬', tags: ['eye_antiallergy'],
+    routes: { top: { unit: '滴', min: 1, max: 2, freqs: ['q6h'], maxDaily: 8 } },
+    info: 'アレルギー性結膜炎に1回1〜2滴を1日4回。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

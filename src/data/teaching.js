@@ -74,6 +74,8 @@ export const QUESTION_WHY = {
   heartburn: '胸やけ・呑酸（酸っぱいものが上がる）は逆流性食道炎に典型的。',
   mood: '2週間以上の抑うつ気分・興味や喜びの喪失はうつ病のサイン（2質問法）。希死念慮も必ず確認する。',
   nightsweat: '寝汗・体重減少・発熱（B症状）は結核・悪性リンパ腫などを示唆する。',
+  itch: '夜間に強いかゆみ・家族や施設内での同様の症状は疥癬を疑う。湿疹・白癬・じんましんでもかゆみが出る。',
+  snore: 'いびき・睡眠中の無呼吸・日中の眠気は睡眠時無呼吸症候群のサイン。',
   heatcold: '暑がり・汗かき・体重減少は甲状腺機能亢進症、寒がり・むくみ・便秘は機能低下症を示唆する。',
   joint: '関節の腫れ・痛み。急な単関節炎は痛風・偽痛風・化膿性関節炎、多関節は関節リウマチなどを考える。',
   menses: '月経の量（過多月経）は若い女性の鉄欠乏性貧血の最も多い原因。',
@@ -117,6 +119,7 @@ export const EXAM_WHY = {
   psoas: '右股関節を伸ばして痛めば陽性。後腹膜側にある虫垂の炎症を示唆する。',
   murphy: '右季肋部を押さえて深く息を吸うと、痛みで呼吸が止まれば陽性。急性胆嚢炎の所見。',
   bladder: '恥骨の上が膨らんで打診で濁音なら、膀胱に尿がたまっている（尿閉）。',
+  speculum: '帯下の性状（白色酒かす状ならカンジダ）、腟壁の発赤、子宮や膀胱の下垂を確認する。',
   pelvic: '子宮頸部を動かすと痛む（移動痛）・付属器の圧痛は骨盤内炎症性疾患や異所性妊娠の手がかり。',
   hip: '転倒後に患側の脚が短く外旋していれば大腿骨頸部骨折を疑う。',
   cva: '肋骨脊柱角（背中の腎臓のあたり）の叩打痛。腎盂腎炎や尿管結石で陽性になる。',
@@ -160,6 +163,9 @@ export const TEST_WHY = {
   afb: '結核を疑ったら喀痰の抗酸菌塗抹・PCR・培養（3回）。塗抹陽性なら感染性が高い。',
   igra: '結核菌に感染したことがあるかを血液で調べる。活動性結核と潜在性結核の区別はできない。',
   cdiff: '抗菌薬使用後・入院中の下痢では、便のCDトキシン・抗原を調べる。',
+  koh: '皮膚の鱗屑や腟分泌物を顕微鏡で見て、真菌（白癬・カンジダ）や疥癬（ヒゼンダニ）を確認する。外用ステロイドを塗る前に。',
+  psa: '前立腺がんのスクリーニング。前立腺肥大でも上がる。',
+  adeno_ag: '流行性角結膜炎（アデノウイルス）の迅速検査。感度は高くないので陰性でも否定できない。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -204,6 +210,8 @@ export const TEST_WHY = {
   iop: '眼圧。急性緑内障発作では40〜60mmHg以上に上がる。',
   scrotal_us: '精巣の血流をドプラで評価。血流がなければ精巣捻転。',
   leg_cta: '下肢動脈の閉塞部位と範囲を確認する（急性動脈閉塞・閉塞性動脈硬化症）。',
+  pvr: '排尿後の残尿量をエコーで測る。100mL以上は排出障害（前立腺肥大症・神経因性膀胱）。',
+  psg: '睡眠中の呼吸の止まり方（AHI）を調べる。5以上で睡眠時無呼吸、20以上でCPAPの適応（簡易検査では40以上）。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -229,6 +237,7 @@ export const LAB_MEANING = {
   FT4: { H: '甲状腺ホルモン過剰', L: '甲状腺ホルモン不足' },
   FER: { L: '鉄の貯蔵が枯渇（鉄欠乏）', H: '炎症・肝疾患・鉄過剰' },
   LIP: { H: '膵臓の障害（急性膵炎で基準の3倍以上に上昇）。アミラーゼより膵臓に特異的' },
+  PSA: { H: '前立腺がん・前立腺肥大症・前立腺炎で上昇する。4を超えれば泌尿器科で精査' },
   CA: { H: '高Ca血症（悪性腫瘍・副甲状腺機能亢進症・ビタミンD）', L: '低Ca血症' },
   ESR: { H: '赤沈亢進（炎症・巨細胞性動脈炎・リウマチ性多発筋痛症・感染・悪性腫瘍）' },
   NH3: { H: '高アンモニア血症（肝性脳症など）' },
@@ -315,6 +324,15 @@ export const DRUG_ROLE = {
   acyclovir: 'ヘルペス脳炎の治療。脳炎を疑ったら結果を待たずに開始する。',
   amiodarone: '心室頻拍・心室細動に使う抗不整脈薬。',
   vasopressin_like: '門脈の圧を下げて、静脈瘤からの出血を減らす薬。',
+  limaprost: '腰部脊柱管狭窄症の神経の血流を改善し、歩ける距離を延ばす薬。',
+  silodosin: '前立腺・膀胱頸部の筋肉をゆるめて尿を出しやすくする薬（α1遮断薬）。立ちくらみに注意。',
+  relugolix: '女性ホルモンを抑えて子宮筋腫を小さくし、過多月経を止める薬。',
+  clotrimazole_vag: '腟カンジダの腟錠。',
+  steroid_oint: '湿疹・皮膚炎の炎症を抑える塗り薬。真菌・疥癬には使わない。',
+  terbinafine_cream: '水虫（足白癬）の塗り薬。足全体に長めに塗る。',
+  ivermectin: '疥癬の飲み薬。1週間あけて2回飲む。',
+  eye_abx: '細菌性結膜炎の点眼薬。',
+  eye_antiallergy: 'アレルギー性結膜炎のかゆみを抑える点眼薬。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -507,7 +525,7 @@ export const APPROACHES = {
       { id: 'appendicitis', point: '心窩部から右下腹部への痛みの移動、食欲不振、McBurney点圧痛、反跳痛、エコー・CTで腫大した虫垂', clues: ['q:migration', 'q:anorexia', 'q:aggravating', 'e:mcburney', 'e:abd_rebound', 'e:abd_guard', 'e:rovsing', 'e:psoas', 't:abd_us', 't:abd_ct_contrast', 't:abd_ct_plain', 'H:WBC'] },
       { id: 'gastro', point: '下痢を伴い、圧痛は軽く限局しない', clues: ['q:diarrhea'] },
       { id: 'diverticulitis', point: '限局した圧痛（日本人は右側も多い）、CTで憩室と周囲の炎症' },
-      { id: 'cholangitis', tests: ['abd_us', 'bcx'], point: '発熱・悪寒戦慄・右季肋部痛・黄疸（Charcot 3徴）、胆道系酵素とビリルビン上昇、胆管拡張', clues: ['q:chills', 'q:hematuria', 'e:skin', 'e:conjunctiva', 'H:TBIL', 'H:AST', 't:abd_us'] },
+      { id: 'cholangitis', tests: ['abd_us', 'bcx'], point: '発熱・悪寒戦慄・右季肋部痛・黄疸（Charcot 3徴）、胆道系酵素とビリルビン上昇、胆管拡張', clues: ['q:chills', 'q:hematuria', 'e:skin', 'e:conjunctiva', 'H:TBIL', 'H:AST', 'H:ALT', 't:abd_us'] },
       { id: 'diverticulitis', point: '最初から右（または左）下腹部の限局した痛み、痛みの移動なし、CTで憩室と周囲の炎症', clues: ['q:migration', 'q:pmh', 'e:abd_palp', 't:abd_ct_contrast'] },
       { id: 'ischemic_colitis', point: '便秘の高齢女性、いきんだ後の突然の左下腹部痛→下痢→血便', clues: ['q:bloodystool', 'q:constipation', 'q:diarrhea', 'q:onset', 'e:rectal'] },
       { id: 'pancreatitis', tests: ['abd_ct_contrast'], point: '飲酒・胆石、上腹部〜背部に突き抜ける持続痛、前かがみで軽快、リパーゼ・アミラーゼ上昇', clues: ['q:alcohol', 'q:radiation', 'q:relieving', 'H:LIP', 'H:AMY', 't:abd_ct_contrast'] },
@@ -614,7 +632,7 @@ APPROACHES.headache = {
     { id: 'meningitis', tests: ['lp'], point: '発熱・項部硬直・jolt陽性', clues: ['q:fever', 'e:jolt'] },
     { id: 'ich', tests: ['head_ct'], point: '高血圧、神経症状・意識障害', clues: ['e:motor'] },
     { id: 'aacg', tests: ['iop'], point: '高齢女性、目の奥の痛み・頭痛・嘔吐、かすみ・虹視、充血と中等度散瞳（対光反射なし）、眼圧著明上昇 → 眼科へ緊急', clues: ['q:vision', 'q:nausea', 'e:eye', 'e:pupils', 't:iop'] },
-    { id: 'co_poisoning', tests: ['vbg', 'ecg'], point: '冬・暖房器具や練炭、同居家族も同じ症状、家を出ると楽になる、SpO2は正常でもCOHb高値 → すぐに100%酸素', clues: ['q:family', 'q:trigger', 'q:course', 'H:COHB'] },
+    { id: 'co_poisoning', tests: ['vbg', 'ecg'], point: '冬・暖房器具や練炭、同居家族も同じ症状、家を出ると楽になる、SpO2は正常でもCOHb高値 → すぐに100%酸素', clues: ['H:COHB', 'q:family'] },
     { id: 'gca', tests: ['esr'], point: '50歳以上の新しいこめかみの頭痛、顎跛行・視力障害、側頭動脈の圧痛・拍動低下、赤沈著明高値 → 失明予防にすぐステロイド', clues: ['q:location', 'q:jaw', 'q:vision', 'e:temporal', 'H:ESR', 'H:CRP'] },
   ],
 };
@@ -703,6 +721,49 @@ APPROACHES.scrotal = {
     { id: 'testicular_torsion', tests: ['scrotal_us'], point: '思春期〜若年、突然の激痛と嘔吐、精巣の挙上・横位、挙睾筋反射消失、ドプラで血流消失', clues: ['q:onset', 'q:nausea', 'e:scrotum', 't:scrotal_us', '!q:fever'] },
     { id: 'epididymitis', point: '徐々に始まる痛み・発熱・排尿時痛・膿尿、持ち上げると痛みが軽くなる、血流は増加', clues: ['q:fever', 'q:dysuria'] },
     { id: 'inc_hernia', point: '鼠径部から陰嚢への還納できない膨隆', clues: ['e:inguinal'] },
+  ],
+};
+APPROACHES.vaginal = {
+  title: '陰部の症状・おりもの',
+  intro: '陰部のかゆみ・おりものの異常では、帯下の性状でカンジダ・細菌性腟症・トリコモナス・性感染症（クラミジア・淋菌）を見分ける。高齢女性の「何かが出てくる」は骨盤臓器脱。妊娠の可能性も確認。',
+  keyQ: ['onset', 'character', 'vagbleed', 'itch', 'dysuria', 'retention', 'frequency', 'fever', 'abdpain', 'lmp', 'trigger', 'pmh', 'meds'],
+  keyE: ['speculum', 'pelvic'],
+  keyT: ['koh', 'ua'],
+  redflags: ['発熱・下腹部痛・子宮頸部の移動痛 → 骨盤内炎症性疾患', '閉経後の性器出血 → 子宮体がんを除外', '新しいパートナー・膿性帯下 → 性感染症の検査とパートナーの治療'],
+  ddx: [
+    { id: 'vaginal_candida', tests: ['koh'], point: '強いかゆみと白い酒かす状の帯下、抗菌薬使用後・糖尿病、鏡検で仮性菌糸', clues: ['q:itch', 'q:vagbleed', 'e:speculum', 't:koh', '!q:fever'] },
+    { id: 'bv', point: '魚のような臭いの灰色で均一な帯下、かゆみは軽い' },
+    { id: 'pid', point: '発熱・下腹部痛・膿性帯下・子宮頸部の移動痛', clues: ['q:fever', 'q:abdpain'] },
+    { id: 'pop', point: '高齢・経腟分娩歴、股に何かが挟まる・ピンポン玉が触れる、立位やいきみで悪化し横になると戻る、排尿困難', clues: ['q:character', 'q:aggravating', 'q:retention', 'q:pmh', 'e:speculum'] },
+  ],
+};
+APPROACHES.itch_rash = {
+  title: 'かゆい発疹',
+  intro: 'かゆい発疹は、分布（接触部位・趾間・指間/陰部）、経過、周囲の同症状、使っている外用薬で整理する。ステロイドで悪化する真菌・疥癬を見逃さないために鏡検（KOH）を。息苦しさや血圧低下を伴えばアナフィラキシー。',
+  keyQ: ['onset', 'character', 'location', 'itch', 'trigger', 'sickcontact', 'meds', 'fever', 'dyspnea'],
+  keyE: ['skin'],
+  keyT: ['koh'],
+  redflags: ['息苦しさ・血圧低下・嘔吐を伴う → アナフィラキシー', '発熱・粘膜疹・皮膚のただれ → 重症薬疹（SJS/TEN）', '施設内で多発する夜間のかゆみ → 疥癬（感染対策）'],
+  ddx: [
+    { id: 'contact_derm', point: '原因物質の接触部位に一致した境界明瞭な紅斑・小水疱、新しい物の使用', clues: ['q:trigger', 'q:location', 'e:skin', '!t:koh', '!q:sickcontact'] },
+    { id: 'tinea', tests: ['koh'], point: '足趾間の浸軟・鱗屑・小水疱、蒸れる靴・家族も、ステロイドで悪化、鏡検で菌糸', clues: ['q:location', 'q:meds', 'q:trigger', 't:koh'] },
+    { id: 'scabies', tests: ['koh'], point: '施設・家族内で多発、夜間の強いかゆみ、指間・手掌・腋窩・陰部の丘疹と疥癬トンネル、鏡検でヒゼンダニ', clues: ['q:sickcontact', 'q:itch', 'q:meds', 'e:skin', 't:koh'] },
+    { id: 'urticaria', point: '数時間で消えては出る膨疹', clues: ['q:course'] },
+    { id: 'atopic', point: '幼少期からの慢性・再発性の湿疹、肘窩・膝窩、アレルギー疾患の家族歴' },
+  ],
+};
+APPROACHES.red_eye = {
+  title: '目の充血',
+  intro: '目の充血の多くは結膜炎（ウイルス性・細菌性・アレルギー性）だが、視力低下・強い眼痛・頭痛・嘔吐・瞳孔異常・角膜の混濁があれば急性緑内障発作・角膜炎・ぶどう膜炎を考えて眼科へ。',
+  keyQ: ['onset', 'character', 'vision', 'itch', 'sickcontact', 'headache', 'nausea', 'sorethroat', 'allergy'],
+  keyE: ['eye', 'pupils', 'neck_ln'],
+  keyT: [],
+  redflags: ['視力低下・強い眼痛・頭痛と嘔吐・角膜混濁・瞳孔散大 → 急性緑内障発作（眼圧測定・眼科へ緊急）', 'コンタクトレンズ使用者の眼痛 → 角膜潰瘍', '外傷・薬品が目に入った → すぐに大量の水で洗眼'],
+  ddx: [
+    { id: 'conjunctivitis', tests: ['adeno_ag'], point: '片眼から両眼へ、水様の眼脂・流涙・異物感、耳前リンパ節腫脹、周囲の流行 → 感染対策', clues: ['q:sickcontact', 'q:onset', 'e:eye', 'e:neck_ln', 't:adeno_ag', '!q:vision'] },
+    { id: 'allergic_conj', point: '両眼の強いかゆみ・季節性・花粉症', clues: ['q:itch'] },
+    { id: 'bact_conj', point: '膿性の眼脂でまぶたがくっつく' },
+    { id: 'aacg', tests: ['iop'], point: '強い眼痛・頭痛・嘔吐・かすみ・虹視、中等度散瞳、眼圧上昇', clues: ['q:vision', 'q:headache', 'e:pupils', 't:iop'] },
   ],
 };
 APPROACHES.leg_red = {
@@ -858,7 +919,7 @@ APPROACHES.back_pain = {
   title: '腰背部痛',
   intro: '腰背部痛の多くは筋骨格系だが、危険な原因（Red flags）を除外する：大動脈解離・腹部大動脈瘤、腎盂腎炎・尿管結石、化膿性脊椎炎・硬膜外膿瘍（発熱）、がんの骨転移、脊髄圧迫（麻痺・排尿障害）。帯状疱疹は発疹の前に痛みが先行することがある。',
   keyQ: ['onset', 'character', 'location', 'aggravating', 'radiation', 'rash', 'fever', 'weakness', 'retention', 'pmh', 'meds'],
-  keyE: ['spine', 'slr', 'skin', 'cva', 'motor', 'bp_lr', 'abd_palp'],
+  keyE: ['spine', 'slr', 'skin', 'cva', 'motor', 'leg_pulse', 'bp_lr', 'abd_palp'],
   keyT: ['ua', 'cbc', 'crp'],
   redflags: ['突然の激痛・血圧の左右差 → 大動脈解離・瘤破裂', '発熱 → 化膿性脊椎炎・硬膜外膿瘍・腎盂腎炎', '下肢の麻痺・しびれ・排尿障害 → 脊髄・馬尾の圧迫（緊急MRI）', 'がんの既往・体重減少 → 骨転移'],
   ddx: [
@@ -870,6 +931,8 @@ APPROACHES.back_pain = {
     { id: 'epidural', tests: ['spine_mri', 'bcx'], point: '発熱＋強い背部痛（糖尿病・透析・注射歴）、棘突起の叩打痛、進行すると下肢麻痺・尿閉 → 緊急MRI', clues: ['q:fever', 'q:weakness', 'q:retention', 'q:pmh', 'e:spine', 'H:ESR', 't:spine_mri'] },
     { id: 'herniated_disc', point: '下肢へ放散する痛み・しびれ、咳・くしゃみで悪化、SLRテスト陽性', clues: ['q:radiation', 'e:slr'] },
     { id: 'lumbago', point: '重い物を持ったなどのきっかけ、体動で悪化し安静で軽快、危険なサインがない', clues: ['q:aggravating'] },
+    { id: 'lss', tests: ['spine_mri'], point: '高齢者、歩くと両足がしびれて歩けなくなり前かがみで休むと回復（神経性間欠性跛行）、自転車はこげる、足の脈は触れる', clues: ['q:character', 'q:aggravating', 'q:radiation', 'e:spine', 't:spine_mri'] },
+    { id: 'pad', point: '立ち止まるだけで治まるふくらはぎの痛み（血管性間欠性跛行）、足背動脈の拍動低下、喫煙・糖尿病', clues: ['e:leg_pulse'] },
   ],
 };
 
@@ -901,6 +964,9 @@ APPROACHES.urinary_sx = {
     { id: 'pyelo', point: '発熱・悪寒・CVA叩打痛', clues: ['q:fever', 'e:cva'] },
     { id: 'pid', point: '帯下の異常・下腹部痛・性感染症のリスク' },
     { id: 'prostatitis', tests: ['ucx', 'bcx', 'cbc'], point: '男性・発熱・排尿困難・会陰部痛、直腸診で圧痛のある前立腺', clues: ['q:fever', 'q:retention', 'e:rectal', 'H:U_LEU'] },
+    { id: 'bph', tests: ['pvr', 'psa'], point: '高齢男性、尿勢低下・排尿開始の遅れ・残尿感・夜間頻尿、排尿時痛や発熱はない、前立腺の腫大・残尿 → α1遮断薬', clues: ['q:retention', 'q:frequency', '!q:dysuria', '!q:fever', 'e:rectal', 't:pvr'] },
+    { id: 'prostate_ca', point: 'PSA高値、直腸診で硬い結節', clues: ['H:PSA'] },
+    { id: 'oab', point: '急に我慢できない尿意（尿意切迫感）・頻尿、残尿は少ない' },
   ],
 };
 APPROACHES.joint_pain = {
@@ -940,12 +1006,14 @@ APPROACHES.epigastric = {
 APPROACHES.fatigue = {
   title: 'だるさ・疲れやすさ',
   intro: '慢性的なだるさは原因が多岐にわたる。貧血・甲状腺機能異常・糖尿病・電解質異常・肝腎機能障害・うつ病・睡眠障害・悪性腫瘍などを、問診と基本的な採血で系統的に探す。',
-  keyQ: ['onset', 'character', 'fatigue', 'mood', 'sleep', 'weightloss', 'weightgain', 'heatcold', 'palpitation', 'menses', 'bloodystool', 'diet', 'pmh', 'meds'],
+  keyQ: ['onset', 'character', 'fatigue', 'mood', 'sleep', 'snore', 'weightloss', 'weightgain', 'heatcold', 'palpitation', 'menses', 'bloodystool', 'diet', 'pmh', 'meds'],
   keyE: ['conjunctiva', 'thyroid_palp', 'tremor', 'skin', 'heart_ausc', 'leg_edema'],
   keyT: ['cbc', 'chem', 'thyroid'],
   redflags: ['体重減少・寝汗・発熱 → 悪性腫瘍・感染症（結核）', '黒色便・血便 → 消化管出血（貧血の原因）', '気分の落ち込み・興味の喪失 → うつ病'],
   ddx: [
     { id: 'ida', tests: ['ferritin'], point: '若い女性・過多月経、動悸・息切れ、眼瞼結膜の蒼白、小球性貧血・フェリチン低値', clues: ['q:menses', 'q:palpitation', 'e:conjunctiva', 'L:HB', 'L:MCV', 'L:FER'] },
+    { id: 'fibroid', tests: ['tvus'], point: '過多月経（レバー状の塊・夜用ナプキンが1時間ももたない）と鉄欠乏性貧血、下腹部の硬い腫瘤、エコーで子宮筋腫', clues: ['q:menses', 'e:pelvic', 'e:abd_palp', 't:tvus', 'L:HB'] },
+    { id: 'osa', tests: ['psg'], point: '肥満・いびき・睡眠中の無呼吸・日中の強い眠気・起床時の頭痛・高血圧 → 睡眠検査', clues: ['q:snore', 'q:weightgain', 'q:character', 'e:pharynx', 't:psg'] },
     { id: 'hypothyroid', point: '寒がり・体重増加・むくみ・便秘、甲状腺腫大、TSH高値', clues: ['q:heatcold', 'q:weightgain', 'e:thyroid_palp', 'H:TSH'] },
     { id: 'hyperthyroid', point: '暑がり・体重減少・動悸、TSH低値', clues: ['L:TSH'] },
     { id: 'insomnia', point: '寝つけない・途中で目が覚める、ストレスやカフェイン・昼寝などの生活習慣、検査は正常', clues: ['q:sleep', 'q:trigger', 'q:character'] },
@@ -1380,6 +1448,16 @@ export const DISEASE_NOTES = {
   obst_pyelo: {"overview":"尿管結石などで尿の流れがせき止められた状態での腎盂腎炎。急速に敗血症性ショックになる。","treatment":["血液・尿培養の後に抗菌薬","輸液（ショックには昇圧薬）","エコーで水腎症を確認","泌尿器科で緊急ドレナージ（尿管ステント・腎瘻）"],"flow":"発熱＋腰痛 → エコーで水腎症・CTで結石 → 閉塞性腎盂腎炎 → 抗菌薬と緊急ドレナージ"},
   angioedema: {"overview":"ACE阻害薬でブラジキニンがたまり、唇・舌・喉が腫れる。じんましんやかゆみは伴わない。","treatment":["気道の評価（喉頭ファイバー）と監視、必要なら気道確保","ACE阻害薬の中止（以後使用しない）","抗ヒスタミン薬・アドレナリンは効きにくい","入院で経過観察（数日で改善）"],"flow":"じんましんのない口唇・舌の腫れ → ACE阻害薬内服 → 気道評価 → 薬剤性血管性浮腫 → 中止と監視"},
   aka: {"overview":"大量飲酒の後に食事がとれなくなり、ケトン体がたまってアシドーシスになる状態。","treatment":["ビタミンB1（ブドウ糖より先に）","細胞外液とブドウ糖を含む輸液","K・Mg・リンの補正","膵炎・離脱症状などの合併に注意"],"flow":"大量飲酒後の嘔吐・食事摂取不良 → アニオンギャップ開大性アシドーシス・ケトン上昇・血糖は高くない → アルコール性ケトアシドーシス → B1と糖輸液"},
+  lss: {"overview":"加齢で腰の脊柱管が狭くなり、神経が圧迫されて足のしびれや痛みが出る病気。","treatment":["リマプロスト・NSAIDsなどの薬物療法","運動療法・前かがみの姿勢の工夫","閉塞性動脈硬化症との区別（足の脈）","膀胱直腸障害・進行する麻痺は手術"],"flow":"歩くと足がしびれ前かがみで休むと回復 → 足の脈は良好 → MRIで脊柱管狭窄 → 腰部脊柱管狭窄症 → 薬物・運動療法"},
+  bph: {"overview":"加齢で前立腺が大きくなり、尿の通り道を圧迫して排尿障害や頻尿を起こす。","treatment":["尿検査・残尿測定・PSA・腎機能","α1遮断薬（シロドシン・タムスロシン）","必要に応じ5α還元酵素阻害薬・β3作動薬","尿閉・腎障害・繰り返す感染は手術"],"flow":"高齢男性の尿勢低下・夜間頻尿 → 直腸診・残尿・PSA → 前立腺肥大症 → α1遮断薬"},
+  pop: {"overview":"骨盤底の筋肉や靱帯が弱り、子宮・膀胱・直腸が腟から下がって出てくる状態。","treatment":["骨盤底筋訓練","リングペッサリー","手術（腟式手術・仙骨腟固定術）","便秘・重い物の持ち上げを避ける"],"flow":"股に何かが挟まる感じ → 腟鏡診で子宮・膀胱の下垂 → 骨盤臓器脱 → ペッサリー・手術の相談"},
+  fibroid: {"overview":"子宮の筋肉にできる良性の腫瘍。過多月経・貧血・月経痛・頻尿の原因になる。","treatment":["鉄剤で貧血を補正","GnRHアンタゴニスト・低用量ピル・黄体ホルモンなど","手術（子宮鏡下切除・核出術・子宮全摘）"],"flow":"過多月経と貧血 → 経腟超音波で筋腫 → 子宮筋腫 → 鉄剤と婦人科治療"},
+  vaginal_candida: {"overview":"カンジダ（真菌）が腟で増えて、強いかゆみと白い帯下を起こす。抗菌薬の後や疲れたときに多い。","treatment":["鏡検で確認","抗真菌薬の腟錠と外用クリーム","繰り返す場合は糖尿病の検査"],"flow":"外陰部のかゆみ＋白い酒かす状の帯下 → 鏡検で仮性菌糸 → 外陰腟カンジダ症 → 腟錠"},
+  contact_derm: {"overview":"皮膚に触れた物質への刺激やアレルギーで起こる湿疹。","treatment":["原因物質の回避","ステロイド外用薬","原因不明ならパッチテスト"],"flow":"接触部位に一致した紅斑・水疱 → 原因物質の特定 → 接触皮膚炎 → 回避とステロイド外用"},
+  tinea: {"overview":"白癬菌（カビ）が皮膚の角質に感染する病気。足の指の間に多い。","treatment":["KOH鏡検で確認","抗真菌薬の外用（足全体に、治っても1〜2か月）","ステロイドは悪化させる","足を清潔・乾燥に保つ"],"flow":"趾間の浸軟・鱗屑・かゆみ → KOH鏡検で菌糸 → 足白癬 → 抗真菌薬外用"},
+  scabies: {"overview":"ヒゼンダニが皮膚に寄生し、強いかゆみを起こす。高齢者施設などで集団発生しやすい。","treatment":["鏡検でヒゼンダニ・虫卵を確認","イベルメクチン内服（1週間後に再投与）またはフェノトリン外用","接触者の同時治療・寝具や衣類の対策","ステロイド外用は中止"],"flow":"施設での夜間のかゆみ・指間の丘疹 → 鏡検でヒゼンダニ → 疥癬 → イベルメクチンと感染対策"},
+  conjunctivitis: {"overview":"アデノウイルスによる感染力の強い結膜炎。「はやり目」。","treatment":["特効薬はなく自然に治る（1〜2週間）","手洗い・タオルの共用禁止・目を触らない","出勤・登校は許可が出るまで控える","角膜混濁が残れば眼科で点眼治療"],"flow":"急な充血・流涙・眼脂・耳前リンパ節腫脹 → 視力や瞳孔は正常 → 流行性角結膜炎 → 感染対策"},
+  osa: {"overview":"睡眠中に上気道がふさがって呼吸が止まり、眠りが浅くなって日中の眠気や高血圧などを起こす病気。","treatment":["簡易睡眠検査・終夜睡眠ポリグラフ","中等症以上はCPAP、軽症は口腔内装置","減量・節酒・側臥位","睡眠薬（特にベンゾジアゼピン系）を避ける"],"flow":"いびき・無呼吸の指摘・日中の眠気 → 睡眠検査でAHI高値 → 睡眠時無呼吸症候群 → CPAP"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [
