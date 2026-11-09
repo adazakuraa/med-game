@@ -4,6 +4,7 @@
 // routes[経路] = { unit, min, max, freqs, maxDaily }  min/max は1回量（持続投与は速度）
 // covers: 抗菌スペクトラム（ゲーム内で使用する病原体キー）
 //   spn=肺炎球菌, hinf=インフルエンザ菌, ecoli=感受性大腸菌, esbl=ESBL産生菌にも有効, anaerobe=嫌気性菌, atypical=非定型
+//   pseudo=緑膿菌, legionella=レジオネラ, tp=梅毒トレポネーマ, bordetella=百日咳菌
 // contra: 禁忌・慎重投与ルールID（engine/pharm.js で判定）
 // interact: 相互作用（患者の常用薬タグと照合）
 export const FREQS = {
@@ -46,7 +47,7 @@ export const DRUGS = [
   {
     id: 'mepm', generic: 'メロペネム', brands: ['メロペン'], cls: '抗菌薬（カルバペネム系）', allergy: 'carbapenem', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 1000, freqs: ['q12h', 'q8h'], maxDaily: 3000 } },
-    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'gpc'],
+    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'gpc', 'pseudo'],
     renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 26〜50: 1g 12時間毎' }, { crclBelow: 26, maxDaily: 1000, text: 'CrCl 10〜25: 0.5g 12時間毎' }],
     interact: [{ tag: 'valproate', level: 'harm', msg: 'バルプロ酸の血中濃度低下（併用禁忌）' }],
     info: '通常1日1.5〜3gを3回に分割。広域抗菌薬であり、狭域薬で治療可能な場合は温存すべき。',
@@ -61,7 +62,7 @@ export const DRUGS = [
   {
     id: 'lvfx', generic: 'レボフロキサシン', brands: ['クラビット'], cls: '抗菌薬（ニューキノロン系）', allergy: 'quinolone', abx: true, tags: ['fq'],
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q24h'], maxDaily: 500 }, iv: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia'], resistKey: 'fqR',
+    covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia', 'legionella'], resistKey: 'fqR',
     renal: [{ crclBelow: 50, maxDaily: 250, text: 'CrCl 20〜49: 初日500mg、以後250mg 1日1回' }, { crclBelow: 20, maxDaily: 125, text: 'CrCl <20: 初日500mg、以後250mg 2日に1回' }],
     contra: ['pregnancy', 'quinolone_child'],
     interact: [
@@ -74,7 +75,7 @@ export const DRUGS = [
   {
     id: 'ampc', generic: 'アモキシシリン', brands: ['サワシリン', 'パセトシン'], cls: '抗菌薬（ペニシリン系・経口）', allergy: 'penicillin', abx: true,
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q8h', 'q6h'], maxDaily: 2000 } },
-    covers: ['spn', 'hinf', 'gpc'],
+    covers: ['spn', 'hinf', 'gpc', 'tp'],
     renal: [{ crclBelow: 30, maxDaily: 1000, text: 'CrCl <30: 投与間隔を12時間毎に延長' }],
     info: '通常1回250mgを1日3〜4回。肺炎球菌性肺炎の外来治療では高用量（1回500mg 1日3〜4回）が推奨される。',
   },
@@ -95,7 +96,7 @@ export const DRUGS = [
   {
     id: 'azm', generic: 'アジスロマイシン', brands: ['ジスロマック'], cls: '抗菌薬（マクロライド系）', allergy: 'macrolide', abx: true,
     routes: { po: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['atypical', 'chlamydia'],
+    covers: ['atypical', 'chlamydia', 'legionella', 'bordetella'],
     interact: [{ tag: 'qt', level: 'warn', msg: 'QT延長作用のある薬剤との併用に注意' }],
     info: '1回500mgを1日1回、3日間。国内の肺炎球菌はマクロライド耐性率が高く、単独での肺炎球菌治療は不適。',
   },
@@ -485,6 +486,39 @@ export const DRUGS = [
     info: '高尿酸血症・痛風に10mgから開始し、尿酸値を見ながら40mgまで増量（急に下げると痛風発作）。',
   },
   {
+    id: 'cfpm', generic: 'セフェピム', brands: ['マキシピーム'], cls: '抗菌薬（第4世代セフェム・抗緑膿菌）', allergy: 'cephem', abx: true,
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 6000 } },
+    covers: ['spn', 'hinf', 'ecoli', 'gpc', 'pseudo'],
+    renal: [{ crclBelow: 50, maxDaily: 4000, text: 'CrCl 30〜50: 2g 12時間毎' }, { crclBelow: 30, maxDaily: 2000, text: 'CrCl 10〜29: 2g 24時間毎（脳症に注意）' }],
+    info: '発熱性好中球減少症・院内感染など緑膿菌をカバーしたいときに1回2gを8〜12時間毎。腎機能低下で減量しないと脳症（意識障害・けいれん）。',
+  },
+  {
+    id: 'bpg', generic: 'ベンジルペニシリンベンザチン（筋注）', brands: ['ステルイズ'], cls: '抗菌薬（持続性ペニシリン）', allergy: 'penicillin', abx: true,
+    routes: { im: { unit: '万単位', min: 240, max: 240, freqs: ['once'], maxDaily: 240 } }, effectHours: 336,
+    covers: ['tp'],
+    info: '早期梅毒に240万単位を1回筋注。治療後数時間で発熱などのJarisch-Herxheimer反応が起こることがある。',
+  },
+  {
+    id: 'hydrocortisone', generic: 'ヒドロコルチゾン（注）', brands: ['ソル・コーテフ'], cls: '副腎皮質ステロイド', tags: ['hydrocortisone', 'steroid_sys'],
+    routes: { iv: { unit: 'mg', min: 50, max: 100, freqs: ['once', 'q6h', 'q8h'], maxDaily: 300 } },
+    info: '副腎クリーゼに100mgを静注し、以後50mgを6時間毎（または200mg/日持続）。甲状腺クリーゼ・敗血症性ショックでも使う。',
+  },
+  {
+    id: 'kI', generic: 'ヨウ化カリウム', brands: ['ヨウ化カリウム丸'], cls: '抗甲状腺薬（無機ヨウ素）', tags: ['iodine'],
+    routes: { po: { unit: 'mg', min: 50, max: 200, freqs: ['q24h', 'q8h'], maxDaily: 300 } },
+    info: '甲状腺クリーゼで甲状腺ホルモンの放出を抑える。チアマゾールの投与後（1時間以上あけて）に開始する。',
+  },
+  {
+    id: 'artemether', generic: 'アルテメテル・ルメファントリン', brands: ['リアメット'], cls: '抗マラリア薬', tags: ['antimalarial'],
+    routes: { po: { unit: '錠', min: 4, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '合併症のない熱帯熱マラリアに1回4錠を3日間で計6回、食後に。重症マラリアはアーテスネート静注（国内では限られた施設）。',
+  },
+  {
+    id: 'dantrolene', generic: 'ダントロレン（注）', brands: ['ダントリウム'], cls: '筋弛緩薬（悪性症候群・悪性高熱症）', tags: ['dantrolene'],
+    routes: { iv: { unit: 'mg/kg', min: 1, max: 2.5, freqs: ['once', 'q6h'], maxDaily: 10 } },
+    info: '悪性症候群・悪性高熱症に1〜2.5mg/kgを静注。肝障害に注意。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
@@ -540,7 +574,7 @@ export const DRUGS = [
   {
     id: 'doxy', generic: 'ドキシサイクリン', brands: ['ビブラマイシン'], cls: '抗菌薬（テトラサイクリン系）', allergy: 'tetracycline', abx: true,
     routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q12h', 'q24h'], maxDaily: 200 } },
-    covers: ['chlamydia', 'atypical'],
+    covers: ['chlamydia', 'atypical', 'tp'],
     contra: ['pregnancy'],
     interact: [{ tag: 'mgo', level: 'warn', msg: 'Mg・Al含有製剤で吸収低下', reduceRoute: 'po' }],
     info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',

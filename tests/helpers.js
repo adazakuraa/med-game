@@ -40,7 +40,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
     if (a.a === 'rx' && (enc.patient.allergies.includes(require_allergy(a.drugId)) || (a.drugId === 'aspirin' && enc.patient.comorb.includes('asthma_nsaid')))) {
       if (!alt(a.drugId)) { done.add(i); return; }
       // アレルギーがあれば代替薬
-      a = { ...a, drugId: alt(a.drugId), dose: altDose(a.drugId, a.dose), freq: altFreq(a.drugId, a.freq) };
+      a = { ...a, drugId: alt(a.drugId), dose: altDose(a.drugId, a.dose), freq: altFreq(a.drugId, a.freq), route: { bpg: 'po', cex: 'iv' }[a.drugId] || a.route };
     }
     done.add(i);
     if (a.a === 'test') S.orderTests(enc, a.ids);
@@ -114,11 +114,11 @@ export function runIdeal(enc, { dispo = true } = {}) {
 function stopIV(enc) {
   for (const o of enc.orders) if (o.kind === 'rx' && o.route === 'iv' && S.isOrderActive(enc, o)) o.stopT = enc.t;
 }
-const ALLERGY_OF = { abpc: 'penicillin', aspirin: 'nsaid', ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone', loxo: 'nsaid' };
+const ALLERGY_OF = { abpc: 'penicillin', aspirin: 'nsaid', ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone', loxo: 'nsaid', cfpm: 'cephem', bpg: 'penicillin', cex: 'cephem' };
 function require_allergy(id) { return ALLERGY_OF[id] || '__none'; }
-function alt(id) { return { loxo: 'apap_po', aspirin: 'prasugrel', ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
-function altDose(id, dose) { return { loxo: 500, aspirin: 20, ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
-function altFreq(id, f) { return { loxo: 'q6h', aspirin: 'once', ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
+function alt(id) { return { cfpm: 'mepm', bpg: 'doxy', cex: 'clinda', loxo: 'apap_po', aspirin: 'prasugrel', ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
+function altDose(id, dose) { return { cfpm: 1000, bpg: 100, cex: 600, loxo: 500, aspirin: 20, ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
+function altFreq(id, f) { return { cfpm: 'q8h', bpg: 'q12h', cex: 'q8h', loxo: 'q6h', aspirin: 'once', ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
 
 export function runUntreated(enc) {
   S.advance(enc, 14 * 1440);
