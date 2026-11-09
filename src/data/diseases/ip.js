@@ -1,0 +1,58 @@
+// 間質性肺炎の急性増悪（特発性肺線維症）
+// 出典: 日本呼吸器学会『特発性間質性肺炎 診断と治療の手引き2022（改訂第4版）』, 『特発性肺線維症の治療ガイドライン2023』
+export default {
+  id: 'ip', name: '間質性肺炎の急性増悪', dept: '呼吸器内科',
+  weight: 1.5, season: { winter: 1.2 }, minLevel: 3,
+  demo: { age: [60, 85], ageMode: 'old', male: 0.75 },
+  sev: { p: [0.3, 0.45, 0.25], burden: [[36, 46], [48, 58], [60, 70]] },
+  refractoryP: [0, 0.05, 0.12],
+  comorb: { extra: {} },
+  smokeP: 0.7,
+  organisms: [],
+  vars: (rng) => ({ d: rng.int(3, 10) }),
+  cc: () => '息苦しさが急にひどくなった', ccKey: 'dyspnea',
+  arrival: (sev) => (sev === 0 ? 'walk' : 'ambulance'),
+  history: {
+    onset: { p: 1, text: '{d}日前から、息苦しさが急にひどくなりました。' },
+    course: { p: 1, text: '以前から少し息切れがありましたが、ここ数日で着替えるだけで苦しくなりました。' },
+    dyspnea: { p: 1, text: '少し動いただけで息が切れます。' },
+    cough: { p: 1, text: '痰の出ない乾いた咳が続いています。' },
+    sputum: { p: 0.1, text: '痰はほとんど出ません。' },
+    fever: { p: 0.5, text: '微熱があります。' },
+    pmh: { p: 1, text: '3年前から間質性肺炎（肺線維症）と言われ、呼吸器内科に通院しています。' },
+    smoking: { p: 1, text: '昔、1日30本を40年吸っていました。' },
+    orthopnea: { p: 0.1, text: '横になっても特に変わりません。' },
+    edema: { p: 0, text: '' }, chestpain: { p: 0, text: '' }, sorethroat: { p: 0, text: '' },
+  },
+  exam: { lung_ausc: { p: 1, text: '両側背側下肺野で捻髪音（fine crackles、ベルクロラ音）。' }, gen_appear: { p: 1, bySev: ['少し息苦しそう。', '呼吸が速く、苦しそう。', '起座位で努力呼吸。'] }, skin: { p: 0.5, text: 'ばち指。' }, jvd: { p: 0, text: '' }, leg_edema: { p: 0, text: '' } },
+  vitals: { RR: { to: [26, 36], k: 1 }, SpO2: { drop: [8, 22], k: 0.8 }, HR: { to: [100, 120], k: 1 } },
+  labs: { KL6: { to: [1500, 3000], k: 0.5 }, CRP: { to: [3, 10], k: 1 }, BNP: { to: [40, 90], k: 1 } },
+  tests: {
+    cxr: [{ p: 1, persist: true, text: '両側下肺野優位の網状影に加え、両側にびまん性のすりガラス影。心拡大なし。' }],
+    chest_ct: [{ p: 1, persist: true, text: '両側下葉胸膜直下の蜂巣肺（UIPパターン）に、新たな両側びまん性のすりガラス影（急性増悪）。肺塞栓・気胸はない。' }],
+    echo: [{ p: 1, text: 'LVEF 60%。左心機能は正常。' }],
+    sputum_gram: [{ p: 1, text: '有意な菌を認めない。' }],
+  },
+  natural: 0.5,
+  dynamics: (enc) => (enc.thStart?.pulse != null && enc.t - enc.thStart.pulse > 12 * 60 ? -1.0 : 0), // パルス後は後療法で改善
+  therapies: [
+    { id: 'o2', label: '酸素投与（高流量鼻カニュラ・NPPVを含む）', req: { o2: true }, when: (c) => c.rawSpO2 < 92, required: true, deadlineH: [0.5, 0.5, 0.25] },
+    { id: 'pulse', label: 'ステロイドパルス療法（メチルプレドニゾロン）', req: { tag: 'steroid_sys' }, required: true, deadlineH: [24, 12, 8], effect: -0.8, lagH: 12 },
+  ],
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['icu'], best: 'icu', why: '間質性肺炎の急性増悪（重症の低酸素）：ICU' } : { ok: ['admit', 'icu'], best: 'admit', why: '間質性肺炎の急性増悪：入院でステロイドパルス・酸素' }),
+  useful: ['cxr', 'chest_ct', 'kl6', 'cbc', 'chem', 'crp', 'bnp', 'vbg', 'bcx', 'sputum_gram', 'echo', 'chest_cta', 'lab_DDIMER'],
+  key: [['cxr'], ['chest_ct'], ['bnp', 'echo']],
+  extrasOk: () => [],
+  teaching: [
+    '間質性肺炎（特に特発性肺線維症）の経過中に、1か月以内に呼吸困難が急に悪化し、CTで新たなすりガラス影が出るのが急性増悪。死亡率が高い。',
+    '捻髪音（ベルクロラ音）・ばち指・KL-6上昇が手がかり。',
+    '心不全（BNP・心エコー）・肺炎・肺塞栓・気胸を除外する。',
+    '治療は酸素とステロイドパルス療法。予後が悪いので、本人・家族と早めに治療方針（挿管の希望など）を話し合う。',
+  ],
+  sources: ['特発性間質性肺炎 診断と治療の手引き2022（日本呼吸器学会）'],
+  ideal: (p) => [
+    { a: 'o2', device: 'reservoir', flow: 10 },
+    { a: 'test', ids: ['cxr', 'chest_ct', 'cbc', 'chem', 'crp', 'bnp', 'kl6', 'bcx'] },
+    { a: 'rx', drugId: 'mpsl', route: 'iv', dose: 125, freq: 'q6h', days: 3 },
+  ],
+};

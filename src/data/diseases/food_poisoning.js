@@ -1,0 +1,40 @@
+// 黄色ブドウ球菌食中毒（毒素型食中毒）
+// 出典: 厚生労働省 食中毒統計・資料, 日本感染症学会/日本化学療法学会『JAID/JSC感染症治療ガイドライン2015 腸管感染症』
+import { outpatient } from './common.js';
+export default outpatient({
+  id: 'food_poisoning', name: '黄色ブドウ球菌食中毒', dept: '内科', weight: 4,
+  demo: { age: [18, 70], ageMode: 'uniform', male: 0.5 },
+  sev: { p: [0.5, 0.4, 0.1], burden: [[20, 28], [28, 38], [38, 48]] },
+  comorb: { extra: {} },
+  vars: (rng) => ({ food: rng.pick(['会社の行事で配られたおにぎり', 'お祭りの屋台のお弁当', '常温で置いてあったサンドイッチ']), hrs: rng.int(1, 4) }),
+  cc: () => '急な嘔吐', ccKey: 'vomit_diarrhea',
+  initVolume: [[200, 500], [500, 1000], [1000, 1500]],
+  history: {
+    onset: { p: 1, text: '{hrs}時間前、昼に{food}を食べてから急に気持ち悪くなって、何度も吐いています。' },
+    course: { p: 1, text: '吐くのが続いていて、お腹も痛いです。' },
+    character: { p: 1, text: '激しい吐き気と嘔吐です。' },
+    nausea: { p: 1, text: '何度も吐きました。' },
+    diarrhea: { p: 0.6, text: '少し下痢もあります。' },
+    fever: { p: 0, text: '熱はありません。' },
+    food: { p: 1, text: '{food}を食べました。' },
+    sickcontact: { p: 1, text: '一緒に食べた同僚も何人か吐いているそうです。' },
+    bloodystool: { p: 0, text: '' }, dizziness: { p: [0, 0.4, 0.9], text: '立つとふらつきます。' },
+  },
+  exam: { abd_palp: { p: 0.7, text: '心窩部にびまん性の軽い圧痛。腹膜刺激徴候なし。' }, oral_mucosa: { p: [0.2, 0.7, 1], text: '口腔内が乾燥している。' } },
+  vitals: { HR: { to: [95, 115], k: 1 } },
+  fluidLoss: (b) => 40 * (b / 30),
+  natural: -0.8,
+  canDrink: (b, eff) => b < (eff.tags.antiemetic ? 45 : 30),
+  therapies: [{ id: 'fluid', label: '補液（脱水の補正）と制吐薬', req: { fluidTotal: 500 }, when: (c) => c.state.volume > 600, required: true, deadlineH: [4, 3, 2], startFromNeed: true }],
+  harmTags: {},
+  useful: ['cbc', 'chem', 'vbg', 'ua', 'lab_AMY', 'ecg', 'uhcg'], key: [],
+  dispo: () => ({ ok: ['home', 'admit'], best: 'home', why: '毒素型食中毒：補液で改善すれば帰宅（1日程度で自然に治る）。集団発生なら保健所へ' }),
+  teaching: [
+    '食後1〜6時間で始まる激しい嘔吐（発熱は少ない）・集団発生は、黄色ブドウ球菌などの毒素型食中毒。手で握った食品（おにぎり・弁当）を常温で置くと起こる。',
+    '毒素（耐熱性）が原因なので抗菌薬は不要。補液と制吐薬で1日程度で回復する。',
+    'サルモネラ・カンピロバクターなど感染型は潜伏期が長く（半日〜数日）発熱・下痢が主体。',
+    '集団発生の食中毒は保健所に届け出る。',
+  ],
+  sources: ['厚生労働省 食中毒統計・資料'],
+  ideal: () => [{ a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000 }, { a: 'rx', drugId: 'mcp', route: 'iv', dose: 10, freq: 'once', days: 1 }, { a: 'wait', min: 60 }],
+});

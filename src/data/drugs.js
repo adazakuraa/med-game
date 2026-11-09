@@ -430,6 +430,11 @@ export const DRUGS = [
     info: '高血圧・蛋白尿のある慢性腎臓病に20〜40mg 1日1回。開始後に腎機能とKを確認。妊婦には禁忌。',
   },
   {
+    id: 'mesalazine', generic: 'メサラジン', brands: ['リアルダ', 'ペンタサ'], cls: '潰瘍性大腸炎治療薬（5-ASA）', tags: ['5asa'],
+    routes: { po: { unit: 'mg', min: 2400, max: 4800, freqs: ['q24h'], maxDaily: 4800 } },
+    info: '潰瘍性大腸炎の寛解導入・維持に2400〜4800mg 1日1回（リアルダ）。まれに5-ASA不耐（発熱・下痢の悪化）。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
