@@ -49,6 +49,7 @@ export const EXAMS = [
   { id: 'joint', region: 'limbs', method: '視診', name: '関節（腫脹・発赤・熱感）', normal: '関節の腫脹・発赤・熱感なし。' },
   { id: 'slr', region: 'limbs', method: '触診', name: '下肢伸展挙上テスト（SLR）・下肢の神経所見', normal: 'SLRテスト陰性。下肢の筋力・感覚・反射に異常なし。' },
   { id: 'calf', region: 'limbs', method: '触診', name: '下腿の左右差・圧痛', normal: '下腿に左右差・圧痛なし。' },
+  { id: 'leg_pulse', region: 'limbs', method: '触診', name: '下肢の動脈触知（大腿・膝窩・足背）', normal: '両側の大腿・膝窩・足背動脈を良好に触知。左右差なし。' },
   { id: 'periph', region: 'limbs', method: '触診', name: '末梢循環（冷感・CRT）', normal: '四肢末梢は温かい。CRT 2秒未満。' },
   { id: 'pupils', region: 'neuro', method: '視診', name: '瞳孔・対光反射', normal: '瞳孔 3mm/3mm 同大、対光反射は両側迅速。' },
   { id: 'facial', region: 'neuro', method: '視診', name: '顔面の左右差', normal: '顔面に左右差なし。' },

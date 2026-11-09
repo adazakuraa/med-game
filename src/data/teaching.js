@@ -123,6 +123,7 @@ export const EXAM_WHY = {
   leg_edema: '押すと跡が残る浮腫（圧痕性浮腫）は心不全・腎不全・低アルブミン血症などの体液貯留を示す。',
   slr: '仰向けで脚を伸ばしたまま挙げて、坐骨神経に沿って痛みが走れば椎間板ヘルニアを疑う。',
   calf: '片側の下腿の腫れ・圧痛は深部静脈血栓症を示唆し、肺塞栓症の手がかりになる。',
+  leg_pulse: '急性動脈閉塞では閉塞部より末梢の拍動が消失する（6P：疼痛・蒼白・脈拍消失・知覚異常・麻痺・冷感）。左右差を比べる。',
   periph: '手足の冷感・毛細血管再充満時間（CRT）の延長は循環不全（ショック）のサイン。',
   pupils: '瞳孔の大きさと対光反射。片側の散大は脳ヘルニアや動眼神経麻痺（動脈瘤）を示唆する危険なサイン。',
   facial: '顔の左右差（口角下垂・鼻唇溝の浅さ）。脳卒中の簡便なチェック（FASTのF）。',
@@ -202,6 +203,7 @@ export const TEST_WHY = {
   ccta: '冠動脈の狭窄を造影CTで調べる。狭心症の可能性が中等度のときに有用。',
   iop: '眼圧。急性緑内障発作では40〜60mmHg以上に上がる。',
   scrotal_us: '精巣の血流をドプラで評価。血流がなければ精巣捻転。',
+  leg_cta: '下肢動脈の閉塞部位と範囲を確認する（急性動脈閉塞・閉塞性動脈硬化症）。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -241,6 +243,7 @@ export const LAB_MEANING = {
   PH: { L: 'アシデミア（血液が酸性に傾いている）', H: 'アルカレミア' },
   PCO2: { L: '過換気（代謝性アシドーシスに対する呼吸性代償など）', H: '換気が不十分' },
   HCO3: { L: '代謝性アシドーシス', H: '代謝性アルカローシス' },
+  COHB: { H: '一酸化炭素中毒。SpO2は正常に見えるので、疑ったら血液ガスでCOHbを測る（喫煙者は5%程度まで上がる）' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -309,6 +312,9 @@ export const DRUG_ROLE = {
   mannitol: '浸透圧で眼圧・脳圧を下げる点滴。',
   acetazolamide: '房水の産生を抑えて眼圧を下げる。',
   pilocarpine: '瞳孔を縮めて隅角を開き、房水の流れを良くする点眼薬。',
+  acyclovir: 'ヘルペス脳炎の治療。脳炎を疑ったら結果を待たずに開始する。',
+  amiodarone: '心室頻拍・心室細動に使う抗不整脈薬。',
+  vasopressin_like: '門脈の圧を下げて、静脈瘤からの出血を減らす薬。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -428,7 +434,7 @@ export const APPROACHES = {
     redflags: ['血圧低下 → 敗血症性ショック：輸液と早期の抗菌薬', '水腎症（閉塞）があれば泌尿器科にドレナージを相談', '妊娠可能年齢の女性は妊娠の確認（使える薬・検査が変わる）'],
     ddx: [
       { id: 'pyelo', point: '発熱・悪寒＋CVA叩打痛＋膿尿', clues: ['q:flankpain', 'q:dysuria', 'q:chills', 'e:cva', 'H:U_LEU', 'H:U_WBC', 'H:U_NIT', 't:urine_gram', 't:ucx'] },
-      { id: 'obst_pyelo', point: '腎盂腎炎＋結石による水腎症（エコーで確認）。緊急ドレナージが必要', clues: ['e:cva'] },
+      { id: 'obst_pyelo', tests: ['abd_us', 'ucx', 'bcx'], point: '尿管結石の既往・波のある痛みの後の高熱と悪寒戦慄、ショックになりやすい、エコーで水腎症、CTで尿管結石 → 泌尿器科で緊急ドレナージ', clues: ['q:chills', 'q:hematuria', 'q:pmh', 'e:cva', 't:abd_us', 't:abd_ct_plain', 'H:U_LEU'] },
       { id: 'cystitis', point: '排尿時痛・頻尿のみで、発熱や腰痛はない', clues: ['q:dysuria', 'q:frequency'] },
       { id: 'ureteral', point: '突然の激しい痛み・血尿・発熱は通常ない', clues: ['q:hematuria', 'H:U_RBC'] },
       { id: 'prostatitis', point: '男性・会陰部痛・排尿障害' },
@@ -482,7 +488,7 @@ export const APPROACHES = {
     ddx: [
       { id: 'dka', point: '1型糖尿病・インスリン中断、口渇多尿、Kussmaul呼吸、アセトン臭、高血糖＋ケトン＋AG開大性アシドーシス', clues: ['q:polyuria', 'q:adherence', 'e:gen_breath_odor', 'e:chest_insp', 'H:GLU', 'L:PH', 'L:HCO3', 'H:AG', 'H:U_KET', 'H:BHB'] },
       { id: 'hhs', point: '高齢の2型糖尿病、著明な高血糖（600以上）、ケトンは軽度、高度脱水' },
-      { id: 'aka', point: '大量飲酒後、血糖は正常〜軽度上昇', clues: ['q:alcohol'] },
+      { id: 'aka', tests: ['bhb'], point: '大量飲酒が続いた後に食べられず嘔吐、糖尿病なし、アニオンギャップ開大性アシドーシスとケトン上昇、血糖は正常〜軽度上昇 → ビタミンB1と糖を含む輸液', clues: ['q:alcohol', 'q:onset', '!q:polyuria', 'H:BHB', 'L:HCO3', 'H:AG', '!H:GLU'] },
       { id: 'hyperemesis', point: '妊娠初期、水も飲めない嘔吐・体重減少・尿ケトン陽性', clues: ['q:lmp', 'q:weightloss', 'H:U_KET'] },
       { id: 'gastro', point: '水様下痢・周囲の流行', clues: ['q:diarrhea'] },
       { id: 'pancreatitis', point: '上腹部〜背部痛、アミラーゼ上昇', clues: ['H:AMY'] },
@@ -510,8 +516,9 @@ export const APPROACHES = {
       { id: 'ovarian_torsion', point: '女性・突然の下腹部痛・嘔吐' },
       { id: 'pid', point: '女性・下腹部痛・帯下異常・子宮頸部の圧痛' },
       { id: 'ureteral', point: '突然の側腹部の激痛・血尿・CVA叩打痛', clues: ['e:cva', 'H:U_RBC'] },
-      { id: 'cholecystitis', tests: ['abd_us'], point: '脂っこい食事後の右季肋部痛・発熱・Murphy徴候、エコーで胆嚢腫大と壁肥厚・結石', clues: ['q:trigger', 'q:radiation', 'e:murphy', 't:abd_us', 'H:TBIL'] },
+      { id: 'cholecystitis', tests: ['abd_us'], point: '脂っこい食事後の右季肋部痛・発熱・Murphy徴候、エコーで胆嚢腫大と壁肥厚・結石', clues: ['q:trigger', 'q:location', 'q:fever', 'e:murphy', 't:abd_us', 'H:CRP', 'H:WBC'] },
       { id: 'perforation', tests: ['abd_ct_plain'], point: '突然の激しい上腹部痛が腹部全体に広がる、板状硬・反跳痛、NSAIDs・潰瘍の既往、X線・CTで遊離ガス → 緊急手術', clues: ['q:onset', 'q:course', 'e:abd_guard', 'e:abd_rebound', 't:cxr', 't:abd_ct_plain'] },
+      { id: 'mesenteric', tests: ['abd_ct_contrast', 'vbg'], point: '心房細動の高齢者、痛みの強さに比べて腹部所見が軽い、乳酸上昇・アシドーシス、造影CTで上腸間膜動脈の閉塞 → ヘパリンと緊急手術', clues: ['e:heart_ausc', 'H:LAC', 'H:DDIMER', 't:abd_ct_contrast'] },
       { id: 'inc_hernia', tests: ['abd_ct_plain'], point: '高齢者の腹痛・嘔吐・排ガス停止、鼠径部の還納できない有痛性の膨隆、CTで嵌頓腸管', clues: ['e:inguinal', 'q:pmh', 'q:constipation', 't:abd_ct_plain'] },
       { id: 'volvulus', tests: ['axr'], point: '便秘・寝たきり・認知症の高齢者、著明な腹部膨満・鼓音、X線でcoffee bean sign、CTでwhirl sign', clues: ['q:constipation', 'e:abd_insp', 'e:abd_perc', 't:axr'] },
       { id: 'biliary_colic', tests: ['abd_us'], point: '脂っこい食事後の心窩部〜右季肋部の痛みが数時間で軽快、発熱なし、炎症反応は正常、エコーで胆石あり・胆嚢壁肥厚なし', clues: ['q:trigger', 'q:course', '!q:fever', '!H:CRP', 't:abd_us'] },
@@ -589,7 +596,7 @@ APPROACHES.fever_headache = {
     { id: 'influenza', point: '流行期・筋肉痛・咳、項部硬直なし', clues: ['q:myalgia', 't:flu_ag'] },
     { id: 'uri', point: '咽頭痛・鼻汁、頭痛は軽い', clues: ['q:sorethroat'] },
     { id: 'sinusitis', point: '顔面痛・膿性鼻汁・前かがみで悪化' },
-    { id: 'encephalitis', point: '意識障害・人格変化・けいれん（単純ヘルペス脳炎など）', clues: ['q:seizure'] },
+    { id: 'encephalitis', tests: ['lp', 'head_mri'], point: '発熱・頭痛に意識障害・異常行動・けいれん・失語、髄液はリンパ球優位で糖正常、MRIで側頭葉の病変 → すぐにアシクロビル', clues: ['q:character', 'q:seizure', 'e:gen_consc', 'e:speech', 't:lp', 't:head_mri'] },
   ],
 };
 APPROACHES.headache = {
@@ -607,6 +614,7 @@ APPROACHES.headache = {
     { id: 'meningitis', tests: ['lp'], point: '発熱・項部硬直・jolt陽性', clues: ['q:fever', 'e:jolt'] },
     { id: 'ich', tests: ['head_ct'], point: '高血圧、神経症状・意識障害', clues: ['e:motor'] },
     { id: 'aacg', tests: ['iop'], point: '高齢女性、目の奥の痛み・頭痛・嘔吐、かすみ・虹視、充血と中等度散瞳（対光反射なし）、眼圧著明上昇 → 眼科へ緊急', clues: ['q:vision', 'q:nausea', 'e:eye', 'e:pupils', 't:iop'] },
+    { id: 'co_poisoning', tests: ['vbg', 'ecg'], point: '冬・暖房器具や練炭、同居家族も同じ症状、家を出ると楽になる、SpO2は正常でもCOHb高値 → すぐに100%酸素', clues: ['q:family', 'q:trigger', 'q:course', 'H:COHB'] },
     { id: 'gca', tests: ['esr'], point: '50歳以上の新しいこめかみの頭痛、顎跛行・視力障害、側頭動脈の圧痛・拍動低下、赤沈著明高値 → 失明予防にすぐステロイド', clues: ['q:location', 'q:jaw', 'q:vision', 'e:temporal', 'H:ESR', 'H:CRP'] },
   ],
 };
@@ -620,9 +628,9 @@ APPROACHES.flank_pain = {
   redflags: ['高齢・高血圧・ショック → 腹部大動脈瘤破裂を除外（エコー・CT）', '発熱＋結石 → 閉塞性腎盂腎炎：泌尿器科に緊急ドレナージを相談', '妊娠可能年齢の女性 → 妊娠反応（異所性妊娠・CTの被ばく）'],
   ddx: [
     { id: 'ureteral', tests: ['abd_ct_plain'], point: 'じっとしていられない波のある激痛・鼠径部への放散・血尿、エコーで水腎症、CTで結石', clues: ['q:radiation', 'q:relieving', 'q:hematuria', 'e:cva', 'H:U_RBC', 'H:U_BLD', 't:abd_us', 't:abd_ct_plain'] },
-    { id: 'aaa', point: '高齢・高血圧・喫煙、拍動性腫瘤・ショック' },
+    { id: 'aaa', tests: ['abd_us', 'cbc', 'coag'], point: '高齢男性・高血圧・喫煙、突然の腹痛と腰背部痛・ショック、拍動性腫瘤、エコーで大動脈径の拡大 → 心臓血管外科へ', clues: ['q:pmh', 'q:dizziness', 'e:abd_palp', 'e:periph', 't:abd_us', 't:abd_ct_contrast'] },
     { id: 'pyelo', point: '発熱・悪寒・膿尿', clues: ['q:fever', 'H:U_LEU'] },
-    { id: 'obst_pyelo', point: '結石＋発熱（緊急ドレナージ）', clues: ['q:fever'] },
+    { id: 'obst_pyelo', point: '結石＋発熱（緊急ドレナージ）', clues: ['q:fever', 'q:chills'] },
     { id: 'appendicitis', point: '右下腹部の限局した圧痛・腹膜刺激徴候', clues: ['e:abd_rebound'] },
     { id: 'lumbago', point: '体動で悪化し安静で軽快、尿所見は正常' },
   ],
@@ -638,7 +646,7 @@ APPROACHES.rash_dyspnea = {
   ddx: [
     { id: 'anaphylaxis', point: 'アレルゲン曝露後数分〜数十分で、皮膚症状＋呼吸困難・血圧低下・腹痛', clues: ['q:trigger', 'q:dyspnea', 'q:dizziness', 'e:skin', 'e:pharynx', 'e:lung_ausc'] },
     { id: 'urticaria', point: '出たり消えたりする膨疹のみで、呼吸・循環・消化器症状がない', clues: ['q:rash', 'e:skin'] },
-    { id: 'angioedema', point: '唇・まぶたの腫れが主体、じんましんを伴わないこともある（ACE阻害薬など）' },
+    { id: 'angioedema', point: 'じんましん・かゆみを伴わない口唇・舌の腫れ、ACE阻害薬の内服、血圧は保たれる → 抗ヒスタミン薬・アドレナリンは効きにくい、気道の評価', clues: ['q:meds', 'q:character', 'e:pharynx', '!q:rash', '!e:skin'] },
     { id: 'asthma', point: '喘息の既往、皮膚症状がない' },
   ],
 };
@@ -651,7 +659,7 @@ APPROACHES.hematemesis = {
   redflags: ['頻脈・低血圧・意識障害 → 出血性ショック：太い点滴2本・細胞外液・輸血', 'Hb 7g/dL未満を目安に輸血（輸血しすぎない）', 'NSAIDs・抗血小板薬・抗凝固薬の内服を確認', '肝硬変・大量飲酒 → 食道静脈瘤を考える'],
   ddx: [
     { id: 'ugib', point: 'NSAIDs内服・ピロリ菌、心窩部痛、黒色便・コーヒー残渣様の吐血、BUN上昇', clues: ['q:bloodystool', 'q:meds', 'q:abdpain', 'L:HB', 'H:BUN'] },
-    { id: 'variceal', point: '肝硬変・大量飲酒、大量の鮮血吐血', clues: ['q:alcohol'] },
+    { id: 'variceal', point: '肝硬変・大量飲酒、大量の鮮血吐血、黄疸・くも状血管腫・腹水・血小板減少 → 控えめな輸血・予防的抗菌薬・内視鏡的結紮術', clues: ['q:alcohol', 'q:pmh', 'e:skin', 'e:abd_insp', 'L:PLT', 'L:ALB'] },
     { id: 'lgib', point: '鮮血便が主体、BUNの上昇は軽い' },
     { id: 'pud', point: '出血していない消化性潰瘍（心窩部痛のみ）' },
   ],
@@ -701,7 +709,7 @@ APPROACHES.leg_red = {
   title: '足の赤みと腫れ',
   intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
   keyQ: ['onset', 'course', 'character', 'fever', 'chills', 'trigger', 'immobility', 'pmh', 'meds', 'allergy'],
-  keyE: ['skin', 'calf', 'leg_edema', 'gen_appear', 'periph'],
+  keyE: ['skin', 'calf', 'leg_edema', 'leg_pulse', 'gen_appear', 'periph'],
   keyT: ['cbc', 'crp', 'chem'],
   redflags: ['見た目に比べて強すぎる痛み・水疱・紫斑・急速な進行 → 壊死性筋膜炎（緊急手術）', '発熱・低血圧 → 敗血症', '片側の腫脹で発赤が乏しい → 深部静脈血栓症（下肢静脈エコー）'],
   ddx: [
@@ -709,6 +717,7 @@ APPROACHES.leg_red = {
     { id: 'dvt', tests: ['leg_us'], point: '発赤・熱感は乏しく、腫脹とふくらはぎの圧痛、手術後・長時間移動・寝たきり・がん・ピル', clues: ['q:immobility', 'q:edema', 'e:calf', 'e:leg_edema', 'H:DDIMER', 't:leg_us'] },
     { id: 'nec_fasc', tests: ['lab_CK', 'bcx'], point: '見た目に比べて強すぎる痛み・数時間単位の急速な進行・水疱/紫斑・ショック、CK・乳酸上昇、低Na（LRINEC）', clues: ['q:severity', 'q:course', 'e:skin', 'e:periph', 'H:CK', 'H:LAC', 'L:NA'] },
     { id: 'gout', point: '足の親指の付け根などの関節の急な激痛と発赤' },
+    { id: 'limb_ischemia', tests: ['leg_cta', 'coag', 'ecg'], point: '心房細動（抗凝固薬の中断）、突然の激痛・蒼白・冷感・脈拍消失・しびれ（6P）、腫れや赤みはない → ヘパリンと緊急血行再建', clues: ['q:pmh', 'q:meds', 'e:leg_pulse', 'e:calf', 't:leg_cta'] },
   ],
 };
 
@@ -722,6 +731,7 @@ APPROACHES.palpitation = {
   ddx: [
     { id: 'af_rvr', point: '心電図でRR間隔が不規則・P波なし。脈が不整', clues: ['q:palpitation', 'e:heart_ausc', 't:ecg'] },
     { id: 'svt', tests: ['ecg'], point: '突然始まり突然止まる規則正しい頻脈（150〜250/分）、心電図でQRS幅の狭い頻拍・P波不明 → 迷走神経刺激・ATP', clues: ['q:onset', 'q:course', 'q:character', 'q:pmh', 'e:heart_ausc', 't:ecg'] },
+    { id: 'vt', tests: ['ecg', 'echo'], point: '心筋梗塞の既往・心機能低下、QRS幅の広い規則正しい頻拍 → 心室頻拍として扱う（不安定なら同期電気ショック、Ca拮抗薬は禁忌）', clues: ['q:pmh', 'q:dizziness', 't:ecg', 't:echo', 'e:periph'] },
     { id: 'hyperthyroid', tests: ['thyroid'], point: '体重減少（食欲はある）・暑がり・発汗・手指振戦・甲状腺腫大', clues: ['q:weightloss', 'q:heatcold', 'e:tremor', 'e:thyroid_palp', 'L:TSH'] },
     { id: 'panic', point: '若年、強い不安・死の恐怖・手足や口のしびれ、10分でピーク、同様の発作の既往、心電図は洞性頻脈のみ、血液ガスでPaCO2低下（除外診断）', clues: ['q:character', 'q:pmh', 'q:trigger', 'q:dyspnea', 'L:PCO2', 'e:gen_appear'] },
     { id: 'acs', point: '胸痛・心電図のST変化', clues: ['q:chestpain'] },
@@ -1360,6 +1370,16 @@ export const DISEASE_NOTES = {
   epistaxis: {"overview":"鼻の粘膜の血管が切れて出血する。多くは鼻中隔前方（キーゼルバッハ部位）から。","treatment":["座って前かがみ、鼻翼を10〜15分圧迫","止まらなければ血管収縮薬を浸したガーゼタンポン・焼灼","量が多い・抗凝固薬内服なら血算・凝固","後方出血は耳鼻咽喉科で止血"],"flow":"鼻出血 → 前かがみで鼻翼を圧迫 → 出血部位の確認 → タンポン → 止血すれば帰宅"},
   aacg: {"overview":"虹彩が隅角をふさいで房水が流れなくなり、眼圧が急上昇する病気。数時間〜数日で失明しうる。","treatment":["D-マンニトール点滴・アセタゾラミド・ピロカルピン点眼で眼圧を下げる","眼科でレーザー虹彩切開術","抗コリン薬・散瞳薬を避ける","反対眼の予防的処置"],"flow":"頭痛・嘔吐＋目の痛み・かすみ・虹視 → 充血・中等度散瞳・眼球が硬い → 眼圧著明上昇 → 緑内障発作 → 眼圧下降と眼科"},
   testicular_torsion: {"overview":"精巣が精索を軸にねじれて血流が途絶える病気。6時間以内に解除しないと精巣が壊死する。","treatment":["疑ったらすぐ泌尿器科へ（エコーで時間をかけない）","緊急手術で捻転を解除し、両側の精巣を固定","用手的整復は一時的な手段"],"flow":"若い男性の突然の陰嚢痛・下腹部痛 → 精巣の挙上・挙睾筋反射消失 → ドプラで血流消失 → 精巣捻転 → 緊急手術"},
+  aaa: {"overview":"腹部大動脈が瘤状に拡張し（3cm以上）、破れて大出血する。死亡率が非常に高い。","treatment":["エコーで大動脈径を確認","輸血（血圧は上げすぎない）","心臓血管外科で緊急手術（ステントグラフト・人工血管置換）"],"flow":"高齢男性の突然の腹痛・腰痛・ショック → 拍動性腫瘤 → エコーで瘤 → 腹部大動脈瘤破裂 → 緊急手術"},
+  vt: {"overview":"心室から速いリズムが出る不整脈。心筋梗塞の既往など心臓病のある人に多く、心室細動・突然死につながる。","treatment":["脈がなければ心肺蘇生・除細動","不安定なら同期電気ショック","安定ならアミオダロン静注","原因（虚血・電解質）の検索、植込み型除細動器"],"flow":"動悸・ふらつき → 心電図でwide QRS頻拍 → 心室頻拍 → 電気ショック・アミオダロン → CCU"},
+  limb_ischemia: {"overview":"心臓などでできた血栓が下肢の動脈に詰まり、足の血流が急に途絶える病気。","treatment":["ヘパリン静注","心臓血管外科で血栓除去術（6時間以内が目標）","再灌流後の高K血症・コンパートメント症候群に注意","心房細動の抗凝固療法"],"flow":"突然の下肢痛・蒼白・冷感 → 脈拍消失 → 造影CT → 急性動脈閉塞 → ヘパリンと血栓除去"},
+  mesenteric: {"overview":"腸を養う上腸間膜動脈が詰まり、腸が壊死する病気。早期は腹部所見が乏しく診断が難しい。","treatment":["補液・ヘパリン","造影CT（動脈相）で診断","外科・IVRで血行再建と壊死腸管の切除"],"flow":"心房細動の高齢者の激しい腹痛 → 所見が軽い・乳酸上昇 → 造影CT → 腸間膜虚血 → 緊急手術"},
+  variceal: {"overview":"肝硬変で門脈圧が上がり、食道の静脈がこぶ状に太くなって（静脈瘤）破裂する。大量出血を起こす。","treatment":["控えめな輸血（Hb 7〜8目標）","予防的抗菌薬（セフトリアキソン）","緊急内視鏡で静脈瘤結紮術","肝性脳症・再出血の予防"],"flow":"肝硬変の人の大量吐血 → 循環の安定・抗菌薬 → 緊急内視鏡 → 静脈瘤結紮"},
+  encephalitis: {"overview":"単純ヘルペスウイルスによる脳の炎症。側頭葉を侵し、治療が遅れると死亡や重い後遺症を残す。","treatment":["疑ったらすぐアシクロビル静注","細菌性髄膜炎が否定できるまで抗菌薬も","髄液検査（HSV-PCR）・MRI","けいれんの治療"],"flow":"発熱＋意識障害・異常行動・けいれん → 髄液でリンパ球優位 → MRIで側頭葉病変 → ヘルペス脳炎 → アシクロビル"},
+  co_poisoning: {"overview":"不完全燃焼で生じた一酸化炭素を吸い、酸素を運べなくなる中毒。SpO2は正常に見える。","treatment":["100%酸素（リザーバーマスク）","血液ガスでCOHbを測定","重症は高気圧酸素治療を検討","同居者の安全確保・原因の除去、遅発性脳症の説明"],"flow":"冬の頭痛・嘔気・家族も同症状 → COHb高値 → 一酸化炭素中毒 → 100%酸素"},
+  obst_pyelo: {"overview":"尿管結石などで尿の流れがせき止められた状態での腎盂腎炎。急速に敗血症性ショックになる。","treatment":["血液・尿培養の後に抗菌薬","輸液（ショックには昇圧薬）","エコーで水腎症を確認","泌尿器科で緊急ドレナージ（尿管ステント・腎瘻）"],"flow":"発熱＋腰痛 → エコーで水腎症・CTで結石 → 閉塞性腎盂腎炎 → 抗菌薬と緊急ドレナージ"},
+  angioedema: {"overview":"ACE阻害薬でブラジキニンがたまり、唇・舌・喉が腫れる。じんましんやかゆみは伴わない。","treatment":["気道の評価（喉頭ファイバー）と監視、必要なら気道確保","ACE阻害薬の中止（以後使用しない）","抗ヒスタミン薬・アドレナリンは効きにくい","入院で経過観察（数日で改善）"],"flow":"じんましんのない口唇・舌の腫れ → ACE阻害薬内服 → 気道評価 → 薬剤性血管性浮腫 → 中止と監視"},
+  aka: {"overview":"大量飲酒の後に食事がとれなくなり、ケトン体がたまってアシドーシスになる状態。","treatment":["ビタミンB1（ブドウ糖より先に）","細胞外液とブドウ糖を含む輸液","K・Mg・リンの補正","膵炎・離脱症状などの合併に注意"],"flow":"大量飲酒後の嘔吐・食事摂取不良 → アニオンギャップ開大性アシドーシス・ケトン上昇・血糖は高くない → アルコール性ケトアシドーシス → B1と糖輸液"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

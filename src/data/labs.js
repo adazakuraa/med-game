@@ -38,6 +38,7 @@ export const LABS = {
   PH: { name: 'pH（静脈）', unit: '', ref: [7.31, 7.41], dp: 2, derived: true, abs: [6.7, 7.7] },
   PCO2: { name: 'pCO2（静脈）', unit: 'mmHg', ref: [41, 51], dp: 0, derived: true, abs: [8, 120] },
   HCO3: { name: 'HCO3-', unit: 'mEq/L', ref: [22, 26], dp: 1, derived: true, abs: [2, 45] },
+  COHB: { name: 'COHb（一酸化炭素ヘモグロビン）', unit: '%', ref: [0, 2], dp: 1, base: { m: 0.8, sd: 0.3 }, abs: [0, 60] },
   LAC: { name: '乳酸', unit: 'mmol/L', ref: [0.5, 2.0], dp: 1, base: { m: 1.0, sd: 0.25 }, abs: [0.3, 20] },
   AG: { name: 'アニオンギャップ', unit: 'mEq/L', ref: [8, 12], dp: 0, derived: true, abs: [0, 50] },
   BHB: { name: '血中β-ヒドロキシ酪酸', unit: 'μmol/L', ref: [0, 85], dp: 0, base: { m: 40, sd: 15 }, abs: [0, 15000] },

@@ -341,6 +341,23 @@ export const DRUGS = [
     info: '急性閉塞隅角緑内障で縮瞳させて隅角を開く。1%を1回1滴。',
   },
   {
+    id: 'acyclovir', generic: 'アシクロビル（注）', brands: ['ゾビラックス'], cls: '抗ヘルペスウイルス薬', tags: ['antiviral_hsv', 'antiviral_hsv_iv'],
+    routes: { iv: { unit: 'mg/kg', min: 5, max: 10, freqs: ['q8h'], maxDaily: 30 } },
+    renal: [{ crclBelow: 50, maxDaily: 20, text: 'CrCl 25〜50: 10mg/kg 12時間毎' }, { crclBelow: 25, maxDaily: 10, text: 'CrCl 10〜25: 10mg/kg 24時間毎' }],
+    info: '単純ヘルペス脳炎に10mg/kgを8時間毎に1時間以上かけて点滴、14〜21日間。疑った時点で開始する。腎障害（結晶尿）予防に十分な補液。',
+  },
+  {
+    id: 'amiodarone', generic: 'アミオダロン（注）', brands: ['アンカロン'], cls: '抗不整脈薬', tags: ['antiarrhythmic'],
+    routes: { iv: { unit: 'mg', min: 125, max: 300, freqs: ['once'], maxDaily: 1250 } },
+    info: '血行動態が安定した心室頻拍に125mgを10分かけて静注し、持続投与へ。心停止（VF/無脈性VT）では300mg静注。低血圧・徐脈・QT延長に注意。',
+  },
+  {
+    id: 'vasopressin_like', generic: 'テルリプレシン類（門脈圧低下薬）', brands: ['（国内ではバソプレシン等）'], cls: '門脈圧低下薬', tags: ['portal'],
+    routes: { iv: { unit: '単位/分', min: 0.1, max: 0.4, freqs: ['cont'] } },
+    contra: ['coronary'],
+    info: '食道静脈瘤破裂で門脈圧を下げて出血を減らす。虚血性心疾患に注意。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

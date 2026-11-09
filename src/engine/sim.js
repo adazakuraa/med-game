@@ -71,7 +71,7 @@ export function effects(enc, t = enc.t) {
     if (o.kind === 'rx') {
       const d = DRUG_BY_ID[o.drugId];
       const f = o.doseFactor ?? 1;
-      if (d.abx) for (const k of dz.organisms) if (drugCovers(d, k, p)) eff.covers[k] = Math.max(eff.covers[k] || 0, f);
+      if (d.abx) for (const k of [...dz.organisms, ...(dz.prophylaxis || [])]) if (drugCovers(d, k, p)) eff.covers[k] = Math.max(eff.covers[k] || 0, f);
       const windowed = (o.freq === 'once' || o.freq === 'prn') && d.effectHours;
       if (windowed && t >= o.start + d.effectHours * 60) continue;
       for (const tag of d.tags || []) {

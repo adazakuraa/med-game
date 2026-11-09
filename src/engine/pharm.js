@@ -138,7 +138,7 @@ export function evaluateRx(enc, order, vit, activeOrders = []) {
     }
   }
   if (d.abx && dz.harmTags?.abx) issues.push({ level: 'warn', code: 'dz_abx', msg: dz.harmTags.abx });
-  if (d.abx && !dz.organisms.length && !dz.harmTags?.abx) issues.push({ level: 'warn', code: 'abx_unneeded', msg: '細菌感染症の根拠がない状況での抗菌薬投与' });
+  if (d.abx && !dz.organisms.length && !dz.prophylaxis && !dz.harmTags?.abx) issues.push({ level: 'warn', code: 'abx_unneeded', msg: '細菌感染症の根拠がない状況での抗菌薬投与' });
   if (d.broad && dz.organisms.length && !(p.vars.res?.esbl)) issues.push({ level: 'info', code: 'broad', msg: 'より狭域の抗菌薬で治療可能（広域抗菌薬の温存）' });
   if (d.tags?.includes('thrombolytic') && dz.id !== 'stroke') issues.push({ level: 'harm', code: 'tpa_wrong', msg: '脳梗塞ではない患者への血栓溶解薬（出血のリスク）' });
   if (d.tags?.includes('thrombolytic') && dz.id === 'stroke' && p.vars.lastNormalH + enc.t / 60 > 4.5) issues.push({ level: 'harm', code: 'tpa_window', msg: '発症（最終健常）から4.5時間を超えた血栓溶解療法（出血リスクが利益を上回る）' });

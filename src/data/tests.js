@@ -16,7 +16,7 @@ export const TESTS = [
   { id: 'crp', cat: 'blood', name: 'CRP', kind: 'lab', items: ['CRP'], cost: 160, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },
-  { id: 'vbg', cat: 'blood', name: '静脈血液ガス（POCT）', kind: 'lab', items: ['PH', 'PCO2', 'HCO3', 'LAC', 'NA', 'K', 'CL', 'AG', 'GLU'], cost: 1450, timeMin: 5, inv: 1, sample: 'blood' },
+  { id: 'vbg', cat: 'blood', name: '静脈血液ガス（POCT）', kind: 'lab', items: ['PH', 'PCO2', 'HCO3', 'LAC', 'NA', 'K', 'CL', 'AG', 'GLU', 'COHB'], cost: 1450, timeMin: 5, inv: 1, sample: 'blood' },
   { id: 'thyroid', cat: 'blood', name: '甲状腺機能（TSH・FT4）', kind: 'lab', items: ['TSH', 'FT4'], cost: 2700, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'ferritin', cat: 'blood', name: 'フェリチン（鉄の貯蔵）', kind: 'lab', items: ['FER'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'nh3', cat: 'blood', name: 'アンモニア', kind: 'lab', items: ['NH3'], cost: 500, timeMin: 30, inv: 1, sample: 'blood' },
@@ -70,6 +70,7 @@ export const TESTS = [
   { id: 'ccta', cat: 'image', name: '冠動脈CT', kind: 'report', cost: 30000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '冠動脈に有意な狭窄なし。' },
   { id: 'iop', cat: 'physio', name: '眼圧測定', kind: 'report', cost: 820, timeMin: 10, inv: 0, normal: '眼圧 右15mmHg・左14mmHg（正常）。' },
   { id: 'scrotal_us', cat: 'image', name: '陰嚢エコー（カラードプラ）', kind: 'report', cost: 5300, timeMin: 20, inv: 0, normal: '両側精巣の血流は良好。精巣上体の腫大なし。' },
+  { id: 'leg_cta', cat: 'image', name: '下肢動脈造影CT', kind: 'report', cost: 22000, timeMin: 45, inv: 2, radiation: true, contrast: true, normal: '下肢動脈に閉塞・狭窄なし。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 
