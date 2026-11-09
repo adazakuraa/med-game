@@ -316,6 +316,31 @@ export const DRUGS = [
     info: '脂質異常症・冠動脈疾患の二次予防に10mg 1日1回から。筋肉痛・CK上昇・肝障害に注意。',
   },
   {
+    id: 'vcm_po', generic: 'バンコマイシン（内服）', brands: ['塩酸バンコマイシン散'], cls: '抗菌薬（C. difficile感染症）', tags: ['cdiff_tx'],
+    routes: { po: { unit: 'mg', min: 125, max: 500, freqs: ['q6h'], maxDaily: 2000 } },
+    info: 'C. difficile感染症に1回125mgを1日4回、10日間。内服では腸管からほとんど吸収されない（点滴では腸に届かない）。',
+  },
+  {
+    id: 'clopidogrel', generic: 'クロピドグレル', brands: ['プラビックス'], cls: '抗血小板薬', tags: ['antiplatelet'],
+    routes: { po: { unit: 'mg', min: 75, max: 300, freqs: ['once', 'q24h'], maxDaily: 300 } },
+    info: '脳梗塞・TIAの再発予防に75mg 1日1回（急性期は初回300mg）。軽症脳梗塞・高リスクTIAではアスピリンと3週間程度併用（DAPT）。',
+  },
+  {
+    id: 'mannitol', generic: 'D-マンニトール', brands: ['マンニットール'], cls: '浸透圧利尿薬', tags: ['osmotic'],
+    routes: { iv: { unit: 'g/kg', min: 0.5, max: 1.5, freqs: ['once'], maxDaily: 2 } },
+    info: '急性緑内障発作・脳浮腫に0.5〜1.5g/kgを30〜60分で点滴。心不全・脱水・腎不全に注意。',
+  },
+  {
+    id: 'acetazolamide', generic: 'アセタゾラミド', brands: ['ダイアモックス'], cls: '炭酸脱水酵素阻害薬', tags: ['cai'],
+    routes: { iv: { unit: 'mg', min: 250, max: 500, freqs: ['once', 'q12h'], maxDaily: 1000 } },
+    info: '緑内障発作で眼圧を下げる（房水産生を抑える）。250〜500mgを静注。',
+  },
+  {
+    id: 'pilocarpine', generic: 'ピロカルピン点眼', brands: ['サンピロ'], cls: '縮瞳薬（点眼）', tags: ['miotic'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['once', 'q6h', 'q4h'], maxDaily: 6 } },
+    info: '急性閉塞隅角緑内障で縮瞳させて隅角を開く。1%を1回1滴。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

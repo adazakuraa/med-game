@@ -43,6 +43,7 @@ export const TESTS = [
   { id: 'myco_ag', cat: 'micro', name: 'マイコプラズマ迅速抗原', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.95 },
   { id: 'afb', cat: 'micro', name: '喀痰抗酸菌検査（塗抹・PCR・培養）', kind: 'report', cost: 4500, timeMin: 120, inv: 0, normal: '抗酸菌塗抹陰性。結核菌PCR陰性（培養は結果待ち）。' },
   { id: 'igra', cat: 'micro', name: 'インターフェロンγ遊離試験（T-SPOT/QFT）', kind: 'qual', cost: 6000, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
+  { id: 'cdiff', cat: 'micro', name: 'CDトキシン・抗原（便）', kind: 'qual', cost: 1000, timeMin: 60, inv: 0, pos: '陽性（GDH抗原・トキシンとも陽性）', neg: '陰性', spec: 0.98 },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
@@ -67,6 +68,8 @@ export const TESTS = [
   { id: 'ecg', cat: 'physio', name: '12誘導心電図', kind: 'ecg', cost: 1300, timeMin: 5, inv: 0 },
   { id: 'stress_ecg', cat: 'physio', name: '運動負荷心電図（トレッドミル）', kind: 'report', cost: 1600, timeMin: 30, inv: 1, normal: '目標心拍数まで負荷して、胸部症状なし。有意なST変化なし（陰性）。' },
   { id: 'ccta', cat: 'image', name: '冠動脈CT', kind: 'report', cost: 30000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '冠動脈に有意な狭窄なし。' },
+  { id: 'iop', cat: 'physio', name: '眼圧測定', kind: 'report', cost: 820, timeMin: 10, inv: 0, normal: '眼圧 右15mmHg・左14mmHg（正常）。' },
+  { id: 'scrotal_us', cat: 'image', name: '陰嚢エコー（カラードプラ）', kind: 'report', cost: 5300, timeMin: 20, inv: 0, normal: '両側精巣の血流は良好。精巣上体の腫大なし。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 
