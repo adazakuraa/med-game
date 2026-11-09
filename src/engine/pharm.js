@@ -36,6 +36,7 @@ export const CONTRA_RULES = {
   seizure_risk: { level: 'harm', msg: 'ベンゾジアゼピン常用者・けいれんの既往では拮抗薬でけいれんを誘発', check: (c) => c.p.comorb.includes('epilepsy') || c.p.diseaseId === 'intox' },
   elderly_benzo: { level: 'warn', msg: '高齢者へのベンゾジアゼピン系睡眠薬（転倒・骨折・せん妄・依存のリスク）', check: (c) => c.p.age >= 65 },
   asthma_atp: { level: 'harm', msg: '気管支喘息ではATP（アデノシン）が気管支攣縮を誘発するため禁忌', check: (c) => c.p.comorb.includes('asthma') || c.p.diseaseId === 'asthma' },
+  dm_olz: { level: 'harm', msg: '糖尿病にオランザピン（高血糖・糖尿病性ケトアシドーシスの報告で禁忌）', check: (c) => c.p.comorb.includes('dm2') || c.p.comorb.includes('t1dm') },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 

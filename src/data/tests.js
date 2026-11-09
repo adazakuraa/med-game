@@ -12,7 +12,7 @@ export const TEST_CATS = [
 
 export const TESTS = [
   { id: 'cbc', cat: 'blood', name: '血算セット', kind: 'lab', items: ['WBC', 'NEUT', 'HB', 'MCV', 'PLT'], cost: 210, timeMin: 30, inv: 1, sample: 'blood' },
-  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'TP', 'ALB', 'AMY', 'LIP', 'CK', 'LDH', 'URIC', 'CA'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'TP', 'ALB', 'AMY', 'LIP', 'CK', 'LDH', 'URIC', 'CA', 'PHOS'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'crp', cat: 'blood', name: 'CRP', kind: 'lab', items: ['CRP'], cost: 160, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },
@@ -63,6 +63,7 @@ export const TESTS = [
   { id: 'rf_ccp', cat: 'blood', name: 'リウマトイド因子・抗CCP抗体', kind: 'report', cost: 2000, timeMin: 1440, inv: 1, normal: 'RF 陰性、抗CCP抗体 陰性。' },
   { id: 'renin_aldo', cat: 'blood', name: '血漿レニン活性・アルドステロン', kind: 'report', cost: 2500, timeMin: 1440, inv: 1, normal: 'アルドステロン/レニン比は正常（スクリーニング陰性）。' },
   { id: 'upcr', cat: 'blood', name: '尿蛋白定量（蛋白/クレアチニン比）・尿沈渣', kind: 'report', cost: 400, timeMin: 60, inv: 0, normal: '尿蛋白 0.05 g/gCr。沈渣に異常なし。' },
+  { id: 'urine_cyto', cat: 'micro', name: '尿細胞診', kind: 'report', cost: 1900, timeMin: 1440, inv: 0, normal: '陰性（Class II）。' },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },

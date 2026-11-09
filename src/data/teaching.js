@@ -79,6 +79,8 @@ export const QUESTION_WHY = {
   memory: '物忘れ・同じことを何度も聞く・道に迷う・家事ができなくなった、は認知症のサイン。本人は自覚が乏しいので家族からも聞く。',
   numbness: 'しびれの分布（手袋靴下型・神経の支配領域・片側）と誘因で、末梢神経障害・神経根障害・脳卒中を見分ける。',
   hoarse: '4週以上続く声がれは、声帯の観察（喫煙者は喉頭がん）。声帯麻痺なら胸部の病気も探す。',
+  hallucination: '幻聴・被害妄想は統合失調症などの精神病症状。身体疾患（せん妄・脳炎・薬物）も除外する。',
+  incontinence: '咳・くしゃみで漏れる（腹圧性）か、急な尿意で間に合わない（切迫性）かで治療が違う。',
   heatcold: '暑がり・汗かき・体重減少は甲状腺機能亢進症、寒がり・むくみ・便秘は機能低下症を示唆する。',
   joint: '関節の腫れ・痛み。急な単関節炎は痛風・偽痛風・化膿性関節炎、多関節は関節リウマチなどを考える。',
   menses: '月経の量（過多月経）は若い女性の鉄欠乏性貧血の最も多い原因。',
@@ -189,6 +191,7 @@ export const TEST_WHY = {
   rf_ccp: '関節リウマチの診断。抗CCP抗体は特異度が高い。',
   renin_aldo: '原発性アルドステロン症のスクリーニング（アルドステロン/レニン比が高い）。若年・低K・治療抵抗性の高血圧で測る。',
   upcr: '尿蛋白の量（1日量の目安）と沈渣（赤血球円柱など）で腎炎・ネフローゼを評価する。',
+  urine_cyto: '尿路上皮がん（膀胱がんなど）のスクリーニング。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -295,6 +298,7 @@ export const LAB_MEANING = {
   APAP: { H: 'アセトアミノフェン過量服薬。服用後4時間以降の値をノモグラムに当てはめてNACの適応を判断' },
   LDH: { H: '細胞が壊れると上昇（溶血・悪性リンパ腫・白血病・心筋梗塞・肝障害など）' },
   TP: { H: '総蛋白が高くアルブミンが低い（グロブリン増加）→ 多発性骨髄腫などを考える', L: '低栄養・ネフローゼ症候群・肝硬変' },
+  PHOS: { L: '低リン血症（再栄養症候群・アルコール多飲・DKA治療中）。重度では筋力低下・呼吸不全・心不全' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -405,6 +409,7 @@ export const DRUG_ROLE = {
   vitd_oint: '乾癬の外用薬（ビタミンD3とステロイド）。',
   ketoconazole_cream: '脂漏性皮膚炎の原因となる真菌（マラセチア）を抑える塗り薬。',
   adapalene: 'ニキビの外用薬。毛穴の詰まりとアクネ菌を抑える。',
+  olanzapine: '統合失調症や躁状態の薬（抗精神病薬）。糖尿病には使えない。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -813,7 +818,7 @@ APPROACHES.scrotal = {
   redflags: ['突然の激痛・嘔吐・精巣の挙上・挙睾筋反射の消失 → 精巣捻転：泌尿器科へ緊急（エコーで時間をかけない）', '発熱・膿尿・徐々に始まる → 精巣上体炎', '還納できない鼠径部の膨隆 → ヘルニア嵌頓'],
   ddx: [
     { id: 'testicular_torsion', tests: ['scrotal_us'], point: '思春期〜若年、突然の激痛と嘔吐、精巣の挙上・横位、挙睾筋反射消失、ドプラで血流消失', clues: ['q:onset', 'q:nausea', 'e:scrotum', 't:scrotal_us', '!q:fever'] },
-    { id: 'epididymitis', point: '徐々に始まる痛み・発熱・排尿時痛・膿尿、持ち上げると痛みが軽くなる、血流は増加', clues: ['q:fever', 'q:dysuria'] },
+    { id: 'epididymitis', tests: ['scrotal_us', 'ua'], point: '徐々に始まる痛み・発熱・排尿時痛・膿尿、前立腺肥大の高齢者、持ち上げると痛みが軽くなる、ドプラで血流は保たれる → 抗菌薬', clues: ['q:fever', 'q:dysuria', 'q:character', 't:scrotal_us', 'H:U_LEU', '!q:nausea'] },
     { id: 'inc_hernia', point: '鼠径部から陰嚢への還納できない膨隆', clues: ['e:inguinal'] },
   ],
 };
@@ -947,6 +952,7 @@ APPROACHES.checkup = {
     { id: 'dm2', point: 'HbA1c・血糖高値', clues: ['H:HBA1C'] },
     { id: 'osteoporosis', tests: ['dexa'], point: '閉経後女性・やせ・脆弱性骨折の既往・家族歴、身長の低下・円背、骨密度低下 → 薬物療法と転倒予防', clues: ['q:pmh', 'q:family', 'q:onset', 'e:spine', 't:dexa'] },
     { id: 'polycythemia', tests: ['cbc', 'smear'], point: 'Hb高値に白血球・血小板も増加、脾腫・入浴後のかゆみ・顔面紅潮、喫煙・無呼吸などの二次性はない → 瀉血とアスピリン', clues: ['q:character', 'e:gen_appear', 'e:abd_palp', 'H:HB', 'H:PLT', '!q:smoking'] },
+    { id: 'prostate_ca', tests: ['psa'], point: 'PSA高値、家族歴、直腸診で石様硬の結節 → 泌尿器科でMRI・生検', clues: ['q:family', 'q:onset', 'H:PSA', 'e:rectal'] },
     { id: 'hyperuricemia', point: '尿酸高値、痛風発作の既往、飲酒・肥満・利尿薬 → 尿酸降下薬（6以下）と生活指導', clues: ['q:pmh', 'q:alcohol', 'q:meds', 'H:URIC'] },
   ],
 };
@@ -1150,6 +1156,38 @@ APPROACHES.oral = {
     { id: 'trigeminal', point: '数秒の電撃痛、食事・歯みがきで誘発' },
   ],
 };
+APPROACHES.psych = {
+  title: '気分・行動の変化、不安',
+  intro: '精神症状では、まず意識障害（せん妄）と身体疾患・薬物（甲状腺・低血糖・脳炎・アルコール・覚醒剤・ステロイド）を除外する。そのうえで、気分（うつ・躁）、不安、精神病症状（幻覚・妄想）、依存、摂食の問題を整理し、自殺・他害の危険を評価する。',
+  keyQ: ['onset', 'character', 'mood', 'sleep', 'hallucination', 'weightloss', 'alcohol', 'meds', 'pmh', 'menses', 'heatcold'],
+  keyE: ['gen_consc', 'gen_appear', 'tremor'],
+  keyT: ['bs_poct', 'chem', 'thyroid', 'tox'],
+  redflags: ['希死念慮・自傷他害の危険 → 安全の確保と精神科（入院の検討）', '意識の変動・見当識障害 → せん妄（身体疾患を探す）', '著明なやせ・徐脈・電解質異常 → 摂食障害の身体的危機', '発熱・筋強剛 → 悪性症候群'],
+  ddx: [
+    { id: 'gad', point: '6か月以上の様々なことへの過剰な心配・緊張・不眠、カフェイン・寝酒、気分の落ち込みは主体でない → 認知行動療法とSSRI', clues: ['q:character', 'q:sleep', 'q:meds', '!q:hallucination', '!L:TSH'] },
+    { id: 'bipolar', point: '気分の高揚・睡眠欲求の減少・多弁・浪費、うつ病の既往・抗うつ薬の開始 → 抗うつ薬の中止と気分安定薬', clues: ['q:mood', 'q:sleep', 'q:pmh', 'q:meds', 'e:gen_appear'] },
+    { id: 'schizophrenia', point: '若年、数か月続く幻聴・被害妄想・陰性症状、意識は清明、薬物・身体疾患なし → 抗精神病薬', clues: ['q:hallucination', 'q:character', 'e:gen_consc', '!q:alcohol', '!t:tox'] },
+    { id: 'alcohol_use', tests: ['cbc', 'lipid'], point: '飲酒のコントロールができない・迎え酒・離脱症状、γ-GTP高値・大球性 → ビタミンB1と専門治療', clues: ['q:alcohol', 'q:character', 'e:tremor', 'H:GGT', 'H:MCV'] },
+    { id: 'anorexia_nervosa', tests: ['ecg', 'chem'], point: '若い女性の著明なやせ・体重増加への恐怖・無月経・下剤乱用、徐脈・低血圧・低K → 慎重な再栄養', clues: ['q:weightloss', 'q:menses', 'q:character', 'L:K', 'e:gen_appear'] },
+    { id: 'depression', point: '抑うつ気分・興味の喪失・早朝覚醒', clues: ['q:mood'] },
+    { id: 'delirium', point: '意識の変動・注意障害（身体疾患が原因）' },
+  ],
+};
+APPROACHES.hematuria = {
+  title: '血尿',
+  intro: '肉眼的血尿は、痛みの有無と、糸球体由来か（変形赤血球・赤血球円柱・蛋白尿）で考える。痛みのない血尿は尿路のがんを、側腹部の激痛は結石を、排尿時痛は膀胱炎を考える。かぜと同時の血尿はIgA腎症。',
+  keyQ: ['onset', 'hematuria', 'character', 'flankpain', 'dysuria', 'fever', 'sorethroat', 'smoking', 'occupation', 'meds', 'pmh'],
+  keyE: ['cva', 'abd_palp', 'leg_edema'],
+  keyT: ['ua', 'upcr', 'chem', 'abd_us'],
+  redflags: ['喫煙・高齢の無症候性肉眼的血尿 → 膀胱がん（膀胱鏡）', '蛋白尿・赤血球円柱・腎機能悪化・むくみ → 急速進行性糸球体腎炎も考え腎臓内科へ', '凝血塊で尿が出ない → 膀胱タンポナーデ'],
+  ddx: [
+    { id: 'iga_nephropathy', tests: ['upcr'], point: 'かぜと同時（1〜2日以内）の肉眼的血尿、若年、変形赤血球・赤血球円柱・蛋白尿 → 腎臓内科で腎生検', clues: ['q:sorethroat', 'q:pmh', '!q:flankpain', '!q:smoking', 'H:U_PRO', 't:upcr'] },
+    { id: 'bladder_ca', tests: ['abd_us', 'urine_cyto'], point: '喫煙歴のある高齢者の痛みのない肉眼的血尿、非糸球体性、エコーで膀胱腫瘍・尿細胞診陽性 → 膀胱鏡', clues: ['q:smoking', 'q:character', 'q:occupation', '!q:dysuria', 't:abd_us', 't:urine_cyto'] },
+    { id: 'psgn', point: '溶連菌感染の1〜3週後の血尿・むくみ・高血圧' },
+    { id: 'ureteral', point: '側腹部の激痛と血尿', clues: ['q:flankpain'] },
+    { id: 'cystitis', point: '排尿時痛・頻尿と血尿', clues: ['q:dysuria'] },
+  ],
+};
 APPROACHES.leg_red = {
   title: '足の赤みと腫れ',
   intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
@@ -1348,7 +1386,7 @@ APPROACHES.sore_throat = {
 APPROACHES.urinary_sx = {
   title: '排尿時の痛み・頻尿',
   intro: '排尿時痛・頻尿・残尿感は下部尿路感染（膀胱炎）が多い。発熱・腰痛があれば腎盂腎炎、帯下の異常があれば腟炎・性感染症、男性なら前立腺炎を考える。',
-  keyQ: ['onset', 'dysuria', 'frequency', 'retention', 'hematuria', 'fever', 'flankpain', 'vagbleed', 'lmp', 'allergy'],
+  keyQ: ['onset', 'dysuria', 'frequency', 'retention', 'incontinence', 'hematuria', 'fever', 'flankpain', 'vagbleed', 'lmp', 'pmh', 'allergy'],
   keyE: ['abd_palp', 'cva', 'rectal'],
   keyT: ['ua', 'used'],
   redflags: ['発熱・CVA叩打痛 → 腎盂腎炎', '妊娠の可能性 → 薬の選択に注意', '男性の尿路感染は複雑性（前立腺炎・基礎疾患）'],
@@ -1361,6 +1399,7 @@ APPROACHES.urinary_sx = {
     { id: 'urethritis', tests: ['sti_pcr'], point: '若い男性、排尿時痛と尿道からの膿、1〜2週前の性交渉、発熱なし → 淋菌とクラミジアの両方を治療、パートナーも', clues: ['q:dysuria', 'q:character', 'q:trigger', '!q:fever', 't:sti_pcr', 't:urine_gram'] },
     { id: 'prostate_ca', point: 'PSA高値、直腸診で硬い結節', clues: ['H:PSA'] },
     { id: 'oab', tests: ['pvr'], point: '急に我慢できない尿意（尿意切迫感）・頻尿・切迫性尿失禁、排尿時痛・血尿なし、残尿は少ない → 行動療法とβ3作動薬', clues: ['q:character', 'q:frequency', '!q:dysuria', '!q:retention', '!t:pvr'] },
+    { id: 'stress_incontinence', point: '咳・くしゃみ・力んだときの尿漏れ、経腟分娩歴、急な尿意や排尿時痛はない → 骨盤底筋訓練', clues: ['q:incontinence', 'q:pmh', '!q:dysuria', '!q:frequency'] },
   ],
 };
 APPROACHES.joint_pain = {
@@ -1947,6 +1986,16 @@ export const DISEASE_NOTES = {
   tmj: {"overview":"顎の関節や噛む筋肉の痛み・口が開きにくい・関節の音が出る病気。","treatment":["セルフケア（硬い物を避ける・食いしばりの自覚）","鎮痛薬","歯科でスプリント療法"],"flow":"口を開けると顎が痛い・クリック音 → 顎関節症 → セルフケアと鎮痛"},
   odontogenic: {"overview":"虫歯や歯周病から細菌感染が顎や頬・首に広がった状態。重症化すると気道をふさぐ。","treatment":["嫌気性菌もカバーする抗菌薬静注","膿瘍の切開排膿","原因歯の処置","気道の監視"],"flow":"虫歯の後の頬・顎下の腫れと発熱 → 歯性感染症 → 抗菌薬と切開排膿"},
   varicose: {"overview":"足の静脈の弁が壊れて血液が逆流し、血管がこぶ状に浮き出る病気。","treatment":["エコーで逆流と血栓を確認","弾性ストッキング・生活指導","血管内焼灼術・硬化療法・手術"],"flow":"浮き出た足の静脈・夕方のだるさ → エコーで弁不全 → 下肢静脈瘤 → 弾性ストッキング"},
+  gad: {"overview":"さまざまなことへの過剰な心配と緊張が半年以上続き、生活に支障が出る不安の病気。","treatment":["甲状腺・カフェイン・アルコールなどの除外","認知行動療法","SSRI","ベンゾジアゼピンの長期使用は避ける"],"flow":"続く過剰な心配・緊張・不眠 → 身体疾患を除外 → 全般不安症 → 認知行動療法とSSRI"},
+  bipolar: {"overview":"躁状態とうつ状態を繰り返す病気。抗うつ薬で躁転することがある。","treatment":["抗うつ薬の中止","気分安定薬（リチウム・バルプロ酸）・抗精神病薬","危険があれば入院","甲状腺・薬物の除外"],"flow":"気分の高揚・睡眠欲求の減少・浪費 → うつ病の既往 → 双極性障害 → 気分安定薬"},
+  schizophrenia: {"overview":"幻覚・妄想・まとまりのない思考や、意欲低下などが続く精神疾患。若年で発症することが多い。","treatment":["せん妄・薬物・身体疾患の除外","抗精神病薬","心理社会的支援・家族支援","危険があれば入院"],"flow":"若年者の幻聴・被害妄想・意識清明 → 身体疾患・薬物を除外 → 統合失調症 → 抗精神病薬"},
+  alcohol_use: {"overview":"飲酒をコントロールできなくなり、健康や生活に問題が生じている状態（依存症を含む）。","treatment":["動機づけ面接","専門治療（断酒・減酒）と自助グループ","ビタミンB1の補充","離脱症状・肝障害・うつ病の評価"],"flow":"迎え酒・離脱症状・生活への支障 → アルコール使用障害 → 専門治療へつなぐ"},
+  anorexia_nervosa: {"overview":"体重増加への強い恐怖とボディイメージの障害から、極端な食事制限でやせる病気。","treatment":["身体的危機の評価（徐脈・低血圧・電解質・低血糖）","再栄養症候群に注意した少量からの栄養","ビタミンB1・リン・K・Mgの補充","精神科と連携した治療"],"flow":"著明なやせ・無月経・体重への恐怖 → 身体的危機の評価 → 神経性やせ症 → 慎重な再栄養"},
+  iga_nephropathy: {"overview":"腎臓の糸球体にIgAが沈着して起こる慢性腎炎。日本で最も多い糸球体腎炎。","treatment":["尿沈渣・蛋白尿の評価","腎生検","ARB/ACE阻害薬","扁桃摘出＋ステロイドパルスの検討"],"flow":"かぜと同時の肉眼的血尿 → 糸球体性血尿・蛋白尿 → IgA腎症 → 腎生検"},
+  bladder_ca: {"overview":"膀胱の内側の粘膜（尿路上皮）にできるがん。痛みのない血尿で見つかることが多い。","treatment":["エコー・尿細胞診・CT","膀胱鏡","経尿道的膀胱腫瘍切除術（TURBT）","禁煙"],"flow":"喫煙者の無症候性肉眼的血尿 → エコーで膀胱腫瘍 → 膀胱鏡 → TURBT"},
+  stress_incontinence: {"overview":"咳やくしゃみなどでお腹に力がかかったときに尿が漏れる。出産や加齢で骨盤底が弱って起こる。","treatment":["尿検査で感染を除外","骨盤底筋訓練（3か月以上）","減量・便秘の改善","改善しなければ中部尿道スリング手術"],"flow":"腹圧時の尿漏れ → 切迫性・溢流性と区別 → 腹圧性尿失禁 → 骨盤底筋訓練"},
+  epididymitis: {"overview":"精巣上体に細菌が感染して、陰嚢の腫れ・痛み・発熱が起こる。","treatment":["ドプラエコーで精巣捻転を除外","抗菌薬（年齢で原因菌が違う）","陰嚢の挙上・安静"],"flow":"徐々に始まる陰嚢痛・発熱 → 精巣の血流は保たれる → 精巣上体炎 → 抗菌薬"},
+  prostate_ca: {"overview":"前立腺にできるがん。早期は無症状でPSA検診で見つかることが多い。","treatment":["MRI・前立腺生検","病期診断（骨シンチ・CT）","監視療法・手術・放射線・ホルモン療法"],"flow":"PSA高値・直腸診で硬結 → MRI・生検 → 前立腺がん → 病期に応じた治療"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

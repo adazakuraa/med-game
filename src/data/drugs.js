@@ -562,6 +562,12 @@ export const DRUGS = [
     info: 'ニキビに1日1回就寝前に洗顔後、顔全体に塗布。乾燥・刺激感が最初の2週間に出やすい。妊婦には使わない。',
   },
   {
+    id: 'olanzapine', generic: 'オランザピン', brands: ['ジプレキサ'], cls: '抗精神病薬（非定型）', tags: ['antipsychotic'],
+    routes: { po: { unit: 'mg', min: 5, max: 20, freqs: ['q24h'], maxDaily: 20 } },
+    contra: ['dm_olz'],
+    info: '統合失調症・双極性障害の躁状態に5〜10mg 1日1回。糖尿病には禁忌（高血糖）。体重増加・眠気・まれに悪性症候群。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
