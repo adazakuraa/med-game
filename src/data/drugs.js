@@ -536,6 +536,16 @@ export const DRUGS = [
     info: '原発性アルドステロン症（片側性でなければ）・心不全・肝硬変の腹水に。高K血症・女性化乳房に注意。',
   },
   {
+    id: 'ear_drop', generic: 'オフロキサシン点耳液', brands: ['タリビッド耳科用液'], cls: '抗菌点耳薬', tags: ['ear_abx'],
+    routes: { top: { unit: '滴', min: 6, max: 10, freqs: ['q12h'], maxDaily: 20 } },
+    info: '外耳炎・中耳炎（鼓膜穿孔）に1回6〜10滴を点耳し、約10分間耳浴。',
+  },
+  {
+    id: 'eye_steroid', generic: 'ベタメタゾン点眼', brands: ['リンデロン点眼液'], cls: 'ステロイド点眼薬', tags: ['eye_steroid'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q6h', 'q4h'], maxDaily: 6 } },
+    info: 'ぶどう膜炎などに。眼科医の管理下で使う（眼圧上昇・感染症の悪化・角膜ヘルペスの増悪に注意）。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

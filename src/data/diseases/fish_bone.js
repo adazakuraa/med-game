@@ -1,0 +1,35 @@
+// 咽頭異物（魚骨）
+// 出典: 日本耳鼻咽喉科頭頸部外科学会 資料
+export default {
+  id: 'fish_bone', name: '咽頭異物（魚骨）', dept: '耳鼻咽喉科',
+  weight: 3, season: {}, minLevel: 1,
+  demo: { age: [20, 80], ageMode: 'uniform', male: 0.5 },
+  sev: { p: [0.6, 0.35, 0.05], burden: [[18, 24], [24, 32], [32, 40]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ fish: rng.pick(['焼き魚（鯛）', 'ウナギ', 'サンマ']), side: rng.pick(['右', '左']) }),
+  cc: () => '魚の骨が喉に刺さった', ccKey: 'throat',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '2時間前、{fish}を食べていて、喉に骨が刺さりました。' },
+    character: { p: 1, text: '飲み込むと{side}の喉がチクッと痛みます。ご飯を丸のみしてみましたが取れません。' },
+    location: { p: 1, text: '{side}の喉の奥（のどぼとけより上）です。' },
+    dyspnea: { p: 0, text: '息苦しさはありません。' },
+    fever: { p: 0, text: '' }, hoarse: { p: 0, text: '' }, weightloss: { p: 0, text: '' }, heartburn: { p: 0, text: '' },
+  },
+  exam: { pharynx: { p: 0.6, text: '{side}口蓋扁桃に刺さった細い魚骨が見える。' } },
+  tests: { laryngoscope: [{ p: 1, persist: true, text: '{side}口蓋扁桃下極（または舌根）に魚骨が刺さっている。粘膜の腫脹は軽い。' }] },
+  natural: 0.02, fluidLoss: () => 0,
+  curedBy: 'fb_out',
+  therapies: [{ id: 'fb_out', label: '咽頭・喉頭を観察して鉗子で摘出（見えなければ耳鼻咽喉科で喉頭ファイバー下に）', req: { procDone: 'fb_out' }, required: true, deadlineH: [12, 12, 12] }],
+  procedures: [{ id: 'fb_out', depts: ['ent'], label: '異物摘出', delay: 30, duration: 15, after: 'er', decide: () => ({ accept: true, reveal: true, text: '咽頭異物（魚骨）です。喉頭ファイバーで確認し、鉗子で摘出します（約30分後）。' }), onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 5); }, doneText: '耳鼻咽喉科：魚骨（約2cm）を摘出しました。' }],
+  dispo: () => ({ ok: ['home'], best: 'home', why: '咽頭異物：摘出できれば帰宅（発熱・痛みの増強・首の腫れがあれば再診）' }),
+  useful: ['laryngoscope', 'cxr'], key: [['laryngoscope']],
+  extrasOk: () => [],
+  teaching: [
+    '魚骨は口蓋扁桃・舌根・喉頭蓋谷に刺さりやすい。ご飯の丸のみは骨をさらに深く押し込むので勧めない。',
+    '口から見えなければ喉頭ファイバーで観察して摘出する。',
+    '食道に刺さった鋭い異物・PTP包装・ボタン電池は穿孔の危険があり、内視鏡で早急に摘出。首の腫れ・発熱・胸痛は深頸部膿瘍・縦隔炎を疑う。',
+  ],
+  sources: ['日本耳鼻咽喉科頭頸部外科学会 資料'],
+  ideal: () => [{ a: 'test', ids: ['laryngoscope'] }, { a: 'consult', dept: 'ent', delayMin: 1 }, { a: 'wait', min: 120 }],
+};

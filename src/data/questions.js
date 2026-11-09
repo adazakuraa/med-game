@@ -64,6 +64,7 @@ export const QUESTIONS = [
   { id: 'snore', cat: 'social', text: 'いびきや、寝ているときに呼吸が止まると言われますか？', no: '言われたことはありません。' },
   { id: 'memory', cat: 'assoc', text: '物忘れや、できなくなったことはありますか？（家族にも）', no: '特に物忘れはありません。' },
   { id: 'numbness', cat: 'assoc', text: 'しびれはありますか？どこが、どんなときに？', no: 'しびれはありません。' },
+  { id: 'hoarse', cat: 'assoc', text: '声がかれていますか？いつからですか？', no: '声は普段どおりです。' },
   { id: 'heatcold', cat: 'assoc', text: '暑がり・寒がりになりましたか？汗のかき方は？', no: '特に変わりません。' },
   { id: 'joint', cat: 'assoc', text: '関節の腫れや痛みはありますか？', no: 'ありません。' },
   { id: 'menses', cat: 'pmh', text: '月経の量や周期に変化はありますか？', no: '特に変わりません。', female: true },

@@ -98,6 +98,10 @@ export const TESTS = [
   { id: 'spirometry', cat: 'physio', name: '呼吸機能検査（気道可逆性試験・呼気NO）', kind: 'report', cost: 2800, timeMin: 30, inv: 0, normal: '1秒率 80%。気道可逆性なし。呼気NO 15ppb（正常）。' },
   { id: 'dexa', cat: 'image', name: '骨密度検査（DXA：腰椎・大腿骨）', kind: 'report', cost: 4500, timeMin: 20, inv: 0, radiation: true, normal: '骨密度は若年成人平均の90%（正常）。' },
   { id: 'neck_us', cat: 'image', name: '頸部エコー（甲状腺）', kind: 'report', cost: 3500, timeMin: 20, inv: 0, normal: '甲状腺に腫大・結節なし。血流は正常。' },
+  { id: 'acuity', cat: 'physio', name: '視力検査', kind: 'report', cost: 690, timeMin: 10, inv: 0, normal: '矯正視力 右1.2・左1.2。' },
+  { id: 'fundus', cat: 'physio', name: '眼底検査（散瞳）', kind: 'report', cost: 560, timeMin: 30, inv: 0, normal: '視神経乳頭・網膜・黄斑に異常なし。' },
+  { id: 'slit', cat: 'physio', name: '細隙灯顕微鏡検査（フルオレセイン染色）', kind: 'report', cost: 480, timeMin: 10, inv: 0, normal: '角膜は透明で、染色される傷はない。前房は清明。水晶体の混濁はない。' },
+  { id: 'laryngoscope', cat: 'physio', name: '喉頭ファイバースコープ', kind: 'report', cost: 1800, timeMin: 15, inv: 1, normal: '咽頭・喉頭に異物・腫瘤なし。声帯の動きは正常。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

@@ -1,0 +1,42 @@
+// 網膜中心動脈閉塞症
+// 出典: AHA Scientific Statement: Management of Central Retinal Artery Occlusion (2021), 日本眼科学会資料
+export default {
+  id: 'crao', name: '網膜中心動脈閉塞症', dept: '眼科',
+  weight: 1, season: {}, minLevel: 3,
+  demo: { age: [60, 85], ageMode: 'old', male: 0.65 },
+  sev: { p: [0.3, 0.5, 0.2], burden: [[30, 40], [40, 50], [50, 60]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.8, af: 0.4, dyslip: 0.5, dm2: 0.3 } }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']), hrs: rng.int(1, 3) }),
+  cc: () => '片目が急に見えなくなった', ccKey: 'vision',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '{hrs}時間前、急に{side}目が真っ暗になって見えなくなりました。' },
+    character: { p: 1, text: '痛みはありません。{side}目はほとんど見えません。' },
+    vision: { p: 1, text: '{side}目がほとんど見えません。' },
+    headache: { p: 0.1, text: '頭痛はありません。' },
+    pmh: { p: 1, text: '高血圧と心房細動があります。' },
+    weakness: { p: 0, text: '手足の麻痺はありません。' }, speechq: { p: 0, text: '' }, jaw: { p: 0, text: 'あごの痛みはありません。' },
+    trigger: { p: 0, text: '' },
+  },
+  exam: { eye: { p: 1, text: '充血なし。角膜は透明。' }, pupils: { p: 1, text: '{side}眼で相対的瞳孔求心路障害（Marcus Gunn瞳孔）。' }, temporal: { p: 1, text: '側頭動脈の圧痛・拍動低下はない。' } },
+  tests: { fundus: [{ p: 1, persist: true, text: '{side}眼の網膜が白く浮腫状で、黄斑部にチェリーレッドスポット。網膜動脈は細い。' }], acuity: [{ p: 1, persist: true, text: '{side}眼は指数弁（目の前の指の数がわかる程度）。' }] },
+  ecg: [{ p: 0.4, text: '心房細動。' }],
+  natural: 0.1, fluidLoss: () => 0,
+  dynamics: (enc) => (enc.state.burden > 48 ? -0.1 : 0),
+  therapies: [
+    { id: 'eye', label: '眼科へ緊急コンサルト（発症早期の血流改善の試み）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'eye') }, required: true, deadlineH: [2, 2, 2], effect: -0.3, lagH: 1 },
+    { id: 'stroke', label: '脳卒中に準じた原因検索（頭部MRI・頸動脈・心電図）と再発予防', req: { fn: (enc) => enc.tests.some((t) => ['head_mri', 'ecg'].includes(t.id)) }, required: true, deadlineH: [24, 24, 24] },
+  ],
+  consult: { eye: '眼科：網膜中心動脈閉塞症です。発症から時間がたつと視力の回復は難しいですが、眼球マッサージ・前房穿刺などを試みます。眼の脳梗塞と同じなので、脳卒中としての評価（MRI・頸動脈エコー・心電図）と二次予防をお願いします。巨細胞性動脈炎の除外に赤沈も。' },
+  residualAbove: 20, residualText: '視力は回復しませんでした。',
+  dispo: () => ({ ok: ['admit', 'home'], best: 'admit', why: '網膜中心動脈閉塞症：脳梗塞と同様に入院で原因精査と再発予防' }),
+  useful: ['acuity', 'fundus', 'head_mri', 'ecg', 'esr', 'crp', 'cbc', 'chem', 'echo', 'bs_poct'], key: [['fundus', 'acuity'], ['ecg'], ['esr', 'crp']],
+  extrasOk: () => ['stroke'],
+  teaching: [
+    '突然の片眼の無痛性の高度視力低下は網膜中心動脈閉塞症（眼の脳梗塞）。眼底で網膜の白濁とチェリーレッドスポット、相対的瞳孔求心路障害。',
+    '数時間以内でないと網膜は回復しない。すぐに眼科へ。',
+    '原因は塞栓（頸動脈・心房細動）が多く、脳梗塞のリスクが高いので脳卒中と同じく精査する。高齢者では巨細胞性動脈炎を必ず除外（赤沈・CRP）。',
+  ],
+  sources: ['AHA Scientific Statement: Management of Central Retinal Artery Occlusion (2021)'],
+  ideal: () => [{ a: 'consult', dept: 'eye', delayMin: 1 }, { a: 'test', ids: ['acuity', 'fundus', 'ecg', 'esr', 'crp', 'head_mri', 'bs_poct'] }],
+};

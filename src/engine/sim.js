@@ -25,6 +25,7 @@ export const PROCEDURES = [
   { id: 'nasal_pack', name: '鼻出血の圧迫止血・ガーゼタンポン', min: 15 },
   { id: 'splint', name: 'シーネ（副木）固定・RICE', min: 15 },
   { id: 'wound_care', name: '創部の洗浄・冷却・被覆（熱傷・咬傷・挫創）', min: 20 },
+  { id: 'ear_clean', name: '耳垢除去（洗浄・鉗子）', min: 15 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
@@ -564,6 +565,7 @@ export function procedure(enc, procId) {
     else if (P.id === 'nasal_pack') addLog(enc, 'exam', d.id === 'epistaxis' ? '鼻翼を圧迫し、血管収縮薬を浸したガーゼを挿入した。出血は止まった。' : '鼻腔にガーゼを入れたが、特に出血はなかった。', { label: '鼻出血の止血', positive: d.id === 'epistaxis' });
     else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx'].includes(d.id) });
     else if (P.id === 'wound_care') addLog(enc, 'exam', ['burn', 'animal_bite', 'diabetic_foot'].includes(d.id) ? '創部を十分に洗浄し、被覆した。' : '創部を確認したが、処置が必要な傷はなかった。', { label: '創処置', positive: ['burn', 'animal_bite', 'diabetic_foot'].includes(d.id) });
+    else if (P.id === 'ear_clean') addLog(enc, 'exam', d.id === 'cerumen' ? '硬い耳垢を除去した。直後から聞こえが良くなった。' : d.id === 'otitis_externa' ? '外耳道の耳漏と落屑を清掃した。' : '耳垢はほとんどなかった。', { label: '耳垢除去', positive: ['cerumen', 'otitis_externa'].includes(d.id) });
     else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
     advance(enc, P.min);
     return;
