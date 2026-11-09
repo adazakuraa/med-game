@@ -1,5 +1,5 @@
 // 疾患モデルからルールベースで患者を生成する
-import { makeRng, clamp } from './rng.js';
+import { makeRng, clamp, hashRand } from './rng.js';
 import { DISEASES, DISEASE_BY_ID } from '../data/diseases/index.js';
 import { LABS } from '../data/labs.js';
 import { SURNAMES, GIVEN_M, GIVEN_F, OCCUPATIONS } from '../data/names.js';
@@ -114,9 +114,11 @@ export function generatePatient(o) {
 
   // 検査の個体差（zスコア・反応性）
   const z = {}, r = {};
+  // 検査項目ごとに独立した乱数（項目を追加しても他の患者の値が変わらないように）
   for (const id of Object.keys(LABS)) {
-    z[id] = clamp(rng.normal(0, 1), -1.8, 1.8);
-    r[id] = rng.range(0.75, 1.2);
+    const u1 = Math.max(1e-9, hashRand(seed, 'z1', id)), u2 = hashRand(seed, 'z2', id);
+    z[id] = clamp(Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2), -1.8, 1.8);
+    r[id] = 0.75 + 0.45 * hashRand(seed, 'r', id);
   }
   let crBase = LABS.CR.base[sex].m + z.CR * LABS.CR.base[sex].sd;
   if (comorb.includes('ckd')) crBase = rng.range(1.3, 2.3) * (sex === 'F' ? 0.8 : 1);

@@ -565,7 +565,7 @@ export const APPROACHES = {
       { id: 'dka', point: '1型糖尿病・インスリン中断、口渇多尿、Kussmaul呼吸、アセトン臭、高血糖＋ケトン＋AG開大性アシドーシス', clues: ['q:polyuria', 'q:adherence', 'e:gen_breath_odor', 'e:chest_insp', 'H:GLU', 'L:PH', 'L:HCO3', 'H:AG', 'H:U_KET', 'H:BHB'] },
       { id: 'hhs', point: '高齢の2型糖尿病、著明な高血糖（600以上）、ケトンは軽度、高度脱水' },
       { id: 'aka', tests: ['bhb'], point: '大量飲酒が続いた後に食べられず嘔吐、糖尿病なし、アニオンギャップ開大性アシドーシスとケトン上昇、血糖は正常〜軽度上昇 → ビタミンB1と糖を含む輸液', clues: ['q:alcohol', 'q:onset', '!q:polyuria', 'H:BHB', 'L:HCO3', 'H:AG', '!H:GLU'] },
-      { id: 'adrenal_crisis', tests: ['bs_poct', 'chem', 'vbg'], point: '長期ステロイド内服の中断（嘔吐で飲めない）、嘔吐・腹痛・低血圧、低Na・高K・低血糖 → 結果を待たずにヒドロコルチゾン', clues: ['q:meds', 'q:dizziness', 'L:NA', 'H:K', 'L:GLU'] },
+      { id: 'adrenal_crisis', tests: ['bs_poct', 'chem', 'vbg'], point: '長期ステロイド内服の中断（嘔吐で飲めない）、嘔吐・腹痛・低血圧、低Na・高K・低血糖 → 結果を待たずにヒドロコルチゾン', clues: ['q:meds', 'q:pmh', 'q:dizziness', 'L:NA', '!q:alcohol', 'L:GLU'] },
       { id: 'hyperemesis', point: '妊娠初期、水も飲めない嘔吐・体重減少・尿ケトン陽性', clues: ['q:lmp', 'q:weightloss', 'H:U_KET'] },
       { id: 'gastro', point: '水様下痢・周囲の流行', clues: ['q:diarrhea'] },
       { id: 'pancreatitis', point: '上腹部〜背部痛、アミラーゼ上昇', clues: ['H:AMY'] },

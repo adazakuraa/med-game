@@ -5,7 +5,7 @@ export default {
   weight: 4, season: { winter: 1.3 }, minLevel: 2,
   demo: { age: [50, 88], ageMode: 'old', male: 0.6 },
   sev: { p: [0.4, 0.4, 0.2], burden: [[22, 32], [36, 50], [56, 68]] },
-  refractoryP: [0, 0.03, 0.12],
+  refractoryP: [0, 0.03, 0.08],
   comorb: { extra: { htn: 0.95, dm2: 0.2, dyslip: 0.3, ckd: 0.1 } },
   organisms: [],
   untreatedFatal: false,

@@ -25,7 +25,7 @@ export default {
   },
   exam: { gen_appear: { p: 1, bySev: ['ぐったりしている。', '顔色不良でぐったり。', 'ショック状態で意識がもうろう。'] }, oral_mucosa: { p: 1, text: '口腔粘膜の乾燥。' }, abd_palp: { p: 0.6, text: '腹部全体に軽い圧痛。腹膜刺激徴候なし。' } },
   vitals: { SBP: { to: [70, 85], k: 1.5 }, HR: { to: [110, 125], k: 1 } },
-  labs: { NA: { add: [-12, -6], k: 1 }, K: { add: [0.6, 1.5], k: 1 }, GLU: { add: [-45, -25], k: 1 }, BUN: { add: [10, 30], k: 1 }, CR: { add: [0.3, 1], k: 1 } },
+  labs: { NA: { add: [-12, -6], k: 0.5 }, K: { add: [0.8, 1.6], k: 0.5 }, GLU: { add: [-50, -30], k: 0.5 }, BUN: { add: [10, 30], k: 1 }, CR: { add: [0.3, 1], k: 1 } },
   natural: 0.6,
   therapies: [
     { id: 'hc', label: 'ヒドロコルチゾン100mg静注（検査結果を待たずに）', req: { tag: 'hydrocortisone' }, required: true, deadlineH: [2, 1, 0.5], effect: -1.5, lagH: 1 },

@@ -6,7 +6,7 @@ export default {
   weight: 8, season: { winter: 1.2 }, minLevel: 1,
   demo: { age: [75, 98], ageMode: 'old', male: 0.5 },
   sev: { p: [0.35, 0.45, 0.2], burden: [[25, 38], [42, 56], [62, 75]] },
-  refractoryP: [0, 0.03, 0.07],
+  refractoryP: [0, 0.03, 0.04],
   comorb: { forced: ['dementia'], extra: { old_stroke: 0.5, htn: 0.5, dm2: 0.2, ckd: 0.2, constip: 0.3 } },
   organisms: ['spn', 'anaerobe'],
   minAbxDays: 5,
