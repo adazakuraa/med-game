@@ -5,7 +5,7 @@ export default {
   weight: 2, season: { summer: 1.4 }, minLevel: 3,
   demo: { age: [65, 92], ageMode: 'old', male: 0.5 },
   sev: { p: [0.3, 0.45, 0.25], burden: [[30, 40], [45, 58], [62, 74]] },
-  refractoryP: [0, 0.03, 0.1],
+  refractoryP: [0, 0.03, 0.06],
   comorb: { forced: ['dm2'], extra: { htn: 0.6, ckd: 0.25, chf: 0.08 } },
   organisms: [],
   vars: (rng) => ({ days: rng.int(3, 7), trig: rng.pick(['風邪をひいて', '暑さで食欲が落ちて', '尿の感染症で']) }),

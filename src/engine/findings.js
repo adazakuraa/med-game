@@ -32,7 +32,7 @@ function pickText(entry, sev, idx) {
 const PMH_SPEAK = {
   htn: '高血圧', dm2: '糖尿病（飲み薬で治療中）', chf: '心不全（以前入院したことがあります）', af: '不整脈（心房細動）',
   ckd: '腎臓の機能が悪いと言われています', dyslip: 'コレステロールが高いこと', bph: '前立腺肥大', glaucoma: '緑内障（眼科で治療中）',
-  pud: '胃潰瘍（今も薬を飲んでいます）', cancer: '大腸がんで抗がん剤治療中です', dementia: '（家族）認知症があります', old_stroke: '脳梗塞をしたことがあります（右半身に軽い麻痺が残っています）', asthma: '喘息で吸入薬を使っています', copd: 'COPD（肺気腫）と言われています', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
+  pud: '胃潰瘍（今も薬を飲んでいます）', cancer: '大腸がんで抗がん剤治療中です', cirrhosis: '肝硬変と言われています（お酒が原因）', insomnia: '眠れなくて睡眠薬を飲んでいます', dementia: '（家族）認知症があります', old_stroke: '脳梗塞をしたことがあります（右半身に軽い麻痺が残っています）', asthma: '喘息で吸入薬を使っています', copd: 'COPD（肺気腫）と言われています', asthma_nsaid: '喘息（痛み止めで発作が出たことがあります）', constip: '便秘', epilepsy: 'てんかん',
 };
 
 function profileAnswer(enc, qid) {
@@ -152,7 +152,9 @@ export function examFinding(enc, eid, vit) {
     case 'lung_ausc': if (st.anaphylaxis && !st.anaphylaxis.resolved && enc.t >= st.anaphylaxis.t) derived.push('両側で呼気性wheezes。'); break;
   }
   const all = out.concat(derived);
-  return { text: all.length ? all.join(' ') : ex.normal, abnormal: all.length > 0 && eid !== 'gen_consc' ? true : vit.JCS > 0 && eid === 'gen_consc' };
+  const NORMALISH = /明らかな左右差なし|表情は穏やか|四肢は温かい|ツルゴール低下なし/;
+  const derivedAbn = derived.some((t) => !NORMALISH.test(t));
+  return { text: all.length ? all.join(' ') : ex.normal, abnormal: eid === 'gen_consc' ? vit.JCS > 0 : out.length > 0 || derivedAbn };
 }
 
 /** 画像・培養・定性検査のレポート（オーダー時点の状態で確定） */
@@ -171,13 +173,15 @@ export function testReport(enc, tid, vit, k) {
   if (T.kind === 'ecg') {
     const parts = [];
     const af = p.comorb.includes('af') || (d.id === 'af_rvr' && !st.procDone?.dcv);
-    parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
+    const rh = d.ecgRhythm?.(enc, vit);
+    if (rh) parts.push(rh);
+    else parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
     (d.ecg || []).forEach((f, i) => { if (p.rolls.ecg[i] && visibleNow(enc, f)) parts.push(fmt(f.text, p.vars)); });
     if (k >= 7.0) parts.push('テント状T波、P波の消失、QRS幅の拡大。');
     else if (k >= 6.0) parts.push('テント状T波。');
     else if (k < 3.0) parts.push('T波平低化、U波あり。QT延長傾向。');
     if (parts.length === 1) parts.push('明らかなST-T変化なし。');
-    return { text: parts.join(' '), abnormal: parts.length > 1 && !parts[1].startsWith('明らか') || af || vit.HR > 100 };
+    return { text: parts.join(' '), abnormal: parts.length > 1 && !parts[1].startsWith('明らか') || af || vit.HR > 100 || !!rh };
   }
   // report
   const fs = d.tests?.[tid];

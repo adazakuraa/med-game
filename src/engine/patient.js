@@ -21,6 +21,8 @@ export const COMORB = {
   epilepsy: { name: 'てんかん', meds: ['valproate'] },
   cancer: { name: '大腸がん（化学療法中）', meds: [], minAge: 40 },
   asthma: { name: '気管支喘息', meds: ['ics'] },
+  cirrhosis: { name: '肝硬変（アルコール性）', meds: [], minAge: 40 },
+  insomnia: { name: '不眠症', meds: ['benzo_home'] },
   dementia: { name: '認知症', meds: ['donepezil'], minAge: 65 },
   old_stroke: { name: '脳梗塞後遺症', meds: [], minAge: 55 },
   copd: { name: 'COPD（慢性閉塞性肺疾患）', meds: ['lama'], minAge: 50 },

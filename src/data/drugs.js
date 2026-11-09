@@ -257,6 +257,23 @@ export const DRUGS = [
     info: '片頭痛発作に皮下注3mgまたは内服50mg。虚血性心疾患・脳血管障害・コントロール不良の高血圧には禁忌。',
   },
   {
+    id: 'atp', generic: 'ATP（アデノシン三リン酸）注', brands: ['アデホス-L'], cls: '抗不整脈薬（発作性上室頻拍の停止）', tags: ['svt_terminate'],
+    routes: { iv: { unit: 'mg', min: 10, max: 20, freqs: ['once'], maxDaily: 40 } },
+    contra: ['asthma_atp'], effectHours: 0.5,
+    info: '発作性上室頻拍の停止に10mgを急速静注し、生理食塩水で後押しする（効かなければ20mg）。一時的な胸部不快感・顔面紅潮・数秒の心停止が起こることを事前に説明。気管支喘息には禁忌。',
+  },
+  {
+    id: 'betahistine', generic: 'ベタヒスチン', brands: ['メリスロン'], cls: '抗めまい薬', tags: ['antivertigo'],
+    routes: { po: { unit: 'mg', min: 6, max: 12, freqs: ['q8h'], maxDaily: 36 } },
+    info: 'メニエール病・めまい症に1回6〜12mgを1日3回。',
+  },
+  {
+    id: 'dienogest', generic: 'ジエノゲスト', brands: ['ディナゲスト'], cls: '子宮内膜症治療薬（黄体ホルモン）', tags: ['gyn_hormone'],
+    routes: { po: { unit: 'mg', min: 1, max: 1, freqs: ['q12h'], maxDaily: 2 } },
+    contra: ['pregnancy'],
+    info: '子宮内膜症に1回1mgを1日2回、月経周期2〜5日目から。不正出血が多い。妊娠中は禁忌。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
@@ -380,6 +397,50 @@ export const DRUGS = [
     info: 'アレルギー性鼻炎・じんましんに60mg 1日2回。眠気が少ない第2世代。',
   },
   {
+    id: 'lactulose', generic: 'ラクツロース', brands: ['モニラック'], cls: '肝性脳症治療薬・下剤', tags: ['lactulose'],
+    routes: { po: { unit: 'mL', min: 10, max: 30, freqs: ['q8h', 'q12h'], maxDaily: 90 } },
+    info: '肝性脳症に1回10〜30mLを1日2〜3回。1日2〜3回の軟便を目標に調整し、腸管でのアンモニア産生・吸収を減らす。',
+  },
+  {
+    id: 'flumazenil', generic: 'フルマゼニル', brands: ['アネキセート'], cls: 'ベンゾジアゼピン拮抗薬', tags: ['flumazenil'],
+    routes: { iv: { unit: 'mg', min: 0.2, max: 1, freqs: ['once', 'prn'], maxDaily: 2 } },
+    contra: ['seizure_risk'], effectHours: 1,
+    info: 'ベンゾジアゼピンによる呼吸抑制に0.2mgずつ静注。作用時間が短く再鎮静に注意。ベンゾジアゼピン常用者・三環系抗うつ薬併用・けいれんの既往ではけいれんを誘発するため原則使わない。',
+  },
+  {
+    id: 'charcoal', generic: '活性炭', brands: ['薬用炭'], cls: '吸着剤（中毒）', tags: ['charcoal'],
+    routes: { po: { unit: 'g', min: 25, max: 50, freqs: ['once'], maxDaily: 100 } },
+    info: '服薬から1時間以内で、吸着される薬物の中毒に50g程度。意識障害で誤嚥のリスクがある場合は気道確保が前提。ルーチンには行わない。',
+  },
+  {
+    id: 'trimebutine', generic: 'トリメブチン', brands: ['セレキノン'], cls: '消化管運動調整薬', tags: ['ibs'],
+    routes: { po: { unit: 'mg', min: 100, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: '過敏性腸症候群に1回100〜200mgを1日3回。',
+  },
+  {
+    id: 'clinda', generic: 'クリンダマイシン', brands: ['ダラシンS'], cls: '抗菌薬（リンコマイシン系）', allergy: 'lincosamide', abx: true,
+    routes: { iv: { unit: 'mg', min: 600, max: 900, freqs: ['q8h'], maxDaily: 2700 } },
+    covers: ['gpc', 'anaerobe'], tags: ['toxin_suppress'],
+    info: '壊死性筋膜炎（A群溶連菌）では毒素産生を抑えるため、ペニシリン系などと併用して600〜900mgを8時間毎。C. difficile腸炎に注意。',
+  },
+  {
+    id: 'kcl_po', generic: '塩化カリウム（内服）', brands: ['スローケー'], cls: '電解質補正', tags: ['potassium_po'],
+    routes: { po: { unit: 'mg', min: 600, max: 1200, freqs: ['q8h', 'q12h'], maxDaily: 3600 } },
+    contra: ['hyperk'],
+    info: '低K血症に1回600〜1200mg（K 8〜16mEq）を1日2〜3回。消化管の刺激に注意。',
+  },
+  {
+    id: 'lemborexant', generic: 'レンボレキサント', brands: ['デエビゴ'], cls: '睡眠薬（オレキシン受容体拮抗薬）', tags: ['hypnotic'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '不眠症に5mg（高齢者・肝障害は2.5mg〜）を就寝直前に。ベンゾジアゼピン系より転倒・依存のリスクが少ないとされる。',
+  },
+  {
+    id: 'brotizolam', generic: 'ブロチゾラム', brands: ['レンドルミン'], cls: '睡眠薬（ベンゾジアゼピン系）', tags: ['benzo', 'hypnotic'],
+    routes: { po: { unit: 'mg', min: 0.125, max: 0.25, freqs: ['q24h'], maxDaily: 0.25 } },
+    contra: ['elderly_benzo'],
+    info: '0.25mgを就寝前。高齢者では転倒・骨折・せん妄・依存のリスクが高く、できるだけ避ける（Beers基準・高齢者の安全な薬物療法ガイドライン）。',
+  },
+  {
     id: 'oseltamivir', generic: 'オセルタミビル', brands: ['タミフル'], cls: '抗インフルエンザ薬', tags: ['antiviral_flu'],
     routes: { po: { unit: 'mg', min: 75, max: 75, freqs: ['q12h', 'q24h'], maxDaily: 150 } },
     renal: [{ crclBelow: 30, maxDaily: 75, text: 'CrCl 10〜30: 75mg 1日1回' }],
@@ -467,5 +528,8 @@ export const HOME_MEDS = {
   thiazide: { name: 'トリクロルメチアジド 2mg 1日1回（サイアザイド系利尿薬）', tags: ['thiazide'] },
   donepezil: { name: 'ドネペジル 5mg 1日1回（認知症）', tags: [] },
   antichol: { name: '市販の総合感冒薬（抗コリン成分を含む）', tags: ['anticholinergic'] },
+  benzo_home: { name: 'ブロチゾラム 0.25mg 就寝前（睡眠薬）', tags: ['benzo_home'] },
+  aspirin_home: { name: 'アスピリン 100mg 1日1回（抗血小板薬）', tags: ['antiplatelet_home'] },
+  doxazosin: { name: 'ドキサゾシン 2mg 1日1回（α遮断薬・最近開始）', tags: ['alpha_blocker'] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };

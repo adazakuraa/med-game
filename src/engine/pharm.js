@@ -33,6 +33,9 @@ export const CONTRA_RULES = {
   asthma_bb: { level: 'harm', msg: '気管支喘息・COPDの増悪にβ遮断薬（気管支攣縮の悪化）', check: (c) => c.p.comorb.includes('asthma') || c.p.comorb.includes('asthma_nsaid') || ['asthma', 'copd'].includes(c.p.diseaseId) },
   hfref: { level: 'harm', msg: '心機能低下（収縮不全・心不全）ではCa拮抗薬（ジルチアゼム）が心不全を悪化させる', check: (c) => c.p.comorb.includes('chf') || c.p.diseaseId === 'adhf' },
   resp_failure: { level: 'warn', msg: '呼吸不全・CO2貯留がある患者に鎮静薬（呼吸抑制）', check: (c) => c.p.diseaseId === 'copd' || c.vit.SpO2 < 90 },
+  seizure_risk: { level: 'harm', msg: 'ベンゾジアゼピン常用者・けいれんの既往では拮抗薬でけいれんを誘発', check: (c) => c.p.comorb.includes('epilepsy') || c.p.diseaseId === 'intox' },
+  elderly_benzo: { level: 'warn', msg: '高齢者へのベンゾジアゼピン系睡眠薬（転倒・骨折・せん妄・依存のリスク）', check: (c) => c.p.age >= 65 },
+  asthma_atp: { level: 'harm', msg: '気管支喘息ではATP（アデノシン）が気管支攣縮を誘発するため禁忌', check: (c) => c.p.comorb.includes('asthma') || c.p.diseaseId === 'asthma' },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 

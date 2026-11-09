@@ -84,7 +84,7 @@ export function runIdeal(enc, { dispo = true } = {}) {
     // 処置が必要なのに予定されていなければ再検査・再コンサルト
     for (const pr of d.procedures || []) {
       if (enc.state.procAt[pr.id] == null && h % 3 === 0 && h < 12 && !enc.consults.some((c) => !c.replied)) {
-        S.orderTests(enc, d.id === 'acs' ? ['tnt', 'ecg'] : ['head_mri', 'abd_ct_contrast', 'tvus']);
+        S.orderTests(enc, d.id === 'acs' ? ['tnt', 'ecg'] : ['head_mri', 'abd_ct_contrast', 'tvus'].filter((id) => !(id.includes('contrast') && enc.patient.allergies.includes('contrast'))));
         S.advance(enc, 50);
         S.consult(enc, pr.depts[0]);
       }
@@ -114,11 +114,11 @@ export function runIdeal(enc, { dispo = true } = {}) {
 function stopIV(enc) {
   for (const o of enc.orders) if (o.kind === 'rx' && o.route === 'iv' && S.isOrderActive(enc, o)) o.stopT = enc.t;
 }
-const ALLERGY_OF = { abpc: 'penicillin', aspirin: 'nsaid', ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone' };
+const ALLERGY_OF = { abpc: 'penicillin', aspirin: 'nsaid', ctrx: 'cephem', cmz: 'cephem', ampc: 'penicillin', abpc_sbt: 'penicillin', lvfx: 'quinolone', loxo: 'nsaid' };
 function require_allergy(id) { return ALLERGY_OF[id] || '__none'; }
-function alt(id) { return { aspirin: 'prasugrel', ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
-function altDose(id, dose) { return { aspirin: 20, ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
-function altFreq(id, f) { return { aspirin: 'once', ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
+function alt(id) { return { loxo: 'apap_po', aspirin: 'prasugrel', ctrx: 'lvfx', cmz: 'mepm', ampc: 'lvfx', abpc_sbt: 'lvfx', lvfx: 'ctrx' }[id]; }
+function altDose(id, dose) { return { loxo: 500, aspirin: 20, ctrx: 500, cmz: 1000, ampc: 500, abpc_sbt: 500, lvfx: 2000 }[id]; }
+function altFreq(id, f) { return { loxo: 'q6h', aspirin: 'once', ctrx: 'q24h', cmz: 'q8h', ampc: 'q24h', abpc_sbt: 'q24h', lvfx: 'q24h' }[id]; }
 
 export function runUntreated(enc) {
   S.advance(enc, 14 * 1440);

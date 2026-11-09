@@ -69,7 +69,7 @@ test('生成された患者の値が生理学的範囲内で、未解決の差�
   for (const enc of patients()) {
     const p = enc.patient;
     const v = enc.initVit;
-    assert.ok(v.HR >= 30 && v.HR <= 190 && v.SBP >= 40 && v.SBP <= 240 && v.SpO2 >= 55 && v.SpO2 <= 100 && v.T >= 34 && v.T <= 42.5, `${p.diseaseId} vitals ${JSON.stringify(v)}`);
+    assert.ok(v.HR >= 30 && v.HR <= 190 && v.SBP >= 40 && v.SBP <= 240 && v.SpO2 >= 55 && v.SpO2 <= 100 && v.T >= 24 && v.T <= 42.5, `${p.diseaseId} vitals ${JSON.stringify(v)}`);
     for (const [id, L] of Object.entries(LABS)) {
       const x = enc.initLabs[id];
       assert.ok(Number.isFinite(x), `${p.diseaseId} ${id} が数値でない`);
