@@ -58,6 +58,8 @@ export const QUESTIONS = [
   { id: 'rash', cat: 'assoc', text: '皮膚に発疹や水ぶくれはありますか？', no: 'ありません。' },
   { id: 'fatigue', cat: 'assoc', text: 'だるさ・疲れやすさはありますか？', no: '特にありません。' },
   { id: 'heartburn', cat: 'assoc', text: '胸やけや酸っぱいものが上がってくる感じは？', no: 'ありません。' },
+  { id: 'mood', cat: 'assoc', text: '気分の落ち込みや、楽しめなくなったことはありますか？', no: '気分は落ち込んでいません。' },
+  { id: 'nightsweat', cat: 'assoc', text: '寝汗をかくことはありますか？', no: 'ありません。' },
   { id: 'heatcold', cat: 'assoc', text: '暑がり・寒がりになりましたか？汗のかき方は？', no: '特に変わりません。' },
   { id: 'joint', cat: 'assoc', text: '関節の腫れや痛みはありますか？', no: 'ありません。' },
   { id: 'menses', cat: 'pmh', text: '月経の量や周期に変化はありますか？', no: '特に変わりません。', female: true },

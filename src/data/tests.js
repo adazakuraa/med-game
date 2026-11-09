@@ -41,6 +41,8 @@ export const TESTS = [
   { id: 'strep_ag', cat: 'micro', name: '溶連菌迅速抗原', kind: 'qual', cost: 1360, timeMin: 10, inv: 0, pos: '陽性', neg: '陰性', spec: 0.95 },
   { id: 'fobt', cat: 'micro', name: '便潜血（2回法）', kind: 'qual', cost: 370, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.93 },
   { id: 'myco_ag', cat: 'micro', name: 'マイコプラズマ迅速抗原', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.95 },
+  { id: 'afb', cat: 'micro', name: '喀痰抗酸菌検査（塗抹・PCR・培養）', kind: 'report', cost: 4500, timeMin: 120, inv: 0, normal: '抗酸菌塗抹陰性。結核菌PCR陰性（培養は結果待ち）。' },
+  { id: 'igra', cat: 'micro', name: 'インターフェロンγ遊離試験（T-SPOT/QFT）', kind: 'qual', cost: 6000, timeMin: 1440, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
@@ -58,10 +60,13 @@ export const TESTS = [
   { id: 'head_mri', cat: 'image', name: '頭部MRI（拡散強調像・MRA）', kind: 'report', cost: 25000, timeMin: 60, inv: 0, normal: '拡散強調像で異常信号なし。MRAで主幹動脈の閉塞・狭窄・動脈瘤なし。' },
   { id: 'lp', cat: 'micro', name: '腰椎穿刺（髄液検査・グラム染色）', kind: 'report', cost: 3500, timeMin: 60, inv: 2, normal: '初圧 14cmH2O。無色透明。細胞数 2/μL、蛋白 30mg/dL、糖 65mg/dL（血糖比 0.6以上）。グラム染色で菌を認めない。' },
   { id: 'orthostatic', cat: 'physio', name: '起立試験（臥位→立位の血圧・脈拍）', kind: 'report', cost: 0, timeMin: 10, inv: 0, normal: '臥位→立位で血圧・脈拍に有意な変化なし。' },
+  { id: 'joint_xr', cat: 'image', name: '関節X線（膝・肩など）', kind: 'report', cost: 2100, timeMin: 20, inv: 0, radiation: true, normal: '骨折・脱臼なし。関節裂隙は保たれている。' },
   { id: 'spine_xr', cat: 'image', name: '胸腰椎X線', kind: 'report', cost: 2600, timeMin: 20, inv: 0, radiation: true, normal: '明らかな骨折・すべりなし。' },
   { id: 'spine_mri', cat: 'image', name: '脊椎MRI', kind: 'report', cost: 25000, timeMin: 60, inv: 0, normal: '椎体・椎間板・硬膜外に明らかな異常信号なし。脊髄の圧迫なし。' },
   { id: 'joint_tap', cat: 'micro', name: '関節穿刺（関節液検査・グラム染色・結晶）', kind: 'report', cost: 2000, timeMin: 30, inv: 2, normal: '関節液は黄色透明。白血球 500/μL。結晶なし。グラム染色で菌を認めない。' },
   { id: 'ecg', cat: 'physio', name: '12誘導心電図', kind: 'ecg', cost: 1300, timeMin: 5, inv: 0 },
+  { id: 'stress_ecg', cat: 'physio', name: '運動負荷心電図（トレッドミル）', kind: 'report', cost: 1600, timeMin: 30, inv: 1, normal: '目標心拍数まで負荷して、胸部症状なし。有意なST変化なし（陰性）。' },
+  { id: 'ccta', cat: 'image', name: '冠動脈CT', kind: 'report', cost: 30000, timeMin: 60, inv: 2, radiation: true, contrast: true, normal: '冠動脈に有意な狭窄なし。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

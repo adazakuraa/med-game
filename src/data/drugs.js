@@ -17,7 +17,7 @@ export const FREQS = {
   cont: { label: '持続投与', perDay: 24 },
 };
 
-export const ROUTE_LABEL = { iv: '静注/点滴', po: '内服', im: '筋注', sl: '舌下/噴霧', sc: '皮下注', inh: '吸入' };
+export const ROUTE_LABEL = { top: '外用', iv: '静注/点滴', po: '内服', im: '筋注', sl: '舌下/噴霧', sc: '皮下注', inh: '吸入' };
 
 export const DRUGS = [
   // ===== 抗菌薬 =====
@@ -59,7 +59,7 @@ export const DRUGS = [
     info: '1回500mgを1日3回、難治性・重症では1日4回まで点滴。嫌気性菌のみをカバーするため、腹腔内感染では他剤と併用。',
   },
   {
-    id: 'lvfx', generic: 'レボフロキサシン', brands: ['クラビット'], cls: '抗菌薬（ニューキノロン系）', allergy: 'quinolone', abx: true,
+    id: 'lvfx', generic: 'レボフロキサシン', brands: ['クラビット'], cls: '抗菌薬（ニューキノロン系）', allergy: 'quinolone', abx: true, tags: ['fq'],
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q24h'], maxDaily: 500 }, iv: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
     covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia'], resistKey: 'fqR',
     renal: [{ crclBelow: 50, maxDaily: 250, text: 'CrCl 20〜49: 初日500mg、以後250mg 1日1回' }, { crclBelow: 20, maxDaily: 125, text: 'CrCl <20: 初日500mg、以後250mg 2日に1回' }],
@@ -272,6 +272,48 @@ export const DRUGS = [
     routes: { po: { unit: 'mg', min: 1, max: 1, freqs: ['q12h'], maxDaily: 2 } },
     contra: ['pregnancy'],
     info: '子宮内膜症に1回1mgを1日2回、月経周期2〜5日目から。不正出血が多い。妊娠中は禁忌。',
+  },
+  {
+    id: 'zoledronic', generic: 'ゾレドロン酸', brands: ['ゾメタ'], cls: '高カルシウム血症治療薬（ビスホスホネート）', tags: ['bisphosphonate'],
+    routes: { iv: { unit: 'mg', min: 4, max: 4, freqs: ['once'], maxDaily: 4 } },
+    renal: [{ crclBelow: 30, maxDaily: 0, text: '重度の腎機能障害では投与を避ける' }], effectHours: 400,
+    info: '悪性腫瘍による高カルシウム血症に4mgを15分以上かけて点滴。効果は2〜4日で現れ、数週間続く。腎機能障害・顎骨壊死に注意。',
+  },
+  {
+    id: 'elcatonin', generic: 'エルカトニン', brands: ['エルシトニン'], cls: '高カルシウム血症治療薬（カルシトニン）', tags: ['calcitonin'],
+    routes: { im: { unit: '単位', min: 40, max: 40, freqs: ['q12h'], maxDaily: 80 } },
+    info: '高カルシウム血症に1回40単位を1日2回筋注・点滴。数時間で効くが効果は弱く、数日で効かなくなる（ビスホスホネートが効くまでのつなぎ）。',
+  },
+  {
+    id: 'sertraline', generic: 'セルトラリン', brands: ['ジェイゾロフト'], cls: '抗うつ薬（SSRI）', tags: ['ssri'],
+    routes: { po: { unit: 'mg', min: 25, max: 100, freqs: ['q24h'], maxDaily: 100 } },
+    info: 'うつ病・パニック症に25mgから開始し、100mgまで。効果は2〜4週後。開始直後の吐き気、若年者の賦活症候群（焦燥・希死念慮）に注意。',
+  },
+  {
+    id: 'acotiamide', generic: 'アコチアミド', brands: ['アコファイド'], cls: '消化管運動改善薬', tags: ['prokinetic'],
+    routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q8h'], maxDaily: 300 } },
+    info: '機能性ディスペプシアの食後膨満感・早期飽満感に1回100mgを1日3回食前。',
+  },
+  {
+    id: 'kamishoyosan', generic: '加味逍遙散（漢方）', brands: ['ツムラ加味逍遙散'], cls: '漢方薬', tags: ['kampo_meno'],
+    routes: { po: { unit: 'g', min: 2.5, max: 2.5, freqs: ['q8h'], maxDaily: 7.5 } },
+    info: '更年期障害（ほてり・イライラ・不眠など）に1回2.5gを1日3回。',
+  },
+  {
+    id: 'estradiol_gel', generic: 'エストラジオール（ゲル）', brands: ['ル・エストロジェル'], cls: 'ホルモン補充療法（エストロゲン）', tags: ['hrt'],
+    routes: { top: { unit: 'プッシュ', min: 1, max: 2, freqs: ['q24h'], maxDaily: 2 } },
+    contra: ['pregnancy'],
+    info: '更年期障害に1日1〜2プッシュを腕に塗布。子宮がある人は黄体ホルモンを併用する（子宮体がん予防）。乳がん・血栓症・脳卒中の既往では禁忌。',
+  },
+  {
+    id: 'hemorrhoid_oint', generic: '大腸菌死菌・ヒドロコルチゾン軟膏', brands: ['強力ポステリザン'], cls: '痔核治療薬（外用）', tags: ['hemorrhoid_topical'],
+    routes: { top: { unit: 'g', min: 2, max: 2, freqs: ['q12h', 'q8h'], maxDaily: 6 } },
+    info: '痔核の出血・痛みに1回約2gを1日2〜3回注入・塗布。便秘の改善（食物繊維・水分・緩下薬）とあわせて。',
+  },
+  {
+    id: 'atorvastatin_rx', generic: 'アトルバスタチン', brands: ['リピトール'], cls: '脂質異常症治療薬（スタチン）', tags: ['statin'],
+    routes: { po: { unit: 'mg', min: 5, max: 20, freqs: ['q24h'], maxDaily: 40 } },
+    info: '脂質異常症・冠動脈疾患の二次予防に10mg 1日1回から。筋肉痛・CK上昇・肝障害に注意。',
   },
   {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
