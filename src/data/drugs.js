@@ -546,6 +546,22 @@ export const DRUGS = [
     info: 'ぶどう膜炎などに。眼科医の管理下で使う（眼圧上昇・感染症の悪化・角膜ヘルペスの増悪に注意）。',
   },
   {
+    id: 'vitd_oint', generic: 'カルシポトリオール・ベタメタゾン配合（外用）', brands: ['ドボベット'], cls: '尋常性乾癬治療薬（外用）', tags: ['psoriasis_topical', 'topical_steroid'],
+    routes: { top: { unit: 'g', min: 1, max: 10, freqs: ['q24h'], maxDaily: 15 } },
+    info: '尋常性乾癬に1日1回塗布。広範囲・大量使用で高Ca血症に注意。',
+  },
+  {
+    id: 'ketoconazole_cream', generic: 'ケトコナゾールクリーム', brands: ['ニゾラールクリーム'], cls: '抗真菌薬（外用）', tags: ['topical_antifungal'],
+    routes: { top: { unit: 'g', min: 0.5, max: 3, freqs: ['q24h', 'q12h'], maxDaily: 5 } },
+    info: '脂漏性皮膚炎（マラセチア）・白癬に1日1〜2回塗布。',
+  },
+  {
+    id: 'adapalene', generic: 'アダパレン・過酸化ベンゾイル配合ゲル', brands: ['エピデュオゲル'], cls: '尋常性ざ瘡治療薬（外用）', tags: ['acne_topical'],
+    routes: { top: { unit: 'g', min: 0.5, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    contra: ['pregnancy'],
+    info: 'ニキビに1日1回就寝前に洗顔後、顔全体に塗布。乾燥・刺激感が最初の2週間に出やすい。妊婦には使わない。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

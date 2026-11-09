@@ -1,0 +1,45 @@
+// 歯性感染症（頬部・顎下部の蜂窩織炎）
+// 出典: 日本口腔外科学会 資料, JAID/JSC感染症治療ガイド2023（歯性感染症）
+import { T } from './common.js';
+export default {
+  id: 'odontogenic', name: '歯性感染症（顎下部蜂窩織炎）', dept: '歯科口腔外科',
+  weight: 2, season: {}, minLevel: 2,
+  demo: { age: [30, 75], ageMode: 'uniform', male: 0.6 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[30, 40], [40, 52], [54, 64]] },
+  refractoryP: [0, 0.02, 0.06],
+  comorb: { extra: { dm2: 0.35 } },
+  organisms: ['gpc', 'anaerobe'], minAbxDays: 5,
+  vars: (rng) => ({ side: rng.pick(['右', '左']) }),
+  cc: () => '虫歯のあとに頬と顎が腫れて熱が出た', ccKey: 'oral',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '1週間前から{side}下の奥歯が痛く、3日前から頬と顎の下が腫れてきて、熱が出ました。' },
+    character: { p: 1, text: '顎の下がパンパンに腫れて、口が開けにくく、飲み込むと痛いです。' },
+    fever: { p: 1, text: '38度台の熱があります。' },
+    dyspnea: { p: [0, 0.2, 0.6], text: '少し息苦しい感じがします。' },
+    trigger: { p: 1, text: '虫歯を放置していました。歯医者には何年も行っていません。' },
+    pmh: { p: 0.4, text: '糖尿病があります。' },
+  },
+  exam: { oral_mucosa: { p: 1, text: '{side}下顎第一大臼歯に大きな齲蝕、周囲歯肉の腫脹。口腔底の挙上はない（軽度）。開口障害（1横指半）。' }, neck_ln: { p: 1, text: '{side}顎下部〜頬部のびまん性の発赤・腫脹・熱感・圧痛。' }, gen_appear: { p: 1, bySev: ['つらそう。', 'ぐったりしている。', '唾液を飲み込めず、苦しそう。'] } },
+  vitals: { T: { to: [38.2, 39.2], k: 0.5 }, HR: { to: [100, 120], k: 1 } },
+  labs: { WBC: { to: [13000, 20000], k: 0.7 }, CRP: { to: [8, 20], k: 0.7 }, GLU: { add: [0, 80], k: 1 } },
+  tests: {},
+  natural: 0.45,
+  curedBy: 'drain',
+  therapies: [
+    T.abx(['gpc', 'anaerobe'], '抗菌薬静注（アンピシリン・スルバクタムなど、嫌気性菌もカバー）', [8, 6, 3], -0.4, 6),
+    T.proc('drain', '歯科口腔外科コンサルト→膿瘍の切開排膿・原因歯の処置', [48, 24, 12]),
+  ],
+  procedures: [{ id: 'drain', depts: ['dental', 'ent'], label: '切開排膿', delay: 90, duration: 45, after: 'ward', decide: () => ({ accept: true, reveal: true, text: '下顎大臼歯の根尖病巣から広がった顎下部の蜂窩織炎・膿瘍です。CTで膿瘍の範囲を確認して切開排膿し、原因歯を処置します。気道の狭窄に注意してください。' }), onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 28); }, doneText: '歯科口腔外科：顎下部を切開し、膿を排出してドレーンを留置しました。' }],
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['icu', 'admit'], best: 'admit', why: '重症の歯性感染症：入院（気道狭窄に注意、ICUも）' } : { ok: ['admit'], best: 'admit', why: '歯性感染症（蜂窩織炎）：入院で抗菌薬静注と切開排膿' }),
+  useful: ['cbc', 'crp', 'chem', 'bcx', 'bs_poct', 'laryngoscope'],
+  key: [['cbc', 'crp'], ['bs_poct', 'chem']],
+  extrasOk: () => ['cellulitis'],
+  teaching: [
+    '虫歯・歯周病・智歯から感染が広がると、顎下部・頬部の蜂窩織炎や膿瘍になる。糖尿病で重症化しやすい。',
+    '口腔底の腫れ（舌が持ち上がる）・嚥下困難・含み声・呼吸困難はLudwig anginaなど深頸部感染で、気道閉塞の危険。',
+    '治療は嫌気性菌もカバーする抗菌薬静注、膿瘍の切開排膿、原因歯の処置。造影CTで膿瘍の広がり（縦隔まで）を確認。',
+  ],
+  sources: ['JAID/JSC感染症治療ガイド2023（歯性感染症）'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'crp', 'chem', 'bs_poct'] }, { a: 'rx', drugId: 'abpc_sbt', route: 'iv', dose: 3000, freq: 'q6h', days: 7 }, { a: 'consult', dept: 'dental', delayMin: 1 }],
+};

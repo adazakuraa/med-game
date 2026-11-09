@@ -402,6 +402,9 @@ export const DRUG_ROLE = {
   spironolactone: 'アルドステロンの作用をブロックする薬。高K血症に注意。',
   ear_drop: '外耳炎の抗菌点耳薬。',
   eye_steroid: 'ぶどう膜炎などの炎症を抑える点眼薬（眼科で使う）。',
+  vitd_oint: '乾癬の外用薬（ビタミンD3とステロイド）。',
+  ketoconazole_cream: '脂漏性皮膚炎の原因となる真菌（マラセチア）を抑える塗り薬。',
+  adapalene: 'ニキビの外用薬。毛穴の詰まりとアクネ菌を抑える。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -460,6 +463,8 @@ export const PROC_ROLE = {
   splint: '骨折・捻挫をシーネで固定し、安静・冷却・圧迫・挙上（RICE）。',
   wound_care: '熱傷は流水で冷却し被覆、咬傷や挫創は大量の水で洗浄する。咬傷は原則として縫合しない。',
   ear_clean: '耳垢栓塞を洗浄や鉗子で除去する。鼓膜穿孔が疑われるときは洗浄しない。',
+  incision: '膿がたまった粉瘤・膿瘍は切開して排膿する。抗菌薬だけでは治りにくい。',
+  paring: '鶏眼の芯や胼胝の厚い角質を削ると痛みが軽くなる。糖尿病の足は慎重に。',
   warming: '低体温症で体を温める（温風ブランケット・加温輸液）。',
   ng: '鼻から胃にチューブを入れる。腸閉塞での減圧や、上部消化管出血の確認に使う。',
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
@@ -1113,10 +1118,42 @@ APPROACHES.edema = {
     { id: 'dvt', point: '片側の腫脹・ふくらはぎの圧痛' },
   ],
 };
+APPROACHES.skin_lesion = {
+  title: '皮膚のできもの・皮膚の悩み',
+  intro: '皮膚の病変は、分布・形（紅斑・丘疹・局面・鱗屑・膿疱・結節）・経過・かゆみで整理する。真菌が疑わしければステロイドを塗る前にKOH鏡検を。',
+  keyQ: ['onset', 'character', 'location', 'itch', 'trigger', 'fever', 'meds', 'pmh', 'family'],
+  keyE: ['skin'],
+  keyT: ['koh'],
+  redflags: ['急に大きくなる・出血する・色や形が不整なほくろ → 悪性黒色腫などを除外', '発熱・広がる発赤 → 蜂窩織炎', '全身の膿疱・発熱 → 膿疱性乾癬（入院）'],
+  ddx: [
+    { id: 'psoriasis', point: '肘・膝・頭皮・腰の境界明瞭な紅斑と厚い銀白色の鱗屑、爪の陥凹 → 外用療法', clues: ['q:location', 'q:character', 'q:family', 'e:skin', '!t:koh'] },
+    { id: 'seb_derm', point: '頭皮・鼻の脇・眉毛の黄色っぽい脂性の鱗屑と淡い紅斑 → 抗真菌薬外用', clues: ['q:location', 'q:trigger', 'e:skin', '!q:family'] },
+    { id: 'acne', point: '思春期〜若年、顔の面皰（白・黒ニキビ）と炎症性丘疹・膿疱 → アダパレン・過酸化ベンゾイル', clues: ['q:location', 'q:meds', '!q:itch', 'e:skin'] },
+    { id: 'corn', point: '靴で圧迫される足底の角質肥厚、芯があり押すと痛い → 削りと靴の見直し', clues: ['q:trigger', 'q:location', '!q:itch', '!q:fever'] },
+    { id: 'wart', point: '削ると点状出血、皮膚紋理が途切れる（ウイルス性疣贅）' },
+    { id: 'atheroma', tests: ['cbc', 'crp'], point: '以前からある皮下のしこりが急に赤く腫れて痛む、中央の黒点・波動 → 切開排膿', clues: ['q:onset', 'q:character', 'H:CRP', 'H:WBC', '!q:family', '!q:itch'] },
+    { id: 'alopecia', tests: ['thyroid'], point: '境界明瞭な円形の脱毛斑、皮膚に炎症・鱗屑なし、感嘆符毛 → 甲状腺疾患の確認と外用', clues: ['q:location', 'q:trigger', 'q:pmh', '!q:itch', '!t:koh'] },
+  ],
+};
+APPROACHES.oral = {
+  title: '歯・歯ぐき・あごの痛み',
+  intro: '歯・口・あごの痛みでは、腫れの範囲（歯肉だけか、頬・顎下・口底に広がっているか）、開口障害、嚥下・呼吸の状態を確認する。口底の腫れ・嚥下困難は深頸部感染として緊急。顎の痛みは狭心症・巨細胞性動脈炎・三叉神経痛のこともある。',
+  keyQ: ['onset', 'character', 'fever', 'trigger', 'dyspnea', 'pmh'],
+  keyE: ['oral_mucosa', 'neck_ln', 'temporal'],
+  keyT: ['cbc', 'crp'],
+  redflags: ['口底の腫れ・舌の挙上・嚥下困難・含み声・呼吸困難 → Ludwig angina（気道確保の準備）', '労作時の顎の痛み → 狭心症の放散痛', '高齢者の咀嚼時の顎の痛み（顎跛行）→ 巨細胞性動脈炎'],
+  ddx: [
+    { id: 'pericoronitis', point: '若年、下顎の親知らず周囲の歯肉の腫れ・排膿・開口障害、繰り返す → 抗菌薬・抜歯', clues: ['q:trigger', 'e:oral_mucosa', 'e:neck_ln', '!q:dyspnea'] },
+    { id: 'tmj', point: '口を開けると顎関節が痛い・クリック音、食いしばり・歯ぎしり、発熱や腫れなし → セルフケアと鎮痛', clues: ['q:character', 'q:trigger', 'e:temporal', '!q:fever'] },
+    { id: 'odontogenic', tests: ['cbc', 'crp', 'bs_poct'], point: '放置した虫歯から頬・顎下部のびまん性の腫れ・発熱・開口障害、糖尿病 → 抗菌薬静注と切開排膿', clues: ['q:fever', 'q:trigger', 'e:neck_ln', 'H:WBC', 'H:CRP'] },
+    { id: 'ludwig', point: '口底の腫れ・舌の挙上・嚥下困難・呼吸困難' },
+    { id: 'trigeminal', point: '数秒の電撃痛、食事・歯みがきで誘発' },
+  ],
+};
 APPROACHES.leg_red = {
   title: '足の赤みと腫れ',
   intro: '片側の下腿の発赤・腫脹では、蜂窩織炎・深部静脈血栓症を鑑別し、壊死性筋膜炎の危険なサインを見逃さない。',
-  keyQ: ['onset', 'course', 'character', 'fever', 'chills', 'trigger', 'immobility', 'pmh', 'meds', 'allergy'],
+  keyQ: ['onset', 'course', 'character', 'fever', 'chills', 'trigger', 'immobility', 'occupation', 'pmh', 'meds', 'allergy'],
   keyE: ['skin', 'calf', 'leg_edema', 'leg_pulse', 'gen_appear', 'periph'],
   keyT: ['cbc', 'crp', 'chem'],
   redflags: ['見た目に比べて強すぎる痛み・水疱・紫斑・急速な進行 → 壊死性筋膜炎（緊急手術）', '発熱・低血圧 → 敗血症', '片側の腫脹で発赤が乏しい → 深部静脈血栓症（下肢静脈エコー）'],
@@ -1128,6 +1165,7 @@ APPROACHES.leg_red = {
     { id: 'limb_ischemia', tests: ['leg_cta', 'coag', 'ecg'], point: '心房細動（抗凝固薬の中断）、突然の激痛・蒼白・冷感・脈拍消失・しびれ（6P）、腫れや赤みはない → ヘパリンと緊急血行再建', clues: ['q:pmh', 'q:meds', 'e:leg_pulse', 'e:calf', 't:leg_cta'] },
     { id: 'diabetic_foot', tests: ['joint_xr'], point: '長い糖尿病歴・神経障害、治らない足の潰瘍から広がる発赤・膿、骨に届く潰瘍、X線で骨破壊（骨髄炎）→ 抗菌薬・デブリードマン', clues: ['q:pmh', 'q:trigger', 'e:skin', 't:joint_xr', 'H:GLU'] },
     { id: 'paronychia', point: '深爪・きつい靴、爪の縁の食い込みと発赤・膿、糖尿病なし、発赤は趾先にとどまる → 抗菌薬と爪の処置', clues: ['q:trigger', 'e:skin', '!q:fever'] },
+    { id: 'varicose', tests: ['leg_us'], point: '立ち仕事・出産・家族歴、ゆっくり目立ってきた蛇行する静脈、夕方のだるさ・むくみ・こむら返り、圧痛や急な腫れはない → 弾性ストッキング', clues: ['q:course', 'q:occupation', 'e:skin', '!e:calf', '!q:fever', 't:leg_us'] },
   ],
 };
 
@@ -1899,6 +1937,16 @@ export const DISEASE_NOTES = {
   cerumen: {"overview":"耳垢が外耳道に詰まって、耳閉感や難聴を起こす状態。","treatment":["耳垢水で軟化","洗浄・鉗子で除去（鼓膜穿孔があれば洗浄しない）"],"flow":"耳閉感・聞こえにくい → 耳鏡で耳垢 → 耳垢栓塞 → 除去"},
   fish_bone: {"overview":"食事中に魚の骨が喉に刺さった状態。扁桃・舌根に多い。","treatment":["口腔内・喉頭ファイバーで観察","鉗子で摘出","ご飯の丸のみはしない","深頸部膿瘍・縦隔炎のサインに注意"],"flow":"魚を食べた後の喉のチクチクする痛み → 喉頭ファイバーで魚骨 → 摘出"},
   vocal_polyp: {"overview":"声の使いすぎなどで声帯にできる良性のできもの。声がれの原因。","treatment":["喉頭ファイバーで観察（喉頭がんの除外）","声の安静・禁煙・逆流の治療","改善しなければ手術"],"flow":"続く声がれ → 喉頭ファイバーで平滑なポリープ → 声帯ポリープ → 声の安静"},
+  psoriasis: {"overview":"皮膚の新陳代謝が過剰になり、赤く盛り上がって銀白色のかさぶたがはがれる慢性の病気。うつらない。","treatment":["外用（活性型ビタミンD3・ステロイド）","光線療法","内服・生物学的製剤","肥満・喫煙・飲酒の改善"],"flow":"擦れる部位の境界明瞭な紅斑と鱗屑 → 尋常性乾癬 → 外用療法"},
+  seb_derm: {"overview":"皮脂の多い部位に、皮膚の常在真菌が関わって起こる湿疹。","treatment":["抗真菌薬（ケトコナゾール）外用","炎症が強ければ短期間の弱いステロイド","再発予防の維持療法"],"flow":"頭皮・鼻の脇・眉毛の脂性の鱗屑と紅斑 → 脂漏性皮膚炎 → 抗真菌薬外用"},
+  acne: {"overview":"毛穴の詰まり（面皰）から始まり、アクネ菌で炎症を起こす。","treatment":["アダパレン・過酸化ベンゾイルの外用","炎症が強ければ短期間の抗菌薬","2〜3か月続ける"],"flow":"顔の面皰と炎症性丘疹 → 尋常性ざ瘡 → 外用療法"},
+  corn: {"overview":"靴などで同じ場所に圧迫や摩擦が続き、角質が厚くなったもの。芯があるのが鶏眼。","treatment":["角質の削り・芯の除去","靴・インソールの見直し","糖尿病の人は自分で削らない"],"flow":"足底の押すと痛い角質の肥厚 → 鶏眼 → 削りと靴の見直し"},
+  atheroma: {"overview":"皮膚の下にできた袋状のできもの（表皮嚢腫）に細菌が感染して腫れたもの。","treatment":["切開排膿","必要なら抗菌薬","炎症が治まってから袋ごと摘出"],"flow":"以前からのしこりが急に赤く腫れて痛む・波動 → 感染性粉瘤 → 切開排膿"},
+  alopecia: {"overview":"自己免疫で毛根が攻撃され、円形に毛が抜ける病気。","treatment":["甲状腺などの合併疾患の検索","ステロイド外用・局注","広範囲は局所免疫療法・JAK阻害薬"],"flow":"境界明瞭な円形の脱毛・皮膚は正常 → 円形脱毛症 → 外用と経過観察"},
+  pericoronitis: {"overview":"半分埋まった親知らずの周りの歯ぐきに細菌が感染して腫れる。","treatment":["抗菌薬・鎮痛・洗浄","炎症が治まってから抜歯","深頸部感染のサインに注意"],"flow":"奥歯の歯ぐきの腫れ・開口障害 → 智歯周囲炎 → 抗菌薬と抜歯の相談"},
+  tmj: {"overview":"顎の関節や噛む筋肉の痛み・口が開きにくい・関節の音が出る病気。","treatment":["セルフケア（硬い物を避ける・食いしばりの自覚）","鎮痛薬","歯科でスプリント療法"],"flow":"口を開けると顎が痛い・クリック音 → 顎関節症 → セルフケアと鎮痛"},
+  odontogenic: {"overview":"虫歯や歯周病から細菌感染が顎や頬・首に広がった状態。重症化すると気道をふさぐ。","treatment":["嫌気性菌もカバーする抗菌薬静注","膿瘍の切開排膿","原因歯の処置","気道の監視"],"flow":"虫歯の後の頬・顎下の腫れと発熱 → 歯性感染症 → 抗菌薬と切開排膿"},
+  varicose: {"overview":"足の静脈の弁が壊れて血液が逆流し、血管がこぶ状に浮き出る病気。","treatment":["エコーで逆流と血栓を確認","弾性ストッキング・生活指導","血管内焼灼術・硬化療法・手術"],"flow":"浮き出た足の静脈・夕方のだるさ → エコーで弁不全 → 下肢静脈瘤 → 弾性ストッキング"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [
