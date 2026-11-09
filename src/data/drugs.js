@@ -404,6 +404,32 @@ export const DRUGS = [
     info: 'アレルギー性結膜炎に1回1〜2滴を1日4回。',
   },
   {
+    id: 'levodopa', generic: 'レボドパ・カルビドパ', brands: ['ネオドパストン', 'メネシット'], cls: '抗パーキンソン病薬', tags: ['levodopa'],
+    routes: { po: { unit: 'mg', min: 100, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: 'パーキンソン病に1回100mgを1日3回から。吐き気・起立性低血圧・幻覚、長期ではジスキネジア・wearing-offに注意。急な中止は悪性症候群の危険。',
+  },
+  {
+    id: 'donepezil_rx', generic: 'ドネペジル', brands: ['アリセプト'], cls: '認知症治療薬（コリンエステラーゼ阻害薬）', tags: ['achei'],
+    routes: { po: { unit: 'mg', min: 3, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: 'アルツハイマー型認知症に3mgから開始し、1〜2週後に5mg。吐き気・下痢・徐脈に注意。',
+  },
+  {
+    id: 'mecobalamin', generic: 'メコバラミン（注・内服）', brands: ['メチコバール'], cls: 'ビタミンB12製剤', tags: ['b12'],
+    routes: { im: { unit: 'μg', min: 500, max: 1000, freqs: ['q24h', 'once'], maxDaily: 1000 }, po: { unit: 'μg', min: 500, max: 500, freqs: ['q8h'], maxDaily: 1500 } },
+    info: 'ビタミンB12欠乏症に500〜1000μgを筋注（週3回など）、その後維持。胃切除後は吸収されないので注射が基本だが、大量内服でも補える。',
+  },
+  {
+    id: 'dapagliflozin', generic: 'ダパグリフロジン', brands: ['フォシーガ'], cls: 'SGLT2阻害薬', tags: ['sglt2'],
+    routes: { po: { unit: 'mg', min: 10, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '慢性腎臓病・心不全・2型糖尿病に10mg 1日1回。脱水・尿路/性器感染・正常血糖ケトアシドーシス（シックデイは休薬）に注意。',
+  },
+  {
+    id: 'telmisartan', generic: 'テルミサルタン', brands: ['ミカルディス'], cls: '降圧薬（ARB）', tags: ['arb'],
+    routes: { po: { unit: 'mg', min: 20, max: 80, freqs: ['q24h'], maxDaily: 80 } },
+    contra: ['pregnancy', 'hyperk'],
+    info: '高血圧・蛋白尿のある慢性腎臓病に20〜40mg 1日1回。開始後に腎機能とKを確認。妊婦には禁忌。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

@@ -23,6 +23,7 @@ export const PROCEDURES = [
   { id: 'enema', name: 'グリセリン浣腸・摘便', min: 15 },
   { id: 'vagal', name: '迷走神経刺激（修正Valsalva法）', min: 5 },
   { id: 'nasal_pack', name: '鼻出血の圧迫止血・ガーゼタンポン', min: 15 },
+  { id: 'splint', name: 'シーネ（副木）固定・RICE', min: 15 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
@@ -338,7 +339,7 @@ function processEvents(enc) {
       st.procDone[pr.id] = enc.t;
       pr.onDone(enc);
       alert(enc, 'consult', fmt(pr.doneText, enc.patient.vars), true);
-      if (enc.phase === 'er') { enc.phase = pr.after || 'icu'; enc.dispo ??= { type: pr.after === 'ward' ? 'admit' : 'icu', t: enc.t, auto: true }; }
+      if (enc.phase === 'er' && pr.after !== 'er') { enc.phase = pr.after || 'icu'; enc.dispo ??= { type: pr.after === 'ward' ? 'admit' : 'icu', t: enc.t, auto: true }; }
       important = true;
     }
   }
@@ -560,6 +561,7 @@ export function procedure(enc, procId) {
       addLog(enc, 'exam', ok ? '修正Valsalva法の直後に頻拍が停止し、洞調律（約80/分）に戻った。' : d.id === 'svt' ? '修正Valsalva法を行ったが、頻拍は停止しなかった。' : '修正Valsalva法を行ったが、変化はなかった。', { label: '迷走神経刺激', positive: ok });
     }
     else if (P.id === 'nasal_pack') addLog(enc, 'exam', d.id === 'epistaxis' ? '鼻翼を圧迫し、血管収縮薬を浸したガーゼを挿入した。出血は止まった。' : '鼻腔にガーゼを入れたが、特に出血はなかった。', { label: '鼻出血の止血', positive: d.id === 'epistaxis' });
+    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx'].includes(d.id) });
     else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
     advance(enc, P.min);
     return;

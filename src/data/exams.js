@@ -65,6 +65,7 @@ export const EXAMS = [
   { id: 'inguinal', region: 'abdomen', method: '視診・触診', name: '鼠径部（ヘルニア）', normal: '鼠径部に膨隆・圧痛なし。' },
   { id: 'scrotum', region: 'abdomen', method: '視診・触診', name: '陰嚢・精巣', normal: '精巣の腫大・圧痛なし。挙睾筋反射あり。', male: true },
   { id: 'rectal', region: 'abdomen', method: '触診', name: '直腸診', normal: '直腸内に便塊・腫瘤なし。指に血液の付着なし。', pain: 1 },
+  { id: 'rigidity', region: 'neuro', method: '触診・視診', name: '筋強剛・歩行・姿勢反射', normal: '筋強剛なし。歩行は正常で、姿勢反射も保たれている。' },
   { id: 'tremor', region: 'neuro', method: '視診', name: '手指振戦・腱反射', normal: '手指振戦なし。腱反射は正常。' },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];

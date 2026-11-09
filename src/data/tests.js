@@ -17,6 +17,8 @@ export const TESTS = [
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },
   { id: 'vbg', cat: 'blood', name: '静脈血液ガス（POCT）', kind: 'lab', items: ['PH', 'PCO2', 'HCO3', 'LAC', 'NA', 'K', 'CL', 'AG', 'GLU', 'COHB'], cost: 1450, timeMin: 5, inv: 1, sample: 'blood' },
+  { id: 'b12', cat: 'blood', name: 'ビタミンB12・葉酸', kind: 'lab', items: ['B12'], cost: 1500, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'lipid', cat: 'blood', name: '脂質・肝機能（LDL・HDL・TG・γ-GTP）', kind: 'lab', items: ['LDL', 'HDL', 'TG', 'GGT'], cost: 600, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'thyroid', cat: 'blood', name: '甲状腺機能（TSH・FT4）', kind: 'lab', items: ['TSH', 'FT4'], cost: 2700, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'ferritin', cat: 'blood', name: 'フェリチン（鉄の貯蔵）', kind: 'lab', items: ['FER'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'nh3', cat: 'blood', name: 'アンモニア', kind: 'lab', items: ['NH3'], cost: 500, timeMin: 30, inv: 1, sample: 'blood' },
@@ -76,6 +78,7 @@ export const TESTS = [
   { id: 'leg_cta', cat: 'image', name: '下肢動脈造影CT', kind: 'report', cost: 22000, timeMin: 45, inv: 2, radiation: true, contrast: true, normal: '下肢動脈に閉塞・狭窄なし。' },
   { id: 'pvr', cat: 'physio', name: '残尿測定（膀胱エコー）', kind: 'report', cost: 550, timeMin: 10, inv: 0, normal: '排尿後残尿 20mL（正常）。' },
   { id: 'psg', cat: 'physio', name: '簡易睡眠検査（携帯型・自宅）', kind: 'report', cost: 7200, timeMin: 1440, inv: 0, normal: '無呼吸低呼吸指数（AHI）3回/時（正常）。' },
+  { id: 'hdsr', cat: 'physio', name: '認知機能検査（改訂長谷川式・MMSE）', kind: 'report', cost: 800, timeMin: 15, inv: 0, normal: '改訂長谷川式 29/30点、MMSE 29/30点（正常範囲）。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 
