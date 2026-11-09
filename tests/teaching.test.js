@@ -39,7 +39,7 @@ test('主訴別アプローチの参照先が存在し、全疾患の主訴に�
     for (const x of a.ddx) {
       assert.ok(DDX_BY_ID[x.id], `${k}.ddx ${x.id}`);
       for (const c of x.clues || []) {
-        const [type, id] = c.split(':');
+        const [type, id] = c.replace(/^!/, '').split(':');
         const ok = { q: QUESTION_BY_ID, e: EXAM_BY_ID, t: TEST_BY_ID, H: LABS, L: LABS }[type]?.[id];
         assert.ok(ok, `${k}.${x.id} clue ${c}`);
       }

@@ -90,5 +90,15 @@ import septic_arthritis from './septic_arthritis.js';
 import hypok from './hypok.js';
 import insomnia from './insomnia.js';
 
-export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal, htn, dm2, lumbago, allergic_rhinitis, urticaria, sinusitis, pta, seizure, aki, pericarditis, hypothermia, hepatic_enc, intox, herniated_disc, ibs, vestibular, mycoplasma, pud, nec_fasc, epiglottitis, epidural, gca, pmr, pseudogout, septic_arthritis, hypok, insomnia];
+import svt from './svt.js';
+import dehydration from './dehydration.js';
+import orthostatic from './orthostatic.js';
+import meniere from './meniere.js';
+import panic from './panic.js';
+import cyst_rupture from './cyst_rupture.js';
+import endometriosis from './endometriosis.js';
+import cluster from './cluster.js';
+import ich from './ich.js';
+import lgib from './lgib.js';
+export const DISEASES = [cap, pyelo, gastro, adhf, dka, appendicitis, acs, aortic_dissection, pe, ptx, stroke, hypoglycemia, meningitis, sah, migraine, cholecystitis, ureteral, influenza, copd, asthma, anaphylaxis, ugib, pancreatitis, sbo, cellulitis, af_rvr, hyperk, hhs, dvt, heatstroke, ectopic, torsion, pid, aspiration, hyponatremia, retention, hip_fx, bppv, cerebellar, vasovagal, avb, zoster, compression_fx, impaction, uri, bronchitis, strep, cystitis, gout, tension_ha, gerd, ida, hypothyroid, hyperthyroid, bell, cholangitis, diverticulitis, ischemic_colitis, bact_enteritis, covid, miscarriage, hyperemesis, prostatitis, alcohol_withdrawal, htn, dm2, lumbago, allergic_rhinitis, urticaria, sinusitis, pta, seizure, aki, pericarditis, hypothermia, hepatic_enc, intox, herniated_disc, ibs, vestibular, mycoplasma, pud, nec_fasc, epiglottitis, epidural, gca, pmr, pseudogout, septic_arthritis, hypok, insomnia, svt, dehydration, orthostatic, meniere, panic, cyst_rupture, endometriosis, cluster, ich, lgib];
 export const DISEASE_BY_ID = Object.fromEntries(DISEASES.map((d) => [d.id, d]));

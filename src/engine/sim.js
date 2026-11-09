@@ -21,6 +21,7 @@ export const PROCEDURES = [
   { id: 'foley', name: '尿道カテーテル留置', min: 10 },
   { id: 'epley', name: 'Epley法（浮遊耳石置換法）', min: 10 },
   { id: 'enema', name: 'グリセリン浣腸・摘便', min: 15 },
+  { id: 'vagal', name: '迷走神経刺激（修正Valsalva法）', min: 5 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
@@ -113,7 +114,7 @@ export function therapySatisfied(th, eff, enc) {
   if (r.tag) return (eff.tags[r.tag] || 0) >= (r.min ?? 0.5);
   if (r.anyTag) return r.anyTag.some((t) => (eff.tags[t] || 0) > 0) || (r.orFluidK && eff.kRate >= 5);
   if (r.o2) return !!eff.o2Device;
-  if (r.fluidTotal) return enc.state.ivCryst >= r.fluidTotal;
+  if (r.fluidTotal) return enc.state.ivCryst >= r.fluidTotal - 1;
   if (r.dextrose) return eff.dextroseGph >= 3;
   if (r.surgery) return !!enc.state.surgeryDone;
   if (r.procDone) return !!enc.state.procDone?.[r.procDone];
@@ -552,6 +553,11 @@ export function procedure(enc, procId) {
     else if (P.id === 'ng') addLog(enc, 'exam', '胃管から少量の胃液のみ。', { label: '胃管排液', positive: false });
     else if (P.id === 'epley') addLog(enc, 'exam', d.id === 'bppv' ? 'Epley法を行った。直後からめまいが軽くなった。' : 'Epley法を行ったが、めまいは変わらない。', { label: 'Epley法', positive: d.id === 'bppv' });
     else if (P.id === 'enema') addLog(enc, 'exam', d.id === 'impaction' ? '摘便・浣腸で多量の硬便が排出された。腹痛が軽くなった。' : '浣腸で少量の便が出た。', { label: '浣腸・摘便', positive: d.id === 'impaction' });
+    else if (P.id === 'vagal') {
+      const ok = d.id === 'svt' && hashRand(p.seed, 'vagal', enc.t) < 0.45;
+      if (ok) { st.procDone = { ...(st.procDone || {}), term: enc.t + P.min }; st.burden = Math.min(st.burden, 4); }
+      addLog(enc, 'exam', ok ? '修正Valsalva法の直後に頻拍が停止し、洞調律（約80/分）に戻った。' : d.id === 'svt' ? '修正Valsalva法を行ったが、頻拍は停止しなかった。' : '修正Valsalva法を行ったが、変化はなかった。', { label: '迷走神経刺激', positive: ok });
+    }
     else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
     advance(enc, P.min);
     return;

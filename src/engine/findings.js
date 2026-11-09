@@ -173,13 +173,15 @@ export function testReport(enc, tid, vit, k) {
   if (T.kind === 'ecg') {
     const parts = [];
     const af = p.comorb.includes('af') || (d.id === 'af_rvr' && !st.procDone?.dcv);
-    parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
+    const rh = d.ecgRhythm?.(enc, vit);
+    if (rh) parts.push(rh);
+    else parts.push(af ? `心房細動（心拍数 約${vit.HR}/分）。` : vit.HR > 100 ? `洞性頻脈（${vit.HR}/分）。` : `洞調律（${vit.HR}/分）。`);
     (d.ecg || []).forEach((f, i) => { if (p.rolls.ecg[i] && visibleNow(enc, f)) parts.push(fmt(f.text, p.vars)); });
     if (k >= 7.0) parts.push('テント状T波、P波の消失、QRS幅の拡大。');
     else if (k >= 6.0) parts.push('テント状T波。');
     else if (k < 3.0) parts.push('T波平低化、U波あり。QT延長傾向。');
     if (parts.length === 1) parts.push('明らかなST-T変化なし。');
-    return { text: parts.join(' '), abnormal: parts.length > 1 && !parts[1].startsWith('明らか') || af || vit.HR > 100 };
+    return { text: parts.join(' '), abnormal: parts.length > 1 && !parts[1].startsWith('明らか') || af || vit.HR > 100 || !!rh };
   }
   // report
   const fs = d.tests?.[tid];

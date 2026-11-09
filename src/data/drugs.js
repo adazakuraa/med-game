@@ -257,6 +257,23 @@ export const DRUGS = [
     info: '片頭痛発作に皮下注3mgまたは内服50mg。虚血性心疾患・脳血管障害・コントロール不良の高血圧には禁忌。',
   },
   {
+    id: 'atp', generic: 'ATP（アデノシン三リン酸）注', brands: ['アデホス-L'], cls: '抗不整脈薬（発作性上室頻拍の停止）', tags: ['svt_terminate'],
+    routes: { iv: { unit: 'mg', min: 10, max: 20, freqs: ['once'], maxDaily: 40 } },
+    contra: ['asthma_atp'], effectHours: 0.5,
+    info: '発作性上室頻拍の停止に10mgを急速静注し、生理食塩水で後押しする（効かなければ20mg）。一時的な胸部不快感・顔面紅潮・数秒の心停止が起こることを事前に説明。気管支喘息には禁忌。',
+  },
+  {
+    id: 'betahistine', generic: 'ベタヒスチン', brands: ['メリスロン'], cls: '抗めまい薬', tags: ['antivertigo'],
+    routes: { po: { unit: 'mg', min: 6, max: 12, freqs: ['q8h'], maxDaily: 36 } },
+    info: 'メニエール病・めまい症に1回6〜12mgを1日3回。',
+  },
+  {
+    id: 'dienogest', generic: 'ジエノゲスト', brands: ['ディナゲスト'], cls: '子宮内膜症治療薬（黄体ホルモン）', tags: ['gyn_hormone'],
+    routes: { po: { unit: 'mg', min: 1, max: 1, freqs: ['q12h'], maxDaily: 2 } },
+    contra: ['pregnancy'],
+    info: '子宮内膜症に1回1mgを1日2回、月経周期2〜5日目から。不正出血が多い。妊娠中は禁忌。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
@@ -512,5 +529,7 @@ export const HOME_MEDS = {
   donepezil: { name: 'ドネペジル 5mg 1日1回（認知症）', tags: [] },
   antichol: { name: '市販の総合感冒薬（抗コリン成分を含む）', tags: ['anticholinergic'] },
   benzo_home: { name: 'ブロチゾラム 0.25mg 就寝前（睡眠薬）', tags: ['benzo_home'] },
+  aspirin_home: { name: 'アスピリン 100mg 1日1回（抗血小板薬）', tags: ['antiplatelet_home'] },
+  doxazosin: { name: 'ドキサゾシン 2mg 1日1回（α遮断薬・最近開始）', tags: ['alpha_blocker'] },
   glimepiride: { name: 'グリメピリド 2mg 1日1回（スルホニル尿素薬）', tags: ['su'] },
 };

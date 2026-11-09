@@ -30,6 +30,7 @@ export function recommended(enc) {
 
 // ---- 手がかりの評価 ----
 function clueHit(enc, clue) {
+  if (clue.startsWith('!')) return -clueHit(enc, clue.slice(1)); // 「〜がない・陰性」が支持所見
   const [type, id] = clue.split(':');
   if (type === 'q') return enc.asked[id]?.positive ? 1 : enc.asked[id] ? -1 : 0;
   if (type === 'e') return enc.examined[id]?.abnormal ? 1 : enc.examined[id] ? -1 : 0;
@@ -50,6 +51,7 @@ function clueHit(enc, clue) {
 }
 
 function clueLabel(clue) {
+  if (clue.startsWith('!')) return `${clueLabel(clue.slice(1))}（なし・陰性）`;
   const [type, id] = clue.split(':');
   if (type === 'q') return QUESTION_BY_ID[id].text.replace(/[？?]$/, '');
   if (type === 'e') return EXAM_BY_ID[id].name;

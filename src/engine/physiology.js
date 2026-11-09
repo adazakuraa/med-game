@@ -186,6 +186,7 @@ export function vitals(enc, eff, noiseKey) {
   }
   if (st.hypoEvent && enc.t >= st.hypoEvent.t && enc.t < st.hypoEvent.until) { SBP -= 50; HR += 15; }
   if (st.surgeryAt && enc.t >= st.surgeryAt && enc.t < st.surgeryAt + 90) HR += 5;
+  if (d.vitalHook) ({ HR, SBP } = d.vitalHook(enc, { HR, SBP }));
   if (noiseKey != null) {
     const n = (k, a) => (hashRand(p.seed, 'vn', noiseKey, k) - 0.5) * 2 * a;
     T += n('T', 0.1); HR += n('HR', 3); RR += n('RR', 1); SBP += n('S', 4); SpO2raw += n('O', 0.8);
