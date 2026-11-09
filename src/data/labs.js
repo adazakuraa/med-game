@@ -47,6 +47,8 @@ export const LABS = {
   GGT: { name: 'γ-GTP', unit: 'U/L', ref: { M: [13, 64], F: [9, 32] }, dp: 0, base: { M: { m: 30, sd: 10 }, F: { m: 18, sd: 5 } }, abs: [5, 2000] },
   KL6: { name: 'KL-6', unit: 'U/mL', ref: [0, 499], dp: 0, base: { m: 280, sd: 60 }, abs: [50, 10000] },
   APAP: { name: '血中アセトアミノフェン濃度', unit: 'μg/mL', ref: [0, 20], dp: 0, base: { m: 0, sd: 0 }, abs: [0, 1000] },
+  LDH: { name: 'LDH', unit: 'U/L', ref: [124, 222], dp: 0, base: { m: 180, sd: 25 }, abs: [80, 10000] },
+  TP: { name: '総蛋白', unit: 'g/dL', ref: [6.6, 8.1], dp: 1, base: { m: 7.2, sd: 0.3 }, abs: [3, 14] },
   LAC: { name: '乳酸', unit: 'mmol/L', ref: [0.5, 2.0], dp: 1, base: { m: 1.0, sd: 0.25 }, abs: [0.3, 20] },
   AG: { name: 'アニオンギャップ', unit: 'mEq/L', ref: [8, 12], dp: 0, derived: true, abs: [0, 50] },
   BHB: { name: '血中β-ヒドロキシ酪酸', unit: 'μmol/L', ref: [0, 85], dp: 0, base: { m: 40, sd: 15 }, abs: [0, 15000] },

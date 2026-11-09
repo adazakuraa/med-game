@@ -519,6 +519,23 @@ export const DRUGS = [
     info: '悪性症候群・悪性高熱症に1〜2.5mg/kgを静注。肝障害に注意。',
   },
   {
+    id: 'mtx', generic: 'メトトレキサート', brands: ['リウマトレックス'], cls: '抗リウマチ薬（csDMARD）', tags: ['dmard'],
+    routes: { po: { unit: 'mg', min: 6, max: 16, freqs: ['once'], maxDaily: 16 } }, effectHours: 168,
+    contra: ['pregnancy', 'severe_renal'],
+    info: '関節リウマチの第一選択。週1回（1〜2日に分割）6〜8mgから。葉酸を併用。間質性肺炎・骨髄抑制・肝障害、腎機能低下で減量。妊娠中は禁忌。',
+  },
+  {
+    id: 'hcq', generic: 'ヒドロキシクロロキン', brands: ['プラケニル'], cls: '抗マラリア薬（SLE治療）', tags: ['hcq'],
+    routes: { po: { unit: 'mg', min: 200, max: 400, freqs: ['q24h'], maxDaily: 400 } },
+    info: 'SLEの皮膚・関節症状や再燃予防に。網膜症に注意して定期的な眼科検査。',
+  },
+  {
+    id: 'spironolactone', generic: 'スピロノラクトン', brands: ['アルダクトンA'], cls: 'ミネラルコルチコイド受容体拮抗薬', tags: ['mra'],
+    contra: ['hyperk'],
+    routes: { po: { unit: 'mg', min: 25, max: 100, freqs: ['q24h'], maxDaily: 100 } },
+    info: '原発性アルドステロン症（片側性でなければ）・心不全・肝硬変の腹水に。高K血症・女性化乳房に注意。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

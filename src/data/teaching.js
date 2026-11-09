@@ -182,6 +182,12 @@ export const TEST_WHY = {
   syphilis: '梅毒のスクリーニングと治療効果の判定（RPRの定量）。',
   pertussis: '長引く発作性の咳で百日咳を確認する。',
   malaria: '熱帯地域からの帰国後の発熱では必ず調べる（熱帯熱マラリアは急速に重症化）。',
+  smear: '血液像で白血病の芽球、破砕赤血球（TTP・DIC）、偽性血小板減少（凝集）などを確認する。',
+  spep: '多発性骨髄腫などのM蛋白を調べる。',
+  ana: 'SLEなど膠原病のスクリーニング。抗dsDNA抗体・低補体はSLEの活動性を反映する。',
+  rf_ccp: '関節リウマチの診断。抗CCP抗体は特異度が高い。',
+  renin_aldo: '原発性アルドステロン症のスクリーニング（アルドステロン/レニン比が高い）。若年・低K・治療抵抗性の高血圧で測る。',
+  upcr: '尿蛋白の量（1日量の目安）と沈渣（赤血球円柱など）で腎炎・ネフローゼを評価する。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -233,6 +239,7 @@ export const TEST_WHY = {
   breast_us: '乳房のしこり・膿瘍を評価する。',
   spirometry: '喘息の診断（気道可逆性・呼気NO）とCOPD（1秒率<70%）の評価。',
   dexa: '骨粗鬆症の診断。若年成人平均の70%以下（Tスコア−2.5以下）で骨粗鬆症。',
+  neck_us: '甲状腺の腫大・結節・炎症（亜急性甲状腺炎の低エコー域）を評価する。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -281,6 +288,8 @@ export const LAB_MEANING = {
   GGT: { H: '飲酒・脂肪肝・胆道系の異常・薬剤で上昇する' },
   KL6: { H: '間質性肺炎の活動性の指標' },
   APAP: { H: 'アセトアミノフェン過量服薬。服用後4時間以降の値をノモグラムに当てはめてNACの適応を判断' },
+  LDH: { H: '細胞が壊れると上昇（溶血・悪性リンパ腫・白血病・心筋梗塞・肝障害など）' },
+  TP: { H: '総蛋白が高くアルブミンが低い（グロブリン増加）→ 多発性骨髄腫などを考える', L: '低栄養・ネフローゼ症候群・肝硬変' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -383,6 +392,9 @@ export const DRUG_ROLE = {
   kI: '甲状腺クリーゼで甲状腺ホルモンの放出を抑える。',
   artemether: '熱帯熱マラリアの治療薬。',
   dantrolene: '悪性症候群・悪性高熱症の筋強剛と高熱を改善する薬。',
+  mtx: '関節リウマチの中心となる薬（週1回）。葉酸を併用し、肺・血液・肝臓の副作用に注意。',
+  hcq: 'SLEの基本薬。',
+  spironolactone: 'アルドステロンの作用をブロックする薬。高K血症に注意。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -466,6 +478,9 @@ export const DEPT_ROLE = {
   nsurg: 'くも膜下出血・脳出血・頭部外傷など、手術や血管内治療が必要な頭の病気を相談する。',
   ent: '扁桃周囲膿瘍の切開排膿や、喉頭蓋炎など喉の病気を相談する。',
   eye: '急性緑内障発作・網膜動脈閉塞・眼外傷など視力に関わる緊急疾患。',
+  hema: '白血病・リンパ腫・骨髄腫・血小板減少などの血液疾患。骨髄検査や化学療法を担当。',
+  derm: '皮膚疾患（皮膚生検・重症薬疹・難治の湿疹など）。',
+  dental: '歯・口腔・顎の病気（歯性感染症・智歯・顎関節症）。',
   psych: 'うつ病・不安症・せん妄・自殺企図などの評価と治療。希死念慮が強い・自傷の危険があれば必ず相談。',
   rheum: '巨細胞性動脈炎・リウマチ性多発筋痛症・関節リウマチなどの膠原病を相談する。',
   ortho: '骨折（特に高齢者の大腿骨近位部骨折）の手術を相談する。',
@@ -884,6 +899,7 @@ APPROACHES.checkup = {
     { id: 'hepatitis', point: '輸血歴・母子感染、HBs抗原・HCV抗体陽性' },
     { id: 'dm2', point: 'HbA1c・血糖高値', clues: ['H:HBA1C'] },
     { id: 'osteoporosis', tests: ['dexa'], point: '閉経後女性・やせ・脆弱性骨折の既往・家族歴、身長の低下・円背、骨密度低下 → 薬物療法と転倒予防', clues: ['q:pmh', 'q:family', 'q:onset', 'e:spine', 't:dexa'] },
+    { id: 'polycythemia', tests: ['cbc', 'smear'], point: 'Hb高値に白血球・血小板も増加、脾腫・入浴後のかゆみ・顔面紅潮、喫煙・無呼吸などの二次性はない → 瀉血とアスピリン', clues: ['q:character', 'e:gen_appear', 'e:abd_palp', 'H:HB', 'H:PLT', '!q:smoking'] },
     { id: 'hyperuricemia', point: '尿酸高値、痛風発作の既往、飲酒・肥満・利尿薬 → 尿酸降下薬（6以下）と生活指導', clues: ['q:pmh', 'q:alcohol', 'q:meds', 'H:URIC'] },
   ],
 };
@@ -1009,6 +1025,49 @@ APPROACHES.bowel = {
     { id: 'colorectal_ca', point: '血便・体重減少・貧血・便が細い', clues: ['q:bloodystool', 'L:HB'] },
     { id: 'hypothyroid', point: '寒がり・むくみ・体重増加、TSH高値', clues: ['H:TSH'] },
     { id: 'ibs', point: '腹痛が排便で軽快、ストレスで悪化、下痢と便秘を繰り返す' },
+  ],
+};
+APPROACHES.bleeding = {
+  title: 'あざ・出血しやすい',
+  intro: '紫斑や歯肉出血では、まず血算（血小板）と凝固検査。血小板だけ低いか、3系統（赤血球・白血球・血小板）すべてに異常があるかで考える。血液像で芽球・破砕赤血球を確認する。',
+  keyQ: ['onset', 'character', 'fever', 'fatigue', 'weightloss', 'meds', 'alcohol', 'pmh', 'family'],
+  keyE: ['skin', 'oral_mucosa', 'conjunctiva', 'neck_ln', 'abd_palp'],
+  keyT: ['cbc', 'smear', 'coag', 'chem'],
+  redflags: ['発熱・貧血・出血がそろう → 急性白血病（血液像・骨髄検査）', '破砕赤血球・腎障害・精神症状 → TTP（緊急）', '凝固異常・Dダイマー高値 → DIC', '頭痛・意識障害・大量出血 → 重い出血（輸血）'],
+  ddx: [
+    { id: 'itp', tests: ['smear'], point: '血小板だけが少ない、貧血・白血球異常・脾腫なし、かぜの後、血液像で大型血小板のみ → ステロイド・ピロリ菌除菌', clues: ['q:pmh', '!q:fever', '!e:abd_palp', 'L:PLT', '!L:HB', 't:smear'] },
+    { id: 'leukemia', tests: ['smear'], point: '発熱・貧血・出血、白血球の異常（増加または減少）、血液像で芽球 → 血液内科へ', clues: ['q:fever', 'q:fatigue', 'e:conjunctiva', 'L:HB', 'L:PLT', 'H:LDH', 't:smear'] },
+    { id: 'dic', point: '重い感染症・がん・産科疾患、凝固異常・Dダイマー高値' },
+    { id: 'ttp', point: '血小板減少＋溶血（破砕赤血球）・腎障害・精神症状・発熱' },
+  ],
+};
+APPROACHES.lymph = {
+  title: 'リンパ節が腫れた',
+  intro: 'リンパ節腫脹は、部位（局所か全身か）・大きさ・硬さ・痛み・経過で考える。痛みがある小さなリンパ節で感染症状があれば反応性が多い。痛みのない硬いリンパ節が大きくなる・B症状（発熱・寝汗・体重減少）があれば悪性リンパ腫やがんの転移を疑う。',
+  keyQ: ['onset', 'character', 'fever', 'nightsweat', 'weightloss', 'sorethroat', 'cough', 'sickcontact', 'pmh'],
+  keyE: ['neck_ln', 'pharynx', 'abd_palp', 'skin'],
+  keyT: ['cbc', 'chem', 'crp'],
+  redflags: ['2cm以上・硬い・可動性が悪い・4週以上続く・鎖骨上窩 → 生検', 'B症状（発熱・寝汗・体重減少）→ 悪性リンパ腫', '咳・寝汗・体重減少 → 結核'],
+  ddx: [
+    { id: 'lymphoma', point: '痛みのない弾性硬のリンパ節が数週で大きくなる・多発、B症状、LDH高値 → 生検', clues: ['q:nightsweat', 'q:weightloss', 'e:neck_ln', 'H:LDH', '!q:sorethroat'] },
+    { id: 'mono', point: '若年、発熱・咽頭痛・後頸部リンパ節腫脹・肝脾腫、異型リンパ球', clues: ['q:sorethroat'] },
+    { id: 'reactive_ln', point: '痛みのある小さなリンパ節、感染症状に伴い、数週で縮小' },
+    { id: 'tb', point: '頸部リンパ節結核、咳・寝汗' },
+    { id: 'sarcoid', point: '両側肺門リンパ節腫脹、ぶどう膜炎' },
+  ],
+};
+APPROACHES.edema = {
+  title: 'むくみ',
+  intro: 'むくみは片側か両側かで考える。片側なら深部静脈血栓症・蜂窩織炎。両側なら心不全（頸静脈怒張・BNP）、腎（ネフローゼ症候群・腎不全）、肝硬変、甲状腺機能低下症、薬剤（Ca拮抗薬・NSAIDs）を考え、尿蛋白とアルブミンを確認する。',
+  keyQ: ['onset', 'edema', 'weightgain', 'character', 'dyspnea', 'orthopnea', 'alcohol', 'meds', 'pmh', 'heatcold'],
+  keyE: ['leg_edema', 'jvd', 'lung_ausc', 'abd_insp', 'heart_ausc'],
+  keyT: ['ua', 'chem', 'cbc', 'bnp'],
+  redflags: ['起座呼吸・頸静脈怒張 → 心不全', '片側の腫脹・ふくらはぎの痛み → 深部静脈血栓症', '高度の蛋白尿・低アルブミン → ネフローゼ症候群（血栓症に注意）'],
+  ddx: [
+    { id: 'nephrotic', tests: ['upcr'], point: '急なまぶたと下腿のむくみ・泡立つ尿・体重増加、頸静脈怒張なし、高度の蛋白尿と低アルブミン・高LDL → 腎生検', clues: ['q:edema', 'q:character', '!q:orthopnea', '!e:jvd', 'H:U_PRO', 'L:ALB', 't:upcr'] },
+    { id: 'adhf', point: '起座呼吸・頸静脈怒張・BNP高値', clues: ['q:orthopnea', 'e:jvd', 'H:BNP'] },
+    { id: 'hypothyroid', point: '寒がり・体重増加・圧痕を残さないむくみ、TSH高値', clues: ['q:heatcold'] },
+    { id: 'dvt', point: '片側の腫脹・ふくらはぎの圧痛' },
   ],
 };
 APPROACHES.leg_red = {
@@ -1179,10 +1238,11 @@ APPROACHES.back_pain = {
     { id: 'pyelo', point: '発熱・CVA叩打痛・膿尿', clues: ['e:cva', 'q:fever'] },
     { id: 'ureteral', point: '波のある激痛・血尿', clues: ['H:U_RBC'] },
     { id: 'aortic_dissection', point: '突然の引き裂かれるような痛み', clues: ['e:bp_lr'] },
-    { id: 'epidural', tests: ['spine_mri', 'bcx'], point: '発熱＋強い背部痛（糖尿病・透析・注射歴）、棘突起の叩打痛、進行すると下肢麻痺・尿閉 → 緊急MRI', clues: ['q:fever', 'q:weakness', 'q:retention', 'q:pmh', 'e:spine', 'H:ESR', 't:spine_mri'] },
+    { id: 'epidural', tests: ['spine_mri', 'bcx'], point: '発熱＋強い背部痛（糖尿病・透析・注射歴）、棘突起の叩打痛、進行すると下肢麻痺・尿閉 → 緊急MRI', clues: ['q:fever', 'q:weakness', 'q:retention', 'q:pmh', 'e:spine', 'H:ESR', 'H:CRP', 'H:WBC', 't:spine_mri'] },
     { id: 'herniated_disc', point: '下肢へ放散する痛み・しびれ、咳・くしゃみで悪化、SLRテスト陽性', clues: ['q:radiation', 'e:slr'] },
     { id: 'lumbago', point: '重い物を持ったなどのきっかけ、体動で悪化し安静で軽快、危険なサインがない', clues: ['q:aggravating'] },
-    { id: 'lss', tests: ['spine_mri'], point: '高齢者、歩くと両足がしびれて歩けなくなり前かがみで休むと回復（神経性間欠性跛行）、自転車はこげる、足の脈は触れる', clues: ['q:character', 'q:aggravating', 'q:radiation', 'e:spine', 't:spine_mri'] },
+    { id: 'lss', tests: ['spine_mri'], point: '高齢者、歩くと両足がしびれて歩けなくなり前かがみで休むと回復（神経性間欠性跛行）、自転車はこげる、足の脈は触れる', clues: ['q:character', 'q:radiation', '!q:fever', 't:spine_mri'] },
+    { id: 'myeloma', tests: ['spep', 'cbc', 'chem'], point: '高齢者の進む腰背部痛・夜間痛、貧血・腎障害・高Ca血症（CRAB）・総蛋白高値、感染の繰り返し → M蛋白、骨髄検査', clues: ['q:pmh', 'L:HB', 'H:CA', 'H:TP', 't:spep', '!q:fever'] },
     { id: 'pad', point: '立ち止まるだけで治まるふくらはぎの痛み（血管性間欠性跛行）、足背動脈の拍動低下、喫煙・糖尿病', clues: ['e:leg_pulse'] },
   ],
 };
@@ -1191,7 +1251,7 @@ APPROACHES.sore_throat = {
   title: '喉の痛み',
   intro: '喉の痛みの多くはウイルス性のかぜで抗菌薬は不要。Centor基準で溶連菌の可能性を見積もり、高ければ迅速検査。気道が危険になる病気（急性喉頭蓋炎・扁桃周囲膿瘍）を見逃さない。',
   keyQ: ['onset', 'character', 'sorethroat', 'fever', 'cough', 'radiation', 'anorexia', 'sickcontact', 'allergy'],
-  keyE: ['pharynx', 'neck_ln', 'gen_appear'],
+  keyE: ['pharynx', 'neck_ln', 'thyroid_palp', 'gen_appear'],
   keyT: [],
   redflags: ['唾も飲めない・声がこもる・口が開かない・呼吸が苦しい → 急性喉頭蓋炎・扁桃周囲膿瘍（気道緊急）', 'Centor基準（発熱・咳なし・前頸部リンパ節の圧痛・扁桃の白苔）が高ければ溶連菌検査'],
   ddx: [
@@ -1199,6 +1259,7 @@ APPROACHES.sore_throat = {
     { id: 'strep', tests: ['strep_ag'], point: '発熱・咳がない・前頸部リンパ節の圧痛・扁桃の腫大と白苔（Centor基準）', clues: ['q:fever', 'e:pharynx', 'e:neck_ln', 't:strep_ag'] },
     { id: 'epiglottitis', point: '激しい咽頭痛なのに咽頭所見が軽い、唾が飲めない・よだれ・含み声・前かがみの姿勢、吸気性喘鳴', clues: ['q:anorexia', 'q:dyspnea', 'e:gen_appear', 'e:pharynx'] },
     { id: 'pta', tests: ['cbc', 'crp'], point: '片側の激しい咽頭痛・開口障害・含み声・口蓋垂の偏位', clues: ['q:radiation', 'q:anorexia', 'e:pharynx', 'e:neck_ln'] },
+    { id: 'subacute_thyroiditis', tests: ['thyroid', 'neck_us', 'esr'], point: 'かぜの後の首の前（甲状腺）の痛みと圧痛・発熱・動悸、咽頭所見は乏しい、痛みが反対側へ移る、TSH低値・赤沈高値 → NSAIDs', clues: ['q:character', 'q:palpitation', 'e:thyroid_palp', '!e:pharynx', 'L:TSH', 'H:ESR'] },
     { id: 'mono', point: '若年、強い倦怠感、後頸部リンパ節腫脹、肝脾腫' },
     { id: 'influenza', point: '流行期の急な高熱・筋肉痛', clues: ['q:myalgia'] },
   ],
@@ -1225,7 +1286,7 @@ APPROACHES.joint_pain = {
   title: '関節の痛み・腫れ',
   intro: '急な単関節の腫れ・痛みでは、痛風・偽痛風と化膿性関節炎を区別する。発熱を伴う単関節炎は化膿性関節炎を考えて関節穿刺を。多関節なら関節リウマチなども。',
   keyQ: ['onset', 'location', 'character', 'joint', 'stiffness', 'fever', 'trigger', 'alcohol', 'pmh', 'meds'],
-  keyE: ['joint', 'skin'],
+  keyE: ['joint', 'skin', 'oral_mucosa'],
   keyT: ['cbc', 'chem', 'crp'],
   redflags: ['発熱・強い炎症・免疫不全 → 化膿性関節炎（関節穿刺・抗菌薬）', '外傷後 → 骨折'],
   ddx: [
@@ -1237,7 +1298,8 @@ APPROACHES.joint_pain = {
     { id: 'knee_oa', tests: ['joint_xr'], point: '中高年女性、歩き始め・階段で悪化し休むと楽になる膝の痛み、こわばりは短い、熱感なし、X線で関節裂隙の狭小化と骨棘', clues: ['q:aggravating', 'q:onset', '!q:fever', 't:joint_xr'] },
     { id: 'frozen_shoulder', tests: ['joint_xr'], point: 'きっかけのない肩の痛み、夜間痛、自分でも他人が動かしても全方向に動かない（特に外旋・結帯）、X線は正常', clues: ['q:character', 'q:location', 'e:joint', '!t:joint_xr'] },
     { id: 'rotator_cuff', point: '他人が動かせば上がるが自分では上げられない、外傷や使いすぎ' },
-    { id: 'ra', point: '多関節（手指）の朝のこわばりが長く続く' },
+    { id: 'ra', tests: ['rf_ccp'], point: '手の小関節（MCP・PIP・手関節）の左右対称の腫れ、1時間以上の朝のこわばり、抗CCP抗体陽性 → 早期にメトトレキサート', clues: ['q:stiffness', 'q:location', 'e:joint', 't:rf_ccp', 'H:CRP', '!q:fever'] },
+    { id: 'sle', tests: ['ana', 'cbc', 'ua'], point: '若い女性の発熱・関節痛・蝶形紅斑・光線過敏・口内炎・脱毛、白血球/血小板減少、抗核抗体・抗dsDNA抗体陽性・低補体', clues: ['q:fever', 'q:character', 'e:skin', 'e:oral_mucosa', 't:ana', 'L:WBC'] },
   ],
 };
 APPROACHES.epigastric = {
@@ -1298,6 +1360,7 @@ APPROACHES.bp_high = {
   ddx: [
     { id: 'htn', point: '家族歴・塩分・飲酒・肥満、症状なし', clues: ['q:family', 'q:diet', 'q:alcohol', 'q:weightgain'] },
     { id: 'secondary_htn', point: '若年発症・低K血症・腎機能障害・いびき' },
+    { id: 'primary_aldo', tests: ['renin_aldo', 'chem'], point: '3剤以上でも下がらない高血圧・若年・低K血症（足のつり・脱力）→ アルドステロン/レニン比、内分泌内科へ', clues: ['q:meds', 'q:character', 'L:K', 'H:HCO3', 't:renin_aldo'] },
     { id: 'preeclampsia', tests: ['ua', 'cbc', 'chem'], point: '妊娠20週以降の高血圧と蛋白尿・浮腫、頭痛・閃輝暗点・心窩部痛 → 降圧・硫酸マグネシウム・分娩の判断', clues: ['q:lmp', 'q:headache', 'q:vision', 'q:edema', 'H:U_PRO', 'L:PLT'] },
   ],
 };
@@ -1773,6 +1836,16 @@ export const DISEASE_NOTES = {
   abruption: {"overview":"分娩前に胎盤が子宮の壁からはがれ、母体の出血・DICと胎児の低酸素を起こす。","treatment":["急速な輸液・輸血（新鮮凍結血漿）","凝固検査でDICを評価","緊急帝王切開"],"flow":"妊娠後半の突然の腹痛・子宮硬直・出血 → 胎児心拍異常 → 常位胎盤早期剥離 → 緊急帝王切開"},
   gastric_ca: {"overview":"胃の粘膜にできるがん。ピロリ菌感染が最大の原因。早期は症状が乏しい。","treatment":["上部内視鏡と生検","CTで病期診断","内視鏡治療・手術・化学療法","ピロリ菌の除菌"],"flow":"心窩部不快感＋体重減少・貧血 → 上部内視鏡 → 胃がん → 病期に応じた治療"},
   nms: {"overview":"抗精神病薬の使用や抗パーキンソン病薬の中断で起こる、高熱・筋強剛・意識障害・自律神経症状を伴う重い副作用。","treatment":["原因薬の中止（中断が原因なら再開）","冷却・大量補液","ダントロレン","横紋筋融解・腎不全の管理"],"flow":"抗精神病薬の増量後の高熱・筋強剛・意識障害 → CK著明上昇 → 悪性症候群 → 中止・冷却・ダントロレン"},
+  itp: {"overview":"自分の抗体で血小板が壊され、血小板だけが減って出血しやすくなる病気。","treatment":["血液像で偽性血小板減少・白血病などを除外","ピロリ菌陽性なら除菌","出血・血小板低値ではステロイド","重い出血には免疫グロブリン・血小板輸血"],"flow":"紫斑・歯肉出血 → 血小板だけ低い → 血液像で他疾患を除外 → ITP → ステロイド・除菌"},
+  leukemia: {"overview":"骨髄で未熟な白血球（芽球）が増え、正常な血液がつくれなくなる病気。貧血・感染・出血が起こる。","treatment":["血液像で芽球を確認","血液内科で骨髄検査","寛解導入療法","DIC・腫瘍崩壊症候群・感染症の管理"],"flow":"貧血・発熱・出血 → 血算の異常 → 血液像で芽球 → 急性白血病 → 血液内科で化学療法"},
+  myeloma: {"overview":"形質細胞ががん化し、M蛋白をつくって骨・腎臓・血液を障害する病気。","treatment":["血清蛋白電気泳動・免疫固定でM蛋白","骨髄検査","化学療法（プロテアソーム阻害薬など）","高Ca血症・腎障害・骨病変の管理"],"flow":"高齢者の腰痛＋貧血・腎障害・高Ca → M蛋白 → 多発性骨髄腫 → 血液内科"},
+  lymphoma: {"overview":"リンパ球ががん化し、リンパ節などが腫れる病気。","treatment":["リンパ節生検で病型診断","PET-CTで病期診断","化学療法（R-CHOPなど）・放射線"],"flow":"痛みのないリンパ節腫大・B症状 → LDH高値 → 生検 → 悪性リンパ腫 → 化学療法"},
+  ra: {"overview":"関節の滑膜に炎症が起こり、放置すると関節が壊れる自己免疫疾患。","treatment":["抗CCP抗体・RF・炎症反応","メトトレキサートを早期に（開始前に肝炎・結核を確認）","効果不十分なら生物学的製剤など","関節破壊の予防とリハビリ"],"flow":"手の小関節の対称性の腫れ・朝のこわばり → 抗CCP抗体陽性 → 関節リウマチ → メトトレキサート"},
+  sle: {"overview":"全身の臓器に炎症が起こる自己免疫疾患。若い女性に多い。","treatment":["抗核抗体・抗dsDNA抗体・補体","臓器障害（腎・中枢神経・血液）の評価","ヒドロキシクロロキン","臓器障害にはステロイドと免疫抑制薬"],"flow":"若い女性の発熱・関節痛・蝶形紅斑 → 血球減少・抗核抗体 → SLE → 膠原病内科"},
+  subacute_thyroiditis: {"overview":"ウイルス感染の後に甲状腺に炎症が起こり、首の痛みと一時的な甲状腺中毒症を起こす病気。","treatment":["NSAIDs、強ければステロイド","動悸にはβ遮断薬","抗甲状腺薬は不要","数か月で自然に治る"],"flow":"かぜの後の首の前の痛み・発熱 → 甲状腺の圧痛・TSH低値・赤沈高値 → 亜急性甲状腺炎 → NSAIDs"},
+  primary_aldo: {"overview":"副腎からアルドステロンが過剰に出て、高血圧と低K血症を起こす病気。二次性高血圧で最も多い。","treatment":["アルドステロン/レニン比でスクリーニング","確認検査・副腎静脈サンプリング","片側性は手術、両側性はミネラルコルチコイド受容体拮抗薬"],"flow":"治療抵抗性の高血圧・低K → ARR高値 → 原発性アルドステロン症 → 内分泌内科"},
+  nephrotic: {"overview":"腎臓の糸球体から大量の蛋白が漏れ、低アルブミン血症とむくみを起こす状態。","treatment":["尿蛋白定量・アルブミン","腎生検で原因を診断","ステロイド・免疫抑制薬","利尿薬・血栓症と感染症の予防"],"flow":"急なむくみ・泡立つ尿 → 高度の蛋白尿・低アルブミン → ネフローゼ症候群 → 腎生検・ステロイド"},
+  polycythemia: {"overview":"骨髄の造血細胞の異常（JAK2変異）で赤血球などが増えすぎる病気。血栓症が起こりやすい。","treatment":["二次性多血症の除外","瀉血（ヘマトクリット45%未満）","低用量アスピリン","高リスクは細胞減少療法"],"flow":"Hb高値＋白血球・血小板増加・脾腫 → JAK2変異 → 真性多血症 → 瀉血とアスピリン"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [
