@@ -52,6 +52,8 @@ export const TESTS = [
   { id: 'hep_virus', cat: 'micro', name: '肝炎ウイルスマーカー（IgM-HA抗体・HBs抗原・HCV抗体）', kind: 'report', cost: 2500, timeMin: 120, inv: 1, normal: 'IgM-HA抗体 陰性、HBs抗原 陰性、IgM-HBc抗体 陰性、HCV抗体 陰性。' },
   { id: 'kl6', cat: 'blood', name: 'KL-6（間質性肺炎マーカー）', kind: 'lab', items: ['KL6'], cost: 1200, timeMin: 120, inv: 1, sample: 'blood' },
   { id: 'thoracentesis', cat: 'micro', name: '胸水穿刺（胸水検査・グラム染色）', kind: 'report', cost: 3000, timeMin: 45, inv: 2, normal: '胸水は少量で穿刺できない（有意な胸水なし）。' },
+  { id: 'apap', cat: 'blood', name: '血中アセトアミノフェン濃度', kind: 'lab', items: ['APAP'], cost: 1500, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'sti_pcr', cat: 'micro', name: '淋菌・クラミジアPCR（尿・腟分泌物）', kind: 'report', cost: 2500, timeMin: 120, inv: 0, normal: '淋菌PCR 陰性、クラミジアPCR 陰性。' },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
@@ -82,6 +84,8 @@ export const TESTS = [
   { id: 'pvr', cat: 'physio', name: '残尿測定（膀胱エコー）', kind: 'report', cost: 550, timeMin: 10, inv: 0, normal: '排尿後残尿 20mL（正常）。' },
   { id: 'psg', cat: 'physio', name: '簡易睡眠検査（携帯型・自宅）', kind: 'report', cost: 7200, timeMin: 1440, inv: 0, normal: '無呼吸低呼吸指数（AHI）3回/時（正常）。' },
   { id: 'hdsr', cat: 'physio', name: '認知機能検査（改訂長谷川式・MMSE）', kind: 'report', cost: 800, timeMin: 15, inv: 0, normal: '改訂長谷川式 29/30点、MMSE 29/30点（正常範囲）。' },
+  { id: 'audiometry', cat: 'physio', name: '純音聴力検査', kind: 'report', cost: 1100, timeMin: 20, inv: 0, normal: '両耳とも聴力正常。' },
+  { id: 'breast_us', cat: 'image', name: '乳腺エコー', kind: 'report', cost: 3500, timeMin: 20, inv: 0, normal: '両側乳腺に腫瘤・膿瘍なし。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

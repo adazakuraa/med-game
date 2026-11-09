@@ -15,6 +15,8 @@ export const EXAMS = [
   { id: 'gen_breath_odor', region: 'general', method: '嗅診', name: '呼気臭', normal: '特記すべき呼気臭なし。' },
   { id: 'skin_turgor', region: 'general', method: '触診', name: '皮膚ツルゴール', normal: 'ツルゴール低下なし。' },
   { id: 'oral_mucosa', region: 'headneck', method: '視診', name: '口腔粘膜・舌', normal: '口腔粘膜は湿潤。' },
+  { id: 'ear', region: 'headneck', method: '視診・音叉', name: '耳鏡・音叉検査（Weber・Rinne）', normal: '鼓膜は正常。Weber試験は正中、Rinne試験は両側陽性。' },
+  { id: 'breast', region: 'chest', method: '視診・触診', name: '乳房', normal: '乳房に発赤・腫瘤・圧痛なし。乳頭分泌なし。' },
   { id: 'conjunctiva', region: 'headneck', method: '視診', name: '眼瞼結膜・眼球', normal: '眼瞼結膜に貧血なし。眼球突出なし。' },
   { id: 'thyroid_palp', region: 'headneck', method: '触診', name: '甲状腺の触診', normal: '甲状腺の腫大・結節・圧痛なし。' },
   { id: 'temporal', region: 'headneck', method: '触診', name: '側頭動脈の触診', normal: '側頭動脈の拍動は良好。圧痛・肥厚なし。' },
@@ -66,6 +68,7 @@ export const EXAMS = [
   { id: 'scrotum', region: 'abdomen', method: '視診・触診', name: '陰嚢・精巣', normal: '精巣の腫大・圧痛なし。挙睾筋反射あり。', male: true },
   { id: 'rectal', region: 'abdomen', method: '触診', name: '直腸診', normal: '直腸内に便塊・腫瘤なし。指に血液の付着なし。', pain: 1 },
   { id: 'rigidity', region: 'neuro', method: '触診・視診', name: '筋強剛・歩行・姿勢反射', normal: '筋強剛なし。歩行は正常で、姿勢反射も保たれている。' },
+  { id: 'phalen', region: 'neuro', method: '誘発テスト', name: 'Phalenテスト・Tinel徴候（手根管）', normal: 'Phalenテスト・Tinel徴候とも陰性。母指球の萎縮なし。' },
   { id: 'tremor', region: 'neuro', method: '視診', name: '手指振戦・腱反射', normal: '手指振戦なし。腱反射は正常。' },
   { id: 'neuro_basic', region: 'neuro', method: '視診', name: '簡易神経診察', normal: '明らかな麻痺なし。瞳孔同大、対光反射迅速。' },
 ];

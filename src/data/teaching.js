@@ -77,6 +77,7 @@ export const QUESTION_WHY = {
   itch: '夜間に強いかゆみ・家族や施設内での同様の症状は疥癬を疑う。湿疹・白癬・じんましんでもかゆみが出る。',
   snore: 'いびき・睡眠中の無呼吸・日中の眠気は睡眠時無呼吸症候群のサイン。',
   memory: '物忘れ・同じことを何度も聞く・道に迷う・家事ができなくなった、は認知症のサイン。本人は自覚が乏しいので家族からも聞く。',
+  numbness: 'しびれの分布（手袋靴下型・神経の支配領域・片側）と誘因で、末梢神経障害・神経根障害・脳卒中を見分ける。',
   heatcold: '暑がり・汗かき・体重減少は甲状腺機能亢進症、寒がり・むくみ・便秘は機能低下症を示唆する。',
   joint: '関節の腫れ・痛み。急な単関節炎は痛風・偽痛風・化膿性関節炎、多関節は関節リウマチなどを考える。',
   menses: '月経の量（過多月経）は若い女性の鉄欠乏性貧血の最も多い原因。',
@@ -97,6 +98,9 @@ export const EXAM_WHY = {
   thyroid_palp: '甲状腺のびまん性腫大はバセドウ病・橋本病、圧痛は亜急性甲状腺炎を示唆する。',
   joint: '関節の腫脹・発赤・熱感。足の親指の付け根（第1MTP関節）は痛風の典型部位。',
   rigidity: 'パーキンソン病では歯車様の筋強剛・小刻み歩行・前傾姿勢・姿勢反射障害が見られる。',
+  ear: '鼓膜の発赤・膨隆（中耳炎）、耳垢。音叉で感音性か伝音性かを区別する（突発性難聴は感音性）。',
+  breast: '乳房の発赤・熱感・しこり・膿瘍、乳頭の陥凹や分泌、腋窩リンパ節を診る。',
+  phalen: '手関節を曲げて1分保持するとしびれが出る（Phalen）、手根管をたたくと響く（Tinel）なら手根管症候群。',
   tremor: '手指の細かい振戦・腱反射の亢進は甲状腺機能亢進症、腱反射の弛緩相の遅れは機能低下症の所見。',
   temporal: '側頭動脈の圧痛・肥厚・拍動低下は巨細胞性動脈炎の所見。',
   pharynx: '咽頭発赤・扁桃腫大は咽頭炎・扁桃炎の所見。',
@@ -173,6 +177,8 @@ export const TEST_WHY = {
   hep_virus: '急性肝炎の原因検索（A型・B型・C型肝炎）。',
   kl6: '間質性肺炎の診断・活動性の評価。',
   thoracentesis: '胸水を抜いて性状を調べる。膿性・pH低値・グラム染色陽性なら膿胸でドレナージが必要。',
+  apap: 'アセトアミノフェン過量服薬の重症度を判断する（服用後4時間以降に測定）。',
+  sti_pcr: '淋菌・クラミジアの検査。尿道炎・子宮頸管炎・骨盤内炎症性疾患で。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -220,6 +226,8 @@ export const TEST_WHY = {
   pvr: '排尿後の残尿量をエコーで測る。100mL以上は排出障害（前立腺肥大症・神経因性膀胱）。',
   psg: '睡眠中の呼吸の止まり方（AHI）を調べる。5以上で睡眠時無呼吸、20以上でCPAPの適応（簡易検査では40以上）。',
   hdsr: '認知機能のスクリーニング。改訂長谷川式20点以下で認知症の疑い。',
+  audiometry: '難聴の程度と種類（感音性・伝音性）を調べる。',
+  breast_us: '乳房のしこり・膿瘍を評価する。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -267,6 +275,7 @@ export const LAB_MEANING = {
   TG: { H: '高中性脂肪血症。食後・飲酒・肥満で上がる。1000以上は膵炎のリスク' },
   GGT: { H: '飲酒・脂肪肝・胆道系の異常・薬剤で上昇する' },
   KL6: { H: '間質性肺炎の活動性の指標' },
+  APAP: { H: 'アセトアミノフェン過量服薬。服用後4時間以降の値をノモグラムに当てはめてNACの適応を判断' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -353,6 +362,9 @@ export const DRUG_ROLE = {
   dapagliflozin: '腎臓や心臓を守る糖尿病薬（SGLT2阻害薬）。慢性腎臓病・心不全にも使う。',
   telmisartan: '蛋白尿を減らして腎臓を守る降圧薬（ARB）。',
   mesalazine: '潰瘍性大腸炎の基本となる薬（5-ASA製剤）。',
+  nac: 'アセトアミノフェン中毒の解毒薬。早いほど肝障害を防げる。',
+  carbamazepine: '三叉神経痛の第一選択薬。',
+  mgso4: '妊娠高血圧腎症の子癇（けいれん）を予防する。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -578,11 +590,11 @@ APPROACHES.chest_pain = {
   redflags: ['心電図でST上昇 → 循環器内科へ緊急コンサルト（再灌流まで90分以内）', '突然の引き裂かれるような痛み・血圧の左右差 → 大動脈解離を疑い、抗血小板薬・抗凝固薬の前に造影CT', '気管偏位・頸静脈怒張・低血圧・片側の呼吸音消失 → 緊張性気胸：すぐに脱気', '突然の呼吸困難・頻脈・低酸素で肺がきれい → 肺塞栓症を疑う'],
   ddx: [
     { id: 'acs', point: '締め付けられる痛み・左肩や顎への放散・冷汗、心電図変化、トロポニン上昇', clues: ['q:radiation', 'q:sweating', 'q:relieving', 't:ecg', 'H:TNT', 't:echo'] },
-    { id: 'aortic_dissection', tests: ['chest_cta'], point: '突然の引き裂かれるような胸背部痛・痛みの移動、血圧の左右差、縦隔拡大、Dダイマー上昇', clues: ['q:migration', 'q:radiation', 'e:bp_lr', 'e:heart_ausc', 't:cxr', 't:chest_cta', 'H:DDIMER'] },
+    { id: 'aortic_dissection', tests: ['chest_cta'], point: '突然の引き裂かれるような胸背部痛・痛みの移動、血圧の左右差、縦隔拡大、Dダイマー上昇', clues: ['q:onset', 'q:character', 'q:migration', 'q:radiation', 'e:bp_lr', 'e:heart_ausc', 't:cxr', 't:chest_cta', 'H:DDIMER'] },
     { id: 'pe', tests: ['chest_cta', 'leg_us'], point: '突然の呼吸困難・胸膜痛・頻脈・低酸素、リスク因子、片側の下腿腫脹、Dダイマー上昇', clues: ['q:immobility', 'q:edema', 'e:calf', 'H:DDIMER', 't:chest_cta', 't:leg_us', 't:echo'] },
     { id: 'ptx', tests: ['chest_ct'], point: '若いやせ型男性・突然の胸痛、片側の呼吸音減弱・鼓音、胸部X線で虚脱', clues: ['q:aggravating', 'e:lung_ausc', 'e:chest_perc', 'e:trachea', 't:cxr', 't:chest_ct'] },
     { id: 'pericarditis', tests: ['echo'], point: 'かぜの後、深呼吸・仰臥位で悪化し前かがみで楽になる胸痛、広範なST上昇とPR低下、心膜摩擦音', clues: ['q:relieving', 'q:aggravating', 'q:sorethroat', 'e:heart_ausc', 't:ecg', 't:echo'] },
-    { id: 'myocarditis', tests: ['echo', 'tnt'], point: 'かぜの数日後の胸痛・息切れ・動悸、若年、冠動脈支配に一致しないST変化、トロポニン上昇、びまん性壁運動低下 → 劇症化に注意してCCU', clues: ['q:sorethroat', 'q:onset', 'q:dyspnea', 'H:TNT', 't:echo', 'e:heart_ausc'] },
+    { id: 'myocarditis', tests: ['echo', 'tnt'], point: 'かぜの数日後の胸痛・息切れ・動悸、若年、冠動脈支配に一致しないST変化、トロポニン上昇、びまん性壁運動低下 → 劇症化に注意してCCU', clues: ['q:sorethroat', 'H:TNT', 't:echo', 'e:heart_ausc'] },
     { id: 'gerd', point: '胸やけ・食後や横になると悪化、心電図・採血は正常' },
     { id: 'stable_angina', tests: ['stress_ecg'], point: '一定の労作で起こり安静で数分で治まる胸の圧迫感、パターンは不変、安静時の心電図・トロポニンは正常 → 負荷試験', clues: ['q:aggravating', 'q:relieving', 'q:course', '!H:TNT', 't:stress_ecg', 't:ccta'] },
     { id: 'musculoskeletal', point: '押すと痛い・体をひねると痛い、ほかの検査は正常' },
@@ -621,11 +633,12 @@ APPROACHES.altered_mental = {
     { id: 'sepsis', point: '発熱・頻脈・感染源', clues: ['q:fever'] },
     { id: 'meningitis', point: '発熱・頭痛・項部硬直', clues: ['e:neck_stiff'] },
     { id: 'heatstroke', point: '高温環境、深部体温40℃以上、皮膚が熱く乾燥、CK・腎機能の悪化', clues: ['q:trigger', 'e:skin', 'H:CK'] },
-    { id: 'intox', tests: ['tox'], point: '空のシート・処方薬（睡眠薬）・精神的な背景、呼吸抑制、尿中薬物スクリーニング', clues: ['q:trigger', 'q:meds', 't:tox'] },
+    { id: 'intox', tests: ['tox', 'apap'], point: '空のシート・処方薬（睡眠薬）・精神的な背景、呼吸抑制、尿中薬物スクリーニング', clues: ['q:trigger', 'q:meds', 't:tox'] },
     { id: 'hepatic_enc', tests: ['nh3'], point: '肝硬変・飲酒、羽ばたき振戦・黄疸・腹水、便秘などの誘因、アンモニア上昇', clues: ['q:pmh', 'q:constipation', 'e:tremor', 'e:skin', 'e:abd_insp', 'H:NH3'] },
     { id: 'hypothermia', point: '寒冷環境・高齢・独居、深部体温35℃未満、徐脈・J波', clues: ['q:adl', 'e:skin', 'e:periph'] },
     { id: 'alcohol_withdrawal', point: '大量飲酒者の断酒後1〜3日、振戦・発汗・頻脈・せん妄・けいれん', clues: ['q:alcohol', 'q:trigger', 'e:tremor', 'e:skin'] },
-    { id: 'wernicke', point: 'アルコール多飲・低栄養、眼球運動障害・失調', clues: ['q:alcohol'] },
+    { id: 'wernicke', point: '大量飲酒・低栄養、意識障害・眼振/外眼筋麻痺・失調性歩行 → ブドウ糖より先にビタミンB1を大量静注', clues: ['q:alcohol', 'q:vision', 'e:nystagmus', 'e:ataxia', '!L:GLU'] },
+    { id: 'apap_od', tests: ['apap', 'chem', 'coag'], point: '市販の解熱鎮痛薬の大量服薬、初期は症状が乏しい、血中濃度高値 → 8時間以内にNAC、精神科と連携', clues: ['q:onset', 'q:trigger', 'q:mood', 'H:APAP'] },
   ],
 };
 APPROACHES.fever_headache = {
@@ -660,6 +673,7 @@ APPROACHES.headache = {
     { id: 'aacg', tests: ['iop'], point: '高齢女性、目の奥の痛み・頭痛・嘔吐、かすみ・虹視、充血と中等度散瞳（対光反射なし）、眼圧著明上昇 → 眼科へ緊急', clues: ['q:vision', 'q:nausea', 'e:eye', 'e:pupils', 't:iop'] },
     { id: 'co_poisoning', tests: ['vbg', 'ecg'], point: '冬・暖房器具や練炭、同居家族も同じ症状、家を出ると楽になる、SpO2は正常でもCOHb高値 → すぐに100%酸素', clues: ['H:COHB'] },
     { id: 'gca', tests: ['esr'], point: '50歳以上の新しいこめかみの頭痛、顎跛行・視力障害、側頭動脈の圧痛・拍動低下、赤沈著明高値 → 失明予防にすぐステロイド', clues: ['q:location', 'q:jaw', 'q:vision', 'e:temporal', 'H:ESR', 'H:CRP'] },
+    { id: 'trigeminal', tests: ['head_mri'], point: '片側の顔面に数秒の電撃痛が繰り返す、歯みがき・洗顔・食事で誘発、神経脱落症状なし → カルバマゼピン', clues: ['q:character', 'q:trigger', 'q:location', '!q:nausea', 'e:facial'] },
   ],
 };
 
@@ -721,6 +735,7 @@ APPROACHES.hematochezia = {
     { id: 'bact_enteritis', point: '発熱・下痢・腹痛を伴う血便、鶏肉などの食事歴', clues: ['q:diarrhea', 'q:fever'] },
     { id: 'ugib', point: '黒色便が主体だが、大量出血では赤い血便も。BUN上昇・ショック', clues: ['H:BUN'] },
     { id: 'hemorrhoid', point: '排便時に便の表面に付く・ポタポタ垂れる鮮血、便秘・いきみ、腹痛なし、肛門鏡で痔核、貧血なし', clues: ['q:constipation', 'q:character', 'e:rectal', '!L:HB', '!q:abdpain'] },
+    { id: 'colorectal_ca', tests: ['cbc', 'ferritin'], point: '中高年、便が細い・便秘と下痢の繰り返し・暗赤色の血便・体重減少、鉄欠乏性貧血 → 大腸内視鏡', clues: ['q:constipation', 'q:weightloss', 'q:family', 'L:HB', 'L:MCV', 'L:FER'] },
     { id: 'uc', tests: ['stool_cx', 'cdiff', 'cbc', 'crp'], point: '若年、数週続く粘血便・下痢・しぶり腹、感染性腸炎は否定的（便培養陰性・抗菌薬や旅行・生もの歴なし）→ 大腸内視鏡、メサラジン', clues: ['q:onset', 'q:character', 'q:diarrhea', '!q:food', '!t:stool_cx', 'e:rectal'] },
     { id: 'gastric_ca', point: '体重減少・便通異常・鉄欠乏性貧血の進行（大腸がん）', clues: ['q:weightloss'] },
   ],
@@ -759,6 +774,8 @@ APPROACHES.vaginal = {
   redflags: ['発熱・下腹部痛・子宮頸部の移動痛 → 骨盤内炎症性疾患', '閉経後の性器出血 → 子宮体がんを除外', '新しいパートナー・膿性帯下 → 性感染症の検査とパートナーの治療'],
   ddx: [
     { id: 'vaginal_candida', tests: ['koh'], point: '強いかゆみと白い酒かす状の帯下、抗菌薬使用後・糖尿病、鏡検で仮性菌糸', clues: ['q:itch', 'q:vagbleed', 'e:speculum', 't:koh', '!q:fever'] },
+    { id: 'endometrial_ca', tests: ['tvus'], point: '閉経後の性器出血（少量でも）、肥満・糖尿病・未産、エコーで子宮内膜の肥厚 → 内膜の組織診', clues: ['q:lmp', 'q:vagbleed', 'q:pmh', 't:tvus', '!q:itch'] },
+    { id: 'atrophic_vag', point: '閉経後の腟の乾燥・性交痛・少量の出血、内膜は薄い' },
     { id: 'bv', point: '魚のような臭いの灰色で均一な帯下、かゆみは軽い' },
     { id: 'pid', point: '発熱・下腹部痛・膿性帯下・子宮頸部の移動痛', clues: ['q:fever', 'q:abdpain'] },
     { id: 'pop', point: '高齢・経腟分娩歴、股に何かが挟まる・ピンポン玉が触れる、立位やいきみで悪化し横になると戻る、排尿困難', clues: ['q:character', 'q:aggravating', 'q:retention', 'q:pmh', 'e:speculum'] },
@@ -879,6 +896,48 @@ APPROACHES.fever_unknown = {
     { id: 'lymphoma', point: 'リンパ節腫脹・寝汗・体重減少、LDH上昇', clues: ['e:neck_ln'] },
     { id: 'abscess', point: '肝膿瘍など深部の膿瘍、画像で確認' },
     { id: 'gca', point: '高齢者の頭痛・顎跛行、赤沈高値', clues: ['e:temporal'] },
+  ],
+};
+APPROACHES.breast = {
+  title: '乳房の痛み・しこり',
+  intro: '授乳期の乳房の発赤・熱感・痛みは乳腺炎が多い。授乳期でない女性のしこり・皮膚の変化・乳頭の陥凹や血性分泌は乳がんを除外する。',
+  keyQ: ['onset', 'character', 'fever', 'chills', 'pmh', 'meds', 'lmp', 'family'],
+  keyE: ['breast', 'neck_ln'],
+  keyT: ['breast_us', 'cbc', 'crp'],
+  redflags: ['波動を触れる・抗菌薬で改善しない → 乳腺膿瘍（エコー・排膿）', '授乳期以外の発赤・橙皮様皮膚 → 炎症性乳がん', '硬く可動性の乏しいしこり・乳頭陥凹・血性分泌 → 乳がん'],
+  ddx: [
+    { id: 'mastitis', tests: ['breast_us'], point: '授乳期、乳汁のうっ滞・乳頭の傷、乳房の発赤・熱感・有痛性硬結と発熱 → 授乳の継続と抗菌薬', clues: ['q:pmh', 'q:fever', 'e:breast', 'H:CRP', 'H:WBC'] },
+    { id: 'abscess', point: '波動を触れる、エコーで膿瘍' },
+    { id: 'breast_ca', point: '授乳期でない、硬く無痛性のしこり・皮膚のくぼみ・乳頭陥凹' },
+  ],
+};
+APPROACHES.hearing = {
+  title: '耳が聞こえにくい',
+  intro: '難聴は、耳鏡で外耳・鼓膜を見て（耳垢・中耳炎）、音叉で伝音難聴か感音難聴かを区別する。急に起こった片側の感音難聴は突発性難聴として早期に治療する。',
+  keyQ: ['onset', 'hearing', 'vertigo', 'character', 'course', 'fever', 'headache', 'weakness', 'trigger'],
+  keyE: ['ear', 'nystagmus', 'facial'],
+  keyT: ['audiometry'],
+  redflags: ['突然の片側の感音難聴 → 突発性難聴（早期のステロイド）', 'めまい・顔面麻痺・構音障害などの神経症状 → 脳梗塞（MRI）', '徐々に進む片側の難聴 → 聴神経腫瘍'],
+  ddx: [
+    { id: 'ssnhl', tests: ['audiometry'], point: 'ある朝突然の片側の難聴・耳閉感・耳鳴り、鼓膜は正常、音叉で感音難聴、初めての発作 → 早期にステロイド', clues: ['q:onset', 'q:hearing', 'e:ear', 't:audiometry', '!q:fever'] },
+    { id: 'meniere', point: '回転性めまいを伴い、難聴を繰り返す', clues: ['q:vertigo', 'q:course'] },
+    { id: 'cerumen', point: '耳垢が詰まっている（伝音難聴）' },
+    { id: 'otitis_media', point: '耳痛・発熱・鼓膜の発赤と膨隆（伝音難聴）', clues: ['q:fever'] },
+  ],
+};
+APPROACHES.numbness = {
+  title: '手足のしびれ',
+  intro: 'しびれは分布で考える：片側の手足（脳卒中）、特定の神経の支配域（手根管症候群など）、首から腕に走る（頸椎症性神経根症）、両足先から手袋靴下型（糖尿病・ビタミンB12欠乏などの多発神経障害）。',
+  keyQ: ['onset', 'numbness', 'character', 'location', 'aggravating', 'weakness', 'speechq', 'pmh', 'alcohol', 'meds'],
+  keyE: ['phalen', 'motor', 'tremor', 'facial', 'speech'],
+  keyT: ['bs_poct', 'hba1c', 'b12', 'thyroid'],
+  redflags: ['突然の片側のしびれ・脱力・言語障害 → 脳卒中', '両下肢から上行する脱力 → ギラン・バレー症候群', '筋萎縮・巧緻運動障害の進行 → 手術を検討'],
+  ddx: [
+    { id: 'carpal_tunnel', point: '母指〜中指のしびれが明け方に強く手を振ると楽になる、Phalen・Tinel陽性、母指球萎縮 → 装具・手術', clues: ['q:numbness', 'q:character', 'q:aggravating', 'e:phalen'] },
+    { id: 'cervical_rad', point: '首の痛みから腕に走るしびれ、首を反らすと悪化（Spurlingテスト）' },
+    { id: 'dm_neuropathy', point: '糖尿病、両足先からの手袋靴下型のしびれ', clues: ['H:HBA1C'] },
+    { id: 'b12_def', point: '胃切除後、大球性貧血、振動覚低下', clues: ['L:B12'] },
+    { id: 'stroke', point: '突然の片側のしびれ・脱力', clues: ['e:facial', 'e:speech'] },
   ],
 };
 APPROACHES.leg_red = {
@@ -1080,6 +1139,7 @@ APPROACHES.urinary_sx = {
     { id: 'pid', point: '帯下の異常・下腹部痛・性感染症のリスク' },
     { id: 'prostatitis', tests: ['ucx', 'bcx', 'cbc'], point: '男性・発熱・排尿困難・会陰部痛、直腸診で圧痛のある前立腺', clues: ['q:fever', 'q:retention', 'e:rectal', 'H:U_LEU'] },
     { id: 'bph', tests: ['pvr', 'psa'], point: '高齢男性、尿勢低下・排尿開始の遅れ・残尿感・夜間頻尿、排尿時痛や発熱はない、前立腺の腫大・残尿 → α1遮断薬', clues: ['q:retention', 'q:frequency', '!q:dysuria', '!q:fever', 'e:rectal', 't:pvr'] },
+    { id: 'urethritis', tests: ['sti_pcr'], point: '若い男性、排尿時痛と尿道からの膿、1〜2週前の性交渉、発熱なし → 淋菌とクラミジアの両方を治療、パートナーも', clues: ['q:dysuria', 'q:character', 'q:trigger', '!q:fever', 't:sti_pcr', 't:urine_gram'] },
     { id: 'prostate_ca', point: 'PSA高値、直腸診で硬い結節', clues: ['H:PSA'] },
     { id: 'oab', point: '急に我慢できない尿意（尿意切迫感）・頻尿、残尿は少ない' },
   ],
@@ -1161,6 +1221,7 @@ APPROACHES.bp_high = {
   ddx: [
     { id: 'htn', point: '家族歴・塩分・飲酒・肥満、症状なし', clues: ['q:family', 'q:diet', 'q:alcohol', 'q:weightgain'] },
     { id: 'secondary_htn', point: '若年発症・低K血症・腎機能障害・いびき' },
+    { id: 'preeclampsia', tests: ['ua', 'cbc', 'chem'], point: '妊娠20週以降の高血圧と蛋白尿・浮腫、頭痛・閃輝暗点・心窩部痛 → 降圧・硫酸マグネシウム・分娩の判断', clues: ['q:lmp', 'q:headache', 'q:vision', 'q:edema', 'H:U_PRO', 'L:PLT'] },
   ],
 };
 APPROACHES.polyuria = {
@@ -1595,6 +1656,16 @@ export const DISEASE_NOTES = {
   empyema: {"overview":"胸腔に膿がたまった状態。肺炎に伴う胸水に細菌が感染して起こる。","treatment":["胸水穿刺で性状を確認","胸腔ドレナージ","嫌気性菌もカバーする長期の抗菌薬","排液できなければ胸腔鏡手術"],"flow":"肺炎で熱が続く・胸水 → 胸水穿刺で膿性 → 膿胸 → ドレナージと抗菌薬"},
   ip: {"overview":"慢性の間質性肺炎（特に肺線維症）が急激に悪化する状態。死亡率が高い。","treatment":["酸素投与","ステロイドパルス療法","心不全・肺炎・肺塞栓の除外","治療方針（挿管など）を早めに話し合う"],"flow":"間質性肺炎の人の急な息切れ悪化 → CTで新たなすりガラス影・他疾患を除外 → 急性増悪 → ステロイドパルスと酸素"},
   lung_ca: {"overview":"肺にできるがん。喫煙が最大の原因。進行するまで症状が出にくい。","treatment":["胸部CTで腫瘤を確認","気管支鏡などで組織診断","病期診断と遺伝子検査","手術・放射線・薬物療法、禁煙"],"flow":"喫煙者の続く咳・血痰・体重減少 → 胸部CTで腫瘤 → 組織診断 → 肺がん → 病期に応じた治療"},
+  colorectal_ca: {"overview":"大腸にできるがん。初期は無症状で、便潜血・貧血・便通異常で見つかることが多い。","treatment":["大腸内視鏡と生検","CTで病期診断","手術・内視鏡治療・化学療法","貧血の治療（鉄剤）"],"flow":"中高年の鉄欠乏性貧血・便通異常 → 消化管出血を疑う → 大腸内視鏡 → 大腸がん"},
+  endometrial_ca: {"overview":"子宮内膜にできるがん。閉経後の不正出血で見つかることが多い。","treatment":["経腟超音波で内膜の厚さ","子宮内膜の細胞診・組織診","MRI・CTで病期診断","手術が基本"],"flow":"閉経後出血 → 内膜肥厚 → 内膜組織診 → 子宮体がん → 手術"},
+  preeclampsia: {"overview":"妊娠20週以降に高血圧と蛋白尿・臓器障害が出る病気。子癇・HELLP症候群・胎盤早期剥離などを起こす。","treatment":["降圧（下げすぎない）","硫酸マグネシウムで子癇予防","周産期センターで母体・胎児の管理","根本治療は分娩"],"flow":"妊婦の高血圧・頭痛・浮腫 → 蛋白尿・血小板減少・肝酵素上昇 → 重症妊娠高血圧腎症 → 降圧・Mg・分娩"},
+  mastitis: {"overview":"授乳期に乳汁がたまり、細菌（主に黄色ブドウ球菌）が感染して乳房に炎症が起こる。","treatment":["授乳・排乳の継続","鎮痛・冷却","抗菌薬（セファレキシンなど）","膿瘍があれば穿刺・切開"],"flow":"授乳期の乳房の発赤・痛み・発熱 → エコーで膿瘍の有無 → 化膿性乳腺炎 → 授乳継続と抗菌薬"},
+  urethritis: {"overview":"性行為で感染する淋菌やクラミジアによる尿道の炎症。","treatment":["尿のPCRで淋菌・クラミジアを検査","淋菌（セフトリアキソン）とクラミジア（ドキシサイクリンなど）の両方を治療","パートナーの同時治療","HIV・梅毒の検査"],"flow":"若い男性の排尿時痛と膿 → 性交渉歴 → PCR → 尿道炎 → 両方をカバーする治療"},
+  trigeminal: {"overview":"三叉神経が血管に圧迫されて、顔に数秒間の電撃痛が繰り返し起こる病気。","treatment":["カルバマゼピン","MRIで腫瘍などを除外","効果不十分なら微小血管減圧術など"],"flow":"顔の片側の電撃痛・誘発される → 神経症状なし → 三叉神経痛 → カルバマゼピン"},
+  ssnhl: {"overview":"原因不明で突然起こる片側の感音難聴。治療開始が早いほど回復しやすい。","treatment":["耳鏡・音叉・聴力検査","早期のステロイド全身投与","耳鼻咽喉科で経過観察","神経症状があれば脳梗塞を除外"],"flow":"突然の片側の難聴 → 鼓膜正常・感音難聴 → 突発性難聴 → 早期のステロイド"},
+  wernicke: {"overview":"ビタミンB1欠乏で起こる脳症。大量飲酒・低栄養の人に多い。","treatment":["疑ったらすぐにビタミンB1を大量静注","ブドウ糖はB1の後（同時）に","栄養管理","アルコール離脱にも注意"],"flow":"大量飲酒＋意識障害・眼振・失調 → Wernicke脳症を疑う → ビタミンB1大量静注"},
+  apap_od: {"overview":"アセトアミノフェンを大量に飲むと、1〜3日後に重い肝障害を起こす。初期は症状が乏しい。","treatment":["服用量・時間の確認と血中濃度（4時間以降）","8時間以内にアセチルシステイン（NAC）","肝機能・PT-INRの推移を監視","精神科と連携"],"flow":"解熱鎮痛薬の大量服薬 → 血中濃度 → アセトアミノフェン中毒 → NAC・肝機能の監視・精神科"},
+  carpal_tunnel: {"overview":"手首の手根管で正中神経が圧迫され、親指〜中指がしびれる病気。中年女性に多い。","treatment":["夜間の装具・手の安静","ステロイド注射","筋萎縮が進めば手根管開放術","糖尿病・甲状腺機能低下症の確認"],"flow":"母指〜中指のしびれ・明け方に悪化 → Phalen・Tinel陽性 → 手根管症候群 → 装具"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

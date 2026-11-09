@@ -435,6 +435,21 @@ export const DRUGS = [
     info: '潰瘍性大腸炎の寛解導入・維持に2400〜4800mg 1日1回（リアルダ）。まれに5-ASA不耐（発熱・下痢の悪化）。',
   },
   {
+    id: 'nac', generic: 'アセチルシステイン（内服液）', brands: ['アセチルシステイン内用液'], cls: '解毒薬（アセトアミノフェン中毒）', tags: ['nac'],
+    routes: { po: { unit: 'mg/kg', min: 70, max: 140, freqs: ['q4h', 'once'], maxDaily: 560 } },
+    info: 'アセトアミノフェン中毒に初回140mg/kg、以後70mg/kgを4時間毎に17回。服用後8時間以内の開始で肝障害を防げる（遅れても投与）。',
+  },
+  {
+    id: 'carbamazepine', generic: 'カルバマゼピン', brands: ['テグレトール'], cls: '抗てんかん薬（三叉神経痛）', tags: ['tn_tx'],
+    routes: { po: { unit: 'mg', min: 100, max: 400, freqs: ['q12h', 'q24h'], maxDaily: 800 } },
+    info: '三叉神経痛に1日200〜400mgから。眠気・ふらつき・低Na血症、重症薬疹（HLA-A*31:01）・血球減少に注意。',
+  },
+  {
+    id: 'mgso4', generic: '硫酸マグネシウム（注）', brands: ['マグセント'], cls: '子癇予防薬', tags: ['mgso4'],
+    routes: { iv: { unit: 'g/時', min: 1, max: 2, freqs: ['cont'] } },
+    info: '重症妊娠高血圧腎症で子癇（けいれん）を予防する。初回4gを20分かけて静注し、1〜2g/時で持続。呼吸抑制・腱反射消失（Mg中毒）に注意。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],

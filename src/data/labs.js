@@ -46,6 +46,7 @@ export const LABS = {
   TG: { name: '中性脂肪（TG）', unit: 'mg/dL', ref: [30, 149], dp: 0, base: { m: 100, sd: 30 }, abs: [20, 3000] },
   GGT: { name: 'γ-GTP', unit: 'U/L', ref: { M: [13, 64], F: [9, 32] }, dp: 0, base: { M: { m: 30, sd: 10 }, F: { m: 18, sd: 5 } }, abs: [5, 2000] },
   KL6: { name: 'KL-6', unit: 'U/mL', ref: [0, 499], dp: 0, base: { m: 280, sd: 60 }, abs: [50, 10000] },
+  APAP: { name: '血中アセトアミノフェン濃度', unit: 'μg/mL', ref: [0, 20], dp: 0, base: { m: 0, sd: 0 }, abs: [0, 1000] },
   LAC: { name: '乳酸', unit: 'mmol/L', ref: [0.5, 2.0], dp: 1, base: { m: 1.0, sd: 0.25 }, abs: [0.3, 20] },
   AG: { name: 'アニオンギャップ', unit: 'mEq/L', ref: [8, 12], dp: 0, derived: true, abs: [0, 50] },
   BHB: { name: '血中β-ヒドロキシ酪酸', unit: 'μmol/L', ref: [0, 85], dp: 0, base: { m: 40, sd: 15 }, abs: [0, 15000] },
