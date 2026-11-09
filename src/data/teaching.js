@@ -365,6 +365,7 @@ export const DRUG_ROLE = {
   nac: 'アセトアミノフェン中毒の解毒薬。早いほど肝障害を防げる。',
   carbamazepine: '三叉神経痛の第一選択薬。',
   mgso4: '妊娠高血圧腎症の子癇（けいれん）を予防する。',
+  tetanus: '汚染された傷・咬傷での破傷風予防。接種歴を必ず確認する。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -421,6 +422,7 @@ export const PROC_ROLE = {
   vagal: '息こらえ（Valsalva）の直後に仰向けで足を挙げる「修正Valsalva法」。迷走神経を刺激して発作性上室頻拍を止める。まず試す価値がある。',
   nasal_pack: '鼻翼を10〜15分しっかり圧迫し、止まらなければ血管収縮薬を浸したガーゼを詰める。前かがみで、血を飲み込まないように。',
   splint: '骨折・捻挫をシーネで固定し、安静・冷却・圧迫・挙上（RICE）。',
+  wound_care: '熱傷は流水で冷却し被覆、咬傷や挫創は大量の水で洗浄する。咬傷は原則として縫合しない。',
   warming: '低体温症で体を温める（温風ブランケット・加温輸液）。',
   ng: '鼻から胃にチューブを入れる。腸閉塞での減圧や、上部消化管出血の確認に使う。',
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
@@ -541,6 +543,7 @@ export const APPROACHES = {
     keyT: ['vbg', 'chem', 'cbc', 'ua', 'ecg', 'bhb'],
     redflags: ['意識障害 → まず血糖を確認', 'Kussmaul呼吸（深く速い呼吸）→ 代謝性アシドーシスを考え血液ガスを', '高K・低Kは致死的不整脈の危険 → 心電図'],
     ddx: [
+      { id: 'heat_exhaustion', point: '暑い環境での作業・運動の後の頭痛・嘔気・倦怠感・こむら返り、意識は清明、脱水 → 冷却と補液', clues: ['q:onset', 'q:polyuria', 'e:skin', 'e:oral_mucosa', '!e:gen_consc'] },
       { id: 'dka', point: '1型糖尿病・インスリン中断、口渇多尿、Kussmaul呼吸、アセトン臭、高血糖＋ケトン＋AG開大性アシドーシス', clues: ['q:polyuria', 'q:adherence', 'e:gen_breath_odor', 'e:chest_insp', 'H:GLU', 'L:PH', 'L:HCO3', 'H:AG', 'H:U_KET', 'H:BHB'] },
       { id: 'hhs', point: '高齢の2型糖尿病、著明な高血糖（600以上）、ケトンは軽度、高度脱水' },
       { id: 'aka', tests: ['bhb'], point: '大量飲酒が続いた後に食べられず嘔吐、糖尿病なし、アニオンギャップ開大性アシドーシスとケトン上昇、血糖は正常〜軽度上昇 → ビタミンB1と糖を含む輸液', clues: ['q:alcohol', 'q:onset', '!q:polyuria', 'H:BHB', 'L:HCO3', 'H:AG', '!H:GLU'] },
@@ -794,6 +797,8 @@ APPROACHES.itch_rash = {
     { id: 'scabies', tests: ['koh'], point: '施設・家族内で多発、夜間の強いかゆみ、指間・手掌・腋窩・陰部の丘疹と疥癬トンネル、鏡検でヒゼンダニ', clues: ['q:sickcontact', 'q:itch', 'q:meds', 'e:skin', 't:koh'] },
     { id: 'urticaria', point: '数時間で消えては出る膨疹', clues: ['q:course'] },
     { id: 'atopic', point: '幼少期からの慢性・再発性の湿疹、肘窩・膝窩、アレルギー疾患の家族歴' },
+    { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', 'q:onset', 'e:skin', '!q:sickcontact', '!t:koh'] },
+    { id: 'sjs', point: '高熱・口唇や眼の粘膜疹・水疱・皮膚の剥離（重症薬疹）→ 入院' },
   ],
 };
 APPROACHES.red_eye = {
@@ -858,8 +863,8 @@ APPROACHES.checkup = {
 APPROACHES.injury = {
   title: 'けが（ひねった・転んだ）',
   intro: '外傷では、受傷機転・部位の圧痛・変形・神経血管障害を確認し、X線が必要か判断する（Ottawa ankle rulesなど）。高齢者の転倒では「なぜ転んだか」と骨粗鬆症の評価も忘れない。',
-  keyQ: ['onset', 'trigger', 'character', 'location', 'aggravating', 'syncope', 'pmh'],
-  keyE: ['joint', 'skin', 'motor'],
+  keyQ: ['onset', 'trigger', 'character', 'location', 'aggravating', 'syncope', 'pmh', 'meds'],
+  keyE: ['joint', 'skin', 'motor', 'gen_consc', 'chest_palp'],
   keyT: [],
   redflags: ['変形・強い圧痛・荷重できない → 骨折を疑いX線', 'しびれ・冷感・脈が触れない → 神経・血管損傷', '意識消失して転んだ → 失神の原因検索', '強い腫脹と痛みが増す → コンパートメント症候群'],
   ddx: [
@@ -867,6 +872,11 @@ APPROACHES.injury = {
     { id: 'ankle_fx', point: '外果・内果の後縁や先端の圧痛、歩けない → X線で骨折' },
     { id: 'wrist_fx', tests: ['joint_xr'], point: '転んで手をついた高齢女性、手首の腫脹とフォーク状変形、X線で橈骨遠位端骨折 → 整復・固定と骨粗鬆症の評価', clues: ['q:trigger', 'q:pmh', 'e:joint', 't:joint_xr'] },
     { id: 'scaphoid_fx', point: '若年者の手首、解剖学的嗅ぎタバコ窩の圧痛（初回X線で見えないことがある）' },
+    { id: 'head_injury', tests: ['head_ct'], point: '転倒で頭部を打撲、抗凝固薬内服の高齢者 → 意識清明でも頭部CTで出血を除外', clues: ['q:meds', 'q:onset', 'e:skin', 'e:gen_consc', '!t:head_ct'] },
+    { id: 'tbi_bleed', point: '頭部打撲後の意識障害・嘔吐・頭痛の悪化、CTで出血', clues: ['t:head_ct'] },
+    { id: 'rib_fx', tests: ['cxr'], point: '胸部打撲後の、深呼吸・咳で強くなる限局した圧痛と介達痛、X線で気胸・血胸の有無を確認', clues: ['q:character', 'q:aggravating', 'e:chest_palp', 't:cxr'] },
+    { id: 'burn', point: '熱湯・油による受傷、水疱・発赤、面積（手のひら＝1%）と深さを評価 → 冷却・創処置', clues: ['q:trigger', 'e:skin'] },
+    { id: 'animal_bite', point: '犬・猫の咬傷（手は特に危険）→ 洗浄（縫合しない）・予防的抗菌薬・破傷風予防', clues: ['q:trigger', 'q:pmh', 'e:skin'] },
   ],
 };
 APPROACHES.jaundice = {
@@ -922,7 +932,7 @@ APPROACHES.hearing = {
     { id: 'ssnhl', tests: ['audiometry'], point: 'ある朝突然の片側の難聴・耳閉感・耳鳴り、鼓膜は正常、音叉で感音難聴、初めての発作 → 早期にステロイド', clues: ['q:onset', 'q:hearing', 'e:ear', 't:audiometry', '!q:fever'] },
     { id: 'meniere', point: '回転性めまいを伴い、難聴を繰り返す', clues: ['q:vertigo', 'q:course'] },
     { id: 'cerumen', point: '耳垢が詰まっている（伝音難聴）' },
-    { id: 'otitis_media', point: '耳痛・発熱・鼓膜の発赤と膨隆（伝音難聴）', clues: ['q:fever'] },
+    { id: 'otitis_media', point: 'かぜの後の耳痛・耳閉感・発熱、鼓膜の発赤と膨隆、伝音難聴 → 鎮痛・アモキシシリン', clues: ['q:fever', 'q:trigger', 'q:character', 'e:ear'] },
   ],
 };
 APPROACHES.numbness = {
@@ -934,7 +944,7 @@ APPROACHES.numbness = {
   redflags: ['突然の片側のしびれ・脱力・言語障害 → 脳卒中', '両下肢から上行する脱力 → ギラン・バレー症候群', '筋萎縮・巧緻運動障害の進行 → 手術を検討'],
   ddx: [
     { id: 'carpal_tunnel', point: '母指〜中指のしびれが明け方に強く手を振ると楽になる、Phalen・Tinel陽性、母指球萎縮 → 装具・手術', clues: ['q:numbness', 'q:character', 'q:aggravating', 'e:phalen'] },
-    { id: 'cervical_rad', point: '首の痛みから腕に走るしびれ、首を反らすと悪化（Spurlingテスト）' },
+    { id: 'cervical_rad', tests: ['spine_mri'], point: '首の痛みから片腕に走る痛み・しびれ（皮膚分節に沿う）、首を反らすと悪化（Spurling陽性）、腱反射の低下 → 鎮痛と安静', clues: ['q:character', 'q:aggravating', 'q:location', 'e:motor', '!e:phalen'] },
     { id: 'dm_neuropathy', point: '糖尿病、両足先からの手袋靴下型のしびれ', clues: ['H:HBA1C'] },
     { id: 'b12_def', point: '胃切除後、大球性貧血、振動覚低下', clues: ['L:B12'] },
     { id: 'stroke', point: '突然の片側のしびれ・脱力', clues: ['e:facial', 'e:speech'] },
@@ -953,6 +963,7 @@ APPROACHES.leg_red = {
     { id: 'nec_fasc', tests: ['lab_CK', 'bcx'], point: '見た目に比べて強すぎる痛み・数時間単位の急速な進行・水疱/紫斑・ショック、CK・乳酸上昇、低Na（LRINEC）', clues: ['q:severity', 'q:course', 'e:skin', 'e:periph', 'H:CK', 'H:LAC', 'L:NA'] },
     { id: 'gout', point: '足の親指の付け根などの関節の急な激痛と発赤' },
     { id: 'limb_ischemia', tests: ['leg_cta', 'coag', 'ecg'], point: '心房細動（抗凝固薬の中断）、突然の激痛・蒼白・冷感・脈拍消失・しびれ（6P）、腫れや赤みはない → ヘパリンと緊急血行再建', clues: ['q:pmh', 'q:meds', 'e:leg_pulse', 'e:calf', 't:leg_cta'] },
+    { id: 'diabetic_foot', tests: ['joint_xr'], point: '長い糖尿病歴・神経障害、治らない足の潰瘍から広がる発赤・膿、骨に届く潰瘍、X線で骨破壊（骨髄炎）→ 抗菌薬・デブリードマン', clues: ['q:pmh', 'q:trigger', 'e:skin', 't:joint_xr', 'H:GLU'] },
   ],
 };
 
@@ -1016,6 +1027,7 @@ APPROACHES.elderly_decline = {
   ddx: [
     { id: 'aspiration', point: '嚥下障害・食事中のむせ・認知症/脳梗塞後、発熱、下葉背側の浸潤影', clues: ['q:cough', 'q:adl', 'q:fever', 'e:lung_ausc', 't:cxr', 'H:CRP', 'H:WBC'] },
     { id: 'hyponatremia', point: 'サイアザイド系利尿薬・水の飲みすぎ・塩分制限、ふらつき・食欲低下、Na低値', clues: ['q:meds', 'q:diet', 'q:dizziness', 'L:NA'] },
+    { id: 'hypernatremia', point: '寝たきり・認知症で自分で水を飲めない、発熱や暑さ、意識障害、Na高値 → 自由水をゆっくり補充', clues: ['q:adl', 'q:anorexia', 'e:oral_mucosa', 'H:NA'] },
     { id: 'pyelo', point: '発熱・膿尿（高齢者は症状が乏しい）', clues: ['H:U_LEU'] },
     { id: 'dehydration', point: '暑さ・食事や水分の摂取低下・利尿薬、口腔や腋窩の乾燥・ツルゴール低下・頻脈、BUN/Cr比の上昇・Na上昇', clues: ['q:anorexia', 'q:polyuria', 'q:character', 'e:oral_mucosa', 'e:skin_turgor', 'H:BUN', 'H:NA'] },
     { id: 'retention', point: '下腹部の膨隆、抗コリン薬', clues: ['e:bladder'] },
@@ -1666,6 +1678,16 @@ export const DISEASE_NOTES = {
   wernicke: {"overview":"ビタミンB1欠乏で起こる脳症。大量飲酒・低栄養の人に多い。","treatment":["疑ったらすぐにビタミンB1を大量静注","ブドウ糖はB1の後（同時）に","栄養管理","アルコール離脱にも注意"],"flow":"大量飲酒＋意識障害・眼振・失調 → Wernicke脳症を疑う → ビタミンB1大量静注"},
   apap_od: {"overview":"アセトアミノフェンを大量に飲むと、1〜3日後に重い肝障害を起こす。初期は症状が乏しい。","treatment":["服用量・時間の確認と血中濃度（4時間以降）","8時間以内にアセチルシステイン（NAC）","肝機能・PT-INRの推移を監視","精神科と連携"],"flow":"解熱鎮痛薬の大量服薬 → 血中濃度 → アセトアミノフェン中毒 → NAC・肝機能の監視・精神科"},
   carpal_tunnel: {"overview":"手首の手根管で正中神経が圧迫され、親指〜中指がしびれる病気。中年女性に多い。","treatment":["夜間の装具・手の安静","ステロイド注射","筋萎縮が進めば手根管開放術","糖尿病・甲状腺機能低下症の確認"],"flow":"母指〜中指のしびれ・明け方に悪化 → Phalen・Tinel陽性 → 手根管症候群 → 装具"},
+  head_injury: {"overview":"頭を打ったが、頭蓋内に出血などがない状態。抗凝固薬を飲んでいる高齢者は出血しやすいので注意が必要。","treatment":["CTの適応を判断（高齢・抗凝固薬・意識障害・嘔吐など）","頭部CTで出血を除外","帰宅時に注意点（頭痛・嘔吐・意識の変化）を説明","転倒の原因の評価"],"flow":"抗凝固薬内服中の頭部打撲 → 頭部CT → 出血なし → 注意点を説明して帰宅"},
+  rib_fx: {"overview":"胸の打撲で肋骨が折れる。高齢者は軽い外力でも起こる。","treatment":["胸部X線で気胸・血胸を確認","十分な鎮痛（肺炎予防）","多発骨折・高齢は入院も"],"flow":"胸部打撲後の限局した圧痛 → X線で合併症の確認 → 肋骨骨折 → 鎮痛"},
+  burn: {"overview":"熱湯・油などで皮膚が傷つく。面積と深さで重症度が決まる。","treatment":["流水で10〜20分冷却","面積と深さの評価","洗浄・軟膏・被覆","破傷風予防、特殊部位・広範囲は専門施設へ"],"flow":"やけど → 冷却 → 面積・深さの評価 → 浅達性Ⅱ度・小範囲 → 創処置して外来"},
+  animal_bite: {"overview":"犬や猫にかまれた傷。口の中の細菌で感染しやすい（特に猫・手）。","treatment":["大量の水で洗浄（縫合しない）","予防的抗菌薬（アモキシシリン・クラブラン酸）","破傷風予防","腱・関節の損傷の確認"],"flow":"動物咬傷 → 洗浄 → 予防的抗菌薬・破傷風予防 → 翌日に創を確認"},
+  heat_exhaustion: {"overview":"暑さで水分・塩分を失い、頭痛・嘔吐・倦怠感が出る中等症の熱中症。","treatment":["涼しい場所で安静・冷却","補液（飲めなければ点滴）","腎機能・CKの確認","再発予防の指導"],"flow":"暑熱環境での頭痛・嘔気・倦怠感 → 意識清明 → Ⅱ度熱中症 → 冷却と補液"},
+  otitis_media: {"overview":"かぜの後に中耳に細菌感染が起こり、耳痛・発熱・難聴が出る。","treatment":["鎮痛","中等症以上はアモキシシリン","改善しなければ鼓膜切開","合併症（乳様突起炎など）に注意"],"flow":"かぜの後の耳痛 → 鼓膜の発赤・膨隆 → 急性中耳炎 → 鎮痛・抗菌薬"},
+  cervical_rad: {"overview":"首の骨の変形や椎間板で神経根が圧迫され、首から腕に痛みやしびれが出る。","treatment":["鎮痛（NSAIDs）","首を反らさない・安静","改善しなければ神経根ブロック・手術","脊髄症状があれば整形外科へ"],"flow":"首から腕に走る痛み・しびれ → Spurling陽性・腱反射低下 → MRI → 頸椎症性神経根症 → 保存的治療"},
+  diabetic_foot: {"overview":"糖尿病の神経障害・血流障害による足の潰瘍に感染が起こり、骨髄炎や壊疽に進む。","treatment":["抗菌薬（ブドウ球菌・腸内細菌・嫌気性菌）","外科的デブリードマン","血流評価と血行再建","血糖管理・免荷"],"flow":"治らない足の傷＋発赤・膿 → X線で骨髄炎 → 糖尿病足感染症 → 抗菌薬とデブリードマン"},
+  hypernatremia: {"overview":"体の水が不足して血液のNaが高くなる状態。自分で水を飲めない高齢者に多い。","treatment":["自由水（5%ブドウ糖液など）の補充","1日10mEq/L以内でゆっくり補正","循環不全があれば先に細胞外液","原因（感染症など）の治療"],"flow":"寝たきり高齢者の意識障害・脱水 → Na高値 → 高ナトリウム血症 → 自由水をゆっくり補充"},
+  drug_eruption: {"overview":"薬に対するアレルギーで起こる発疹。抗菌薬や解熱鎮痛薬が多い。","treatment":["原因薬の中止","抗ヒスタミン薬・ステロイド外用","重症薬疹（SJS/TEN・DIHS）のサインを確認","お薬手帳に記録"],"flow":"新しい薬の数日後の全身の発疹 → 粘膜疹・水疱なし → 薬疹 → 原因薬の中止と対症療法"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

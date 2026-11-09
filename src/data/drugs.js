@@ -450,6 +450,11 @@ export const DRUGS = [
     info: '重症妊娠高血圧腎症で子癇（けいれん）を予防する。初回4gを20分かけて静注し、1〜2g/時で持続。呼吸抑制・腱反射消失（Mg中毒）に注意。',
   },
   {
+    id: 'tetanus', generic: '破傷風トキソイド', brands: ['沈降破傷風トキソイド'], cls: 'ワクチン（破傷風予防）', tags: ['tetanus'],
+    routes: { im: { unit: 'mL', min: 0.5, max: 0.5, freqs: ['once'], maxDaily: 0.5 } }, effectHours: 720,
+    info: '汚染創・咬傷で、破傷風の予防接種歴が不明・10年以上前なら0.5mL筋注（深い汚染創で未接種なら破傷風免疫グロブリンも）。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
