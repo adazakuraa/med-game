@@ -72,6 +72,7 @@ export const TESTS = [
   { id: 'ca125', cat: 'blood', name: '腫瘍マーカー（CA125）', kind: 'lab', items: ['CA125'], cost: 1500, timeMin: 1440, inv: 1, sample: 'blood' },
   { id: 'hormone', cat: 'blood', name: '女性ホルモン検査（LH・FSH・PRL・テストステロン）', kind: 'report', cost: 2500, timeMin: 1440, inv: 1, normal: 'LH・FSH・プロラクチン・テストステロンは基準範囲。' },
   { id: 'paracentesis', cat: 'micro', name: '腹水穿刺（腹水検査）', kind: 'report', cost: 2500, timeMin: 45, inv: 2, normal: '穿刺できる腹水はない。' },
+  { id: 'etoh', cat: 'blood', name: '血中エタノール濃度', kind: 'lab', items: ['ETOH'], cost: 1000, timeMin: 30, inv: 1, sample: 'blood' },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },
   { id: 'covid_ag', cat: 'micro', name: 'SARS-CoV-2抗原定性', kind: 'qual', cost: 1500, timeMin: 15, inv: 1, pos: '陽性', neg: '陰性', spec: 0.99 },
@@ -111,6 +112,10 @@ export const TESTS = [
   { id: 'fundus', cat: 'physio', name: '眼底検査（散瞳）', kind: 'report', cost: 560, timeMin: 30, inv: 0, normal: '視神経乳頭・網膜・黄斑に異常なし。' },
   { id: 'slit', cat: 'physio', name: '細隙灯顕微鏡検査（フルオレセイン染色）', kind: 'report', cost: 480, timeMin: 10, inv: 0, normal: '角膜は透明で、染色される傷はない。前房は清明。水晶体の混濁はない。' },
   { id: 'laryngoscope', cat: 'physio', name: '喉頭ファイバースコープ', kind: 'report', cost: 1800, timeMin: 15, inv: 1, normal: '咽頭・喉頭に異物・腫瘤なし。声帯の動きは正常。' },
+  { id: 'eeg', cat: 'physio', name: '脳波', kind: 'report', cost: 7200, timeMin: 60, inv: 0, normal: '基礎律動は正常。てんかん性放電なし。' },
+  { id: 'holter', cat: 'physio', name: 'ホルター心電図（24時間）', kind: 'report', cost: 1750, timeMin: 1440, inv: 0, normal: '洞調律。有意な徐脈・頻脈・停止はない。' },
+  { id: 'abi', cat: 'physio', name: 'ABI（足関節上腕血圧比）', kind: 'report', cost: 1000, timeMin: 15, inv: 0, normal: 'ABI 右1.10・左1.08（正常）。' },
+  { id: 'ncs', cat: 'physio', name: '神経伝導検査', kind: 'report', cost: 2000, timeMin: 60, inv: 0, normal: '運動・感覚神経の伝導速度・振幅は正常。' },
   { id: 'echo', cat: 'physio', name: '心エコー', kind: 'report', cost: 8800, timeMin: 30, inv: 0, normal: 'LVEF 約62%。壁運動異常なし。有意な弁膜症なし。下大静脈径 14mm、呼吸性変動良好。' },
 ];
 

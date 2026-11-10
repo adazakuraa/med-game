@@ -81,6 +81,7 @@ export const QUESTION_WHY = {
   hoarse: '4週以上続く声がれは、声帯の観察（喫煙者は喉頭がん）。声帯麻痺なら胸部の病気も探す。',
   hallucination: '幻聴・被害妄想は統合失調症などの精神病症状。身体疾患（せん妄・脳炎・薬物）も除外する。',
   incontinence: '咳・くしゃみで漏れる（腹圧性）か、急な尿意で間に合わない（切迫性）かで治療が違う。',
+  dysphagia: '飲み込みにくさは、固形物から始まり進行すれば食道がん、固形も液体も最初からなら食道アカラシアなどの運動障害、むせるなら脳卒中などの神経疾患を考える。',
   heatcold: '暑がり・汗かき・体重減少は甲状腺機能亢進症、寒がり・むくみ・便秘は機能低下症を示唆する。',
   joint: '関節の腫れ・痛み。急な単関節炎は痛風・偽痛風・化膿性関節炎、多関節は関節リウマチなどを考える。',
   menses: '月経の量（過多月経）は若い女性の鉄欠乏性貧血の最も多い原因。',
@@ -200,6 +201,7 @@ export const TEST_WHY = {
   ca125: '卵巣腫瘍の良性・悪性の推定に使う。',
   hormone: '月経異常の原因検索（多嚢胞性卵巣症候群・高プロラクチン血症・早発卵巣不全など）。',
   paracentesis: '新しい腹水の原因検索と、特発性細菌性腹膜炎（好中球250/μL以上）の診断。',
+  etoh: '飲酒による意識障害の評価（ほかの原因の除外も必須）。',
   hp: 'ピロリ菌の有無。潰瘍の原因検索と除菌の判断に。',
   bnp: '心臓に負担がかかると上がるホルモン。心不全の診断・除外に役立つ。',
   tnt: '心筋が傷つくと上がる。急性冠症候群の診断に使う。心不全でも軽度上がる。',
@@ -256,6 +258,10 @@ export const TEST_WHY = {
   fundus: '網膜剥離・網膜動脈閉塞（チェリーレッドスポット）・視神経乳頭浮腫などを見る。',
   slit: '角膜の傷・異物（フルオレセインで染まる）、前房の炎症（ぶどう膜炎）、白内障を観察する。',
   laryngoscope: '咽頭・喉頭の異物（魚骨）・腫瘍・声帯の動きを直接見る。',
+  eeg: 'てんかん性放電の確認、非けいれん性てんかん重積の診断。',
+  holter: '失神・動悸の原因となる不整脈（洞停止・房室ブロック・頻拍）を24時間記録して探す。',
+  abi: '足と腕の血圧の比。0.9以下なら閉塞性動脈硬化症。',
+  ncs: '末梢神経障害（ギラン・バレー症候群・手根管症候群など）の診断。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
 };
 
@@ -309,6 +315,7 @@ export const LAB_MEANING = {
   PHOS: { L: '低リン血症（再栄養症候群・アルコール多飲・DKA治療中）。重度では筋力低下・呼吸不全・心不全' },
   ACE: { H: 'サルコイドーシスで上昇する' },
   CA125: { H: '卵巣がんで上昇する（子宮内膜症・月経・腹水でも上がる）' },
+  ETOH: { H: '急性アルコール中毒。濃度と意識障害の程度が合わなければ、頭部外傷・低血糖など他の原因を探す' },
   LAC: { H: '組織への血流不足（ショック・敗血症）。4以上は重症' },
   AG: { H: 'AG開大性代謝性アシドーシス（ケトン・乳酸・腎不全・中毒など）' },
   BHB: { H: 'ケトーシス（DKA・飢餓・アルコール）' },
@@ -420,6 +427,10 @@ export const DRUG_ROLE = {
   ketoconazole_cream: '脂漏性皮膚炎の原因となる真菌（マラセチア）を抑える塗り薬。',
   adapalene: 'ニキビの外用薬。毛穴の詰まりとアクネ菌を抑える。',
   olanzapine: '統合失調症や躁状態の薬（抗精神病薬）。糖尿病には使えない。',
+  insulin_basal: '1日1回の持効型インスリン（皮下注）。',
+  cilostazol: '閉塞性動脈硬化症の歩ける距離を延ばす抗血小板薬。',
+  ivig: '免疫グロブリンの大量点滴。ギラン・バレー症候群などに。',
+  cabergoline: 'プロラクチンを下げる薬（週1回）。',
   sumatriptan: '片頭痛発作の特効薬（トリプタン）。心臓や脳の血管の病気がある人には使えない。',
   levetiracetam: 'けいれんを抑える抗てんかん薬。点滴でも内服でも使える。',
   oseltamivir: 'インフルエンザウイルスの増殖を抑える飲み薬（タミフル）。発症48時間以内に。',
@@ -704,6 +715,7 @@ APPROACHES.altered_mental = {
     { id: 'hypothermia', point: '寒冷環境・高齢・独居、深部体温35℃未満、徐脈・J波', clues: ['q:adl', 'e:skin', 'e:periph'] },
     { id: 'alcohol_withdrawal', point: '大量飲酒者の断酒後1〜3日、振戦・発汗・頻脈・せん妄・けいれん', clues: ['q:alcohol', 'q:trigger', 'e:tremor', 'e:skin'] },
     { id: 'wernicke', point: '大量飲酒・低栄養、意識障害・眼振/外眼筋麻痺・失調性歩行 → ブドウ糖より先にビタミンB1を大量静注', clues: ['q:alcohol', 'q:vision', 'e:nystagmus', 'e:ataxia', '!L:GLU'] },
+    { id: 'acute_alcohol', tests: ['etoh', 'bs_poct'], point: '若年の一気飲み、強いアルコール臭・嘔吐・低体温、外傷や他の薬物がない、血中アルコール高値 → 気道確保・低血糖の確認・経過観察', clues: ['q:alcohol', 'q:onset', 'e:gen_breath_odor', '!e:skin', 'H:ETOH'] },
     { id: 'apap_od', tests: ['apap', 'chem', 'coag'], point: '市販の解熱鎮痛薬の大量服薬、初期は症状が乏しい、血中濃度高値 → 8時間以内にNAC、精神科と連携', clues: ['q:onset', 'q:trigger', 'q:mood', 'H:APAP'] },
     { id: 'nms', tests: ['lab_CK'], point: '抗精神病薬の開始・増量（または抗パーキンソン病薬の中止）後の高熱・鉛管様筋強剛・意識障害・発汗、CK著明上昇 → 原因薬の中止・冷却・補液・ダントロレン', clues: ['q:meds', 'q:fever', 'e:rigidity', 'H:CK'] },
     { id: 'serotonin', point: 'SSRIなどの追加・増量後、急な発症、ミオクローヌス・腱反射亢進' },
@@ -722,6 +734,7 @@ APPROACHES.fever_headache = {
     { id: 'uri', point: '咽頭痛・鼻汁、頭痛は軽い', clues: ['q:sorethroat'] },
     { id: 'sinusitis', point: '顔面痛・膿性鼻汁・前かがみで悪化' },
     { id: 'encephalitis', tests: ['lp', 'head_mri'], point: '発熱・頭痛に意識障害・異常行動・けいれん・失語、髄液はリンパ球優位で糖正常、MRIで側頭葉の病変 → すぐにアシクロビル', clues: ['q:character', 'q:seizure', 'e:gen_consc', 'e:speech', 't:lp', 't:head_mri'] },
+    { id: 'aseptic_meningitis', tests: ['lp'], point: '若年の発熱・頭痛・項部硬直で意識清明、夏・周囲の手足口病、髄液は単核球優位で糖正常 → 対症療法（細菌性を除外するまで慎重に）', clues: ['q:headache', 'q:photophobia', 'e:jolt', '!e:gen_consc', 't:lp'] },
   ],
 };
 APPROACHES.headache = {
@@ -830,7 +843,9 @@ APPROACHES.scrotal = {
   ddx: [
     { id: 'testicular_torsion', tests: ['scrotal_us'], point: '思春期〜若年、突然の激痛と嘔吐、精巣の挙上・横位、挙睾筋反射消失、ドプラで血流消失', clues: ['q:onset', 'q:nausea', 'e:scrotum', 't:scrotal_us', '!q:fever'] },
     { id: 'epididymitis', tests: ['scrotal_us', 'ua'], point: '徐々に始まる痛み・発熱・排尿時痛・膿尿、前立腺肥大の高齢者、持ち上げると痛みが軽くなる、ドプラで血流は保たれる → 抗菌薬', clues: ['q:fever', 'q:dysuria', 'q:character', 't:scrotal_us', 'H:U_LEU', '!q:nausea'] },
-    { id: 'inc_hernia', point: '鼠径部から陰嚢への還納できない膨隆', clues: ['e:inguinal'] },
+    { id: 'inc_hernia', point: '鼠径部から陰嚢への還納できない膨隆、強い痛み・嘔吐', clues: ['q:nausea', 'e:inguinal'] },
+    { id: 'inguinal_hernia', tests: ['abd_us'], point: '中高年男性、立位・腹圧でふくらみ横になると戻る鼠径部の膨隆、痛みは軽い・嘔吐なし → 外科で待機的手術（戻らない・痛む・吐くなら嵌頓）', clues: ['q:character', 'q:trigger', 'e:inguinal', '!q:nausea', '!q:fever'] },
+    { id: 'hydrocele', point: '痛みのない陰嚢の腫大、光を当てると透ける' },
   ],
 };
 APPROACHES.vaginal = {
@@ -980,6 +995,8 @@ APPROACHES.injury = {
     { id: 'ankle_fx', point: '外果・内果の後縁や先端の圧痛、歩けない → X線で骨折' },
     { id: 'wrist_fx', tests: ['joint_xr'], point: '転んで手をついた高齢女性、手首の腫脹とフォーク状変形、X線で橈骨遠位端骨折 → 整復・固定と骨粗鬆症の評価', clues: ['q:trigger', 'q:pmh', 'e:joint', 't:joint_xr'] },
     { id: 'scaphoid_fx', point: '若年者の手首、解剖学的嗅ぎタバコ窩の圧痛（初回X線で見えないことがある）' },
+    { id: 'achilles', point: 'スポーツで踏み込んだ瞬間に後ろから蹴られた感じ・断裂音、つま先立ちできない、腱の陥凹とThompsonテスト陽性 → 底屈位固定・整形外科', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr'] },
+    { id: 'shoulder_dislocation', tests: ['joint_xr'], point: '転倒・タックルで腕を後ろに持っていかれた若年者、肩の激痛と変形（三角筋の膨らみ消失）→ X線で骨折を確認してから整復、腋窩神経を診る', clues: ['q:trigger', 'e:joint', 't:joint_xr'] },
     { id: 'head_injury', tests: ['head_ct'], point: '転倒で頭部を打撲、抗凝固薬内服の高齢者 → 意識清明でも頭部CTで出血を除外', clues: ['q:meds', 'q:onset', 'e:skin', 'e:gen_consc', '!t:head_ct'] },
     { id: 'tbi_bleed', point: '頭部打撲後の意識障害・嘔吐・頭痛の悪化、CTで出血', clues: ['t:head_ct'] },
     { id: 'rib_fx', tests: ['cxr'], point: '胸部打撲後の、深呼吸・咳で強くなる限局した圧痛と介達痛、X線で気胸・血胸の有無を確認', clues: ['q:character', 'q:aggravating', 'e:chest_palp', 't:cxr'] },
@@ -996,6 +1013,8 @@ APPROACHES.jaundice = {
   redflags: ['発熱・悪寒＋右季肋部痛＋黄疸 → 急性胆管炎（緊急ドレナージ）', 'PT-INR延長・意識障害 → 劇症肝炎（専門施設へ）', '体重減少・無痛性黄疸 → 膵頭部がん・胆管がん'],
   ddx: [
     { id: 'hepatitis', tests: ['hep_virus'], point: 'かぜのような症状の後の黄疸・濃い尿、AST/ALTの著明な上昇（数千）、胆管拡張なし、海外渡航・生ガキ', clues: ['q:travel', 'q:fever', 'q:character', 'H:ALT', 'H:AST', 't:hep_virus', '!t:abd_us'] },
+    { id: 'choledocholithiasis', tests: ['abd_us'], point: '胆石の既往、食後の右上腹部〜心窩部痛に続く黄疸・濃い尿・白い便、発熱なし、胆道系酵素上昇・胆管拡張 → ERCP', clues: ['q:abdpain', 'q:pmh', '!q:fever', '!q:weightloss', 'H:GGT', 't:abd_us'] },
+    { id: 'pancreatic_ca', tests: ['abd_ct_contrast'], point: '痛みの乏しい黄疸（無痛性）・かゆみ・体重減少・糖尿病の悪化、腫大した無痛性胆嚢（Courvoisier）、膵頭部腫瘤 → 消化器内科', clues: ['q:weightloss', 'q:pmh', '!q:fever', 'e:abd_palp', 't:abd_ct_contrast'] },
     { id: 'cholangitis', point: '発熱・悪寒戦慄・右季肋部痛、胆道系酵素上昇、エコーで胆管拡張・結石', clues: ['q:chills', 't:abd_us'] },
     { id: 'drug_liver', point: '新しく始めた薬・サプリ・漢方の後' },
     { id: 'alcoholic_hep', point: '大量飲酒、AST優位の上昇、γ-GTP高値', clues: ['q:alcohol'] },
@@ -1012,7 +1031,7 @@ APPROACHES.fever_unknown = {
     { id: 'endocarditis', tests: ['bcx', 'echo'], point: '弁膜症・歯科処置・透析、抗菌薬で一時的に下がる発熱、心雑音、Osler結節・Janeway病変、血液培養陽性・疣贅', clues: ['q:pmh', 'q:meds', 'e:heart_ausc', 'e:skin', 't:bcx', 't:echo'] },
     { id: 'tb', point: '咳・寝汗・体重減少、上肺野の陰影', clues: ['q:nightsweat'] },
     { id: 'lymphoma', point: 'リンパ節腫脹・寝汗・体重減少、LDH上昇', clues: ['e:neck_ln'] },
-    { id: 'abscess', point: '肝膿瘍など深部の膿瘍、画像で確認' },
+    { id: 'liver_abscess', tests: ['abd_us', 'bcx'], point: '糖尿病・胆道疾患の高齢者、抗菌薬で下がらない発熱と悪寒戦慄、右季肋部痛・肝叩打痛、胆道系酵素上昇 → 腹部エコー/CTで膿瘍、ドレナージと長期の抗菌薬', clues: ['q:chills', 'q:course', 'q:pmh', 'e:abd_palp', 'H:GGT', 't:abd_us', '!q:travel'] },
     { id: 'gca', point: '高齢者の頭痛・顎跛行、赤沈高値', clues: ['e:temporal'] },
     { id: 'neutropenic_fever', tests: ['bcx', 'cbc'], point: 'がん化学療法中（7〜14日後）の発熱、好中球500未満 → 血液培養後1時間以内に緑膿菌をカバーする抗菌薬', clues: ['q:pmh', 'q:meds', 'L:WBC', 'q:chills'] },
     { id: 'malaria', tests: ['malaria'], point: '熱帯地域からの帰国後1か月以内の発熱・悪寒、血小板減少・溶血・脾腫 → 血液塗抹・迅速抗原、抗マラリア薬', clues: ['q:travel', 'q:chills', 'L:PLT', 'e:abd_palp', 't:malaria'] },
@@ -1155,6 +1174,7 @@ APPROACHES.skin_lesion = {
     { id: 'wart', point: '削ると点状出血、皮膚紋理が途切れる（ウイルス性疣贅）' },
     { id: 'atheroma', tests: ['cbc', 'crp'], point: '以前からある皮下のしこりが急に赤く腫れて痛む、中央の黒点・波動 → 切開排膿', clues: ['q:onset', 'q:character', 'H:CRP', 'H:WBC', '!q:family', '!q:itch'] },
     { id: 'alopecia', tests: ['thyroid'], point: '境界明瞭な円形の脱毛斑、皮膚に炎症・鱗屑なし、感嘆符毛 → 甲状腺疾患の確認と外用', clues: ['q:location', 'q:trigger', 'q:pmh', '!q:itch', '!t:koh'] },
+    { id: 'pressure_ulcer', tests: ['cbc', 'crp', 'chem'], point: '寝たきり・低栄養の高齢者、仙骨部・踵などの骨突出部の潰瘍、壊死組織・膿・悪臭・発熱は感染 → デブリードマン・抗菌薬・除圧と栄養', clues: ['q:trigger', 'q:fever', 'q:location', 'e:skin', 'H:CRP', '!q:itch'] },
   ],
 };
 APPROACHES.oral = {
@@ -1208,7 +1228,7 @@ APPROACHES.menstrual = {
   title: '月経の異常（生理不順・無月経）',
   intro: '月経が来ない・不規則なときは、まず妊娠反応。次に体重の変化（やせ・肥満）、甲状腺、プロラクチン（乳汁分泌）、多嚢胞性卵巣症候群（多毛・ニキビ）、早発卵巣不全を考える。',
   keyQ: ['onset', 'menses', 'lmp', 'character', 'weightgain', 'weightloss', 'heatcold', 'mood', 'meds', 'pmh'],
-  keyE: ['skin', 'thyroid_palp'],
+  keyE: ['skin', 'thyroid_palp', 'breast'],
   keyT: ['uhcg', 'thyroid', 'hormone'],
   redflags: ['妊娠反応は必ず確認', '著明なやせ → 摂食障害', '乳汁分泌・頭痛・視野障害 → プロラクチノーマ'],
   ddx: [
@@ -1216,7 +1236,7 @@ APPROACHES.menstrual = {
     { id: 'pregnancy', point: '妊娠反応陽性', clues: ['t:uhcg'] },
     { id: 'hypothyroid', point: '寒がり・体重増加・TSH高値', clues: ['H:TSH'] },
     { id: 'hyperthyroid', point: '暑がり・体重減少・TSH低値', clues: ['L:TSH'] },
-    { id: 'hyperprolactinemia', point: '乳汁分泌・薬剤（制吐薬・抗精神病薬）' },
+    { id: 'hyperprolactinemia', tests: ['hormone', 'uhcg', 'head_mri'], point: '順調だった月経が止まる＋乳汁漏出、妊娠・薬剤（制吐薬・抗精神病薬）・甲状腺機能低下症を除外、プロラクチン高値・下垂体腺腫 → カベルゴリン', clues: ['q:character', 'q:meds', 'e:breast', 't:hormone', '!q:weightgain', '!e:skin'] },
     { id: 'anorexia_nervosa', point: '著明なやせ・体重への恐怖', clues: ['q:weightloss'] },
   ],
 };
@@ -1268,7 +1288,7 @@ APPROACHES.weakness = {
     { id: 'hypok', point: '下痢・利尿薬・甘草（漢方）、両側の脱力・便秘、心電図でU波、K低値', clues: ['q:diarrhea', 'q:meds', 'q:weakness', 'e:motor', 'L:K', 't:ecg'] },
     { id: 'stroke', point: '片側の麻痺・失語', clues: ['e:facial', 'e:speech'] },
     { id: 'hypoglycemia', point: '糖尿病治療中、冷汗、血糖低値', clues: ['L:GLU'] },
-    { id: 'gbs', point: '数日〜数週で両下肢から上行する脱力、先行感染、腱反射消失' },
+    { id: 'gbs', tests: ['ncs', 'lp'], point: '下痢・かぜの1〜3週後、数日で両下肢から上行する対称性の脱力、腱反射消失、電解質は正常 → 神経伝導検査・髄液（蛋白細胞解離）、免疫グロブリン療法、呼吸筋麻痺に注意', clues: ['q:trigger', 'q:onset', 'q:numbness', 'e:motor', '!L:K', '!H:K', '!e:speech'] },
   ],
 };
 
@@ -1373,6 +1393,7 @@ APPROACHES.syncope = {
     { id: 'avb', point: '高齢者、前兆のない突然の失神、徐脈、心電図で完全房室ブロック', clues: ['q:dizziness', 'e:heart_ausc', 't:ecg'] },
     { id: 'orthostatic', tests: ['orthostatic'], point: '立ち上がった直後の失神・ふらつき、最近増えた降圧薬（α遮断薬など）・利尿薬・脱水、起立試験で血圧低下', clues: ['q:syncope', 'q:meds', 'q:dizziness', 'q:character', 't:orthostatic'] },
     { id: 'as', tests: ['echo'], point: '高齢者の労作時の失神・胸痛・息切れ、胸骨右縁の粗い収縮期駆出性雑音（頸部へ放散）、心エコーで重症の大動脈弁狭窄', clues: ['q:chestpain', 'q:dyspnea', 'q:pmh', 'e:heart_ausc', 't:echo', 'H:BNP'] },
+    { id: 'sss', tests: ['holter'], point: '高齢者の前兆のない一過性の意識消失・めまい、徐脈・洞停止、徐脈を起こす薬はない → ペースメーカー', clues: ['q:syncope', 'q:dizziness', 'e:heart_ausc', 't:ecg', 't:holter', '!q:sweating'] },
     { id: 'pe', point: '突然の呼吸困難・頻脈・低酸素' },
     { id: 'epilepsy_sz', point: '発作後のもうろう状態が長い、舌咬傷、けいれんが長い', clues: ['q:seizure'] },
   ],
@@ -1395,7 +1416,7 @@ APPROACHES.back_pain = {
     { id: 'lumbago', point: '重い物を持ったなどのきっかけ、体動で悪化し安静で軽快、危険なサインがない', clues: ['q:aggravating'] },
     { id: 'lss', tests: ['spine_mri'], point: '高齢者、歩くと両足がしびれて歩けなくなり前かがみで休むと回復（神経性間欠性跛行）、自転車はこげる、足の脈は触れる', clues: ['q:character', 'q:radiation', '!q:fever', 't:spine_mri'] },
     { id: 'myeloma', tests: ['spep', 'cbc', 'chem'], point: '高齢者の進む腰背部痛・夜間痛、貧血・腎障害・高Ca血症（CRAB）・総蛋白高値、感染の繰り返し → M蛋白、骨髄検査', clues: ['q:pmh', 'L:HB', 'H:CA', 'H:TP', 't:spep', '!q:fever'] },
-    { id: 'pad', point: '立ち止まるだけで治まるふくらはぎの痛み（血管性間欠性跛行）、足背動脈の拍動低下、喫煙・糖尿病', clues: ['e:leg_pulse'] },
+    { id: 'pad', tests: ['abi'], point: '喫煙・糖尿病・高血圧の高齢男性、歩くとふくらはぎが痛くなり立ち止まるだけで治まる（血管性間欠性跛行）、足背動脈の拍動低下、ABI 0.9以下 → 抗血小板薬・禁煙・運動療法', clues: ['q:smoking', 'q:relieving', 'e:leg_pulse', 't:abi'] },
   ],
 };
 
@@ -1450,7 +1471,7 @@ APPROACHES.joint_pain = {
     { id: 'cellulitis', point: '関節ではなく皮膚の発赤が広がる' },
     { id: 'knee_oa', tests: ['joint_xr'], point: '中高年女性、歩き始め・階段で悪化し休むと楽になる膝の痛み、こわばりは短い、熱感なし、X線で関節裂隙の狭小化と骨棘', clues: ['q:aggravating', 'q:onset', '!q:fever', 't:joint_xr'] },
     { id: 'frozen_shoulder', tests: ['joint_xr'], point: 'きっかけのない肩の痛み、夜間痛、自分でも他人が動かしても全方向に動かない（特に外旋・結帯）、X線は正常', clues: ['q:character', 'q:location', 'e:joint', '!t:joint_xr'] },
-    { id: 'rotator_cuff', point: '他人が動かせば上がるが自分では上げられない、外傷や使いすぎ' },
+    { id: 'rotator_cuff', tests: ['joint_xr'], point: '中高年、外傷や重い物を持った後の肩の痛み、自分では上げられないが他人が持ち上げれば上がる（他動可動域は保たれる）、drop arm sign陽性 → 鎮痛と整形外科（MRI）', clues: ['q:character', 'q:trigger', 'e:joint', '!q:stiffness', '!H:CRP'] },
     { id: 'ra', tests: ['rf_ccp'], point: '手の小関節（MCP・PIP・手関節）の左右対称の腫れ、1時間以上の朝のこわばり、抗CCP抗体陽性 → 早期にメトトレキサート', clues: ['q:stiffness', 'q:location', 'e:joint', 't:rf_ccp', 'H:CRP', '!q:fever'] },
     { id: 'sle', tests: ['ana', 'cbc', 'ua'], point: '若い女性の発熱・関節痛・蝶形紅斑・光線過敏・口内炎・脱毛、白血球/血小板減少、抗核抗体・抗dsDNA抗体陽性・低補体', clues: ['q:fever', 'q:character', 'e:skin', 'e:oral_mucosa', 't:ana', 'L:WBC'] },
   ],
@@ -1471,6 +1492,22 @@ APPROACHES.epigastric = {
     { id: 'gastric_ca', tests: ['cbc'], point: '高齢・ピロリ菌、心窩部不快感・早期飽満感に体重減少・貧血・黒色便（警告症状）→ 上部内視鏡', clues: ['q:weightloss', 'q:pmh', 'q:bloodystool', 'e:conjunctiva', 'L:HB'] },
   ],
 };
+APPROACHES.dysphagia = {
+  title: '飲み込みにくい・つかえる',
+  intro: '嚥下障害は、口・のどで「むせる」（口腔咽頭性：脳卒中・神経筋疾患）か、胸で「つかえる」（食道性）かを分ける。食道性で固形物から始まり進行し体重が減れば食道がんを疑い、早めに内視鏡へ。',
+  keyQ: ['onset', 'course', 'dysphagia', 'weightloss', 'heartburn', 'chestpain', 'alcohol', 'smoking', 'pmh', 'meds'],
+  keyE: ['neck_ln', 'gen_appear', 'speech', 'facial', 'pharynx'],
+  keyT: ['cbc', 'chem', 'chest_ct'],
+  redflags: ['進行する嚥下障害・体重減少・吐血・貧血 → 食道がん・胃がん（内視鏡）', '急に始まったむせ・構音障害・顔の麻痺 → 脳卒中', '唾液も飲み込めない・食べ物が詰まった → 食道異物・食物塞栓（緊急内視鏡）'],
+  ddx: [
+    { id: 'esophageal_ca', tests: ['chest_ct'], point: '大量飲酒（飲むと赤くなる）・喫煙の中高年男性、固形物から始まり柔らかい物もつかえる進行性の嚥下障害と体重減少 → 上部内視鏡と生検', clues: ['q:dysphagia', 'q:course', 'q:weightloss', 'q:alcohol', 'q:smoking', 't:chest_ct', 'L:ALB'] },
+    { id: 'achalasia', point: '若年〜中年、最初から固形物も液体もつかえる、長い経過で体重は保たれる、食道の拡張', clues: ['!q:weightloss', '!q:smoking'] },
+    { id: 'gerd', point: '胸やけ・呑酸を伴う軽いつかえ感、進行しない', clues: ['q:heartburn', '!q:weightloss'] },
+    { id: 'oropharyngeal_dysphagia', point: '脳卒中後・パーキンソン病などの神経疾患、飲み込む瞬間にむせる、構音障害 → 嚥下評価', clues: ['e:speech', 'e:facial'] },
+    { id: 'gastric_ca', point: '体重減少・貧血、噴門部のがんでつかえる', clues: ['q:weightloss', 'L:HB'] },
+  ],
+};
+
 APPROACHES.fatigue = {
   title: 'だるさ・疲れやすさ',
   intro: '慢性的なだるさは原因が多岐にわたる。貧血・甲状腺機能異常・糖尿病・電解質異常・肝腎機能障害・うつ病・睡眠障害・悪性腫瘍などを、問診と基本的な採血で系統的に探す。',
@@ -1494,13 +1531,13 @@ APPROACHES.facial_palsy = {
   title: '顔のゆがみ',
   intro: '片側の顔面麻痺では、まず脳卒中（中枢性）か末梢性（ベル麻痺など）かを区別する。額のしわ寄せができなければ末梢性、額が動いて口だけ麻痺していれば中枢性を疑う。',
   keyQ: ['onset', 'lastnormal', 'character', 'weakness', 'speechq', 'hearing', 'rash', 'headache'],
-  keyE: ['facial', 'motor', 'speech', 'skin'],
+  keyE: ['facial', 'motor', 'speech', 'skin', 'ear'],
   keyT: ['bs_poct'],
   redflags: ['額が動く・手足の麻痺・言語障害 → 脳卒中（頭部画像）', '耳介の水疱・耳痛・難聴・めまい → Ramsay Hunt症候群'],
   ddx: [
-    { id: 'bell', point: '額も含む片側の顔面麻痺、ほかの神経症状なし', clues: ['e:facial'] },
+    { id: 'bell', point: '額も含む片側の顔面麻痺、ほかの神経症状なし', clues: ['e:facial', '!q:rash', '!q:hearing'] },
     { id: 'stroke', point: '額は動き、手足の麻痺・言語障害を伴う', clues: ['e:motor', 'e:speech'] },
-    { id: 'zoster', point: '耳の痛み・耳介の水疱（Ramsay Hunt症候群）', clues: ['q:rash'] },
+    { id: 'ramsay_hunt', point: '耳の痛み・耳介や外耳道の水疱・難聴/耳鳴りを伴う末梢性顔面神経麻痺 → 抗ウイルス薬＋ステロイド', clues: ['q:rash', 'q:hearing', 'e:skin', 'e:facial', '!q:weakness'] },
   ],
 };
 APPROACHES.bp_high = {
@@ -1514,6 +1551,7 @@ APPROACHES.bp_high = {
     { id: 'htn', point: '家族歴・塩分・飲酒・肥満、症状なし', clues: ['q:family', 'q:diet', 'q:alcohol', 'q:weightgain'] },
     { id: 'secondary_htn', point: '若年発症・低K血症・腎機能障害・いびき' },
     { id: 'primary_aldo', tests: ['renin_aldo', 'chem'], point: '3剤以上でも下がらない高血圧・若年・低K血症（足のつり・脱力）→ アルドステロン/レニン比、内分泌内科へ', clues: ['q:meds', 'q:character', 'L:K', 'H:HCO3', 't:renin_aldo'] },
+    { id: 'htn_emergency', tests: ['head_ct', 'chem', 'ua'], point: '服薬中断の著明な高血圧（180/120以上）に頭痛・嘔吐・視覚異常・意識障害、眼底出血 → 頭部CTで出血を除外し、静注で慎重に降圧', clues: ['q:adherence', 'q:headache', 'q:vision', 'e:gen_consc', 'e:pupils', 'H:CR'] },
     { id: 'preeclampsia', tests: ['ua', 'cbc', 'chem'], point: '妊娠20週以降の高血圧と蛋白尿・浮腫、頭痛・閃輝暗点・心窩部痛 → 降圧・硫酸マグネシウム・分娩の判断', clues: ['q:lmp', 'q:headache', 'q:vision', 'q:edema', 'H:U_PRO', 'L:PLT'] },
   ],
 };
@@ -1528,6 +1566,9 @@ APPROACHES.polyuria = {
     { id: 'dm2', point: '家族歴・肥満・甘い飲料、HbA1c 6.5%以上', clues: ['q:polyuria', 'q:family', 'q:diet', 'H:HBA1C', 'H:GLU'] },
     { id: 'dka', point: '若年・1型、嘔吐・腹痛・ケトン', clues: ['H:U_KET'] },
     { id: 'hhs', point: '高齢者、著明な高血糖・脱水・意識障害' },
+    { id: 't1dm_new', tests: ['vbg', 'ua'], point: '若年・やせ型、急な口渇・多飲・多尿・体重減少（食欲はある）、家族歴なし、尿ケトン陽性 → インスリン（アシドーシスならDKA）', clues: ['q:weightloss', 'q:onset', '!q:family', 'H:U_KET', 'H:GLU'] },
+    { id: 'di', point: '多尿で尿が薄い、血糖は正常、Na高め' },
+    { id: 'psychogenic_polydipsia', point: '精神疾患、水を大量に飲む、Na低め' },
   ],
 };
 APPROACHES.nasal = {
@@ -1552,6 +1593,7 @@ APPROACHES.seizure = {
   redflags: ['5分以上続く・意識が戻らないまま繰り返す → てんかん重積：ジアゼパム静注', '発熱・項部硬直 → 髄膜炎・脳炎', '頭部外傷・抗凝固薬・初発・局所神経症状 → 頭部画像', '低血糖・低Na・アルコール離脱'],
   ddx: [
     { id: 'epilepsy_sz', point: 'てんかんの既往・服薬中断・睡眠不足、発作後のもうろう、舌の側面の咬傷', clues: ['q:seizure', 'q:adherence', 'q:trigger', 'e:oral_mucosa', 'H:CK'] },
+    { id: 'brain_tumor', tests: ['head_ct', 'head_mri'], point: '成人の初発けいれん、片側から始まる発作・発作後の麻痺、数週の朝の頭痛、がんの既往 → 頭部CT/MRI、抗てんかん薬とステロイド', clues: ['q:character', 'q:headache', 'q:pmh', 'e:motor', 't:head_ct', '!q:alcohol'] },
     { id: 'hypoglycemia', point: '糖尿病治療中、低血糖', clues: ['L:GLU'] },
     { id: 'hyponatremia', point: '低Na（高齢・利尿薬）', clues: ['L:NA'] },
     { id: 'alcohol_withdrawal', point: '大量飲酒者の断酒後', clues: ['q:alcohol'] },
@@ -2039,6 +2081,26 @@ export const DISEASE_NOTES = {
   sarcoid: {"overview":"全身に肉芽腫ができる原因不明の病気。肺・眼・皮膚・心臓などに起こる。","treatment":["気管支鏡などで組織診断","結核・リンパ腫の除外","心臓・眼の評価","臓器障害があればステロイド"],"flow":"咳・ぶどう膜炎・両側肺門リンパ節腫脹 → ACE高値 → サルコイドーシス → 組織診断と臓器評価"},
   ntm: {"overview":"土や水にいる非結核性抗酸菌（MAC）による慢性の肺感染症。中高年女性に多く、人にはうつらない。","treatment":["結核菌PCRで結核を除外","喀痰培養で診断基準を確認","多剤併用療法（クラリスロマイシンなど）の検討"],"flow":"長く続く痰・血痰＋中葉・舌区の気管支拡張 → 抗酸菌陽性・結核菌PCR陰性 → 肺MAC症"},
   cirrhosis: {"overview":"慢性の肝障害で肝臓が硬く小さくなり、腹水・黄疸・静脈瘤・肝性脳症などを起こす状態。","treatment":["診断的腹水穿刺","塩分制限・利尿薬（スピロノラクトン）","禁酒・原因の治療","静脈瘤・肝がん・肝性脳症の管理"],"flow":"飲酒歴＋腹部膨満・浮腫 → エコーで肝硬変・腹水 → 腹水穿刺 → 利尿薬と禁酒"},
+  choledocholithiasis: {"overview":"胆石が総胆管に落ちて詰まり、黄疸や腹痛を起こす。感染すると胆管炎になる。","treatment":["エコー・CTで胆管拡張と結石を確認","ERCPで結石除去","胆嚢結石は後日胆嚢摘出術","発熱が出れば胆管炎として緊急ドレナージ"],"flow":"腹痛＋黄疸 → 胆道系酵素上昇・胆管拡張 → 総胆管結石 → ERCP"},
+  pancreatic_ca: {"overview":"膵臓にできるがん。膵頭部では胆管をふさいで痛みの乏しい黄疸で見つかる。","treatment":["造影CT・超音波内視鏡で診断","黄疸には胆道ステント","手術または化学療法"],"flow":"無痛性黄疸・体重減少 → 膵頭部腫瘤と胆管・膵管拡張 → 膵がん → 消化器内科"},
+  brain_tumor: {"overview":"脳にできた腫瘍（転移性が多い）が、けいれん・頭痛・麻痺を起こす。","treatment":["頭部CT・造影MRI","抗てんかん薬","脳浮腫にステロイド","手術・定位放射線治療"],"flow":"成人の初発けいれん＋頭痛・麻痺 → 頭部画像で腫瘤 → 脳腫瘍 → 抗てんかん薬・ステロイド・脳外科"},
+  ramsay_hunt: {"overview":"顔面神経の帯状疱疹。顔面神経麻痺に耳の水疱・難聴・めまいを伴う。","treatment":["早期の抗ウイルス薬＋ステロイド","角膜の保護","聴力のフォロー"],"flow":"片側の顔面麻痺＋耳の水疱・難聴 → Ramsay Hunt症候群 → 抗ウイルス薬とステロイド"},
+  nph: {"overview":"脳脊髄液がたまって脳室が広がり、歩行障害・認知機能低下・尿失禁が出る。手術で治る認知症。","treatment":["頭部CT/MRIで脳室拡大・DESH","タップテスト","シャント手術"],"flow":"高齢者の歩行障害・物忘れ・尿失禁 → 脳室拡大 → 正常圧水頭症 → タップテスト・シャント"},
+  t1dm_new: {"overview":"自己免疫でインスリンを作る細胞が壊れ、インスリンが出なくなる糖尿病。若い人に多く、急に発症する。","treatment":["血糖・ケトン・血液ガス（DKAの有無）","インスリン治療（強化インスリン療法）","自己管理の教育"],"flow":"若年者の口渇・多尿・体重減少 → 高血糖・尿ケトン → 1型糖尿病 → インスリン"},
+  aseptic_meningitis: {"overview":"主にウイルスによる髄膜炎。細菌性より軽く、多くは自然に治る。","treatment":["髄液検査で細菌性・ヘルペス脳炎を除外","鎮痛・補液","迷ったら細菌性として抗菌薬を開始"],"flow":"発熱・頭痛・項部硬直・意識清明 → 髄液で単核球優位・糖正常 → 無菌性髄膜炎 → 対症療法"},
+  sss: {"overview":"心臓のリズムを作る洞結節の働きが落ち、徐脈や心停止を起こす病気。高齢者に多い。","treatment":["心電図・ホルター心電図","薬剤・電解質・甲状腺の確認","ペースメーカー植込み"],"flow":"前兆のない失神・めまい → 徐脈・洞停止 → 洞不全症候群 → ペースメーカー"},
+  htn_emergency: {"overview":"著しい高血圧で脳・心臓・腎臓などに急な障害が起こる状態。","treatment":["臓器障害の評価（頭部CT・心電図・腎機能・眼底）","静注薬で慎重に降圧（最初の1時間で25%以内）","ICUで管理","原因（服薬中断・二次性）の検索"],"flow":"著明な高血圧＋頭痛・意識障害 → 出血を除外 → 高血圧性脳症 → 静注で慎重に降圧"},
+  acute_alcohol: {"overview":"短時間に大量の飲酒をして、意識障害・呼吸抑制・誤嚥などを起こす状態。","treatment":["回復体位・気道確保","低血糖・頭部外傷など他の原因の除外","保温・補液と経過観察"],"flow":"一気飲み後の意識障害 → 低血糖・外傷を除外 → 急性アルコール中毒 → 気道確保と経過観察"},
+  liver_abscess: {"overview": "肝臓の中に膿がたまる病気。糖尿病や胆道の病気がある人に多く、高熱と悪寒が続く。", "treatment": ["腹部エコー・造影CT・血液培養", "抗菌薬（4〜6週間）", "経皮的ドレナージ"], "flow": "続く発熱・悪寒戦慄＋右季肋部痛 → エコー/CTで膿瘍 → 肝膿瘍 → ドレナージと抗菌薬"},
+  inguinal_hernia: {"overview": "足の付け根の腹壁の弱い所から、腸などが皮膚の下に飛び出す病気。中高年の男性に多い。", "treatment": ["外科で待機的な手術（メッシュ修復・腹腔鏡）", "戻らない・痛む・吐くときはすぐ受診（嵌頓）"], "flow": "立つとふくらみ横になると戻る鼠径部の膨隆 → 鼠径ヘルニア → 外科で手術"},
+  pressure_ulcer: {"overview": "寝たきりなどで同じ所が圧迫され続け、皮膚や皮下組織が壊死してできる傷（床ずれ）。", "treatment": ["壊死組織の除去（デブリードマン）と創処置", "感染があれば抗菌薬", "除圧（体位変換・マットレス）と栄養改善"], "flow": "寝たきりの人の骨突出部の潰瘍＋膿・発熱 → 感染した褥瘡 → デブリードマン・抗菌薬・除圧"},
+  rotator_cuff: {"overview": "肩を動かす腱（腱板）が切れる病気。中高年に多く、けがや加齢で起こる。", "treatment": ["鎮痛（NSAIDs）", "MRI・超音波で評価", "リハビリ、大きな断裂は手術"], "flow": "自分では腕が上がらないが他人が持てば上がる → 腱板断裂 → 鎮痛と整形外科"},
+  achilles: {"overview": "ふくらはぎとかかとをつなぐアキレス腱が切れるけが。スポーツ中の踏み込みで起こりやすい。", "treatment": ["足首を下に向けた位置で固定・松葉杖", "装具による保存療法か腱縫合術"], "flow": "踏み込みで後ろから蹴られた感じ＋つま先立ち不能 → Thompsonテスト陽性 → アキレス腱断裂 → 固定と整形外科"},
+  shoulder_dislocation: {"overview": "肩の関節が外れること。多くは前に外れ、若い人は繰り返しやすい。", "treatment": ["X線で骨折を確認", "鎮痛下に整復", "三角巾で固定"], "flow": "転倒・タックル後の肩の激痛と変形 → X線で脱臼 → 整復・固定"},
+  gbs: {"overview": "感染のあとに、免疫が末梢神経を攻撃して、手足の力が急に弱くなる病気。", "treatment": ["神経伝導検査・髄液検査", "免疫グロブリン大量療法（または血漿交換）", "呼吸・不整脈のモニター"], "flow": "先行感染後の上行する脱力＋腱反射消失 → 神経伝導検査・髄液 → ギラン・バレー症候群 → 免疫グロブリン療法"},
+  pad: {"overview": "足の動脈が動脈硬化で狭くなり、歩くと足が痛くなる病気。", "treatment": ["禁煙・運動療法", "抗血小板薬（シロスタゾールなど）", "危険因子（血圧・糖尿病・脂質）の管理"], "flow": "歩くとふくらはぎが痛く立ち止まると治る＋足の脈が弱い → ABI低下 → 閉塞性動脈硬化症 → 抗血小板薬・禁煙・運動"},
+  esophageal_ca: {"overview": "食道にできるがん。大量飲酒と喫煙が大きな危険因子。", "treatment": ["上部消化管内視鏡と生検", "CT・PETで病期診断", "内視鏡切除・手術・化学放射線療法"], "flow": "進行する嚥下障害＋体重減少 → 内視鏡 → 食道がん → 病期に応じた治療"},
+  hyperprolactinemia: {"overview": "プロラクチン（乳汁を出すホルモン）が増えて、月経が止まったり乳汁が出たりする状態。下垂体の腺腫が原因のことが多い。", "treatment": ["妊娠・薬剤・甲状腺機能低下症の除外", "頭部MRI", "カベルゴリン（ドパミン作動薬）"], "flow": "無月経＋乳汁漏出 → 妊娠反応陰性・プロラクチン高値・MRIで下垂体腺腫 → カベルゴリン"},
   appendicitis: {
     overview: '虫垂の閉塞と感染による炎症。心窩部の痛みが右下腹部へ移動するのが典型。進行すると穿孔して腹膜炎になる。',
     treatment: [

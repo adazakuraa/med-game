@@ -565,8 +565,8 @@ export function procedure(enc, procId) {
       addLog(enc, 'exam', ok ? '修正Valsalva法の直後に頻拍が停止し、洞調律（約80/分）に戻った。' : d.id === 'svt' ? '修正Valsalva法を行ったが、頻拍は停止しなかった。' : '修正Valsalva法を行ったが、変化はなかった。', { label: '迷走神経刺激', positive: ok });
     }
     else if (P.id === 'nasal_pack') addLog(enc, 'exam', d.id === 'epistaxis' ? '鼻翼を圧迫し、血管収縮薬を浸したガーゼを挿入した。出血は止まった。' : '鼻腔にガーゼを入れたが、特に出血はなかった。', { label: '鼻出血の止血', positive: d.id === 'epistaxis' });
-    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx'].includes(d.id) });
-    else if (P.id === 'wound_care') addLog(enc, 'exam', ['burn', 'animal_bite', 'diabetic_foot'].includes(d.id) ? '創部を十分に洗浄し、被覆した。' : '創部を確認したが、処置が必要な傷はなかった。', { label: '創処置', positive: ['burn', 'animal_bite', 'diabetic_foot'].includes(d.id) });
+    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) });
+    else if (P.id === 'wound_care') addLog(enc, 'exam', ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) ? '創部を十分に洗浄し、被覆した。' : '創部を確認したが、処置が必要な傷はなかった。', { label: '創処置', positive: ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) });
     else if (P.id === 'ear_clean') addLog(enc, 'exam', d.id === 'cerumen' ? '硬い耳垢を除去した。直後から聞こえが良くなった。' : d.id === 'otitis_externa' ? '外耳道の耳漏と落屑を清掃した。' : '耳垢はほとんどなかった。', { label: '耳垢除去', positive: ['cerumen', 'otitis_externa'].includes(d.id) });
     else if (P.id === 'incision') addLog(enc, 'exam', ['atheroma', 'paronychia'].includes(d.id) ? '局所麻酔下に切開し、悪臭のある膿と粥状物を排出した。' : '切開したが、膿は出なかった。', { label: '切開排膿', positive: ['atheroma', 'paronychia'].includes(d.id) });
     else if (P.id === 'paring') addLog(enc, 'exam', d.id === 'corn' ? '角質の芯を削り取った。歩く痛みがすぐ軽くなった。' : '削ったが、変化はなかった。', { label: '鶏眼の処置', positive: d.id === 'corn' });
@@ -603,6 +603,7 @@ function consultReply(enc, dept) {
     return `${name}：${fmt(res.text, enc.patient.vars)}`;
   }
   if (dept === 'surgery') {
+    if (!d.surgeon && d.consult?.surgery) { enc.consultRevealT ??= enc.t; return fmt(d.consult.surgery, p.vars); }
     if (!d.surgeon) return '外科：現時点で外科的治療を要する所見は乏しいと考えます。内科的な精査・治療をお願いします。';
     if (st.surgeryAt || st.surgeryDone) return '外科：手術の予定はすでに組んでいます。';
     const imaged = enc.tests.some((x) => x.done && ['abd_us', 'abd_ct_contrast', 'abd_ct_plain'].includes(x.id) && x.result.abnormal);

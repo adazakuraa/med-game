@@ -568,6 +568,27 @@ export const DRUGS = [
     info: '統合失調症・双極性障害の躁状態に5〜10mg 1日1回。糖尿病には禁忌（高血糖）。体重増加・眠気・まれに悪性症候群。',
   },
   {
+    id: 'insulin_basal', generic: 'インスリン グラルギン（持効型）', brands: ['ランタス'], cls: 'インスリン（持効型・皮下注）', tags: ['insulin_sc'],
+    routes: { sc: { unit: '単位', min: 4, max: 40, freqs: ['q24h'], maxDaily: 60 } },
+    info: '1日1回皮下注。少量から始め、空腹時血糖を見て調整。低血糖に注意。1型糖尿病では超速効型と組み合わせる（強化インスリン療法）。',
+  },
+  {
+    id: 'cilostazol', generic: 'シロスタゾール', brands: ['プレタール'], cls: '抗血小板薬（PDE3阻害）', tags: ['antiplatelet', 'cilostazol'],
+    routes: { po: { unit: 'mg', min: 50, max: 100, freqs: ['q12h'], maxDaily: 200 } },
+    contra: ['severe_hf'],
+    info: '閉塞性動脈硬化症の間欠性跛行に1回100mgを1日2回。頻脈・頭痛。うっ血性心不全には禁忌。',
+  },
+  {
+    id: 'ivig', generic: '免疫グロブリン大量療法', brands: ['献血ヴェノグロブリン'], cls: '免疫グロブリン製剤', tags: ['ivig'],
+    routes: { iv: { unit: 'g/kg', min: 0.4, max: 0.4, freqs: ['q24h'], maxDaily: 0.4 } },
+    info: 'ギラン・バレー症候群・ITPなどに0.4g/kg/日を5日間点滴。血栓症・腎障害・無菌性髄膜炎に注意。',
+  },
+  {
+    id: 'cabergoline', generic: 'カベルゴリン', brands: ['カバサール'], cls: 'ドパミン作動薬', tags: ['dopamine_agonist'],
+    routes: { po: { unit: 'mg', min: 0.25, max: 1, freqs: ['once'], maxDaily: 1 } }, effectHours: 168,
+    info: '高プロラクチン血症に週1回0.25mgから。吐き気・起立性低血圧。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
