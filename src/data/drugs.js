@@ -4,6 +4,7 @@
 // routes[経路] = { unit, min, max, freqs, maxDaily }  min/max は1回量（持続投与は速度）
 // covers: 抗菌スペクトラム（ゲーム内で使用する病原体キー）
 //   spn=肺炎球菌, hinf=インフルエンザ菌, ecoli=感受性大腸菌, esbl=ESBL産生菌にも有効, anaerobe=嫌気性菌, atypical=非定型
+//   pseudo=緑膿菌, legionella=レジオネラ, tp=梅毒トレポネーマ, bordetella=百日咳菌
 // contra: 禁忌・慎重投与ルールID（engine/pharm.js で判定）
 // interact: 相互作用（患者の常用薬タグと照合）
 export const FREQS = {
@@ -46,7 +47,7 @@ export const DRUGS = [
   {
     id: 'mepm', generic: 'メロペネム', brands: ['メロペン'], cls: '抗菌薬（カルバペネム系）', allergy: 'carbapenem', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 1000, freqs: ['q12h', 'q8h'], maxDaily: 3000 } },
-    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'gpc'],
+    covers: ['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'gpc', 'pseudo'],
     renal: [{ crclBelow: 50, maxDaily: 2000, text: 'CrCl 26〜50: 1g 12時間毎' }, { crclBelow: 26, maxDaily: 1000, text: 'CrCl 10〜25: 0.5g 12時間毎' }],
     interact: [{ tag: 'valproate', level: 'harm', msg: 'バルプロ酸の血中濃度低下（併用禁忌）' }],
     info: '通常1日1.5〜3gを3回に分割。広域抗菌薬であり、狭域薬で治療可能な場合は温存すべき。',
@@ -61,7 +62,7 @@ export const DRUGS = [
   {
     id: 'lvfx', generic: 'レボフロキサシン', brands: ['クラビット'], cls: '抗菌薬（ニューキノロン系）', allergy: 'quinolone', abx: true, tags: ['fq'],
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q24h'], maxDaily: 500 }, iv: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia'], resistKey: 'fqR',
+    covers: ['spn', 'hinf', 'ecoli', 'atypical', 'chlamydia', 'legionella'], resistKey: 'fqR',
     renal: [{ crclBelow: 50, maxDaily: 250, text: 'CrCl 20〜49: 初日500mg、以後250mg 1日1回' }, { crclBelow: 20, maxDaily: 125, text: 'CrCl <20: 初日500mg、以後250mg 2日に1回' }],
     contra: ['pregnancy', 'quinolone_child'],
     interact: [
@@ -74,7 +75,7 @@ export const DRUGS = [
   {
     id: 'ampc', generic: 'アモキシシリン', brands: ['サワシリン', 'パセトシン'], cls: '抗菌薬（ペニシリン系・経口）', allergy: 'penicillin', abx: true,
     routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q8h', 'q6h'], maxDaily: 2000 } },
-    covers: ['spn', 'hinf', 'gpc'],
+    covers: ['spn', 'hinf', 'gpc', 'tp'],
     renal: [{ crclBelow: 30, maxDaily: 1000, text: 'CrCl <30: 投与間隔を12時間毎に延長' }],
     info: '通常1回250mgを1日3〜4回。肺炎球菌性肺炎の外来治療では高用量（1回500mg 1日3〜4回）が推奨される。',
   },
@@ -95,7 +96,7 @@ export const DRUGS = [
   {
     id: 'azm', generic: 'アジスロマイシン', brands: ['ジスロマック'], cls: '抗菌薬（マクロライド系）', allergy: 'macrolide', abx: true,
     routes: { po: { unit: 'mg', min: 500, max: 500, freqs: ['q24h'], maxDaily: 500 } },
-    covers: ['atypical', 'chlamydia'],
+    covers: ['atypical', 'chlamydia', 'legionella', 'bordetella'],
     interact: [{ tag: 'qt', level: 'warn', msg: 'QT延長作用のある薬剤との併用に注意' }],
     info: '1回500mgを1日1回、3日間。国内の肺炎球菌はマクロライド耐性率が高く、単独での肺炎球菌治療は不適。',
   },
@@ -316,6 +317,278 @@ export const DRUGS = [
     info: '脂質異常症・冠動脈疾患の二次予防に10mg 1日1回から。筋肉痛・CK上昇・肝障害に注意。',
   },
   {
+    id: 'vcm_po', generic: 'バンコマイシン（内服）', brands: ['塩酸バンコマイシン散'], cls: '抗菌薬（C. difficile感染症）', tags: ['cdiff_tx'],
+    routes: { po: { unit: 'mg', min: 125, max: 500, freqs: ['q6h'], maxDaily: 2000 } },
+    info: 'C. difficile感染症に1回125mgを1日4回、10日間。内服では腸管からほとんど吸収されない（点滴では腸に届かない）。',
+  },
+  {
+    id: 'clopidogrel', generic: 'クロピドグレル', brands: ['プラビックス'], cls: '抗血小板薬', tags: ['antiplatelet'],
+    routes: { po: { unit: 'mg', min: 75, max: 300, freqs: ['once', 'q24h'], maxDaily: 300 } },
+    info: '脳梗塞・TIAの再発予防に75mg 1日1回（急性期は初回300mg）。軽症脳梗塞・高リスクTIAではアスピリンと3週間程度併用（DAPT）。',
+  },
+  {
+    id: 'mannitol', generic: 'D-マンニトール', brands: ['マンニットール'], cls: '浸透圧利尿薬', tags: ['osmotic'],
+    routes: { iv: { unit: 'g/kg', min: 0.5, max: 1.5, freqs: ['once'], maxDaily: 2 } },
+    info: '急性緑内障発作・脳浮腫に0.5〜1.5g/kgを30〜60分で点滴。心不全・脱水・腎不全に注意。',
+  },
+  {
+    id: 'acetazolamide', generic: 'アセタゾラミド', brands: ['ダイアモックス'], cls: '炭酸脱水酵素阻害薬', tags: ['cai'],
+    routes: { iv: { unit: 'mg', min: 250, max: 500, freqs: ['once', 'q12h'], maxDaily: 1000 } },
+    info: '緑内障発作で眼圧を下げる（房水産生を抑える）。250〜500mgを静注。',
+  },
+  {
+    id: 'pilocarpine', generic: 'ピロカルピン点眼', brands: ['サンピロ'], cls: '縮瞳薬（点眼）', tags: ['miotic'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['once', 'q6h', 'q4h'], maxDaily: 6 } },
+    info: '急性閉塞隅角緑内障で縮瞳させて隅角を開く。1%を1回1滴。',
+  },
+  {
+    id: 'acyclovir', generic: 'アシクロビル（注）', brands: ['ゾビラックス'], cls: '抗ヘルペスウイルス薬', tags: ['antiviral_hsv', 'antiviral_hsv_iv'],
+    routes: { iv: { unit: 'mg/kg', min: 5, max: 10, freqs: ['q8h'], maxDaily: 30 } },
+    renal: [{ crclBelow: 50, maxDaily: 20, text: 'CrCl 25〜50: 10mg/kg 12時間毎' }, { crclBelow: 25, maxDaily: 10, text: 'CrCl 10〜25: 10mg/kg 24時間毎' }],
+    info: '単純ヘルペス脳炎に10mg/kgを8時間毎に1時間以上かけて点滴、14〜21日間。疑った時点で開始する。腎障害（結晶尿）予防に十分な補液。',
+  },
+  {
+    id: 'amiodarone', generic: 'アミオダロン（注）', brands: ['アンカロン'], cls: '抗不整脈薬', tags: ['antiarrhythmic'],
+    routes: { iv: { unit: 'mg', min: 125, max: 300, freqs: ['once'], maxDaily: 1250 } },
+    info: '血行動態が安定した心室頻拍に125mgを10分かけて静注し、持続投与へ。心停止（VF/無脈性VT）では300mg静注。低血圧・徐脈・QT延長に注意。',
+  },
+  {
+    id: 'vasopressin_like', generic: 'テルリプレシン類（門脈圧低下薬）', brands: ['（国内ではバソプレシン等）'], cls: '門脈圧低下薬', tags: ['portal'],
+    routes: { iv: { unit: '単位/分', min: 0.1, max: 0.4, freqs: ['cont'] } },
+    contra: ['coronary'],
+    info: '食道静脈瘤破裂で門脈圧を下げて出血を減らす。虚血性心疾患に注意。',
+  },
+  {
+    id: 'limaprost', generic: 'リマプロスト', brands: ['オパルモン'], cls: '血管拡張薬（プロスタグランジンE1）', tags: ['lss_tx'],
+    routes: { po: { unit: 'μg', min: 5, max: 5, freqs: ['q8h'], maxDaily: 15 } },
+    info: '腰部脊柱管狭窄症の下肢のしびれ・間欠性跛行に1回5μgを1日3回。出血傾向に注意。',
+  },
+  {
+    id: 'silodosin', generic: 'シロドシン', brands: ['ユリーフ'], cls: '前立腺肥大症治療薬（α1遮断薬）', tags: ['alpha1'],
+    routes: { po: { unit: 'mg', min: 4, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '前立腺肥大症の排尿障害に1回4mgを1日2回。射精障害・起立性低血圧に注意。',
+  },
+  {
+    id: 'relugolix', generic: 'レルゴリクス', brands: ['レルミナ'], cls: '子宮筋腫治療薬（GnRHアンタゴニスト）', tags: ['fibroid_tx'],
+    routes: { po: { unit: 'mg', min: 40, max: 40, freqs: ['q24h'], maxDaily: 40 } },
+    contra: ['pregnancy'],
+    info: '子宮筋腫の過多月経・貧血・疼痛に40mg 1日1回（最長6か月：骨量減少）。更年期様症状に注意。',
+  },
+  {
+    id: 'clotrimazole_vag', generic: 'クロトリマゾール腟錠', brands: ['エンペシド腟錠'], cls: '抗真菌薬（腟錠）', tags: ['antifungal_vag'],
+    routes: { top: { unit: 'mg', min: 100, max: 100, freqs: ['q24h'], maxDaily: 100 } },
+    info: '外陰腟カンジダ症に1日1回100mgを腟内に6日間。外陰部にはクリームを併用。',
+  },
+  {
+    id: 'steroid_oint', generic: 'ベタメタゾン吉草酸エステル軟膏', brands: ['リンデロンV軟膏'], cls: 'ステロイド外用薬（strong）', tags: ['topical_steroid'],
+    routes: { top: { unit: 'g', min: 0.5, max: 5, freqs: ['q12h', 'q24h'], maxDaily: 10 } },
+    info: '湿疹・皮膚炎に1日1〜2回塗布。顔面・陰部は弱めのランクを。真菌感染・疥癬には悪化させるので使わない。',
+  },
+  {
+    id: 'terbinafine_cream', generic: 'テルビナフィンクリーム', brands: ['ラミシールクリーム'], cls: '抗真菌薬（外用）', tags: ['topical_antifungal'],
+    routes: { top: { unit: 'g', min: 0.5, max: 2, freqs: ['q24h'], maxDaily: 2 } },
+    info: '足白癬に1日1回、症状がない部分も含めて足全体に塗る。治っても1〜2か月続ける。',
+  },
+  {
+    id: 'ivermectin', generic: 'イベルメクチン', brands: ['ストロメクトール'], cls: '駆虫薬（疥癬）', tags: ['scabicide'],
+    routes: { po: { unit: 'μg/kg', min: 200, max: 200, freqs: ['once'], maxDaily: 200 } }, effectHours: 336,
+    info: '疥癬に約200μg/kgを空腹時に1回内服し、1週間後にもう1回。フェノトリンローションも有効。',
+  },
+  {
+    id: 'eye_abx', generic: 'レボフロキサシン点眼', brands: ['クラビット点眼液'], cls: '抗菌点眼薬', tags: ['eye_abx'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q8h', 'q6h'], maxDaily: 4 } },
+    info: '細菌性結膜炎に1回1滴を1日3回。',
+  },
+  {
+    id: 'eye_antiallergy', generic: 'オロパタジン点眼', brands: ['パタノール点眼液'], cls: '抗アレルギー点眼薬', tags: ['eye_antiallergy'],
+    routes: { top: { unit: '滴', min: 1, max: 2, freqs: ['q6h'], maxDaily: 8 } },
+    info: 'アレルギー性結膜炎に1回1〜2滴を1日4回。',
+  },
+  {
+    id: 'levodopa', generic: 'レボドパ・カルビドパ', brands: ['ネオドパストン', 'メネシット'], cls: '抗パーキンソン病薬', tags: ['levodopa'],
+    routes: { po: { unit: 'mg', min: 100, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: 'パーキンソン病に1回100mgを1日3回から。吐き気・起立性低血圧・幻覚、長期ではジスキネジア・wearing-offに注意。急な中止は悪性症候群の危険。',
+  },
+  {
+    id: 'donepezil_rx', generic: 'ドネペジル', brands: ['アリセプト'], cls: '認知症治療薬（コリンエステラーゼ阻害薬）', tags: ['achei'],
+    routes: { po: { unit: 'mg', min: 3, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: 'アルツハイマー型認知症に3mgから開始し、1〜2週後に5mg。吐き気・下痢・徐脈に注意。',
+  },
+  {
+    id: 'mecobalamin', generic: 'メコバラミン（注・内服）', brands: ['メチコバール'], cls: 'ビタミンB12製剤', tags: ['b12'],
+    routes: { im: { unit: 'μg', min: 500, max: 1000, freqs: ['q24h', 'once'], maxDaily: 1000 }, po: { unit: 'μg', min: 500, max: 500, freqs: ['q8h'], maxDaily: 1500 } },
+    info: 'ビタミンB12欠乏症に500〜1000μgを筋注（週3回など）、その後維持。胃切除後は吸収されないので注射が基本だが、大量内服でも補える。',
+  },
+  {
+    id: 'dapagliflozin', generic: 'ダパグリフロジン', brands: ['フォシーガ'], cls: 'SGLT2阻害薬', tags: ['sglt2'],
+    routes: { po: { unit: 'mg', min: 10, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '慢性腎臓病・心不全・2型糖尿病に10mg 1日1回。脱水・尿路/性器感染・正常血糖ケトアシドーシス（シックデイは休薬）に注意。',
+  },
+  {
+    id: 'telmisartan', generic: 'テルミサルタン', brands: ['ミカルディス'], cls: '降圧薬（ARB）', tags: ['arb'],
+    routes: { po: { unit: 'mg', min: 20, max: 80, freqs: ['q24h'], maxDaily: 80 } },
+    contra: ['pregnancy', 'hyperk'],
+    info: '高血圧・蛋白尿のある慢性腎臓病に20〜40mg 1日1回。開始後に腎機能とKを確認。妊婦には禁忌。',
+  },
+  {
+    id: 'mesalazine', generic: 'メサラジン', brands: ['リアルダ', 'ペンタサ'], cls: '潰瘍性大腸炎治療薬（5-ASA）', tags: ['5asa'],
+    routes: { po: { unit: 'mg', min: 2400, max: 4800, freqs: ['q24h'], maxDaily: 4800 } },
+    info: '潰瘍性大腸炎の寛解導入・維持に2400〜4800mg 1日1回（リアルダ）。まれに5-ASA不耐（発熱・下痢の悪化）。',
+  },
+  {
+    id: 'nac', generic: 'アセチルシステイン（内服液）', brands: ['アセチルシステイン内用液'], cls: '解毒薬（アセトアミノフェン中毒）', tags: ['nac'],
+    routes: { po: { unit: 'mg/kg', min: 70, max: 140, freqs: ['q4h', 'once'], maxDaily: 560 } },
+    info: 'アセトアミノフェン中毒に初回140mg/kg、以後70mg/kgを4時間毎に17回。服用後8時間以内の開始で肝障害を防げる（遅れても投与）。',
+  },
+  {
+    id: 'carbamazepine', generic: 'カルバマゼピン', brands: ['テグレトール'], cls: '抗てんかん薬（三叉神経痛）', tags: ['tn_tx'],
+    routes: { po: { unit: 'mg', min: 100, max: 400, freqs: ['q12h', 'q24h'], maxDaily: 800 } },
+    info: '三叉神経痛に1日200〜400mgから。眠気・ふらつき・低Na血症、重症薬疹（HLA-A*31:01）・血球減少に注意。',
+  },
+  {
+    id: 'mgso4', generic: '硫酸マグネシウム（注）', brands: ['マグセント'], cls: '子癇予防薬', tags: ['mgso4'],
+    routes: { iv: { unit: 'g/時', min: 1, max: 2, freqs: ['cont'] } },
+    info: '重症妊娠高血圧腎症で子癇（けいれん）を予防する。初回4gを20分かけて静注し、1〜2g/時で持続。呼吸抑制・腱反射消失（Mg中毒）に注意。',
+  },
+  {
+    id: 'tetanus', generic: '破傷風トキソイド', brands: ['沈降破傷風トキソイド'], cls: 'ワクチン（破傷風予防）', tags: ['tetanus'],
+    routes: { im: { unit: 'mL', min: 0.5, max: 0.5, freqs: ['once'], maxDaily: 0.5 } }, effectHours: 720,
+    info: '汚染創・咬傷で、破傷風の予防接種歴が不明・10年以上前なら0.5mL筋注（深い汚染創で未接種なら破傷風免疫グロブリンも）。',
+  },
+  {
+    id: 'ics_laba', generic: 'ブデソニド・ホルモテロール吸入', brands: ['シムビコート'], cls: '吸入ステロイド・長時間作用性β2刺激薬', tags: ['ics'],
+    routes: { inh: { unit: '吸入', min: 1, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '喘息（咳喘息を含む）の長期管理に1回1〜2吸入を1日2回。吸入後はうがい（口腔カンジダ予防）。',
+  },
+  {
+    id: 'mgo_rx', generic: '酸化マグネシウム', brands: ['マグミット'], cls: '緩下薬（浸透圧性）', tags: ['laxative'],
+    routes: { po: { unit: 'mg', min: 330, max: 660, freqs: ['q8h', 'q12h'], maxDaily: 2000 } },
+    info: '便秘に1日1〜2gを分割。腎機能低下・高齢者では高Mg血症に注意（定期的に血清Mg）。',
+  },
+  {
+    id: 'mirabegron', generic: 'ミラベグロン', brands: ['ベタニス'], cls: '過活動膀胱治療薬（β3作動薬）', tags: ['beta3'],
+    routes: { po: { unit: 'mg', min: 25, max: 50, freqs: ['q24h'], maxDaily: 50 } },
+    info: '過活動膀胱に50mg 1日1回（高齢者・腎機能低下は25mg）。抗コリン薬と違い認知機能・口渇・便秘への影響が少ない。',
+  },
+  {
+    id: 'heparinoid', generic: 'ヘパリン類似物質（保湿剤）', brands: ['ヒルドイド'], cls: '保湿剤', tags: ['emollient'],
+    routes: { top: { unit: 'g', min: 1, max: 10, freqs: ['q12h', 'q24h'], maxDaily: 25 } },
+    info: 'アトピー性皮膚炎・乾燥肌に1日1〜数回塗布。入浴後すぐに塗ると効果的。',
+  },
+  {
+    id: 'alendronate', generic: 'アレンドロン酸', brands: ['フォサマック', 'ボナロン'], cls: '骨粗鬆症治療薬（ビスホスホネート）', tags: ['bisphosphonate_po'],
+    routes: { po: { unit: 'mg', min: 35, max: 35, freqs: ['once'], maxDaily: 35 } }, effectHours: 168,
+    info: '骨粗鬆症に週1回35mg。起床時に水180mLで内服し、30分は横にならず飲食しない（食道潰瘍予防）。顎骨壊死に注意（歯科治療前に相談）。',
+  },
+  {
+    id: 'febuxostat', generic: 'フェブキソスタット', brands: ['フェブリク'], cls: '尿酸降下薬', tags: ['urate_lowering'],
+    routes: { po: { unit: 'mg', min: 10, max: 60, freqs: ['q24h'], maxDaily: 60 } },
+    info: '高尿酸血症・痛風に10mgから開始し、尿酸値を見ながら40mgまで増量（急に下げると痛風発作）。',
+  },
+  {
+    id: 'cfpm', generic: 'セフェピム', brands: ['マキシピーム'], cls: '抗菌薬（第4世代セフェム・抗緑膿菌）', allergy: 'cephem', abx: true,
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 6000 } },
+    covers: ['spn', 'hinf', 'ecoli', 'gpc', 'pseudo'],
+    renal: [{ crclBelow: 50, maxDaily: 4000, text: 'CrCl 30〜50: 2g 12時間毎' }, { crclBelow: 30, maxDaily: 2000, text: 'CrCl 10〜29: 2g 24時間毎（脳症に注意）' }],
+    info: '発熱性好中球減少症・院内感染など緑膿菌をカバーしたいときに1回2gを8〜12時間毎。腎機能低下で減量しないと脳症（意識障害・けいれん）。',
+  },
+  {
+    id: 'bpg', generic: 'ベンジルペニシリンベンザチン（筋注）', brands: ['ステルイズ'], cls: '抗菌薬（持続性ペニシリン）', allergy: 'penicillin', abx: true,
+    routes: { im: { unit: '万単位', min: 240, max: 240, freqs: ['once'], maxDaily: 240 } }, effectHours: 336,
+    covers: ['tp'],
+    info: '早期梅毒に240万単位を1回筋注。治療後数時間で発熱などのJarisch-Herxheimer反応が起こることがある。',
+  },
+  {
+    id: 'hydrocortisone', generic: 'ヒドロコルチゾン（注）', brands: ['ソル・コーテフ'], cls: '副腎皮質ステロイド', tags: ['hydrocortisone', 'steroid_sys'],
+    routes: { iv: { unit: 'mg', min: 50, max: 100, freqs: ['once', 'q6h', 'q8h'], maxDaily: 300 } },
+    info: '副腎クリーゼに100mgを静注し、以後50mgを6時間毎（または200mg/日持続）。甲状腺クリーゼ・敗血症性ショックでも使う。',
+  },
+  {
+    id: 'kI', generic: 'ヨウ化カリウム', brands: ['ヨウ化カリウム丸'], cls: '抗甲状腺薬（無機ヨウ素）', tags: ['iodine'],
+    routes: { po: { unit: 'mg', min: 50, max: 200, freqs: ['q24h', 'q8h'], maxDaily: 300 } },
+    info: '甲状腺クリーゼで甲状腺ホルモンの放出を抑える。チアマゾールの投与後（1時間以上あけて）に開始する。',
+  },
+  {
+    id: 'artemether', generic: 'アルテメテル・ルメファントリン', brands: ['リアメット'], cls: '抗マラリア薬', tags: ['antimalarial'],
+    routes: { po: { unit: '錠', min: 4, max: 4, freqs: ['q12h'], maxDaily: 8 } },
+    info: '合併症のない熱帯熱マラリアに1回4錠を3日間で計6回、食後に。重症マラリアはアーテスネート静注（国内では限られた施設）。',
+  },
+  {
+    id: 'dantrolene', generic: 'ダントロレン（注）', brands: ['ダントリウム'], cls: '筋弛緩薬（悪性症候群・悪性高熱症）', tags: ['dantrolene'],
+    routes: { iv: { unit: 'mg/kg', min: 1, max: 2.5, freqs: ['once', 'q6h'], maxDaily: 10 } },
+    info: '悪性症候群・悪性高熱症に1〜2.5mg/kgを静注。肝障害に注意。',
+  },
+  {
+    id: 'mtx', generic: 'メトトレキサート', brands: ['リウマトレックス'], cls: '抗リウマチ薬（csDMARD）', tags: ['dmard'],
+    routes: { po: { unit: 'mg', min: 6, max: 16, freqs: ['once'], maxDaily: 16 } }, effectHours: 168,
+    contra: ['pregnancy', 'severe_renal'],
+    info: '関節リウマチの第一選択。週1回（1〜2日に分割）6〜8mgから。葉酸を併用。間質性肺炎・骨髄抑制・肝障害、腎機能低下で減量。妊娠中は禁忌。',
+  },
+  {
+    id: 'hcq', generic: 'ヒドロキシクロロキン', brands: ['プラケニル'], cls: '抗マラリア薬（SLE治療）', tags: ['hcq'],
+    routes: { po: { unit: 'mg', min: 200, max: 400, freqs: ['q24h'], maxDaily: 400 } },
+    info: 'SLEの皮膚・関節症状や再燃予防に。網膜症に注意して定期的な眼科検査。',
+  },
+  {
+    id: 'spironolactone', generic: 'スピロノラクトン', brands: ['アルダクトンA'], cls: 'ミネラルコルチコイド受容体拮抗薬', tags: ['mra'],
+    contra: ['hyperk'],
+    routes: { po: { unit: 'mg', min: 25, max: 100, freqs: ['q24h'], maxDaily: 100 } },
+    info: '原発性アルドステロン症（片側性でなければ）・心不全・肝硬変の腹水に。高K血症・女性化乳房に注意。',
+  },
+  {
+    id: 'ear_drop', generic: 'オフロキサシン点耳液', brands: ['タリビッド耳科用液'], cls: '抗菌点耳薬', tags: ['ear_abx'],
+    routes: { top: { unit: '滴', min: 6, max: 10, freqs: ['q12h'], maxDaily: 20 } },
+    info: '外耳炎・中耳炎（鼓膜穿孔）に1回6〜10滴を点耳し、約10分間耳浴。',
+  },
+  {
+    id: 'eye_steroid', generic: 'ベタメタゾン点眼', brands: ['リンデロン点眼液'], cls: 'ステロイド点眼薬', tags: ['eye_steroid'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q6h', 'q4h'], maxDaily: 6 } },
+    info: 'ぶどう膜炎などに。眼科医の管理下で使う（眼圧上昇・感染症の悪化・角膜ヘルペスの増悪に注意）。',
+  },
+  {
+    id: 'vitd_oint', generic: 'カルシポトリオール・ベタメタゾン配合（外用）', brands: ['ドボベット'], cls: '尋常性乾癬治療薬（外用）', tags: ['psoriasis_topical', 'topical_steroid'],
+    routes: { top: { unit: 'g', min: 1, max: 10, freqs: ['q24h'], maxDaily: 15 } },
+    info: '尋常性乾癬に1日1回塗布。広範囲・大量使用で高Ca血症に注意。',
+  },
+  {
+    id: 'ketoconazole_cream', generic: 'ケトコナゾールクリーム', brands: ['ニゾラールクリーム'], cls: '抗真菌薬（外用）', tags: ['topical_antifungal'],
+    routes: { top: { unit: 'g', min: 0.5, max: 3, freqs: ['q24h', 'q12h'], maxDaily: 5 } },
+    info: '脂漏性皮膚炎（マラセチア）・白癬に1日1〜2回塗布。',
+  },
+  {
+    id: 'adapalene', generic: 'アダパレン・過酸化ベンゾイル配合ゲル', brands: ['エピデュオゲル'], cls: '尋常性ざ瘡治療薬（外用）', tags: ['acne_topical'],
+    routes: { top: { unit: 'g', min: 0.5, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    contra: ['pregnancy'],
+    info: 'ニキビに1日1回就寝前に洗顔後、顔全体に塗布。乾燥・刺激感が最初の2週間に出やすい。妊婦には使わない。',
+  },
+  {
+    id: 'olanzapine', generic: 'オランザピン', brands: ['ジプレキサ'], cls: '抗精神病薬（非定型）', tags: ['antipsychotic'],
+    routes: { po: { unit: 'mg', min: 5, max: 20, freqs: ['q24h'], maxDaily: 20 } },
+    contra: ['dm_olz'],
+    info: '統合失調症・双極性障害の躁状態に5〜10mg 1日1回。糖尿病には禁忌（高血糖）。体重増加・眠気・まれに悪性症候群。',
+  },
+  {
+    id: 'insulin_basal', generic: 'インスリン グラルギン（持効型）', brands: ['ランタス'], cls: 'インスリン（持効型・皮下注）', tags: ['insulin_sc'],
+    routes: { sc: { unit: '単位', min: 4, max: 40, freqs: ['q24h'], maxDaily: 60 } },
+    info: '1日1回皮下注。少量から始め、空腹時血糖を見て調整。低血糖に注意。1型糖尿病では超速効型と組み合わせる（強化インスリン療法）。',
+  },
+  {
+    id: 'cilostazol', generic: 'シロスタゾール', brands: ['プレタール'], cls: '抗血小板薬（PDE3阻害）', tags: ['antiplatelet', 'cilostazol'],
+    routes: { po: { unit: 'mg', min: 50, max: 100, freqs: ['q12h'], maxDaily: 200 } },
+    contra: ['severe_hf'],
+    info: '閉塞性動脈硬化症の間欠性跛行に1回100mgを1日2回。頻脈・頭痛。うっ血性心不全には禁忌。',
+  },
+  {
+    id: 'ivig', generic: '免疫グロブリン大量療法', brands: ['献血ヴェノグロブリン'], cls: '免疫グロブリン製剤', tags: ['ivig'],
+    routes: { iv: { unit: 'g/kg', min: 0.4, max: 0.4, freqs: ['q24h'], maxDaily: 0.4 } },
+    info: 'ギラン・バレー症候群・ITPなどに0.4g/kg/日を5日間点滴。血栓症・腎障害・無菌性髄膜炎に注意。',
+  },
+  {
+    id: 'cabergoline', generic: 'カベルゴリン', brands: ['カバサール'], cls: 'ドパミン作動薬', tags: ['dopamine_agonist'],
+    routes: { po: { unit: 'mg', min: 0.25, max: 1, freqs: ['once'], maxDaily: 1 } }, effectHours: 168,
+    info: '高プロラクチン血症に週1回0.25mgから。吐き気・起立性低血圧。',
+  },
+  {
     id: 'levetiracetam', generic: 'レベチラセタム', brands: ['イーケプラ'], cls: '抗てんかん薬', tags: ['antiepileptic'],
     routes: { iv: { unit: 'mg', min: 500, max: 1500, freqs: ['q12h', 'once'], maxDaily: 3000 } },
     renal: [{ crclBelow: 50, maxDaily: 1500, text: 'CrCl<50: 減量' }],
@@ -371,7 +644,7 @@ export const DRUGS = [
   {
     id: 'doxy', generic: 'ドキシサイクリン', brands: ['ビブラマイシン'], cls: '抗菌薬（テトラサイクリン系）', allergy: 'tetracycline', abx: true,
     routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q12h', 'q24h'], maxDaily: 200 } },
-    covers: ['chlamydia', 'atypical'],
+    covers: ['chlamydia', 'atypical', 'tp'],
     contra: ['pregnancy'],
     interact: [{ tag: 'mgo', level: 'warn', msg: 'Mg・Al含有製剤で吸収低下', reduceRoute: 'po' }],
     info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',

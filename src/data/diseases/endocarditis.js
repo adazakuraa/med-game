@@ -1,0 +1,63 @@
+// 感染性心内膜炎
+// 出典: 日本循環器学会『感染性心内膜炎の予防と治療に関するガイドライン（2017年改訂版）』, 2023 ESC Guidelines for the management of endocarditis
+import { T, sepsisExtras } from './common.js';
+export default {
+  id: 'endocarditis', name: '感染性心内膜炎', dept: '循環器内科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [40, 85], ageMode: 'uniform', male: 0.65 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[30, 40], [42, 54], [56, 66]] },
+  refractoryP: [0, 0, 0.04],
+  comorb: { extra: { dm2: 0.3, ckd: 0.15 } },
+  organisms: ['gpc'], minAbxDays: 14,
+  vars: (rng) => ({ wk: rng.int(2, 5), why: rng.pick(['2か月前に歯を抜きました。', '以前から心臓弁膜症（僧帽弁逸脱症）と言われています。', '透析をしています。']) }),
+  cc: () => '熱が下がらない', ccKey: 'fever_unknown',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '{wk}週間前から37〜38度台の熱が続いています。近所の医院で抗菌薬をもらうと一時的に下がりますが、また上がります。' },
+    course: { p: 1, text: 'だんだん体重が減って、だるさが強くなりました。' },
+    fever: { p: 1, text: '夕方に熱が上がって、寒気がします。' },
+    chills: { p: 0.8, text: 'ガタガタ震えることがあります。' },
+    fatigue: { p: 1, text: 'とてもだるいです。' },
+    weightloss: { p: 0.7, text: '1か月で4kgやせました。' },
+    pmh: { p: 1, text: '{why}' },
+    meds: { p: 1, text: '医院で何度か抗菌薬（内服）をもらいました。' },
+    dyspnea: { p: [0, 0.3, 0.8], text: '最近、息切れがします。' },
+    cough: { p: 0, text: '' }, dysuria: { p: 0, text: '' }, sorethroat: { p: 0, text: '' }, diarrhea: { p: 0, text: '' },
+  },
+  exam: {
+    heart_ausc: { p: 1, text: '心尖部に全収縮期雑音（Levine 3/6）。' },
+    skin: { p: 0.6, text: '指先に有痛性の結節（Osler結節）、手掌に無痛性の小出血斑（Janeway病変）、爪下線状出血。' },
+    conjunctiva: { p: 0.4, text: '眼瞼結膜に点状出血。' },
+    gen_appear: { p: 1, text: 'やせて、だるそう。' },
+  },
+  vitals: { T: { to: [38, 39], k: 0.5 }, HR: { to: [100, 115], k: 1 } },
+  labs: { WBC: { to: [11000, 16000], k: 0.8 }, CRP: { to: [6, 15], k: 0.6 }, HB: { add: [-3, -1.5], k: 0.5 }, U_RBC: { to: [10, 30], k: 0.5 } },
+  tests: {
+    bcx: [{ p: 1, persist: true, text: '3セットすべてからStreptococcus mitis（緑色レンサ球菌）。' }],
+    echo: [{ p: 0.85, persist: true, text: '僧帽弁前尖に約12mmの可動性のある疣贅（ゆうぜい）。中等度の僧帽弁逆流。' }],
+  },
+  natural: 0.25,
+  therapies: [
+    T.abx(['gpc'], '血液培養（3セット）の後に抗菌薬（4〜6週間）', [24, 12, 4], -0.6, 12),
+    { id: 'cardio', label: '循環器内科・心臓血管外科と連携（手術適応の評価）', req: { fn: (enc) => enc.consults.some((c) => ['cardio', 'cvs'].includes(c.dept)) }, required: true, deadlineH: [48, 24, 12] },
+  ],
+  consult: { cardio: '循環器内科：血液培養陽性と僧帽弁の疣贅から、感染性心内膜炎（Duke基準で確定）です。経食道心エコーで詳しく評価します。抗菌薬（ペニシリン系またはセフトリアキソン）を4週間以上。心不全・大きな疣贅・塞栓症があれば早期手術を検討します。', cvs: '心臓血管外科：現時点では緊急手術の適応はありませんが、心不全や塞栓症が出れば手術を考えます。' },
+  dispo: (enc, ctx) => (ctx.initVit.SBP < 90 ? { ok: ['icu'], best: 'icu', why: '敗血症性ショック：ICU' } : { ok: ['admit', 'icu'], best: 'admit', why: '感染性心内膜炎：入院で4〜6週間の抗菌薬' }),
+  useful: ['bcx', 'echo', 'cbc', 'chem', 'crp', 'ua', 'ecg', 'cxr', 'head_mri', 'bnp'],
+  key: [['bcx'], ['echo']],
+  extrasOk: sepsisExtras,
+  teaching: [
+    '原因不明の発熱が続く・抗菌薬で一時的に下がるがすぐ再燃する、では感染性心内膜炎を疑い、抗菌薬の前に血液培養を3セット。',
+    '新しい心雑音、Osler結節・Janeway病変・爪下線状出血・結膜点状出血、塞栓症（脳梗塞・腎梗塞）が手がかり。',
+    'リスク：弁膜症・人工弁・歯科処置・透析・静注薬物・ペースメーカー。',
+    '診断はDuke基準（血液培養＋心エコーの疣贅）。治療は長期（4〜6週）の静注抗菌薬。心不全・大きな疣贅・難治例は手術。',
+    '「とりあえず抗菌薬」は培養を陰性にして診断を遅らせる。',
+  ],
+  sources: ['感染性心内膜炎の予防と治療に関するガイドライン（2017年改訂版）（日本循環器学会）', '2023 ESC Guidelines for the management of endocarditis'],
+  ideal: (p) => [
+    { a: 'test', ids: ['bcx', 'cbc', 'chem', 'crp', 'ua', 'echo', 'ecg'] },
+    { a: 'wait', min: 40 },
+    { a: 'rx', drugId: 'ctrx', route: 'iv', dose: 2000, freq: 'q24h', days: 28 },
+    { a: 'consult', dept: 'cardio', delayMin: 1 },
+  ],
+};

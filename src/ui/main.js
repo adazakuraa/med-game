@@ -189,7 +189,7 @@ function tabQuestions() {
 
 function tabExam() {
   const enc = game.enc;
-  const ex = EXAMS.filter((e) => e.region === ui.region && (!e.female || enc.patient.sex === 'F'));
+  const ex = EXAMS.filter((e) => e.region === ui.region && (!e.female || enc.patient.sex === 'F') && (!e.male || enc.patient.sex === 'M'));
   const rec = isRes() ? recommended(enc) : null;
   const regStar = (r) => rec && EXAMS.some((e) => e.region === r && rec.e.has(e.id) && !enc.examined[e.id]) ? '★' : '';
   return `<div class="chips">${EXAM_REGIONS.map((r) => `<button class="chip ${ui.region === r.id ? 'on' : ''}" data-a="region" data-v="${r.id}">${regStar(r.id)}${r.name}</button>`).join('')}</div>

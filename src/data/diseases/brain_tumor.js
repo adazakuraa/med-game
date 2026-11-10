@@ -1,0 +1,42 @@
+// 転移性脳腫瘍（初発けいれん）
+// 出典: 日本脳腫瘍学会/日本脳神経外科学会 資料, NICE NG99 Brain tumours
+export default {
+  id: 'brain_tumor', name: '脳腫瘍（転移性）による症候性てんかん', dept: '脳神経外科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [50, 80], ageMode: 'uniform', male: 0.55 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [36, 46], [46, 56]] },
+  refractoryP: [0, 0, 0.03], comorb: { extra: {} }, smokeP: 0.6, organisms: [],
+  vars: (rng) => { const leftHemi = rng.chance(0.5); return { leftHemi, paresis: leftHemi ? '右' : '左', hemi: leftHemi ? '左' : '右' }; },
+  cc: () => '初めてのけいれん', ccKey: 'seizure',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '（家族）1時間前、急に{paresis}手がピクピクし始め、そのまま全身がけいれんしました。2分ほどで止まりました。' },
+    seizure: { p: 1, text: '（家族）けいれんは初めてです。' },
+    character: { p: 1, text: '（家族）この1か月、朝の頭痛と、{paresis}手の使いにくさを訴えていました。' },
+    headache: { p: 1, text: '朝起きたときに頭が痛く、吐き気がします。' },
+    weakness: { p: 0.8, text: '{paresis}手に力が入りにくいです。' },
+    pmh: { p: 1, text: '1年前に肺がんの手術を受けました。' },
+    alcohol: { p: 1, text: 'お酒は飲みません。' }, meds: { p: 1, text: '飲んでいる薬はありません。' },
+    fever: { p: 0, text: '熱はありません。' }, trigger: { p: 0, text: '' }, lastnormal: { p: 1, text: '（家族）けいれんの前までは会話できていました。' },
+  },
+  exam: { gen_consc: { p: 1, text: '発作後でややぼんやりしているが、徐々に回復。' }, motor: { p: 0.8, text: '{paresis}上肢の軽い麻痺。' }, pupils: { p: 0.2, text: '眼底でうっ血乳頭。' }, neck_stiff: { p: 0, text: '' } },
+  tests: { head_ct: [{ p: 1, persist: true, text: '{hemi}前頭葉に周囲の浮腫を伴う約2.5cmの腫瘤（造影でリング状に増強）。' }], head_mri: [{ p: 1, persist: true, text: '{hemi}前頭葉と小脳に複数のリング状造影病変と広い浮腫（転移性脳腫瘍）。' }] },
+  natural: 0.2,
+  therapies: [
+    { id: 'aed', label: '抗てんかん薬（レベチラセタム）', req: { tag: 'antiepileptic' }, required: true, deadlineH: [6, 4, 2], effect: -0.3, lagH: 1 },
+    { id: 'steroid', label: '脳浮腫にステロイド（デキサメタゾン）', req: { anyTag: ['steroid', 'steroid_sys'] }, required: true, deadlineH: [12, 8, 6], effect: -0.4, lagH: 6 },
+    { id: 'nsurg', label: '脳神経外科コンサルト（手術・定位放射線治療の検討）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'nsurg') }, required: true, deadlineH: [48, 24, 24] },
+  ],
+  consult: { nsurg: '脳神経外科：肺がんからの多発性脳転移と考えます。抗てんかん薬とステロイドを続け、定位放射線治療（ガンマナイフなど）や手術を検討します。全身の病期評価も行います。' },
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: '症候性てんかん・脳腫瘍：入院で治療方針の決定' }),
+  useful: ['head_ct', 'head_mri', 'bs_poct', 'chem', 'cbc', 'ecg', 'chest_ct', 'tox'],
+  key: [['head_ct', 'head_mri'], ['bs_poct', 'chem']],
+  extrasOk: () => ['epilepsy_sz'],
+  teaching: [
+    '成人の初発けいれんは、必ず原因を探す：低血糖・電解質異常（Na・Ca）・アルコール離脱・薬剤・脳卒中・脳腫瘍・脳炎・頭部外傷。',
+    '部分発作で始まる（片側の手から始まる）・発作後の麻痺・数週間の朝の頭痛・がんの既往は脳腫瘍（転移）を疑い、頭部CT・造影MRI。',
+    '治療は抗てんかん薬、浮腫にはステロイド、脳神経外科で手術・放射線治療。',
+  ],
+  sources: ['NICE guideline NG99: Brain tumours (primary) and brain metastases in over 16s'],
+  ideal: () => [{ a: 'test', ids: ['bs_poct', 'chem', 'head_ct', 'cbc'] }, { a: 'rx', drugId: 'levetiracetam', route: 'iv', dose: 1000, freq: 'q12h', days: 7 }, { a: 'rx', drugId: 'dexa', route: 'iv', dose: 6.6, freq: 'q24h', days: 5 }, { a: 'consult', dept: 'nsurg', delayMin: 30 }],
+};

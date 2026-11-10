@@ -23,7 +23,7 @@ export function recommended(enc) {
   const female = enc.patient.sex === 'F' && enc.patient.age >= 12 && enc.patient.age <= 55;
   return {
     q: new Set(a.keyQ.filter((id) => id !== 'lmp' || female)),
-    e: new Set(a.keyE),
+    e: new Set(a.keyE.filter((id) => !(EXAM_BY_ID[id]?.male && enc.patient.sex !== 'M') && !(EXAM_BY_ID[id]?.female && enc.patient.sex !== 'F'))),
     t: new Set(a.keyT.filter((id) => id !== 'uhcg' || female)),
   };
 }

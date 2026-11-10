@@ -4,8 +4,8 @@ export default {
   id: 'pancreatitis', name: '急性膵炎', dept: '消化器内科',
   weight: 4, season: {}, minLevel: 2,
   demo: { age: [30, 80], ageMode: 'uniform', male: 0.65 },
-  sev: { p: [0.45, 0.35, 0.2], burden: [[25, 35], [40, 52], [58, 70]] },
-  refractoryP: [0, 0.03, 0.12],
+  sev: { p: [0.45, 0.35, 0.2], burden: [[25, 35], [40, 52], [56, 67]] },
+  refractoryP: [0, 0.03, 0.06],
   comorb: { extra: { htn: 0.3, dyslip: 0.3, dm2: 0.15 } },
   organisms: [],
   vars: (rng, sev, pt) => {

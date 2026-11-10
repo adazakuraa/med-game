@@ -1,0 +1,41 @@
+// 授乳期の化膿性乳腺炎
+// 出典: 日本助産師会/日本産婦人科学会資料, ABM Clinical Protocol #36 (2022)
+import { outpatient } from './common.js';
+export default outpatient({
+  id: 'mastitis', name: '化膿性乳腺炎（授乳期）', dept: '産婦人科', weight: 3,
+  demo: { age: [22, 40], ageMode: 'uniform', male: 0 },
+  noPregnancy: true,
+  sev: { p: [0.6, 0.35, 0.05], burden: [[22, 30], [30, 38], [38, 46]] },
+  comorb: { extra: {} },
+  organisms: ['gpc'], minAbxDays: 7, untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']), wk: rng.int(2, 8) }),
+  cc: () => '乳房が赤く腫れて痛い・熱がある', ccKey: 'breast',
+  history: {
+    onset: { p: 1, text: '出産して{wk}週間です。昨日から{side}の乳房が赤く腫れて痛く、熱が出ました。' },
+    character: { p: 1, text: '{side}乳房の一部が硬くしこって、ズキズキ痛みます。' },
+    fever: { p: 1, text: '38.5度です。寒気もします。' },
+    chills: { p: 0.7, text: '寒気がしました。' },
+    pmh: { p: 1, text: '母乳で育てています。最近、授乳の間隔があいてしまいました。乳首に小さな傷があります。' },
+    myalgia: { p: 0.6, text: '体の節々が痛いです。' },
+    meds: { p: 1, text: '特に飲んでいません。' },
+    lmp: { p: 1, text: '出産後、まだ生理は来ていません。' },
+  },
+  exam: { breast: { p: 1, text: '{side}乳房外側上部に熱感・発赤・圧痛を伴う硬結（約5cm）。波動は触れない。乳頭に小さな亀裂。' } },
+  vitals: { T: { to: [38.3, 39.2], k: 0.5 }, HR: { to: [95, 110], k: 1 } },
+  labs: { WBC: { to: [11000, 16000], k: 0.8 }, CRP: { to: [3, 10], k: 0.8 } },
+  tests: { breast_us: [{ p: 1, persist: true, text: '{side}乳腺の炎症性変化。膿瘍（液体貯留）はない。' }] },
+  natural: 0.1,
+  dynamics: (enc) => (enc.state.burden > 45 ? -0.1 : 0),
+  fluidLoss: () => 0,
+  therapies: [{ id: 'abx', label: '授乳（排乳）の継続と、ブドウ球菌をカバーする抗菌薬（セファレキシンなど）・鎮痛', req: { coverage: ['gpc'] }, effect: -0.8, lagH: 12, required: true, deadlineH: [24, 12, 8] }],
+  useful: ['cbc', 'crp', 'breast_us'], key: [['breast_us']],
+  dispo: () => ({ ok: ['home'], best: 'home', why: '化膿性乳腺炎：授乳を続けながら外来で抗菌薬（膿瘍があれば切開・穿刺排膿）' }),
+  teaching: [
+    '授乳期の乳房の発赤・熱感・有痛性のしこりと発熱は乳腺炎。乳汁のうっ滞から細菌感染（主に黄色ブドウ球菌）を起こす。',
+    '授乳・排乳を続けることが治療の基本（乳汁は赤ちゃんに安全）。24時間で改善しなければ抗菌薬（セファレキシンなど授乳中に使えるもの）。',
+    'エコーで膿瘍があれば穿刺・切開排膿。',
+    '授乳期でない女性の発赤・硬結・橙皮様皮膚は炎症性乳がんを除外する。',
+  ],
+  sources: ['ABM Clinical Protocol #36: The Mastitis Spectrum (2022)'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'crp', 'breast_us'] }, { a: 'rx', drugId: 'cex', route: 'po', dose: 500, freq: 'q6h', days: 10 }, { a: 'rx', drugId: 'apap_po', route: 'po', dose: 500, freq: 'q6h', days: 3 }],
+});

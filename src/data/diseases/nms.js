@@ -1,0 +1,47 @@
+// 悪性症候群
+// 出典: 厚生労働省『重篤副作用疾患別対応マニュアル 悪性症候群』
+export default {
+  id: 'nms', name: '悪性症候群', dept: '精神科',
+  weight: 1, season: { summer: 1.3 }, minLevel: 3,
+  demo: { age: [30, 80], ageMode: 'uniform', male: 0.55 },
+  sev: { p: [0.3, 0.45, 0.25], burden: [[36, 46], [48, 58], [60, 70]] },
+  refractoryP: [0, 0.03, 0.08],
+  comorb: { extra: {} },
+  organisms: [],
+  vars: (rng) => rng.pick([{ cause: '統合失調症で抗精神病薬（ハロペリドール）が1週間前に増量され', mode: 'ap' }, { cause: 'パーキンソン病の薬（レボドパ）を、入院中に急に中止され', mode: 'pd' }]),
+  cc: () => '高熱と体のこわばり、意識がおかしい', ccKey: 'altered_mental',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '（家族）2日前から熱が出て、体がこわばって動けなくなり、今日は呼びかけへの反応が鈍いです。' },
+    lastnormal: { p: 1, text: '（家族）3日前までは普段通りでした。' },
+    meds: { p: 1, text: '（家族）{cause}ました。' },
+    character: { p: 1, text: '（家族）汗が大量に出て、よだれが多いです。' },
+    fever: { p: 1, text: '（家族）39度台の熱です。' },
+    seizure: { p: 0, text: '（家族）けいれんはありません。' },
+    alcohol: { p: 1, text: '（家族）お酒は飲みません。' },
+    pmh: { p: 1, text: '（家族）{cause}ました。' },
+    headache: { p: 0, text: '' },
+  },
+  exam: { rigidity: { p: 1, text: '全身の著明な筋強剛（鉛管様）。振戦。' }, gen_consc: { p: 1, bySev: ['ぼんやりしている（JCS 3）。', '昏迷（JCS 10〜20）。', '刺激にもほとんど反応しない（JCS 100）。'] }, skin: { p: 1, text: '大量の発汗。' }, neck_stiff: { p: 0.2, text: '頸部の筋強剛はあるが、項部硬直とは区別が難しい。' } },
+  vitals: { T: { to: [39.2, 40.8], k: 0.4 }, HR: { to: [110, 130], k: 1 }, SBP: { to: [150, 175], k: 1 } },
+  labs: { CK: { add: [3000, 30000], k: 0.6 }, WBC: { to: [12000, 18000], k: 1 }, CR: { add: [0.3, 2], k: 1.2 }, K: { add: [0.2, 1.2], k: 1.5 } },
+  tests: { lp: [{ p: 1, text: '初圧 15cmH2O。細胞数 3/μL、蛋白・糖 正常（髄膜炎は否定的）。' }] },
+  natural: 0.45,
+  dynamics: (enc) => (enc.thStart?.stop != null && enc.t - enc.thStart.stop > 12 * 60 ? -1.0 : 0), // 原因薬の中止後、数日〜2週で改善
+  therapies: [
+    { id: 'stop', label: '原因薬の中止（中止が原因ならドパミン補充薬の再開）と冷却・大量補液', req: { fluidTotal: 1500 }, required: true, deadlineH: [4, 3, 2], effect: -0.4, lagH: 1 },
+    { id: 'dantrolene', label: 'ダントロレン（重症例）', req: { tag: 'dantrolene' }, required: (enc) => enc.patient.sev >= 1, deadlineH: [12, 6, 4], effect: -0.8, lagH: 2 },
+  ],
+  harmTags: { antiemetic: '悪性症候群にドパミン遮断薬（メトクロプラミド）' },
+  dispo: () => ({ ok: ['icu'], best: 'icu', why: '悪性症候群：ICUで冷却・補液・ダントロレン（横紋筋融解・腎不全に注意）' }),
+  useful: ['chem', 'lab_CK', 'cbc', 'ua', 'vbg', 'bcx', 'lp', 'head_ct', 'cxr', 'tox', 'thyroid'],
+  key: [['chem', 'lab_CK'], ['cbc']],
+  extrasOk: () => ['rhabdo', 'aki'],
+  teaching: [
+    '抗精神病薬の開始・増量、または抗パーキンソン病薬の急な中止の後の、高熱・筋強剛・意識障害・自律神経症状（発汗・頻脈・血圧変動）・CK著明上昇は悪性症候群。',
+    '原因薬を中止（抗パーキンソン病薬の中断が原因なら再開）し、冷却・大量補液・ダントロレン。横紋筋融解・腎不全・DICに注意。',
+    '鑑別：セロトニン症候群（SSRI・ミオクローヌス・腱反射亢進・急な発症）、熱中症、髄膜炎・脳炎、甲状腺クリーゼ、悪性高熱症。',
+  ],
+  sources: ['重篤副作用疾患別対応マニュアル 悪性症候群（厚生労働省）'],
+  ideal: () => [{ a: 'test', ids: ['chem', 'lab_CK', 'cbc', 'ua', 'vbg', 'bcx'] }, { a: 'fluid', fluidId: 'ns', mode: 'bolus', volume: 1000 }, { a: 'fluid', fluidId: 'ns', mode: 'cont', rate: 200 }, { a: 'rx', drugId: 'dantrolene', route: 'iv', dose: 1, freq: 'q6h', days: 3, when: 'sev>=1' }],
+};

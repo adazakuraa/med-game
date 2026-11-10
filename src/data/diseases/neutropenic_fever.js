@@ -1,0 +1,52 @@
+// 発熱性好中球減少症（がん化学療法中）
+// 出典: 日本臨床腫瘍学会『発熱性好中球減少症（FN）診療ガイドライン改訂第3版（2024）』
+import { T, sepsisExtras } from './common.js';
+export default {
+  id: 'neutropenic_fever', name: '発熱性好中球減少症', dept: '内科',
+  weight: 2, season: {}, minLevel: 3,
+  demo: { age: [40, 80], ageMode: 'uniform', male: 0.5 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[32, 42], [44, 56], [58, 68]] },
+  refractoryP: [0, 0.02, 0.05],
+  comorb: { extra: { cancer: 1 } },
+  organisms: ['ecoli', 'pseudo'], minAbxDays: 5,
+  vars: (rng) => ({ d: rng.int(8, 12), ca: rng.pick(['乳がん', '大腸がん', '悪性リンパ腫']) }),
+  cc: () => '抗がん剤治療中の発熱', ccKey: 'fever_unknown',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '{d}日前に{ca}の抗がん剤治療を受けました。今朝から38.5度の熱が出ました。' },
+    course: { p: 1, text: '寒気がして、だるさが強くなっています。' },
+    fever: { p: 1, text: '38.5度です。' },
+    chills: { p: 0.8, text: 'ガタガタ震えました。' },
+    pmh: { p: 1, text: '{ca}で化学療法中です。中心静脈ポートが入っています。' },
+    meds: { p: 1, text: '抗がん剤の治療中で、吐き気止めを飲んでいます。' },
+    cough: { p: 0.2, text: '少し咳があります。' },
+    dysuria: { p: 0.1, text: '排尿時の痛みはありません。' },
+    diarrhea: { p: 0.2, text: '少し下痢があります。' },
+    weightloss: { p: 0, text: '' }, nightsweat: { p: 0, text: '' }, travel: { p: 0, text: '' }, sickcontact: { p: 0, text: '' }, dyspnea: { p: [0, 0.2, 0.6], text: '少し息苦しいです。' },
+  },
+  exam: { gen_appear: { p: 1, bySev: ['だるそう。', 'ぐったりしている。', '顔色不良、冷汗。'] }, oral_mucosa: { p: 0.6, text: '口腔粘膜炎（口内炎）。' }, skin: { p: 0.4, text: '胸部のポート刺入部に発赤はない。' }, heart_ausc: { p: 0, text: '' } },
+  vitals: { T: { to: [38.4, 39.4], k: 0.5 }, HR: { to: [105, 125], k: 1 }, SBP: { to: [75, 92], k: 2 } },
+  labs: { WBC: { to: [400, 900], k: 0 }, NEUT: { to: [10, 30], k: 0 }, PLT: { mul: [0.3, 0.6], k: 0 }, HB: { add: [-3, -1.5], k: 0 }, CRP: { to: [4, 15], k: 0.8 } },
+  tests: { bcx: [{ p: 0.4, text: '2セット中2セットからPseudomonas aeruginosa（緑膿菌）。' }] },
+  natural: 0.45,
+  therapies: [
+    T.abx(['ecoli', 'pseudo'], '血液培養2セットの後、1時間以内に緑膿菌をカバーする抗菌薬（セフェピム・ピペラシリン/タゾバクタム・メロペネム）', [2, 1, 1], -1.2, 6),
+    T.fluid(1000),
+  ],
+  dispo: (enc, ctx) => (ctx.initVit.SBP < 90 ? { ok: ['icu'], best: 'icu', why: '敗血症性ショックを伴うFN：ICU' } : { ok: ['admit', 'icu'], best: 'admit', why: '発熱性好中球減少症：入院で広域抗菌薬（MASCCスコアが高い低リスク例のみ外来も）' }),
+  useful: ['cbc', 'chem', 'crp', 'bcx', 'ucx', 'ua', 'cxr', 'vbg', 'lab_LAC', 'coag', 'pct'],
+  key: [['cbc'], ['bcx']],
+  extrasOk: sepsisExtras,
+  teaching: [
+    'がん化学療法中（特に投与後7〜14日）の発熱は、好中球減少（500/μL未満）があれば発熱性好中球減少症（FN）として緊急に扱う。',
+    '血液培養2セット（ポートと末梢から）をとり、1時間以内に緑膿菌をカバーする抗菌薬（セフェピム・ピペラシリン/タゾバクタム・メロペネム）を開始する。',
+    '感染巣の症状がはっきりしないことが多い（炎症反応を起こす好中球が少ない）。直腸診は避ける。',
+    'MASCCスコアで重症化リスクを評価。ショック・カテーテル感染・皮膚軟部組織感染ではバンコマイシンを追加。',
+  ],
+  sources: ['発熱性好中球減少症（FN）診療ガイドライン改訂第3版（日本臨床腫瘍学会）'],
+  ideal: () => [
+    { a: 'test', ids: ['cbc', 'chem', 'crp', 'bcx', 'ua', 'cxr', 'vbg'] },
+    { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000 },
+    { a: 'rx', drugId: 'cfpm', route: 'iv', dose: 2000, freq: 'q8h', days: 7 },
+  ],
+};

@@ -36,6 +36,7 @@ export const CONTRA_RULES = {
   seizure_risk: { level: 'harm', msg: 'ベンゾジアゼピン常用者・けいれんの既往では拮抗薬でけいれんを誘発', check: (c) => c.p.comorb.includes('epilepsy') || c.p.diseaseId === 'intox' },
   elderly_benzo: { level: 'warn', msg: '高齢者へのベンゾジアゼピン系睡眠薬（転倒・骨折・せん妄・依存のリスク）', check: (c) => c.p.age >= 65 },
   asthma_atp: { level: 'harm', msg: '気管支喘息ではATP（アデノシン）が気管支攣縮を誘発するため禁忌', check: (c) => c.p.comorb.includes('asthma') || c.p.diseaseId === 'asthma' },
+  dm_olz: { level: 'harm', msg: '糖尿病にオランザピン（高血糖・糖尿病性ケトアシドーシスの報告で禁忌）', check: (c) => c.p.comorb.includes('dm2') || c.p.comorb.includes('t1dm') },
   hypok_severe: { level: 'warn', msg: '低カリウム血症を悪化させる', check: (c) => c.lab('K') < 3.0 },
 };
 
@@ -138,7 +139,7 @@ export function evaluateRx(enc, order, vit, activeOrders = []) {
     }
   }
   if (d.abx && dz.harmTags?.abx) issues.push({ level: 'warn', code: 'dz_abx', msg: dz.harmTags.abx });
-  if (d.abx && !dz.organisms.length && !dz.harmTags?.abx) issues.push({ level: 'warn', code: 'abx_unneeded', msg: '細菌感染症の根拠がない状況での抗菌薬投与' });
+  if (d.abx && !dz.organisms.length && !dz.prophylaxis && !dz.harmTags?.abx) issues.push({ level: 'warn', code: 'abx_unneeded', msg: '細菌感染症の根拠がない状況での抗菌薬投与' });
   if (d.broad && dz.organisms.length && !(p.vars.res?.esbl)) issues.push({ level: 'info', code: 'broad', msg: 'より狭域の抗菌薬で治療可能（広域抗菌薬の温存）' });
   if (d.tags?.includes('thrombolytic') && dz.id !== 'stroke') issues.push({ level: 'harm', code: 'tpa_wrong', msg: '脳梗塞ではない患者への血栓溶解薬（出血のリスク）' });
   if (d.tags?.includes('thrombolytic') && dz.id === 'stroke' && p.vars.lastNormalH + enc.t / 60 > 4.5) issues.push({ level: 'harm', code: 'tpa_window', msg: '発症（最終健常）から4.5時間を超えた血栓溶解療法（出血リスクが利益を上回る）' });

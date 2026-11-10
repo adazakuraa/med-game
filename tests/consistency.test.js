@@ -17,7 +17,7 @@ import { scoreCase } from '../src/engine/scoring.js';
 import { runIdeal, runUntreated } from './helpers.js';
 
 const ALL_TAGS = new Set(DRUGS.flatMap((d) => d.tags || []));
-const COVER_KEYS = new Set(['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'atypical', 'prsp', 'listeria', 'mrsa', 'gpc', 'gc', 'chlamydia']);
+const COVER_KEYS = new Set(['spn', 'hinf', 'ecoli', 'esbl', 'anaerobe', 'atypical', 'prsp', 'listeria', 'mrsa', 'gpc', 'gc', 'chlamydia', 'pseudo', 'legionella', 'tp', 'bordetella']);
 
 test('疾患データの参照先がすべて存在する', () => {
   for (const d of DISEASES) {

@@ -22,13 +22,19 @@ export const PROCEDURES = [
   { id: 'epley', name: 'Epley法（浮遊耳石置換法）', min: 10 },
   { id: 'enema', name: 'グリセリン浣腸・摘便', min: 15 },
   { id: 'vagal', name: '迷走神経刺激（修正Valsalva法）', min: 5 },
+  { id: 'nasal_pack', name: '鼻出血の圧迫止血・ガーゼタンポン', min: 15 },
+  { id: 'splint', name: 'シーネ（副木）固定・RICE', min: 15 },
+  { id: 'wound_care', name: '創部の洗浄・冷却・被覆（熱傷・咬傷・挫創）', min: 20 },
+  { id: 'ear_clean', name: '耳垢除去（洗浄・鉗子）', min: 15 },
+  { id: 'incision', name: '切開排膿（局所麻酔）', min: 20 },
+  { id: 'paring', name: '鶏眼・胼胝の削り（コーンカッター）', min: 10 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
 export const LOCATION = { er: '救急外来', ward: '一般病棟', icu: 'ICU', home: '自宅' };
 export const DEPTS = {
   surgery: '外科', cardio: '循環器内科', resp: '呼吸器内科', endo: '内分泌代謝内科',
-  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', rheum: '膠原病内科', psych: '精神科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科', ortho: '整形外科', ent: '耳鼻咽喉科',
+  gi: '消化器内科', uro: '泌尿器科', obgyn: '産婦人科', icu: '集中治療科', rheum: '膠原病内科', psych: '精神科', eye: '眼科', hema: '血液内科', infect: '感染症内科', derm: '皮膚科', dental: '歯科口腔外科', cvs: '心臓血管外科', neuro: '脳神経内科', nsurg: '脳神経外科', nephro: '腎臓内科', ortho: '整形外科', ent: '耳鼻咽喉科',
 };
 
 export const disease = (enc) => DISEASE_BY_ID[enc.patient.diseaseId];
@@ -57,7 +63,7 @@ function orderActive(o, t, phase) {
   if (t < o.start) return false;
   if (o.stopT != null && t >= o.stopT) return false;
   if (o.end != null && t >= o.end) return false;
-  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) return false;
+  if (phase === 'home' && (o.kind !== 'rx' || !['po', 'inh', 'top', 'sl'].includes(o.route))) return false;
   return true;
 }
 
@@ -70,7 +76,7 @@ export function effects(enc, t = enc.t) {
     if (o.kind === 'rx') {
       const d = DRUG_BY_ID[o.drugId];
       const f = o.doseFactor ?? 1;
-      if (d.abx) for (const k of dz.organisms) if (drugCovers(d, k, p)) eff.covers[k] = Math.max(eff.covers[k] || 0, f);
+      if (d.abx) for (const k of [...dz.organisms, ...(dz.prophylaxis || [])]) if (drugCovers(d, k, p)) eff.covers[k] = Math.max(eff.covers[k] || 0, f);
       const windowed = (o.freq === 'once' || o.freq === 'prn') && d.effectHours;
       if (windowed && t >= o.start + d.effectHours * 60) continue;
       for (const tag of d.tags || []) {
@@ -337,7 +343,7 @@ function processEvents(enc) {
       st.procDone[pr.id] = enc.t;
       pr.onDone(enc);
       alert(enc, 'consult', fmt(pr.doneText, enc.patient.vars), true);
-      if (enc.phase === 'er') { enc.phase = pr.after || 'icu'; enc.dispo ??= { type: pr.after === 'ward' ? 'admit' : 'icu', t: enc.t, auto: true }; }
+      if (enc.phase === 'er' && pr.after !== 'er') { enc.phase = pr.after || 'icu'; enc.dispo ??= { type: pr.after === 'ward' ? 'admit' : 'icu', t: enc.t, auto: true }; }
       important = true;
     }
   }
@@ -558,6 +564,12 @@ export function procedure(enc, procId) {
       if (ok) { st.procDone = { ...(st.procDone || {}), term: enc.t + P.min }; st.burden = Math.min(st.burden, 4); }
       addLog(enc, 'exam', ok ? '修正Valsalva法の直後に頻拍が停止し、洞調律（約80/分）に戻った。' : d.id === 'svt' ? '修正Valsalva法を行ったが、頻拍は停止しなかった。' : '修正Valsalva法を行ったが、変化はなかった。', { label: '迷走神経刺激', positive: ok });
     }
+    else if (P.id === 'nasal_pack') addLog(enc, 'exam', d.id === 'epistaxis' ? '鼻翼を圧迫し、血管収縮薬を浸したガーゼを挿入した。出血は止まった。' : '鼻腔にガーゼを入れたが、特に出血はなかった。', { label: '鼻出血の止血', positive: d.id === 'epistaxis' });
+    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) });
+    else if (P.id === 'wound_care') addLog(enc, 'exam', ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) ? '創部を十分に洗浄し、被覆した。' : '創部を確認したが、処置が必要な傷はなかった。', { label: '創処置', positive: ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) });
+    else if (P.id === 'ear_clean') addLog(enc, 'exam', d.id === 'cerumen' ? '硬い耳垢を除去した。直後から聞こえが良くなった。' : d.id === 'otitis_externa' ? '外耳道の耳漏と落屑を清掃した。' : '耳垢はほとんどなかった。', { label: '耳垢除去', positive: ['cerumen', 'otitis_externa'].includes(d.id) });
+    else if (P.id === 'incision') addLog(enc, 'exam', ['atheroma', 'paronychia'].includes(d.id) ? '局所麻酔下に切開し、悪臭のある膿と粥状物を排出した。' : '切開したが、膿は出なかった。', { label: '切開排膿', positive: ['atheroma', 'paronychia'].includes(d.id) });
+    else if (P.id === 'paring') addLog(enc, 'exam', d.id === 'corn' ? '角質の芯を削り取った。歩く痛みがすぐ軽くなった。' : '削ったが、変化はなかった。', { label: '鶏眼の処置', positive: d.id === 'corn' });
     else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
     advance(enc, P.min);
     return;
@@ -591,6 +603,7 @@ function consultReply(enc, dept) {
     return `${name}：${fmt(res.text, enc.patient.vars)}`;
   }
   if (dept === 'surgery') {
+    if (!d.surgeon && d.consult?.surgery) { enc.consultRevealT ??= enc.t; return fmt(d.consult.surgery, p.vars); }
     if (!d.surgeon) return '外科：現時点で外科的治療を要する所見は乏しいと考えます。内科的な精査・治療をお願いします。';
     if (st.surgeryAt || st.surgeryDone) return '外科：手術の予定はすでに組んでいます。';
     const imaged = enc.tests.some((x) => x.done && ['abd_us', 'abd_ct_contrast', 'abd_ct_plain'].includes(x.id) && x.result.abnormal);
@@ -651,7 +664,7 @@ export function discharge(enc) {
   if (!enc.dispo) enc.dispo = { type: 'home', t: enc.t };
   enc.dischargeT = enc.t;
   addLog(enc, 'dispo', enc.phase === 'er' ? '外来治療で帰宅' : '退院');
-  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh'].includes(o.route))) o.stopT = enc.t;
+  for (const o of enc.orders) if (o.stopT == null && (o.kind !== 'rx' || !['po', 'inh', 'top', 'sl'].includes(o.route))) o.stopT = enc.t;
   enc.phase = 'home';
   // 自宅での経過（最大14日）
   const until = enc.t + 14 * 1440;
