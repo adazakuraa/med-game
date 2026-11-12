@@ -1,0 +1,53 @@
+// 心タンポナーデ（がん性心膜炎）
+// 出典: 2018年改訂版 心膜疾患ガイドライン相当の一般的知識, ESC Guidelines for pericardial diseases 2015
+export default {
+  id: 'tamponade', name: '心タンポナーデ', dept: '循環器内科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [50, 85], ageMode: 'old', male: 0.5 },
+  sev: { p: [0.3, 0.45, 0.25], burden: [[34, 44], [46, 56], [60, 70]] },
+  refractoryP: [0, 0, 0], comorb: { forced: ['cancer'], extra: {} }, organisms: [],
+  vars: (rng) => ({ ca: rng.pick(['肺がん', '乳がん']) }),
+  cc: () => 'だんだん息苦しくなってきた', ccKey: 'dyspnea',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '1週間前から息切れがして、今日は少し動くだけで苦しいです。' },
+    course: { p: 1, text: 'だんだん悪くなっています。' },
+    orthopnea: { p: 1, text: '横になるより、座って前かがみのほうが楽です。' },
+    chestpain: { p: 0.4, text: '胸が重苦しい感じがします。' },
+    pmh: { p: 1, text: '{ca}で抗がん剤治療を受けています。' },
+    fever: { p: 0, text: '熱はありません。' }, cough: { p: 0.3, text: '少し咳が出ます。' }, sputum: { p: 0, text: '' },
+    edema: { p: 0.3, text: '足が少しむくみます。' }, pnd: { p: 0, text: '' }, weightgain: { p: 0, text: '' }, adherence: { p: 0, text: '' }, diet: { p: 0, text: '' },
+  },
+  exam: { jvd: { p: 1, text: '頸静脈怒張あり。吸気時に頸静脈がさらに怒張する（Kussmaul徴候）。' }, heart_ausc: { p: 1, text: '心音が遠く小さい。心膜摩擦音なし。' }, lung_ausc: { p: 1, text: '呼吸音は清、crackleなし。' }, periph: { p: 1, text: '四肢末梢は冷たく湿っている。吸気時に収縮期血圧が15mmHg低下（奇脈）。' } },
+  vitals: { SBP: { to: [70, 85], k: 1.5 }, HR: { to: [115, 135], k: 1 }, RR: { to: [24, 30], k: 1 }, SpO2: { drop: [2, 6], k: 2 } },
+  labs: { LAC: { to: [2.5, 5], k: 2 }, BNP: { add: [20, 80], k: 1 } },
+  tests: {
+    echo: [{ p: 1, persist: true, unlessProc: 'pcc', text: '全周性の大量の心嚢液貯留、右室の拡張期虚脱、下大静脈の拡張と呼吸性変動の消失（心タンポナーデ）。' }],
+    cxr: [{ p: 1, text: '心陰影の著明な拡大（巾着型）。肺うっ血なし。' }],
+  },
+  ecg: [{ p: 1, text: '洞性頻脈、全誘導で低電位、QRS波高が1拍ごとに変動（電気的交互脈）。' }],
+  natural: 0.5,
+  curedBy: 'pcc',
+  therapies: [
+    { id: 'pcc', label: '循環器内科コンサルト→心エコーガイド下の心嚢穿刺・ドレナージ', req: { procDone: 'pcc' }, required: true, deadlineH: [12, 4, 3] },
+    { id: 'fluid', label: '細胞外液の補液（前負荷の維持）', req: { fluidTotal: 500 }, when: (c) => c.vit.SBP < 90, required: true, deadlineH: [2, 1.5, 1.5], startFromNeed: true },
+  ],
+  procedures: [{
+    id: 'pcc', depts: ['cardio'], label: '心嚢穿刺', delay: 30, duration: 40, after: 'icu',
+    decide: (enc) => (enc.tests.some((t) => t.id === 'echo' && t.done) ? { accept: true, reveal: true, text: '心エコーで大量の心嚢液と右室の虚脱を確認しました。心タンポナーデです。すぐに心嚢穿刺を行います（約30分後）。利尿薬・血管拡張薬は血圧を下げるので使わないでください。' } : { accept: false, text: 'まず心エコーで心嚢液を確認させてください。' }),
+    onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 20); },
+    doneText: '循環器内科：血性の心嚢液を600mL排液し、ドレーンを留置しました。血圧が回復しています。細胞診に提出します。',
+  }],
+  harmTags: { diuretic: '心タンポナーデに利尿薬（前負荷が減り血圧低下）', nitrate: '心タンポナーデに硝酸薬（血圧低下）', vasodilator: '心タンポナーデに血管拡張薬（血圧低下）' },
+  dispo: () => ({ ok: ['icu'], best: 'icu', why: '心タンポナーデ：心嚢ドレナージ後もICU/CCUで監視' }),
+  useful: ['echo', 'ecg', 'cxr', 'cbc', 'chem', 'bnp', 'tnt', 'vbg', 'coag', 'chest_ct'],
+  key: [['echo'], ['ecg']],
+  extrasOk: () => ['pericarditis'],
+  teaching: [
+    '低血圧・頸静脈怒張・心音減弱（Beckの3徴）と奇脈は心タンポナーデ。がん・心膜炎・大動脈解離・心臓手術後・外傷で起こる。',
+    '心エコーで心嚢液と右室の拡張期虚脱を確認。心電図は低電位・電気的交互脈。',
+    '治療は心嚢穿刺。それまでは補液で前負荷を保ち、利尿薬・硝酸薬は禁忌（心不全と誤って使うと血圧が下がる）。',
+  ],
+  sources: ['ESC Guidelines for the diagnosis and management of pericardial diseases 2015'],
+  ideal: (p) => [{ a: 'test', ids: ['ecg', 'cxr', 'echo', 'cbc', 'chem'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 500, when: 'sev>=1' }, { a: 'consult', dept: 'cardio', delayMin: 10 }],
+};

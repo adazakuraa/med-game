@@ -575,7 +575,7 @@ export function procedure(enc, procId) {
     return;
   }
   st.drains[P.side] = enc.t + P.min;
-  if (!(d.id === 'ptx' && p.vars.side === P.side)) {
+  if (!(['ptx', 'hemothorax'].includes(d.id) && p.vars.side === P.side)) {
     recordIssues(enc, [{ level: 'harm', code: 'drain_wrong', msg: `気胸のない側への胸腔ドレナージ（${P.name}）：医原性の気胸・出血の危険` }], P.name);
     st.burden = Math.min(100, st.burden + 12);
     st.comp.iatrogenic ??= enc.t;

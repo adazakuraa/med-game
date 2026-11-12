@@ -1,0 +1,42 @@
+// ワルファリンの効きすぎ（PT-INR延長と出血）
+// 出典: 日本循環器学会『2020年改訂版 不整脈薬物治療ガイドライン』, 抗凝固療法の一般的知識
+export default {
+  id: 'warfarin_bleed', name: 'ワルファリン過量（PT-INR延長）', dept: '循環器内科',
+  weight: 2, season: {}, minLevel: 2,
+  demo: { age: [68, 90], ageMode: 'old', male: 0.5 },
+  sev: { p: [0.45, 0.4, 0.15], burden: [[24, 32], [32, 42], [44, 54]] },
+  refractoryP: [0, 0, 0], comorb: { forced: ['af'], extra: { htn: 0.5 } }, organisms: [], untreatedFatal: false,
+  vars: (rng, sev, pt) => { pt.homeMeds = pt.homeMeds.filter((m) => m !== 'apixaban'); if (!pt.homeMeds.includes('warfarin')) pt.homeMeds.push('warfarin'); return { abx: rng.pick(['膀胱炎でST合剤（バクタ）', '歯の治療で抗菌薬（メトロニダゾール）', 'かぜでクラリスロマイシン']) }; },
+  cc: () => 'あざが増えて、歯ぐきの血が止まらない', ccKey: 'bleeding',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '3日前から腕や足にあざが増えて、今朝から歯ぐきの血が止まりません。' },
+    character: { p: 1, text: '歯みがきのあと、ずっとにじむように出血しています。おしっこが少し赤い気がします。' },
+    meds: { p: 1, text: '心房細動でワルファリンを飲んでいます。1週間前から{abx}を飲んでいました。' },
+    pmh: { p: 1, text: '心房細動です。' },
+    fever: { p: 0, text: '熱はありません。' }, fatigue: { p: 0.3, text: '少しだるいです。' }, weightloss: { p: 0, text: '体重は変わりません。' },
+    alcohol: { p: 0, text: 'お酒は飲みません。' }, family: { p: 0, text: '血が止まりにくい家族はいません。' },
+    headache: { p: 0, text: '頭痛はありません。' }, bloodystool: { p: 0, text: '黒い便や血便はありません。' },
+  },
+  exam: { skin: { p: 1, text: '四肢に大小の皮下出血（紫斑）が散在。点状出血は目立たない。' }, oral_mucosa: { p: 1, text: '歯肉からの持続的なにじみ出血。' }, conjunctiva: { p: 1, text: '貧血なし。' }, neck_ln: { p: 1, text: 'リンパ節腫脹なし。' }, abd_palp: { p: 1, text: '肝脾腫なし。' } },
+  vitals: {},
+  labs: { PT_INR: { to: [5.5, 9], k: 0 }, U_BLD: { ord: [1, 2] }, U_RBC: { to: [10, 40], k: 0 } },
+  tests: {},
+  natural: 0.08,
+  dynamics: (enc, eff) => { if (eff.tags.vitk) enc.state.vk ??= enc.t; return enc.state.vk != null && enc.t - enc.state.vk > 180 ? -1.0 : 0; },
+  therapies: [
+    { id: 'vitk', label: 'ワルファリンの中止とビタミンKの投与（重い出血ではプロトロンビン複合体製剤）', req: { tag: 'vitk' }, effect: 0, lagH: 0, required: true, deadlineH: [12, 6, 2] },
+  ],
+  dispo: (enc) => (enc.patient.sev === 0 ? { ok: ['home', 'admit'], best: 'home', why: '軽い出血のみ：ワルファリンを休薬・ビタミンK内服/静注で外来、翌日PT-INR再検' } : { ok: ['admit'], best: 'admit', why: '出血を伴うPT-INR著明延長：入院でビタミンKと再出血の監視' }),
+  useful: ['coag', 'cbc', 'chem', 'ua', 'head_ct', 'fobt', 'ecg'],
+  key: [['coag']],
+  extrasOk: () => ['af_rvr'],
+  teaching: [
+    'ワルファリン内服中の出血・あざではPT-INRを測る。抗菌薬（ST合剤・メトロニダゾール・マクロライド・ニューキノロン）や食事・肝障害で効きすぎる。',
+    '大出血がなければ休薬とビタミンK。頭蓋内出血など重い出血ではプロトロンビン複合体製剤（ケイセントラ）とビタミンK。',
+    '頭痛・意識の変化があれば頭部CTで頭蓋内出血を除外する。',
+    'ワルファリンを飲んでいる人に薬を出すときは必ず相互作用を確認する。',
+  ],
+  sources: ['2020年改訂版 不整脈薬物治療ガイドライン（日本循環器学会）'],
+  ideal: () => [{ a: 'test', ids: ['coag', 'cbc', 'chem', 'ua'] }, { a: 'rx', drugId: 'vitk', route: 'iv', dose: 10, freq: 'once', days: 1 }],
+};

@@ -21,7 +21,7 @@ export default {
     syncope: { p: 0, text: '' }, dizziness: { p: 0, text: '' },
   },
   exam: { joint: { p: 1, text: '{side}肩の三角筋の膨らみが消失し、肩峰が角ばって突出（肩峰下の空虚）。烏口突起下に骨頭を触れる。上肢は軽度外転・外旋位で固定（弾発性固定）。橈骨動脈は触知、手指の運動・感覚は保たれる。' } },
-  vitals: { HR: { add: [5, 15], k: 1 } },
+  vitals: { HR: { to: [95, 110], k: 1 } },
   labs: {},
   tests: { joint_xr: [{ p: 1, persist: true, text: '{side}肩：上腕骨頭が関節窩の前下方（烏口突起下）に脱臼。明らかな骨折なし。' }] },
   natural: 0,

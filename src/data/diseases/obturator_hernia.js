@@ -1,0 +1,52 @@
+// 閉鎖孔ヘルニア嵌頓
+// 出典: 日本ヘルニア学会 資料, 急性腹症診療ガイドライン2015
+import { procByImaging } from './common.js';
+export default {
+  id: 'obturator_hernia', name: '閉鎖孔ヘルニア嵌頓', dept: '外科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [78, 95], ageMode: 'old', male: 0.03 },
+  weightAdj: -14,
+  sev: { p: [0.3, 0.5, 0.2], burden: [[32, 40], [42, 52], [56, 66]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.4, dementia: 0.2 } }, organisms: [],
+  vars: (rng) => ({ side: rng.pick(['右', '右', '左']) }),
+  cc: () => '吐いていて、お腹が張る', ccKey: 'abd_pain',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '（娘）昨日の夜から何度も吐いていて、お腹が張っています。' },
+    character: { p: 1, text: 'お腹が張って苦しいです。それと、{side}の太ももの内側からひざにかけて痛いです。' },
+    location: { p: 1, text: 'お腹全体と、{side}の太ももの内側です。' },
+    nausea: { p: 1, text: '緑っぽいものを何度も吐きました。' },
+    constipation: { p: 1, text: '昨日からおならも便も出ていません。' },
+    surgery: { p: 0, text: 'お腹の手術は受けたことがありません。' },
+    pmh: { p: 1, text: '子どもを5人産みました。最近は食が細くて、とてもやせています。' },
+    fever: { p: 0, text: '熱はありません。' }, diarrhea: { p: 0, text: '' }, migration: { p: 0, text: '' }, lmp: { p: 0, text: '閉経しています。' },
+  },
+  exam: { abd_insp: { p: 1, text: '腹部膨満。手術痕なし。' }, abd_palp: { p: 1, text: '腹部全体が張り、軽い圧痛。腹膜刺激徴候なし。' }, abd_ausc: { p: 1, text: '金属音（高調な腸雑音）。' }, inguinal: { p: 1, text: '鼠径部・大腿部に膨隆は触れない。{side}股関節を伸展・外旋すると大腿内側の痛みが増強（Howship-Romberg徴候）。' }, skin_turgor: { p: 1, text: '皮膚・口腔が乾燥。著明なるいそう。' } },
+  vitals: { HR: { to: [100, 120], k: 1 }, SBP: { to: [90, 105], k: 1.5 } },
+  labs: { WBC: { to: [10000, 16000], k: 1 }, CRP: { to: [1, 8], k: 1 }, BUN: { add: [10, 30], k: 1 }, LAC: { to: [1.5, 4], k: 2 } },
+  tests: {
+    axr: [{ p: 1, persist: true, text: '小腸の拡張と鏡面像（小腸閉塞）。' }],
+    abd_ct_plain: [{ p: 1, persist: true, text: '{side}閉鎖孔（恥骨筋と外閉鎖筋の間）に嵌入した小腸と、口側小腸の拡張（閉鎖孔ヘルニア嵌頓）。' }],
+    abd_ct_contrast: [{ p: 1, persist: true, text: '{side}閉鎖孔に嵌入した小腸と、口側小腸の拡張。嵌入腸管の造影効果はやや低下。' }],
+    abd_us: [{ p: 0.6, text: '拡張した小腸と腸液の往復運動（to and fro）。' }],
+  },
+  natural: 0.6,
+  curedBy: 'ope',
+  therapies: [
+    { id: 'fluid', label: '細胞外液の補液（嘔吐による脱水）', req: { fluidTotal: 1000 }, when: (c) => c.state.volume > 800 || c.vit.SBP < 100, required: true, deadlineH: [4, 3, 2], startFromNeed: true },
+    { id: 'ope', label: '外科コンサルト→緊急手術（ヘルニアの整復と修復、壊死腸管の切除）', req: { procDone: 'ope' }, required: true, deadlineH: [12, 8, 4] },
+  ],
+  procedures: [procByImaging({ id: 'ope', depts: ['surgery'], label: '緊急手術', tests: ['abd_ct_plain', 'abd_ct_contrast'], delay: 60, duration: 120, after: 'ward',
+    acceptText: 'CTで{side}閉鎖孔ヘルニア嵌頓です。やせた高齢の女性に多く、腸が壊死しやすいので緊急手術を行います（約1時間後）。', needText: '腸閉塞の原因を確認するため、腹部CTをお願いします。手術歴のない高齢女性では閉鎖孔ヘルニアを疑って閉鎖孔を見てください。', doneText: '外科：閉鎖孔に嵌頓した小腸を整復し、ヘルニア門を閉鎖しました。腸管の色調は回復し、切除は不要でした。' })],
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: '閉鎖孔ヘルニア嵌頓：緊急手術・入院' }),
+  useful: ['axr', 'abd_ct_plain', 'abd_ct_contrast', 'abd_us', 'cbc', 'chem', 'crp', 'vbg', 'coag', 'ecg'],
+  key: [['abd_ct_plain', 'abd_ct_contrast']],
+  extrasOk: () => ['sbo', 'dehydration'],
+  teaching: [
+    '手術歴のない、やせた高齢の多産婦の腸閉塞では閉鎖孔ヘルニアを疑う（日本で多い）。鼠径部の膨隆はなく、外からは分からない。',
+    '大腿内側〜膝の痛み（閉鎖神経の圧迫、Howship-Romberg徴候）がヒント。',
+    '診断は腹部CTで閉鎖孔を確認。腸が壊死しやすいので緊急手術。',
+  ],
+  sources: ['急性腹症診療ガイドライン2015'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'chem', 'crp', 'vbg', 'axr', 'abd_ct_plain'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000 }, { a: 'consult', dept: 'surgery', delayMin: 30 }],
+};

@@ -233,6 +233,12 @@ export const DRUGS = [
     info: 'アルコール多飲・低栄養の意識障害では、ブドウ糖の前（または同時）に100mg以上を静注しWernicke脳症を予防する。',
   },
   {
+    id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
+    routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
+    effectHours: 24,
+    info: 'ワルファリンの効きすぎ（PT-INR延長）に5〜20mgをゆっくり静注。効果発現に数時間。重い出血ではプロトロンビン複合体製剤を併用。',
+  },
+  {
     id: 'vcm', generic: 'バンコマイシン', brands: ['塩酸バンコマイシン'], cls: '抗菌薬（グリコペプチド系）', allergy: 'glycopeptide', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 4000, perKgOnce: [12, 22] } },
     covers: ['prsp', 'mrsa', 'gpc'],

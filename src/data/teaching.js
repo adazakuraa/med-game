@@ -468,6 +468,7 @@ export const DRUG_ROLE = {
   insulin_r: '血糖を下げ、ケトン体が作られるのを止める。DKAでは持続点滴で使う。Kを細胞内に移すので血清Kが下がる。',
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
+  vitk: "ワルファリンの効きすぎを打ち消すビタミンK。効果が出るまで数時間かかる。",
 };
 
 export const FLUID_ROLE = {
@@ -606,6 +607,8 @@ export const APPROACHES = {
       { id: 'asthma', point: '喘息の既往・若年、呼気性wheezes・呼気延長、誘因（かぜ・アレルゲン）、吸入の中断', clues: ['q:pmh', 'q:trigger', 'q:adherence', 'e:lung_ausc', 'e:chest_insp'] },
       { id: 'pe', point: '突然発症・頻脈・片側の下肢腫脹・Dダイマー上昇', clues: ['H:DDIMER'] },
       { id: 'af_rvr', point: '動悸・脈の不整・心電図で心房細動', clues: ['q:palpitation'] },
+      { id: 'tamponade', tests: ['echo'], point: 'がん・心膜炎・心臓手術後、低血圧・頸静脈怒張・心音減弱（Beckの3徴）、奇脈、肺はきれい、心電図で低電位 → 心エコーで心嚢液、心嚢穿刺（利尿薬は禁忌）', clues: ['q:pmh', 'e:jvd', 'e:heart_ausc', 'e:periph', 't:echo', '!q:fever', '!e:lung_ausc'] },
+      { id: 'hyperventilation', point: '若い女性、強いストレスの直後、口の周りと手のしびれ・テタニー、SpO2は正常、血液ガスで呼吸性アルカローシス（pCO2低下）→ 危険な疾患を除外して説明', clues: ['q:trigger', 'e:periph', 'H:PH', 'L:PCO2', '!q:chestpain', '!q:fever', '!e:leg_edema'] },
     ],
   },
   vomit_malaise: {
@@ -654,6 +657,8 @@ export const APPROACHES = {
       { id: 'inc_hernia', tests: ['abd_ct_plain'], point: '高齢者の腹痛・嘔吐・排ガス停止、鼠径部の還納できない有痛性の膨隆、CTで嵌頓腸管', clues: ['e:inguinal', 'q:pmh', 'q:constipation', 't:abd_ct_plain'] },
       { id: 'volvulus', tests: ['axr'], point: '便秘・寝たきり・認知症の高齢者、著明な腹部膨満・鼓音、X線でcoffee bean sign、CTでwhirl sign', clues: ['q:constipation', 'e:abd_insp', 'e:abd_perc', 't:axr'] },
       { id: 'biliary_colic', tests: ['abd_us'], point: '脂っこい食事後の心窩部〜右季肋部の痛みが数時間で軽快、発熱なし、炎症反応は正常、エコーで胆石あり・胆嚢壁肥厚なし', clues: ['q:trigger', 'q:course', '!q:fever', '!H:CRP', 't:abd_us'] },
+      { id: 'obturator_hernia', tests: ['abd_ct_plain'], point: '手術歴のない、やせた高齢の多産婦の腸閉塞、大腿内側〜膝の痛み（Howship-Romberg徴候）、鼠径部に膨隆なし → CTで閉鎖孔を確認、緊急手術', clues: ['q:surgery', 'q:pmh', 'q:constipation', 'e:inguinal', 'e:abd_ausc', 't:abd_ct_plain'] },
+      { id: 'lbo', tests: ['axr', 'abd_ct_contrast'], point: '手術歴のない高齢者の腹部膨満・排便排ガス停止、数か月の便が細い・血便・体重減少・貧血、X線で結腸拡張 → CTで閉塞部位、大腸ステントか人工肛門', clues: ['q:constipation', 'q:bloodystool', 'q:weightloss', 'e:abd_insp', 'e:rectal', 'L:HB', 't:axr'] },
     ],
   },
 };
@@ -661,12 +666,13 @@ export const APPROACHES = {
 APPROACHES.chest_pain = {
   title: '胸痛',
   intro: '胸痛ではまず「命に関わる4つ」＝急性冠症候群・大動脈解離・肺塞栓症・緊張性気胸を考える。来院10分以内に心電図をとり、バイタルと身体所見で緊急度を判断する。',
-  keyQ: ['onset', 'character', 'location', 'radiation', 'severity', 'aggravating', 'relieving', 'sweating', 'dyspnea', 'migration', 'immobility', 'sorethroat', 'pmh', 'meds', 'smoking'],
+  keyQ: ['onset', 'character', 'location', 'radiation', 'severity', 'aggravating', 'relieving', 'sweating', 'dyspnea', 'migration', 'immobility', 'sorethroat', 'trigger', 'pmh', 'meds', 'smoking'],
   keyE: ['gen_appear', 'bp_lr', 'trachea', 'jvd', 'chest_insp', 'chest_perc', 'lung_ausc', 'heart_ausc', 'calf', 'periph'],
   keyT: ['ecg', 'tnt', 'cxr', 'cbc', 'chem', 'coag', 'vbg', 'echo'],
   redflags: ['心電図でST上昇 → 循環器内科へ緊急コンサルト（再灌流まで90分以内）', '突然の引き裂かれるような痛み・血圧の左右差 → 大動脈解離を疑い、抗血小板薬・抗凝固薬の前に造影CT', '気管偏位・頸静脈怒張・低血圧・片側の呼吸音消失 → 緊張性気胸：すぐに脱気', '突然の呼吸困難・頻脈・低酸素で肺がきれい → 肺塞栓症を疑う'],
   ddx: [
     { id: 'acs', point: '締め付けられる痛み・左肩や顎への放散・冷汗、心電図変化、トロポニン上昇', clues: ['q:radiation', 'q:sweating', 'q:relieving', 't:ecg', 'H:TNT', 't:echo'] },
+    { id: 'takotsubo', tests: ['echo'], point: '閉経後の女性、強い精神的ストレス（家族の死など）の直後の胸痛、広範なST上昇、トロポニン上昇は軽い、心エコーで心尖部の風船様の無収縮 → まずACSとして冠動脈造影', clues: ['q:trigger', 't:echo', 't:ecg', '!q:sorethroat'] },
     { id: 'aortic_dissection', tests: ['chest_cta'], point: '突然の引き裂かれるような胸背部痛・痛みの移動、血圧の左右差、縦隔拡大、Dダイマー上昇', clues: ['q:onset', 'q:character', 'q:migration', 'q:radiation', 'e:bp_lr', 'e:heart_ausc', 't:cxr', 't:chest_cta', 'H:DDIMER'] },
     { id: 'pe', tests: ['chest_cta', 'leg_us'], point: '突然の呼吸困難・胸膜痛・頻脈・低酸素、リスク因子、片側の下腿腫脹、Dダイマー上昇', clues: ['q:immobility', 'q:edema', 'e:calf', 'H:DDIMER', 't:chest_cta', 't:leg_us', 't:echo'] },
     { id: 'ptx', tests: ['chest_ct'], point: '若いやせ型男性・突然の胸痛、片側の呼吸音減弱・鼓音、胸部X線で虚脱', clues: ['q:aggravating', 'e:lung_ausc', 'e:chest_perc', 'e:trachea', 't:cxr', 't:chest_ct'] },
@@ -986,8 +992,8 @@ APPROACHES.checkup = {
 APPROACHES.injury = {
   title: 'けが（ひねった・転んだ）',
   intro: '外傷では、受傷機転・部位の圧痛・変形・神経血管障害を確認し、X線が必要か判断する（Ottawa ankle rulesなど）。高齢者の転倒では「なぜ転んだか」と骨粗鬆症の評価も忘れない。',
-  keyQ: ['onset', 'trigger', 'character', 'location', 'aggravating', 'syncope', 'pmh', 'meds'],
-  keyE: ['joint', 'skin', 'motor', 'gen_consc', 'chest_palp'],
+  keyQ: ['onset', 'trigger', 'character', 'location', 'aggravating', 'syncope', 'numbness', 'pmh', 'meds'],
+  keyE: ['joint', 'skin', 'motor', 'gen_consc', 'chest_palp', 'spine', 'abd_palp'],
   keyT: [],
   redflags: ['変形・強い圧痛・荷重できない → 骨折を疑いX線', 'しびれ・冷感・脈が触れない → 神経・血管損傷', '意識消失して転んだ → 失神の原因検索', '強い腫脹と痛みが増す → コンパートメント症候群'],
   ddx: [
@@ -1002,6 +1008,9 @@ APPROACHES.injury = {
     { id: 'rib_fx', tests: ['cxr'], point: '胸部打撲後の、深呼吸・咳で強くなる限局した圧痛と介達痛、X線で気胸・血胸の有無を確認', clues: ['q:character', 'q:aggravating', 'e:chest_palp', 't:cxr'] },
     { id: 'burn', point: '熱湯・油による受傷、水疱・発赤、面積（手のひら＝1%）と深さを評価 → 冷却・創処置', clues: ['q:trigger', 'e:skin'] },
     { id: 'animal_bite', point: '犬・猫の咬傷（手は特に危険）→ 洗浄（縫合しない）・予防的抗菌薬・破傷風予防', clues: ['q:trigger', 'q:pmh', 'e:skin'] },
+    { id: 'central_cord', tests: ['spine_mri'], point: '首の骨の変形がある高齢者が転んで額を打ち首が反った後、両手のしびれ・脱力（上肢＞下肢）、X線で骨折なし → 頸椎固定とMRI', clues: ['q:numbness', 'q:weakness', 'e:motor', 'e:spine', 't:spine_mri'] },
+    { id: 'hemothorax', tests: ['cxr'], point: '胸部打撲後の呼吸困難、片側の呼吸音減弱・濁音・皮下気腫、低酸素・頻脈 → X線/FASTで血気胸、胸腔ドレナージ', clues: ['q:character', 'e:lung_ausc', 'e:chest_perc', 'e:chest_palp', 't:cxr'] },
+    { id: 'splenic_injury', tests: ['abd_us', 'abd_ct_contrast', 'cbc'], point: '左上腹部の打撲、腹痛・左肩痛、頻脈・血圧低下、FASTで腹腔内液体 → 補液とTAE/開腹止血', clues: ['q:location', 'e:abd_palp', 't:abd_us', 'L:HB', 'H:LAC'] },
   ],
 };
 APPROACHES.jaundice = {
@@ -1126,6 +1135,7 @@ APPROACHES.bleeding = {
     { id: 'leukemia', tests: ['smear'], point: '発熱・貧血・出血、白血球の異常（増加または減少）、血液像で芽球 → 血液内科へ', clues: ['q:fever', 'q:fatigue', 'e:conjunctiva', 'L:HB', 'L:PLT', 'H:LDH', 't:smear'] },
     { id: 'dic', point: '重い感染症・がん・産科疾患、凝固異常・Dダイマー高値' },
     { id: 'ttp', point: '血小板減少＋溶血（破砕赤血球）・腎障害・精神症状・発熱' },
+    { id: 'warfarin_bleed', tests: ['coag'], point: '心房細動などでワルファリン内服中、最近の抗菌薬（ST合剤・メトロニダゾール・マクロライド）、皮下出血・歯肉出血・血尿、PT-INR著明延長 → 休薬とビタミンK', clues: ['q:meds', 'q:pmh', 'e:skin', 'H:PT_INR', '!q:fever'] },
   ],
 };
 APPROACHES.lymph = {
@@ -1358,6 +1368,7 @@ APPROACHES.fall = {
   redflags: ['意識消失を伴う転倒 → 失神の原因（不整脈など）を評価', '抗凝固薬内服中の頭部打撲 → 頭部CT', '下肢の短縮・外旋 → 大腿骨近位部骨折'],
   ddx: [
     { id: 'hip_fx', tests: ['hip_xr'], point: '転倒後に立てない・股関節痛、下肢の短縮と外旋、X線で骨折', clues: ['e:hip', 't:hip_xr'] },
+    { id: 'pelvic_fx', tests: ['hip_xr'], point: '骨粗鬆症の高齢女性、しりもち後の鼠径部痛で歩きにくいが、下肢の短縮・外旋はなく股関節は動く、恥骨部の圧痛、X線で恥骨・坐骨骨折 → 鎮痛と早期リハビリ', clues: ['q:location', 'q:trigger', 'e:hip', 't:hip_xr'] },
     { id: 'rhabdo', tests: ['lab_CK', 'chem', 'ua', 'vbg'], point: '転倒して長時間動けなかった、圧迫部位の腫脹、コーラ色の尿、CK著明高値・尿潜血陽性、Cr・K上昇 → 大量補液', clues: ['q:onset', 'q:polyuria', 'e:skin', 'H:CK', 'H:CR', 'H:K', 'H:U_BLD'] },
     { id: 'csdh', point: '数週前の頭部打撲、徐々に進む物忘れ・歩行障害・片麻痺', clues: ['q:trigger'] },
     { id: 'stroke', point: '転倒の前後に片麻痺・言語障害', clues: ['e:motor', 'e:facial'] },
@@ -2112,4 +2123,14 @@ export const DISEASE_NOTES = {
     ],
     flow: '問診（痛みの部位と移動・食欲不振・発熱・月経）→ McBurney点圧痛・反跳痛・筋性防御 → 血算・CRP・尿検査・妊娠反応・腹部エコーまたは造影CT → 急性虫垂炎と診断 → 絶飲食・輸液・抗菌薬 → 外科コンサルト → 手術',
   },
+  tamponade: {"overview": "心臓を包む袋（心膜）に液体がたまり、心臓が広がれなくなって血圧が下がる状態。", "treatment": ["心エコーで心嚢液を確認", "心嚢穿刺・ドレナージ", "補液で前負荷を保つ（利尿薬・硝酸薬は禁忌）"], "flow": "低血圧＋頸静脈怒張＋心音減弱 → 心エコーで心嚢液・右室虚脱 → 心タンポナーデ → 心嚢穿刺"},
+  central_cord: {"overview": "もともと首の脊柱管が狭い高齢者が、転んで首が反ることで頸髄が傷つく。骨折がないことが多い。", "treatment": ["頸椎の固定", "MRIで頸髄を評価", "入院で安静・リハビリ（改善が悪ければ手術）"], "flow": "転倒で額を打ち両手がしびれる → X線で骨折なし・MRIで頸髄T2高信号 → 中心性頸髄損傷 → 頸椎固定と入院"},
+  pelvic_fx: {"overview": "骨粗鬆症の高齢者が転んで、骨盤の前側（恥骨・坐骨）が折れる。", "treatment": ["X線（見えなければCT/MRI）", "鎮痛", "早期からの歩行訓練・骨粗鬆症の治療"], "flow": "高齢者の転倒後の鼠径部痛・歩行困難 → 大腿骨骨折なし・恥骨骨折 → 鎮痛と早期リハビリ"},
+  hemothorax: {"overview": "胸を打って肋骨が折れ、胸の中に血液と空気がたまる状態。", "treatment": ["胸部X線・FAST", "胸腔ドレナージ", "出血が多ければ開胸止血"], "flow": "胸部打撲後の呼吸困難・呼吸音減弱 → X線で血気胸 → 胸腔ドレナージ"},
+  splenic_injury: {"overview": "お腹の左上を強く打って脾臓が裂け、お腹の中に出血する。", "treatment": ["FAST・造影CT", "急速補液・輸血", "動脈塞栓術（TAE）か開腹止血"], "flow": "左上腹部打撲＋頻脈・血圧低下 → FAST陽性 → 脾損傷 → 補液とTAE"},
+  obturator_hernia: {"overview": "骨盤の閉鎖孔という穴に腸がはまり込んで抜けなくなる。やせた高齢女性に多い。", "treatment": ["腹部CTで閉鎖孔を確認", "補液", "緊急手術"], "flow": "やせた高齢女性の腸閉塞＋大腿内側の痛み → CTで閉鎖孔ヘルニア → 緊急手術"},
+  lbo: {"overview": "大腸がんで腸が詰まり、便やガスが出なくなる。", "treatment": ["腹部X線・CT", "大腸ステントか人工肛門で減圧", "その後に根治手術"], "flow": "高齢者の腹部膨満・排便停止＋便通異常・貧血 → CTで大腸の腫瘍と口側の拡張 → 減圧と手術"},
+  takotsubo: {"overview": "強いストレスのあとに心臓の先端が一時的に動かなくなる病気。心筋梗塞とそっくりの症状。", "treatment": ["心電図・トロポニン・心エコー", "緊急冠動脈造影で心筋梗塞を否定", "CCUで心不全・不整脈を監視"], "flow": "ストレス後の胸痛＋ST上昇 → 冠動脈造影で狭窄なし・心尖部の無収縮 → たこつぼ型心筋症"},
+  warfarin_bleed: {"overview": "血液をサラサラにするワルファリンが効きすぎて、出血しやすくなる状態。抗菌薬などの飲み合わせで起こりやすい。", "treatment": ["PT-INRの測定", "ワルファリンの休薬", "ビタミンK（重い出血ではプロトロンビン複合体製剤）"], "flow": "ワルファリン内服中のあざ・出血 → PT-INR著明延長 → ビタミンKと休薬"},
+  hyperventilation: {"overview": "不安やストレスで呼吸が速くなりすぎ、血液がアルカリ性に傾いて手足のしびれなどが起こる。", "treatment": ["危険な疾患の除外（SpO2・心電図・血液ガス・血糖）", "安心させ、ゆっくり呼吸を促す"], "flow": "ストレス後の呼吸困難＋しびれ・テタニー、SpO2正常 → 血液ガスで呼吸性アルカローシス → 過換気症候群"},
 };

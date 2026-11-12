@@ -1,0 +1,53 @@
+// たこつぼ症候群（たこつぼ型心筋症）
+// 出典: 日本循環器学会『2023年JCSガイドライン フォーカスアップデート版 心筋症診療』, InterTAK Diagnostic Criteria
+export default {
+  id: 'takotsubo', name: 'たこつぼ型心筋症', dept: '循環器内科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [60, 85], ageMode: 'old', male: 0.1 },
+  sev: { p: [0.45, 0.4, 0.15], burden: [[30, 38], [38, 46], [50, 60]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.4 } }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ stress: rng.pick(['夫のお葬式', '孫が事故にあったと聞いた', '地震']) }),
+  cc: () => '胸が締め付けられる', ccKey: 'chest_pain',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '2時間前、{stress}の直後から胸が締め付けられるように痛くなりました。' },
+    character: { p: 1, text: '胸の真ん中が押されるように苦しいです。' },
+    location: { p: 1, text: '胸の真ん中です。' },
+    radiation: { p: 0.3, text: '左肩に少し響きます。' },
+    trigger: { p: 1, text: '{stress}で、とてもショックを受けました。' },
+    dyspnea: { p: 0.5, text: '少し息苦しいです。' }, sweating: { p: 0.5, text: '冷や汗が出ました。' },
+    pmh: { p: 1, text: '血圧が少し高いと言われています。狭心症と言われたことはありません。' }, smoking: { p: 0, text: '吸いません。' },
+    aggravating: { p: 0, text: '体を動かしたり深呼吸しても変わりません。' },
+  },
+  exam: { heart_ausc: { p: 1, text: '心雑音なし。III音を聴取することがある。' }, lung_ausc: { p: 1, text: '呼吸音は清（重症では両下肺に軽いcrackle）。' }, bp_lr: { p: 0, text: '血圧の左右差なし。' } },
+  vitals: { HR: { to: [95, 115], k: 1 }, SBP: { to: [90, 105], k: 2 } },
+  labs: { TNT: { to: [0.08, 0.3], k: 0.5 }, BNP: { add: [200, 600], k: 1 }, CK: { add: [50, 200], k: 1 } },
+  tests: {
+    echo: [{ p: 1, persist: true, text: '左室心尖部が広く動かず風船状に膨らみ、心基部は過収縮（たこつぼ様の壁運動）。左室駆出率35%。冠動脈1本の灌流域に一致しない壁運動異常。' }],
+    cxr: [{ p: 0.4, text: '心拡大なし。軽い肺うっ血。' }],
+  },
+  ecg: [{ p: 1, unlessProc: 'cag', text: 'V2〜V5で広範なST上昇。対側のST低下なし。' }, { p: 1, ifProc: 'cag', text: 'ST上昇は残存し、広範な陰性T波が出現しつつある。' }],
+  natural: 0.05,
+  curedBy: 'cag',
+  therapies: [
+    { id: 'antiplatelet', label: 'アスピリン（ACSとして初期対応）', req: { tag: 'antiplatelet' }, effect: 0, lagH: 0, required: true, deadlineH: [1, 1, 0.5] },
+    { id: 'cag', label: '循環器内科コンサルト→緊急冠動脈造影（心筋梗塞の除外）', req: { procDone: 'cag' }, required: true, deadlineH: [3, 2, 2] },
+  ],
+  procedures: [{
+    id: 'cag', depts: ['cardio'], label: '緊急冠動脈造影', delay: 45, duration: 60, after: 'icu',
+    decide: (enc) => (enc.tests.some((t) => t.id === 'ecg' && t.done) ? { accept: true, text: '広範なST上昇で、急性心筋梗塞を否定できません。緊急で冠動脈造影を行います（約45分後に入室）。アスピリンの投与をお願いします。' } : { accept: false, text: 'まず12誘導心電図を見せてください。' }),
+    onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 18); enc.consultRevealT ??= enc.t; },
+    doneText: '循環器内科：冠動脈に有意な狭窄はありません。左室造影で心尖部が風船状に膨らみ、たこつぼ型心筋症と診断しました。CCUで心不全・不整脈・左室流出路狭窄に注意して経過をみます。多くは数週で壁運動が回復します。',
+  }],
+  dispo: () => ({ ok: ['icu', 'admit'], best: 'icu', why: 'たこつぼ型心筋症：急性期はCCUで心不全・不整脈を監視' }),
+  useful: ['ecg', 'tnt', 'lab_TNT', 'echo', 'cxr', 'bnp', 'cbc', 'chem', 'coag', 'vbg'],
+  key: [['ecg'], ['tnt', 'lab_TNT'], ['echo']],
+  extrasOk: () => ['acs'],
+  teaching: [
+    '強い精神的・身体的ストレスの後に、閉経後の女性がST上昇と胸痛を起こし、心尖部が風船状に動かない → たこつぼ型心筋症。',
+    '心電図・症状は心筋梗塞と区別できないので、まずACSとして緊急冠動脈造影で冠動脈病変を否定する。',
+    '多くは数週で回復するが、急性期は心不全・致死性不整脈・左室流出路狭窄・左室内血栓に注意。',
+  ],
+  sources: ['2023年JCSガイドライン フォーカスアップデート版 心筋症診療（日本循環器学会）'],
+  ideal: () => [{ a: 'test', ids: ['ecg', 'tnt', 'cbc', 'chem', 'cxr', 'echo'] }, { a: 'rx', drugId: 'aspirin', route: 'po', dose: 200, freq: 'once', days: 1 }, { a: 'consult', dept: 'cardio', delayMin: 10 }],
+};
