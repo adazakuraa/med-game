@@ -1041,7 +1041,7 @@ APPROACHES.injury = {
   ddx: [
     { id: 'ankle_sprain', point: '足首の内がえし、外果前方の圧痛・腫脹、4歩以上歩ける、Ottawa ankle rules陰性 → X線不要、RICEと固定', clues: ['q:trigger', 'q:aggravating', 'e:joint', '!t:joint_xr'] },
     { id: 'ankle_fx', point: '外果・内果の後縁や先端の圧痛、歩けない → X線で骨折' },
-    { id: 'wrist_fx', tests: ['joint_xr'], point: '転んで手をついた高齢女性、手首の腫脹とフォーク状変形、X線で橈骨遠位端骨折 → 整復・固定と骨粗鬆症の評価', clues: ['q:trigger', 'q:pmh', 'e:joint', 't:joint_xr'] },
+    { id: 'wrist_fx', tests: ['joint_xr'], point: '転んで手をついた高齢女性、手首の腫脹とフォーク状変形、X線で橈骨遠位端骨折 → 整復・固定と骨粗鬆症の評価', clues: ['q:trigger', 'q:pmh', 'q:aggravating', 'e:joint', 't:joint_xr'] },
     { id: 'scaphoid_fx', point: '若年者の手首、解剖学的嗅ぎタバコ窩の圧痛（初回X線で見えないことがある）' },
     { id: 'achilles', point: 'スポーツで踏み込んだ瞬間に後ろから蹴られた感じ・断裂音、つま先立ちできない、腱の陥凹とThompsonテスト陽性 → 底屈位固定・整形外科', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr'] },
     { id: 'shoulder_dislocation', tests: ['joint_xr'], point: '転倒・タックルで腕を後ろに持っていかれた若年者、肩の激痛と変形（三角筋の膨らみ消失）→ X線で骨折を確認してから整復、腋窩神経を診る', clues: ['q:trigger', 'e:joint', 't:joint_xr'] },
@@ -1055,6 +1055,11 @@ APPROACHES.injury = {
     { id: 'hemothorax', tests: ['cxr'], point: '胸部打撲後の呼吸困難、片側の呼吸音減弱・濁音・皮下気腫、低酸素・頻脈 → X線/FASTで血気胸、胸腔ドレナージ', clues: ['q:character', 'e:lung_ausc', 'e:chest_perc', 'e:chest_palp', 't:cxr'] },
     { id: 'splenic_injury', tests: ['abd_us', 'abd_ct_contrast', 'cbc'], point: '左上腹部の打撲、腹痛・左肩痛、頻脈・血圧低下、FASTで腹腔内液体 → 補液とTAE/開腹止血', clues: ['q:location', 'e:abd_palp', 't:abd_us', 'L:HB', 'H:LAC'] },
     { id: 'compartment', tests: ['joint_xr', 'lab_CK'], point: '下腿・前腕の骨折や打撲の数時間後、見た目に比べて強すぎる痛み・鎮痛薬が効かない、他動伸展時痛、しびれ（脈は触れる）→ 緊急筋膜切開', clues: ['q:character', 'q:aggravating', 'q:numbness', 'e:joint', 'H:CK'] },
+    { id: 'meniscus', tests: ['joint_xr'], point: '膝をひねった後の関節裂隙の痛み・引っかかり・ロッキング、McMurrayテスト陽性、X線は正常 → 整形外科でMRI', clues: ['q:trigger', 'q:aggravating', 'e:joint', '!t:joint_xr'] },
+    { id: 'acl', tests: ['joint_xr', 'joint_tap'], point: 'ジャンプの着地・急停止で膝がずれ「ブチッ」と音、数時間で著明に腫れる（関節血症）、膝くずれ、Lachmanテスト陽性 → RICE・整形外科でMRIと再建術', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr', 't:joint_tap'] },
+    { id: 'whiplash', point: '追突事故の翌日からの首の痛み・こわばり、正中の圧痛・神経症状なし（Canadian C-spine ruleでX線不要）→ 鎮痛と早期の活動', clues: ['q:trigger', 'e:spine'] },
+    { id: 'humerus_fx', tests: ['joint_xr'], point: '骨粗鬆症の高齢女性が転んで肩を打った、肩の腫脹と上腕内側に広がる皮下出血、X線で外科頸骨折 → 三角巾固定・骨粗鬆症の治療', clues: ['q:trigger', 'q:pmh', 'e:joint', 't:joint_xr'] },
+    { id: 'clavicle_fx', tests: ['joint_xr', 'cxr'], point: '肩から転ぶ・手をつく外傷、鎖骨の変形・圧痛・轢音 → X線、三角巾固定（開放骨折・皮膚の突き上げは手術）', clues: ['q:trigger', 'e:joint', 't:joint_xr', '!t:cxr'] },
   ],
 };
 APPROACHES.jaundice = {
@@ -1540,7 +1545,12 @@ APPROACHES.joint_pain = {
     { id: 'rotator_cuff', tests: ['joint_xr'], point: '中高年、外傷や重い物を持った後の肩の痛み、自分では上げられないが他人が持ち上げれば上がる（他動可動域は保たれる）、drop arm sign陽性 → 鎮痛と整形外科（MRI）', clues: ['q:character', 'q:trigger', 'e:joint', '!q:stiffness', '!H:CRP'] },
     { id: 'ra', tests: ['rf_ccp'], point: '手の小関節（MCP・PIP・手関節）の左右対称の腫れ、1時間以上の朝のこわばり、抗CCP抗体陽性 → 早期にメトトレキサート', clues: ['q:stiffness', 'q:location', 'e:joint', 't:rf_ccp', 'H:CRP', '!q:fever'] },
     { id: 'sle', tests: ['ana', 'cbc', 'ua'], point: '若い女性の発熱・関節痛・蝶形紅斑・光線過敏・口内炎・脱毛、白血球/血小板減少、抗核抗体・抗dsDNA抗体陽性・低補体', clues: ['q:fever', 'q:character', 'e:skin', 'e:oral_mucosa', 't:ana', 'L:WBC'] },
-    { id: 'hip_oa', tests: ['hip_xr'], point: '中高年女性、歩き始め・長く歩いた後の鼠径部痛、靴下がはけない（屈曲・内旋制限）、臼蓋形成不全の既往、X線で関節裂隙の狭小化 → 鎮痛・運動療法、人工股関節', clues: ['q:location', 'q:pmh', 't:hip_xr'] },
+    { id: 'hip_oa', tests: ['hip_xr'], point: '中高年女性、歩き始め・長く歩いた後の鼠径部痛、靴下がはけない（屈曲・内旋制限）、臼蓋形成不全の既往、X線で関節裂隙の狭小化 → 鎮痛・運動療法、人工股関節', clues: ['q:location', 'q:pmh', 'e:joint', 't:hip_xr'] },
+    { id: 'trigger_finger', tests: ['joint_xr'], point: '中年女性・糖尿病、指の付け根の圧痛と結節、曲げ伸ばしでカクンと跳ねる（朝に強い）→ 安静・NSAIDs・腱鞘内注射', clues: ['q:stiffness', 'q:pmh', 'e:joint', '!t:joint_xr'] },
+    { id: 'dequervain', tests: ['joint_xr'], point: '育児・スマートフォンなど手の使いすぎ、手首の親指側の痛み、Finkelsteinテスト陽性 → 安静・NSAIDs', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr', '!q:stiffness', '!q:fever'] },
+    { id: 'tennis_elbow', tests: ['joint_xr'], point: '物を持ち上げる・タオルをしぼると肘の外側が痛む、外側上顆の限局した圧痛、抵抗下の手首背屈で痛む → 使いすぎを避け・ストレッチ・NSAIDs', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr', '!q:stiffness', '!q:fever'] },
+    { id: 'plantar_fasciitis', tests: ['joint_xr'], point: '朝起きて最初の一歩でかかとの内側が痛み歩くと楽になる、ランナー・立ち仕事・肥満、踵骨内側の圧痛 → ストレッチ・中敷き', clues: ['q:stiffness', 'q:trigger', 'q:character', 'e:joint', '!t:joint_xr', '!q:joint'] },
+    { id: 'calcific_tendinitis', tests: ['joint_xr', 'crp'], point: '40〜60代女性、夜間などに突然起こる肩の激痛でまったく動かせない、X線で腱板の石灰化 → NSAIDs・注射・穿刺吸引', clues: ['t:joint_xr', 'H:CRP', 'q:character'] },
   ],
 };
 APPROACHES.epigastric = {
@@ -2248,4 +2258,14 @@ export const DISEASE_NOTES = {
   hip_oa: {"overview": "股関節の軟骨がすり減って痛みと動きの制限が起こる。日本では臼蓋形成不全が原因として多い。", "treatment": ["鎮痛", "運動療法・減量・杖", "人工股関節置換術"], "flow": "鼠径部痛＋股関節の可動域制限 → X線で関節裂隙の狭小化 → 変形性股関節症"},
   cervical_myelopathy: {"overview": "首の骨の変形で脊髄が圧迫され、手のしびれや歩きにくさが出る。", "treatment": ["MRIで脊髄の圧迫を確認", "手術（除圧術）", "転倒・首の過伸展を避ける"], "flow": "両手のしびれ・巧緻運動障害＋歩行障害＋病的反射 → MRIで頸髄圧迫 → 頸椎症性脊髄症"},
   bullous_pemphigoid: {"overview": "自己抗体で皮膚の下の層がはがれ、かゆみと大きな水ぶくれが出る高齢者の病気。", "treatment": ["抗BP180抗体・皮膚生検", "強力なステロイド外用（広範囲なら内服）", "DPP-4阻害薬の中止を検討"], "flow": "高齢者のかゆみ＋緊満性水疱 → 抗BP180抗体陽性 → 水疱性類天疱瘡"},
+  trigger_finger: {"overview": "指を曲げる腱が腱鞘で引っかかり、曲げ伸ばしでカクンと跳ねる。", "treatment": ["安静・NSAIDs", "腱鞘内ステロイド注射", "腱鞘切開術"], "flow": "指の付け根の圧痛＋弾発現象 → ばね指"},
+  dequervain: {"overview": "手首の親指側の腱と腱鞘の炎症。手の使いすぎで起こる。", "treatment": ["手の安静（装具）", "NSAIDs", "腱鞘内注射"], "flow": "手首親指側の痛み＋Finkelstein陽性 → ドケルバン病"},
+  tennis_elbow: {"overview": "手首を反らす筋肉の付け根（肘の外側）が使いすぎで傷む。", "treatment": ["使いすぎを避ける", "ストレッチ・バンド", "NSAIDs"], "flow": "物を持ち上げると肘外側が痛い＋外側上顆の圧痛 → テニス肘"},
+  plantar_fasciitis: {"overview": "足の裏の腱膜がかかとの付け根で傷み、歩き始めに痛む。", "treatment": ["ストレッチ", "中敷き・体重管理", "NSAIDs"], "flow": "朝の最初の一歩のかかとの痛み → 足底腱膜炎"},
+  meniscus: {"overview": "膝の中のクッション（半月板）が、ひねりや加齢で傷つく。", "treatment": ["鎮痛・安静", "MRI", "関節鏡手術"], "flow": "膝をひねった後の引っかかり・ロッキング → 半月板損傷 → MRI"},
+  acl: {"overview": "膝の中の前十字靱帯が切れ、膝が不安定になる。スポーツで多い。", "treatment": ["RICE・松葉杖", "MRI", "靱帯再建術"], "flow": "着地や方向転換で断裂音＋すぐ腫れる → Lachman陽性 → 前十字靱帯損傷"},
+  calcific_tendinitis: {"overview": "肩の腱板にたまったカルシウムが炎症を起こし、急に激しく痛む。", "treatment": ["X線で石灰化を確認", "NSAIDs・安静", "注射・穿刺吸引"], "flow": "突然の肩の激痛 → X線で石灰化 → 石灰沈着性腱板炎"},
+  whiplash: {"overview": "追突事故などで首がむちのようにしなり、筋肉や靱帯が傷む。", "treatment": ["神経症状・骨折の除外", "鎮痛", "早期の活動再開"], "flow": "追突後の首の痛み＋神経症状なし → むち打ち → 鎮痛"},
+  humerus_fx: {"overview": "高齢者が転んで肩を打ち、腕の付け根の骨が折れる。骨粗鬆症が背景にある。", "treatment": ["X線", "三角巾固定（転位が大きければ手術）", "骨粗鬆症の治療"], "flow": "高齢者の転倒後の肩の痛み・皮下出血 → X線で骨折 → 固定"},
+  clavicle_fx: {"overview": "肩から転んだり手をついたりして鎖骨が折れる。", "treatment": ["X線", "三角巾・鎖骨バンド", "転位が大きければ手術"], "flow": "肩の外傷後の鎖骨の変形・圧痛 → X線 → 鎖骨骨折 → 固定"},
 };

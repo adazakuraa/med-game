@@ -1,0 +1,47 @@
+// 上腕骨近位端骨折（高齢者）
+// 出典: 日本整形外科学会 資料, 骨粗鬆症の予防と治療ガイドライン2015
+export default {
+  id: 'humerus_fx', name: '上腕骨近位端骨折', dept: '整形外科',
+  weight: 2.5, season: { winter: 1.3 }, minLevel: 1,
+  demo: { age: [65, 90], ageMode: 'old', male: 0.2 },
+  sev: { p: [0.55, 0.4, 0.05], burden: [[22, 30], [30, 38], [38, 44]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.4 } }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']) }),
+  cc: (v) => `転んで${v.side}肩を打った`, ccKey: 'injury',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '今朝、玄関でつまずいて転び、{side}肩から落ちました。' },
+    character: { p: 1, text: '{side}肩が痛くて腕を上げられません。腕を反対の手で支えています。' },
+    location: { p: 1, text: '{side}肩から二の腕です。' },
+    aggravating: { p: 1, text: '少しでも動かすと痛いです。' },
+    trigger: { p: 1, text: 'つまずいて転びました。めまいや気を失ったのではありません。頭は打っていません。' },
+    syncope: { p: 0, text: '気は失っていません。' }, numbness: { p: 0, text: '指のしびれはありません。' },
+    pmh: { p: 1, text: '骨粗鬆症と言われていますが、治療はしていません。' }, meds: { p: 0, text: '' },
+  },
+  exam: { joint: { p: 1, text: '{side}肩〜上腕の腫脹と、上腕内側に広がる皮下出血。上腕骨近位部に強い圧痛、肩を動かせない。三角筋の膨らみは保たれる（脱臼ではない）。肩外側の感覚・手指の運動・橈骨動脈は正常。' } },
+  vitals: {}, labs: {},
+  tests: { joint_xr: [{ p: 1, persist: true, text: '{side}上腕骨外科頸の骨折（転位は軽度）。脱臼なし。' }] },
+  natural: 0,
+  curedBy: 'sling',
+  therapies: [
+    { id: 'sling', label: '整形外科コンサルト→三角巾とバストバンドで固定（転位が大きければ手術）', req: { procDone: 'sling' }, required: true, deadlineH: [24, 24, 24] },
+    { id: 'pain', label: '鎮痛', req: { anyTag: ['analgesic', 'opioid'] }, required: true, deadlineH: [2, 2, 2] },
+  ],
+  procedures: [{
+    id: 'sling', depts: ['ortho'], label: '三角巾・バストバンド固定', delay: 30, duration: 20, after: 'er',
+    decide: (enc) => (enc.tests.some((t) => t.id === 'joint_xr' && t.done) ? { accept: true, reveal: true, text: '転位の少ない上腕骨外科頸骨折です。三角巾とバストバンドで固定します（約30分後）。2〜3週後から振り子運動を始めます。骨粗鬆症の治療も始めましょう。' } : { accept: false, text: 'まず肩のX線を撮ってください。' }),
+    onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 10); },
+    doneText: '整形外科：三角巾とバストバンドで固定しました。1週間後に整形外科外来でX線を確認します。',
+  }],
+  dispo: () => ({ ok: ['home', 'admit'], best: 'home', why: '転位の少ない上腕骨近位端骨折：固定して帰宅（一人暮らしで生活が難しければ入院）' }),
+  useful: ['joint_xr', 'ecg', 'bs_poct', 'dexa'],
+  key: [['joint_xr']],
+  extrasOk: () => ['osteoporosis'],
+  teaching: [
+    '高齢者が転んで肩を打った後の、肩の痛み・腫脹・上腕内側に広がる皮下出血は上腕骨近位端骨折。骨粗鬆症による脆弱性骨折の代表（大腿骨・橈骨遠位端・椎体と並ぶ）。',
+    '腋窩神経（肩外側の感覚）・橈骨神経・血流を確認。脱臼を合併していないかX線で見る。',
+    '転位が少なければ三角巾固定と早期の振り子運動。骨粗鬆症の評価と治療、転倒の原因の確認を忘れない。',
+  ],
+  sources: ['骨粗鬆症の予防と治療ガイドライン2015年版'],
+  ideal: () => [{ a: 'test', ids: ['joint_xr'] }, { a: 'rx', drugId: 'apap_po', route: 'po', dose: 500, freq: 'q6h', days: 5 }, { a: 'consult', dept: 'ortho', delayMin: 20 }, { a: 'wait', min: 120 }],
+};
