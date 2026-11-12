@@ -316,6 +316,21 @@ export const DRUGS = [
     info: '特発性肺線維症などの進行を遅らせる。下痢・肝障害に注意。',
   },
   {
+    id: 'duloxetine', generic: 'デュロキセチン', brands: ['サインバルタ'], cls: 'SNRI', tags: ['snri'],
+    routes: { po: { unit: 'mg', min: 20, max: 60, freqs: ['q24h'], maxDaily: 60 } },
+    info: '線維筋痛症・慢性腰痛・糖尿病性神経障害・うつ病に。吐き気・眠気、セロトニン症候群に注意。',
+  },
+  {
+    id: 'cevimeline', generic: 'セビメリン', brands: ['サリグレン', 'エボザック'], cls: '唾液分泌促進薬（M3作動薬）', tags: ['secretagogue'],
+    routes: { po: { unit: 'mg', min: 30, max: 30, freqs: ['q8h'], maxDaily: 90 } },
+    info: 'シェーグレン症候群の口腔乾燥に1回30mgを1日3回。発汗・吐き気。',
+  },
+  {
+    id: 'tolvaptan', generic: 'トルバプタン', brands: ['サムスカ'], cls: 'バソプレシンV2受容体拮抗薬', tags: ['v2_antag'],
+    routes: { po: { unit: 'mg', min: 15, max: 60, freqs: ['q12h', 'q24h'], maxDaily: 120 } },
+    info: '常染色体顕性多発性嚢胞腎の進行抑制（専門医が導入）。多尿・口渇・肝障害に注意。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

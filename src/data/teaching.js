@@ -268,6 +268,13 @@ export const TEST_WHY = {
   oct: "網膜の断面を撮影する。加齢黄斑変性（網膜下液・新生血管）や緑内障の神経線維の薄さがわかる。",
   perimetry: "見える範囲を調べる。緑内障・脳の病気（半盲）などで欠ける。",
   bp180: "水疱性類天疱瘡の自己抗体。",
+  pth: "副甲状腺ホルモン。高Ca血症の原因（副甲状腺機能亢進症か、がんか）を分ける。",
+  anca: "ANCA関連血管炎（顕微鏡的多発血管炎など）の診断。",
+  ssab: "シェーグレン症候群・SLEの自己抗体。",
+  coombs: "赤血球に付いた抗体を調べ、自己免疫性溶血性貧血を診断する。",
+  myositis_ab: "皮膚筋炎・多発性筋炎の型（間質性肺炎・がんの合併の危険）を予測する。",
+  parvo: "伝染性紅斑（りんご病）の原因ウイルスの最近の感染。",
+  bmb: "骨髄の細胞を直接調べる。骨髄異形成症候群・白血病・骨髄腫の診断。",
 };
 
 export const LAB_MEANING = {
@@ -492,6 +499,9 @@ export const DRUG_ROLE = {
   mirogabalin: "神経の痛み（帯状疱疹後神経痛など）を和らげる薬。眠気・ふらつきに注意。",
   txa: "血のかたまりを溶けにくくして出血を止めやすくする薬。喀血・外傷・過多月経に。",
   nintedanib: "肺の線維化の進行を遅らせる薬（特発性肺線維症）。",
+  duloxetine: "痛みを抑える神経の働きを強める薬。線維筋痛症・慢性の痛み・うつ病に。",
+  cevimeline: "唾液を出やすくする薬（シェーグレン症候群の口の乾き）。",
+  tolvaptan: "多発性嚢胞腎で嚢胞が大きくなるのを遅らせる薬。",
 };
 
 export const FLUID_ROLE = {
@@ -1034,6 +1044,7 @@ APPROACHES.checkup = {
     { id: 'prostate_ca', tests: ['psa'], point: 'PSA高値、家族歴、直腸診で石様硬の結節 → 泌尿器科でMRI・生検', clues: ['q:family', 'q:onset', 'H:PSA', 'e:rectal'] },
     { id: 'hyperuricemia', point: '尿酸高値、痛風発作の既往、飲酒・肥満・利尿薬 → 尿酸降下薬（6以下）と生活指導', clues: ['q:pmh', 'q:alcohol', 'q:meds', 'H:URIC'] },
     { id: 'drug_liver', tests: ['hep_virus', 'abd_us'], point: '新しい薬・漢方・サプリメント・健康食品を始めて数週後の肝障害（ALT優位）、ウイルス・胆道疾患を除外 → 原因薬の中止', clues: ['q:meds', 'q:onset', 'H:ALT', '!q:alcohol'] },
+    { id: 'hyperpara', tests: ['pth'], point: '中高年女性、健診で高Ca血症・低リン血症、尿路結石・骨粗鬆症の既往、口渇・多尿・疲れやすさ、PTH高値 → 副甲状腺摘出術', clues: ['q:pmh', 'q:character', 'H:CA', 'L:PHOS', 't:pth'] },
   ],
 };
 APPROACHES.injury = {
@@ -1082,6 +1093,7 @@ APPROACHES.jaundice = {
     { id: 'drug_liver', point: '新しく始めた薬・サプリ・漢方の後' },
     { id: 'alcoholic_hep', point: '大量飲酒、AST優位の上昇、γ-GTP高値', clues: ['q:alcohol'] },
     { id: 'alcoholic_hep', tests: ['abd_us', 'coag'], point: '長年の大量飲酒＋最近の増量、黄疸・発熱・圧痛のある肝腫大、白血球増加、AST/ALT>2・γ-GTP著明高値・MCV高値 → 禁酒・栄養、重症ならステロイド', clues: ['q:alcohol', 'q:fever', 'e:abd_palp', 'e:skin', 'H:GGT', 'H:WBC', 'H:MCV'] },
+    { id: 'aiha', tests: ['coombs', 'cbc'], point: '急に進む貧血と黄疸（間接ビリルビン優位）、紅茶色の尿、LDH上昇・ハプトグロビン低下・網赤血球増加、直接クームス陽性 → ステロイド', clues: ['q:character', 'e:conjunctiva', 'L:HB', 'H:LDH', 'H:TBIL', 't:coombs', '!q:abdpain'] },
   ],
 };
 APPROACHES.fever_unknown = {
@@ -1101,6 +1113,7 @@ APPROACHES.fever_unknown = {
     { id: 'malaria', tests: ['malaria'], point: '熱帯地域からの帰国後1か月以内の発熱・悪寒、血小板減少・溶血・脾腫 → 血液塗抹・迅速抗原、抗マラリア薬', clues: ['q:travel', 'q:chills', 'L:PLT', 'e:abd_palp', 't:malaria'] },
     { id: 'dengue', tests: ['dengue_ag', 'malaria'], point: '東南アジアなどから帰国後2週間以内の高熱・目の奥や筋肉/関節の痛み・発疹、白血球と血小板の減少 → マラリアを除外、アセトアミノフェン（NSAIDsは避ける）', clues: ['q:travel', 'q:character', 'e:skin', 'L:WBC', 'L:PLT', 't:dengue_ag'] },
     { id: 'tsutsugamushi', point: '秋〜初冬に山・畑・草むらに入った、発熱・体幹の発疹、服に隠れた場所の黒いかさぶた（刺し口）とリンパ節腫脹、血小板減少・肝酵素上昇、βラクタムが効かない → テトラサイクリン系', clues: ['q:travel', 'q:course', 'e:skin', 'e:neck_ln', 'L:PLT', 'H:AST'] },
+    { id: 'anca', tests: ['ua', 'anca'], point: '高齢者の不明熱・体重減少、急速に進む腎障害（血尿・円柱）・多発単神経炎・紫斑・肺病変、MPO-ANCA陽性 → 感染を除外してステロイドと免疫抑制薬', clues: ['q:weightloss', 'q:pmh', 'q:course', 'H:CR', 'H:U_RBC', 't:anca', '!q:chills'] },
   ],
 };
 APPROACHES.breast = {
@@ -1203,7 +1216,7 @@ APPROACHES.lymph = {
   title: 'リンパ節が腫れた',
   intro: 'リンパ節腫脹は、部位（局所か全身か）・大きさ・硬さ・痛み・経過で考える。痛みがある小さなリンパ節で感染症状があれば反応性が多い。痛みのない硬いリンパ節が大きくなる・B症状（発熱・寝汗・体重減少）があれば悪性リンパ腫やがんの転移を疑う。',
   keyQ: ['onset', 'character', 'fever', 'nightsweat', 'weightloss', 'sorethroat', 'cough', 'sickcontact', 'pmh'],
-  keyE: ['neck_ln', 'pharynx', 'abd_palp', 'skin'],
+  keyE: ['neck_ln', 'thyroid_palp', 'pharynx', 'abd_palp', 'skin'],
   keyT: ['cbc', 'chem', 'crp'],
   redflags: ['2cm以上・硬い・可動性が悪い・4週以上続く・鎖骨上窩 → 生検', 'B症状（発熱・寝汗・体重減少）→ 悪性リンパ腫', '咳・寝汗・体重減少 → 結核'],
   ddx: [
@@ -1213,6 +1226,7 @@ APPROACHES.lymph = {
     { id: 'reactive_ln', point: '痛みのある小さなリンパ節、感染症状に伴い、数週で縮小' },
     { id: 'tb', point: '頸部リンパ節結核、咳・寝汗' },
     { id: 'sarcoid', point: '両側肺門リンパ節腫脹、ぶどう膜炎' },
+    { id: 'thyroid_nodule', tests: ['neck_us', 'thyroid'], point: '嚥下で動く首の前の硬い無痛性のしこり、発熱・のどの痛みなし、エコーで境界不整・微細石灰化 → 穿刺吸引細胞診、手術', clues: ['q:character', 'e:thyroid_palp', 't:neck_us', '!q:fever', '!q:sorethroat'] },
   ],
 };
 APPROACHES.edema = {
@@ -1262,6 +1276,7 @@ APPROACHES.oral = {
     { id: 'ludwig', point: '口底の腫れ・舌の挙上・嚥下困難・呼吸困難' },
     { id: 'trigeminal', point: '数秒の電撃痛、食事・歯みがきで誘発' },
     { id: 'tetanus_dz', point: '高齢者、数日〜数週前の土や錆びたくぎによる小さな傷、開口障害（牙関緊閉）・痙笑・項部や背部の硬直、意識は清明、発熱は乏しい → 抗破傷風人免疫グロブリン・メトロニダゾール・鎮静', clues: ['q:trigger', 'q:character', 'e:facial', 'e:neck_stiff', 'e:skin', '!q:fever'] },
+    { id: 'sjogren', tests: ['ssab'], point: '中年女性の口の乾燥（乾いた物が飲み込めない・虫歯の増加）と目の乾燥、耳下腺の腫れ、抗SS-A/SS-B抗体陽性 → 唾液分泌促進薬・人工涙液', clues: ['q:character', 'q:pmh', 'e:oral_mucosa', 't:ssab', '!q:fever'] },
   ],
 };
 APPROACHES.psych = {
@@ -1294,6 +1309,7 @@ APPROACHES.hematuria = {
     { id: 'psgn', point: '溶連菌感染の1〜3週後の血尿・むくみ・高血圧' },
     { id: 'ureteral', point: '側腹部の激痛と血尿', clues: ['q:flankpain'] },
     { id: 'cystitis', point: '排尿時痛・頻尿と血尿', clues: ['q:dysuria'] },
+    { id: 'pkd', tests: ['abd_us'], point: '若い頃からの高血圧、家族歴（透析・くも膜下出血）、両側の大きな腎臓を触れる、エコーで両腎の多数の嚢胞 → 降圧・水分、腎臓内科、脳動脈瘤のスクリーニング', clues: ['q:pmh', 'q:meds', 'e:abd_palp', 't:abd_us', '!q:dysuria', '!q:fever'] },
   ],
 };
 APPROACHES.menstrual = {
@@ -1366,6 +1382,7 @@ APPROACHES.weakness = {
     { id: 'stroke', point: '片側の麻痺・失語', clues: ['e:facial', 'e:speech'] },
     { id: 'hypoglycemia', point: '糖尿病治療中、冷汗、血糖低値', clues: ['L:GLU'] },
     { id: 'gbs', tests: ['ncs', 'lp'], point: '下痢・かぜの1〜3週後、数日で両下肢から上行する対称性の脱力、腱反射消失、電解質は正常 → 神経伝導検査・髄液（蛋白細胞解離）、免疫グロブリン療法、呼吸筋麻痺に注意', clues: ['q:trigger', 'q:onset', 'q:numbness', 'e:motor', '!L:K', '!H:K', '!e:speech'] },
+    { id: 'dermatomyositis', tests: ['lab_CK', 'myositis_ab'], point: '数週〜数か月で進む両側対称性の近位筋の筋力低下、ヘリオトロープ疹・ゴットロン丘疹、CK上昇 → 筋炎抗体・悪性腫瘍と間質性肺炎の評価、ステロイド', clues: ['q:onset', 'q:weakness', 'e:motor', 'H:CK', 't:myositis_ab', '!L:K'] },
   ],
 };
 
@@ -1562,6 +1579,8 @@ APPROACHES.joint_pain = {
     { id: 'tennis_elbow', tests: ['joint_xr'], point: '物を持ち上げる・タオルをしぼると肘の外側が痛む、外側上顆の限局した圧痛、抵抗下の手首背屈で痛む → 使いすぎを避け・ストレッチ・NSAIDs', clues: ['q:trigger', 'q:character', 'e:joint', '!t:joint_xr', '!q:stiffness', '!q:fever'] },
     { id: 'plantar_fasciitis', tests: ['joint_xr'], point: '朝起きて最初の一歩でかかとの内側が痛み歩くと楽になる、ランナー・立ち仕事・肥満、踵骨内側の圧痛 → ストレッチ・中敷き', clues: ['q:stiffness', 'q:trigger', 'q:character', 'e:joint', '!t:joint_xr', '!q:joint'] },
     { id: 'calcific_tendinitis', tests: ['joint_xr', 'crp'], point: '40〜60代女性、夜間などに突然起こる肩の激痛でまったく動かせない、X線で腱板の石灰化 → NSAIDs・注射・穿刺吸引', clues: ['t:joint_xr', 'H:CRP', 'q:character'] },
+    { id: 'fibromyalgia', tests: ['crp', 'esr', 'ana'], point: '3か月以上続く全身の広範な痛み、疲労・睡眠障害・物忘れ、関節の腫れなし、炎症反応・自己抗体は正常 → 説明・運動療法・デュロキセチン', clues: ['q:character', 'q:location', '!q:joint', '!e:joint', '!H:CRP', '!t:ana'] },
+    { id: 'parvo', tests: ['parvo'], point: '子どものりんご病（伝染性紅斑）の流行後の成人女性、急に始まる左右対称の手指・手首・膝の関節炎とむくみ、IgM陽性 → 数週で自然に治る（RAと間違えやすい）', clues: ['q:trigger', 'q:stiffness', 'q:joint', 'e:joint', 't:parvo'] },
   ],
 };
 APPROACHES.epigastric = {
@@ -1615,6 +1634,7 @@ APPROACHES.fatigue = {
     { id: 'insomnia', point: '寝つけない・途中で目が覚める、ストレスやカフェイン・昼寝などの生活習慣、検査は正常', clues: ['q:sleep', 'q:trigger', 'q:character'] },
     { id: 'depression', point: '2週間以上の抑うつ気分・興味の喪失、早朝覚醒・食欲低下・自責感、甲状腺・貧血は正常 → 希死念慮を確認', clues: ['q:mood', 'q:sleep', 'q:anorexia', 'q:trigger', '!H:TSH', '!L:HB'] },
     { id: 'menopause', point: '45〜55歳女性、月経不順〜閉経、ほてり・発汗（ホットフラッシュ）・イライラ・不眠、甲状腺は正常', clues: ['q:heatcold', 'q:menses', 'q:sleep', '!L:TSH'] },
+    { id: 'mds', tests: ['smear', 'b12'], point: '高齢者の大球性貧血（B12・葉酸は正常）・白血球と血小板も減少、あざ・感染しやすい、末梢血の異形成 → 血液内科で骨髄検査', clues: ['q:character', 'e:conjunctiva', 'L:HB', 'H:MCV', 'L:PLT', 'L:WBC', 't:smear'] },
   ],
 };
 APPROACHES.facial_palsy = {
@@ -2306,4 +2326,14 @@ export const DISEASE_NOTES = {
   lung_abscess: {"overview": "肺の中に膿がたまって空洞ができる。誤嚥や歯周病の嫌気性菌が原因。", "treatment": ["X線・CTで空洞と液面", "嫌気性菌をカバーする抗菌薬を長期", "口腔ケア・禁酒"], "flow": "飲酒者の発熱＋悪臭のある痰 → 液面形成のある空洞 → 肺膿瘍"},
   ipf: {"overview": "原因不明に肺が少しずつ硬く（線維化）なり、息切れが進む病気。", "treatment": ["CTで蜂巣肺・KL-6", "抗線維化薬", "急性増悪の予防・在宅酸素"], "flow": "高齢喫煙者の進行する息切れ＋ベルクロラ音 → CTで蜂巣肺 → 特発性肺線維症"},
   pleural_effusion: {"overview": "がんが胸膜に広がり、胸に水がたまる状態。", "treatment": ["胸水穿刺（細胞診）", "ドレナージ・胸膜癒着術", "原発巣の治療"], "flow": "片側の大量胸水＋体重減少 → 胸水細胞診でがん細胞 → がん性胸水"},
+  hyperpara: {"overview": "首の副甲状腺にできた腺腫がホルモンを出しすぎ、血液のカルシウムが高くなる。", "treatment": ["Ca・PTHの測定", "腺腫の場所の検査", "副甲状腺摘出術"], "flow": "健診の高Ca血症＋結石・骨粗鬆症 → PTH高値 → 原発性副甲状腺機能亢進症 → 手術"},
+  thyroid_nodule: {"overview": "甲状腺にできるしこり。多くは良性だが、日本では乳頭がんが多い。", "treatment": ["頸部エコー・TSH", "穿刺吸引細胞診", "手術"], "flow": "首の前の硬いしこり → エコーで微細石灰化 → 細胞診 → 甲状腺がん"},
+  mds: {"overview": "骨髄の血液を作る細胞に異常が起き、正常な血球が作れなくなる。白血病に移行することがある。", "treatment": ["血液像・骨髄検査", "輸血・造血刺激薬", "高リスクはアザシチジン・移植"], "flow": "高齢者の大球性貧血＋血球減少 → 異形成 → 骨髄異形成症候群"},
+  aiha: {"overview": "自分の赤血球を壊す抗体ができ、貧血と黄疸が起こる。", "treatment": ["クームス試験・溶血の検査", "ステロイド", "原因（リンパ腫・SLE）の検索"], "flow": "急な貧血＋黄疸＋LDH上昇 → クームス陽性 → 自己免疫性溶血性貧血 → ステロイド"},
+  anca: {"overview": "小さな血管に炎症が起こり、腎臓・肺・神経などが傷つく。高齢者に多い。", "treatment": ["尿検査・ANCA", "ステロイドと免疫抑制薬", "腎生検"], "flow": "高齢者の不明熱＋血尿・腎障害 → MPO-ANCA陽性 → 顕微鏡的多発血管炎"},
+  sjogren: {"overview": "涙や唾液を作る腺が自己免疫で傷つき、目や口が乾く病気。", "treatment": ["抗SS-A/SS-B抗体", "唾液分泌促進薬・人工涙液", "腺外症状の評価"], "flow": "口と目の乾燥 → 抗SS-A抗体陽性 → シェーグレン症候群"},
+  fibromyalgia: {"overview": "全身の広い範囲の慢性的な痛みと疲労が続く病気。検査では異常が出ない。", "treatment": ["ほかの病気の除外", "運動療法・睡眠", "デュロキセチンなど"], "flow": "全身の慢性の痛み＋検査正常 → 線維筋痛症 → 説明と運動療法"},
+  pkd: {"overview": "両方の腎臓に嚢胞がたくさんでき、腎機能が少しずつ落ちる遺伝性の病気。", "treatment": ["エコー・CT", "降圧・水分摂取・トルバプタン", "脳動脈瘤のスクリーニング"], "flow": "高血圧＋家族歴＋血尿 → 両腎の多数の嚢胞 → 多発性嚢胞腎"},
+  dermatomyositis: {"overview": "筋肉と皮膚に自己免疫の炎症が起こる病気。がんや間質性肺炎を合併することがある。", "treatment": ["CK・筋炎抗体", "ステロイドと免疫抑制薬", "がん・間質性肺炎の検索"], "flow": "近位筋の筋力低下＋ヘリオトロープ疹 → CK上昇 → 皮膚筋炎"},
+  parvo: {"overview": "子どものりんご病と同じウイルスに大人が感染し、関節炎が起こる。", "treatment": ["IgM抗体", "NSAIDsで対症療法", "妊婦への感染に注意"], "flow": "子どもの流行後の対称性関節炎 → パルボウイルスIgM陽性 → 自然に治る"},
 };
