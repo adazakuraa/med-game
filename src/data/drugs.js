@@ -253,6 +253,21 @@ export const DRUGS = [
     info: '破傷風の発症時に血中の毒素を中和する（3000〜5000単位）。汚染創の予防には250単位を筋注。',
   },
   {
+    id: 'udca', generic: 'ウルソデオキシコール酸', brands: ['ウルソ'], cls: '利胆薬', tags: ['udca'],
+    routes: { po: { unit: 'mg', min: 100, max: 300, freqs: ['q8h'], maxDaily: 900 } },
+    info: '原発性胆汁性胆管炎の第一選択（1日600〜900mg）。胆石の溶解にも。',
+  },
+  {
+    id: 'pancrelipase', generic: 'パンクレリパーゼ', brands: ['リパクレオン'], cls: '消化酵素製剤', tags: ['pert'],
+    routes: { po: { unit: 'mg', min: 600, max: 600, freqs: ['q8h'], maxDaily: 1800 } },
+    info: '慢性膵炎の膵外分泌不全（脂肪便・体重減少）に毎食直後。',
+  },
+  {
+    id: 'camostat', generic: 'カモスタット', brands: ['フオイパン'], cls: '蛋白分解酵素阻害薬（内服）', tags: ['protease_inh'],
+    routes: { po: { unit: 'mg', min: 200, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: '慢性膵炎の急性症状（腹痛）の緩和に1回200mgを1日3回。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

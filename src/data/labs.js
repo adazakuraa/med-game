@@ -44,6 +44,7 @@ export const LABS = {
   LDL: { name: 'LDLコレステロール', unit: 'mg/dL', ref: [70, 139], dp: 0, base: { m: 115, sd: 18 }, abs: [20, 500] },
   HDL: { name: 'HDLコレステロール', unit: 'mg/dL', ref: [40, 100], dp: 0, base: { M: { m: 55, sd: 10 }, F: { m: 65, sd: 12 } }, abs: [10, 150] },
   TG: { name: '中性脂肪（TG）', unit: 'mg/dL', ref: [30, 149], dp: 0, base: { m: 100, sd: 30 }, abs: [20, 3000] },
+  ALP: { name: 'ALP', unit: 'U/L', ref: [38, 113], dp: 0, base: { m: 75, sd: 15 }, abs: [10, 3000] },
   GGT: { name: 'γ-GTP', unit: 'U/L', ref: { M: [13, 64], F: [9, 32] }, dp: 0, base: { M: { m: 30, sd: 10 }, F: { m: 18, sd: 5 } }, abs: [5, 2000] },
   KL6: { name: 'KL-6', unit: 'U/mL', ref: [0, 499], dp: 0, base: { m: 280, sd: 60 }, abs: [50, 10000] },
   APAP: { name: '血中アセトアミノフェン濃度', unit: 'μg/mL', ref: [0, 20], dp: 0, base: { m: 0, sd: 0 }, abs: [0, 1000] },

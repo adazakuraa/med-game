@@ -264,6 +264,7 @@ export const TEST_WHY = {
   ncs: '末梢神経障害（ギラン・バレー症候群・手根管症候群など）の診断。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
   achr: "重症筋無力症の診断（約8割で陽性）。結果は数日後。",
+  ama: "原発性胆汁性胆管炎の診断（9割以上で陽性）。",
 };
 
 export const LAB_MEANING = {
@@ -332,6 +333,7 @@ export const LAB_MEANING = {
   U_RBC: { H: '血尿' },
   U_BACT: { H: '細菌尿' },
   CHE: { L: '有機リン・カーバメート中毒（著明低下）、肝硬変・低栄養（合成低下）', H: '脂肪肝・ネフローゼ症候群' },
+  ALP: { H: '胆汁うっ滞（胆管の閉塞・原発性胆汁性胆管炎・薬剤）、骨の病気（骨転移・骨折の治癒期）' },
 };
 
 export const DRUG_ROLE = {
@@ -475,6 +477,9 @@ export const DRUG_ROLE = {
   pam: "有機リン中毒の解毒薬。アトロピンと一緒に使う。",
   mamushi_av: "マムシの毒を中和する血清。腫れが広がるときに使う（アレルギーに注意）。",
   tig: "破傷風の毒素を中和する免疫グロブリン。",
+  udca: "胆汁の流れを良くする薬。原発性胆汁性胆管炎の基本の治療。",
+  pancrelipase: "膵臓の消化酵素を補う薬。慢性膵炎の脂肪便・体重減少に。",
+  camostat: "膵臓の酵素の働きを抑える飲み薬。慢性膵炎の腹痛に。",
 };
 
 export const FLUID_ROLE = {
@@ -641,7 +646,7 @@ export const APPROACHES = {
   abd_pain: {
     title: '腹痛',
     intro: '腹痛は「部位」と「腹膜刺激徴候」が鍵。手術が必要な疾患を見逃さないこと。妊娠可能年齢の女性では妊娠関連疾患を必ず考える。',
-    keyQ: ['onset', 'location', 'migration', 'character', 'severity', 'radiation', 'aggravating', 'anorexia', 'nausea', 'fever', 'diarrhea', 'bloodystool', 'constipation', 'dysuria', 'lmp', 'surgery', 'alcohol', 'allergy'],
+    keyQ: ['onset', 'location', 'migration', 'character', 'severity', 'radiation', 'aggravating', 'anorexia', 'nausea', 'fever', 'diarrhea', 'bloodystool', 'constipation', 'dysuria', 'lmp', 'surgery', 'pmh', 'meds', 'alcohol', 'allergy'],
     keyE: ['gen_appear', 'abd_insp', 'abd_ausc', 'abd_perc', 'abd_palp', 'mcburney', 'abd_rebound', 'abd_guard', 'rovsing', 'psoas', 'murphy', 'cva', 'inguinal', 'rectal', 'skin'],
     keyT: ['cbc', 'crp', 'chem', 'ua', 'uhcg', 'abd_us', 'abd_ct_contrast'],
     redflags: ['腹膜刺激徴候（反跳痛・筋性防御）→ 外科コンサルト', '妊娠可能年齢の女性 → 妊娠反応（異所性妊娠は命に関わる）', 'ショック → 穿孔・出血・敗血症を考える'],
@@ -666,6 +671,7 @@ export const APPROACHES = {
       { id: 'biliary_colic', tests: ['abd_us'], point: '脂っこい食事後の心窩部〜右季肋部の痛みが数時間で軽快、発熱なし、炎症反応は正常、エコーで胆石あり・胆嚢壁肥厚なし', clues: ['q:trigger', 'q:course', '!q:fever', '!H:CRP', 't:abd_us'] },
       { id: 'obturator_hernia', tests: ['abd_ct_plain'], point: '手術歴のない、やせた高齢の多産婦の腸閉塞、大腿内側〜膝の痛み（Howship-Romberg徴候）、鼠径部に膨隆なし → CTで閉鎖孔を確認、緊急手術', clues: ['q:surgery', 'q:pmh', 'q:constipation', 'e:inguinal', 'e:abd_ausc', 't:abd_ct_plain'] },
       { id: 'lbo', tests: ['axr', 'abd_ct_contrast'], point: '手術歴のない高齢者の腹部膨満・排便排ガス停止、数か月の便が細い・血便・体重減少・貧血、X線で結腸拡張 → CTで閉塞部位、大腸ステントか人工肛門', clues: ['q:constipation', 'q:bloodystool', 'q:weightloss', 'e:abd_insp', 'e:rectal', 'L:HB', 't:axr'] },
+      { id: 'ogilvie', tests: ['axr', 'abd_ct_contrast'], point: '手術後・寝たきり・神経疾患の高齢者、オピオイド内服、痛みの少ない著明な腹部膨満、CTで閉塞機転のない大腸拡張、低K → 原因薬の中止・K補正、盲腸12cm超で内視鏡減圧', clues: ['q:pmh', 'q:meds', 'e:abd_insp', 'e:abd_perc', 'L:K', 't:axr'] },
     ],
   },
 };
@@ -898,6 +904,7 @@ APPROACHES.itch_rash = {
     { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', '!t:koh', '!q:pmh', '!q:family', '!q:sickcontact'] },
     { id: 'sjs', point: '高熱・口唇や眼の粘膜疹・水疱・皮膚の剥離（重症薬疹）→ 入院' },
     { id: 'syphilis', tests: ['syphilis'], point: '手掌・足底を含むかゆみの乏しい発疹（バラ疹）、数か月前の無痛性の陰部潰瘍、性交渉歴 → 梅毒血清反応、ペニシリン', clues: ['q:trigger', 'q:pmh', '!q:itch', '!q:meds', 't:syphilis'] },
+    { id: 'pbc', tests: ['ama', 'chem'], point: '中年女性、発疹のないかゆみ（夜に強い）・疲労感、ALP・γ-GTP上昇、眼瞼黄色腫、抗ミトコンドリア抗体陽性 → ウルソデオキシコール酸', clues: ['q:character', 'q:pmh', 'H:ALP', 'H:GGT', 't:ama', '!q:sickcontact'] },
   ],
 };
 APPROACHES.vision = {
@@ -1001,6 +1008,7 @@ APPROACHES.checkup = {
     { id: 'polycythemia', tests: ['cbc', 'smear'], point: 'Hb高値に白血球・血小板も増加、脾腫・入浴後のかゆみ・顔面紅潮、喫煙・無呼吸などの二次性はない → 瀉血とアスピリン', clues: ['q:character', 'e:gen_appear', 'e:abd_palp', 'H:HB', 'H:PLT', '!q:smoking'] },
     { id: 'prostate_ca', tests: ['psa'], point: 'PSA高値、家族歴、直腸診で石様硬の結節 → 泌尿器科でMRI・生検', clues: ['q:family', 'q:onset', 'H:PSA', 'e:rectal'] },
     { id: 'hyperuricemia', point: '尿酸高値、痛風発作の既往、飲酒・肥満・利尿薬 → 尿酸降下薬（6以下）と生活指導', clues: ['q:pmh', 'q:alcohol', 'q:meds', 'H:URIC'] },
+    { id: 'drug_liver', tests: ['hep_virus', 'abd_us'], point: '新しい薬・漢方・サプリメント・健康食品を始めて数週後の肝障害（ALT優位）、ウイルス・胆道疾患を除外 → 原因薬の中止', clues: ['q:meds', 'q:onset', 'H:ALT', '!q:alcohol'] },
   ],
 };
 APPROACHES.injury = {
@@ -1043,6 +1051,7 @@ APPROACHES.jaundice = {
     { id: 'cholangitis', point: '発熱・悪寒戦慄・右季肋部痛、胆道系酵素上昇、エコーで胆管拡張・結石', clues: ['q:chills', 't:abd_us'] },
     { id: 'drug_liver', point: '新しく始めた薬・サプリ・漢方の後' },
     { id: 'alcoholic_hep', point: '大量飲酒、AST優位の上昇、γ-GTP高値', clues: ['q:alcohol'] },
+    { id: 'alcoholic_hep', tests: ['abd_us', 'coag'], point: '長年の大量飲酒＋最近の増量、黄疸・発熱・圧痛のある肝腫大、白血球増加、AST/ALT>2・γ-GTP著明高値・MCV高値 → 禁酒・栄養、重症ならステロイド', clues: ['q:alcohol', 'q:fever', 'e:abd_palp', 'e:skin', 'H:GGT', 'H:WBC', 'H:MCV'] },
   ],
 };
 APPROACHES.fever_unknown = {
@@ -1138,6 +1147,7 @@ APPROACHES.bowel = {
     { id: 'colorectal_ca', point: '血便・体重減少・貧血・便が細い', clues: ['q:bloodystool', 'L:HB'] },
     { id: 'hypothyroid', point: '寒がり・むくみ・体重増加、TSH高値', clues: ['H:TSH'] },
     { id: 'ibs', point: '腹痛が排便で軽快、ストレスで悪化、下痢と便秘を繰り返す' },
+    { id: 'crohn', tests: ['abd_ct_contrast', 'crp'], point: '10〜20代の数か月続く下痢・右下腹部痛・体重減少・微熱、痔瘻の既往・口内炎、貧血・CRP上昇・低アルブミン → 大腸内視鏡（回腸末端）で確定', clues: ['q:diarrhea', 'q:weightloss', 'q:pmh', 'q:fever', 'H:CRP', 'L:ALB', 'L:HB'] },
   ],
 };
 APPROACHES.bleeding = {
@@ -1508,7 +1518,7 @@ APPROACHES.joint_pain = {
 APPROACHES.epigastric = {
   title: '胸やけ・胃の痛み',
   intro: '胸やけ・心窩部痛は逆流性食道炎や消化性潰瘍・機能性ディスペプシアが多いが、まず心筋梗塞（心電図）を除外する。体重減少・嚥下困難・吐血/黒色便・貧血・高齢の新規症状は警告症状で内視鏡を。',
-  keyQ: ['onset', 'character', 'heartburn', 'aggravating', 'chestpain', 'weightloss', 'bloodystool', 'food', 'meds', 'alcohol', 'smoking'],
+  keyQ: ['onset', 'character', 'trigger', 'nausea', 'heartburn', 'aggravating', 'chestpain', 'weightloss', 'bloodystool', 'food', 'meds', 'alcohol', 'smoking'],
   keyE: ['abd_palp', 'gen_appear', 'conjunctiva'],
   keyT: ['ecg'],
   redflags: ['胸痛・冷汗・労作で悪化 → 心筋梗塞・狭心症を除外（心電図）', '警告症状（体重減少・嚥下困難・吐血/黒色便・貧血）→ 内視鏡', 'NSAIDs・抗血小板薬の内服 → 潰瘍'],
@@ -1519,6 +1529,8 @@ APPROACHES.epigastric = {
     { id: 'functional_dyspepsia', point: '食後の胃もたれ・早期飽満感・心窩部痛が続く、ストレスで悪化、警告症状なし、内視鏡・ピロリ菌は陰性', clues: ['q:character', 'q:trigger', 'q:pmh', '!q:weightloss', '!t:hp'] },
     { id: 'anisakis', point: 'サバ・イカなどの生食の数時間後の激しい心窩部痛 → 上部内視鏡で虫体を摘出', clues: ['q:trigger', 'q:food', 'q:onset', 'e:abd_palp'] },
     { id: 'gastric_ca', tests: ['cbc'], point: '高齢・ピロリ菌、心窩部不快感・早期飽満感に体重減少・貧血・黒色便（警告症状）→ 上部内視鏡', clues: ['q:weightloss', 'q:pmh', 'q:bloodystool', 'e:conjunctiva', 'L:HB'] },
+    { id: 'chronic_pancreatitis', tests: ['abd_ct_plain'], point: '長年の飲酒者、繰り返す心窩部〜背部痛（前かがみで軽快）、油の浮く下痢（脂肪便）・体重減少・糖尿病、膵酵素はあまり上がらない、CTで膵石 → 禁酒・消化酵素薬', clues: ['q:alcohol', 'q:diarrhea', 'q:weightloss', 'q:pmh', 't:abd_ct_plain', 'H:GLU'] },
+    { id: 'agml', tests: ['cbc', 'ecg'], point: 'NSAIDs・大量飲酒・強いストレスの後の急な心窩部痛と嘔気（コーヒー残渣様の嘔吐）、心電図・エコーは正常 → PPIと原因の除去', clues: ['q:trigger', 'q:nausea', 'q:meds'] },
   ],
 };
 APPROACHES.dysphagia = {
@@ -1632,6 +1644,23 @@ APPROACHES.seizure = {
 };
 
 // ---- 疾患ノート ----
+APPROACHES.anal_pain = {
+  title: '肛門の痛み・しこり',
+  intro: '肛門の痛みは、排便時だけか（裂肛）、急にできた痛いしこりか（血栓性外痔核）、持続する痛み・腫れ・発熱か（肛門周囲膿瘍）で分ける。糖尿病で急速に広がる会陰部の痛みはフルニエ壊疽を疑う。',
+  keyQ: ['onset', 'character', 'location', 'fever', 'bloodystool', 'constipation', 'diarrhea', 'trigger', 'pmh'],
+  keyE: ['rectal', 'skin'],
+  keyT: ['cbc', 'crp'],
+  redflags: ['発熱・急速に広がる会陰部の発赤・皮膚の黒色化・握雪感 → フルニエ壊疽（緊急手術）', '血便に体重減少・便が細い → 大腸がん・直腸がん', '繰り返す痔瘻・肛門病変の若年者 → クローン病'],
+  ddx: [
+    { id: 'anal_fissure', point: '硬い便の後の、排便時の切れるような痛みと紙に付く鮮血、肛門後方の裂創 → 便通の調整と外用薬', clues: ['q:constipation', 'q:bloodystool', 'q:character', 'e:rectal', '!q:fever'] },
+    { id: 'thrombosed_hemorrhoid', point: '長時間の座位・飲酒・いきみの後に急にできる、肛門縁の痛い暗紫色の硬いしこり → 外用薬・鎮痛', clues: ['q:trigger', 'q:character', 'e:rectal', 'e:skin', '!q:fever'] },
+    { id: 'perianal_abscess', tests: ['cbc', 'crp'], point: '肛門のそばの持続する拍動痛・腫れ・発赤・発熱、波動を触れる → 切開排膿（後に痔瘻）', clues: ['q:fever', 'q:character', 'e:rectal', 'e:skin', 'H:CRP', 'H:WBC'] },
+    { id: 'hemorrhoid', point: '排便時の痛みのない鮮血、脱出' },
+    { id: 'fournier', point: '糖尿病、会陰部の急速に広がる強い痛み・発赤・壊死・発熱 → 緊急デブリードマン' },
+    { id: 'crohn', point: '若年者の繰り返す痔瘻・裂肛、慢性下痢・体重減少' },
+  ],
+};
+
 export const DISEASE_NOTES = {
   cap: {
     overview: '肺の実質に起こる細菌感染症。原因菌は肺炎球菌が最も多い。発熱・咳・膿性痰・呼吸困難が典型的で、聴診で局所のcrackles、胸部X線で浸潤影を認める。',
@@ -2161,4 +2190,14 @@ export const DISEASE_NOTES = {
   myxedema: {"overview": "重い甲状腺機能低下症で、意識障害・低体温・呼吸抑制が起こる命に関わる状態。", "treatment": ["ヒドロコルチゾン", "甲状腺ホルモンの補充", "呼吸管理・緩徐な加温"], "flow": "甲状腺の薬の中断＋冬の意識障害・低体温・徐脈 → TSH著明高値 → 粘液水腫性昏睡 → ステロイドと甲状腺ホルモン"},
   chem_eye: {"overview": "薬品が目に入り角膜や結膜が傷つく。アルカリは特に深く浸透して危険。", "treatment": ["すぐに大量洗眼（pHが中性になるまで）", "眼科で評価", "抗菌薬・ステロイド点眼"], "flow": "薬品が目に入った → すぐ洗眼 → 眼科"},
   compartment: {"overview": "骨折などで筋肉の区画の内圧が上がり、血流が途絶えて筋肉や神経が壊死していく状態。", "treatment": ["締め付けの解除", "緊急の筋膜切開", "横紋筋融解・腎障害の管理"], "flow": "骨折後の強すぎる痛み＋他動伸展時痛 → コンパートメント症候群 → 緊急筋膜切開"},
+  perianal_abscess: {"overview": "肛門の奥にある肛門腺に細菌が入り、肛門のまわりに膿がたまる病気。", "treatment": ["切開排膿", "座浴", "治った後の痔瘻は手術"], "flow": "肛門のそばの持続痛・腫れ・発熱 → 波動のある膨隆 → 肛門周囲膿瘍 → 切開排膿"},
+  anal_fissure: {"overview": "硬い便で肛門の皮膚が切れる病気（切れ痔）。", "treatment": ["便を軟らかくする（酸化マグネシウム・食物繊維）", "外用薬", "慢性化すれば手術"], "flow": "排便時の切れる痛み＋鮮血 → 肛門後方の裂創 → 裂肛 → 便通の調整と外用薬"},
+  thrombosed_hemorrhoid: {"overview": "肛門のふちの静脈に血のかたまりができ、痛いしこりになる。", "treatment": ["外用薬・鎮痛", "入浴で温める", "痛みが強ければ血栓除去"], "flow": "急にできた肛門縁の痛い暗紫色のしこり → 血栓性外痔核 → 外用薬と鎮痛"},
+  crohn: {"overview": "口から肛門まで消化管のどこにでも炎症や潰瘍ができる慢性の病気。若い人に多い。", "treatment": ["大腸内視鏡と生検", "栄養療法・5-ASA・ステロイド", "生物学的製剤、禁煙"], "flow": "若年者の慢性下痢・腹痛・体重減少＋痔瘻 → 内視鏡で縦走潰瘍 → クローン病"},
+  alcoholic_hep: {"overview": "大量の飲酒で肝臓に強い炎症が起こり、黄疸や発熱が出る状態。", "treatment": ["禁酒・栄養（ビタミンB1）", "重症ではステロイド", "離脱症状への備え"], "flow": "大量飲酒者の黄疸・発熱・肝腫大 → AST優位の肝障害・γ-GTP高値 → アルコール性肝炎 → 禁酒と栄養"},
+  drug_liver: {"overview": "薬や健康食品・漢方が原因で起こる肝障害。", "treatment": ["原因薬の中止", "ウイルス・胆道疾患の除外", "肝機能の経過観察"], "flow": "新しい薬・サプリの後の肝障害 → ほかの原因を除外 → 薬物性肝障害 → 中止して改善を確認"},
+  chronic_pancreatitis: {"overview": "長年の飲酒などで膵臓が少しずつ壊れ、痛み・消化不良・糖尿病が起こる病気。", "treatment": ["禁酒・禁煙", "消化酵素薬・疼痛管理", "膵性糖尿病の管理"], "flow": "飲酒者の繰り返す上腹部〜背部痛＋脂肪便・体重減少 → CTで膵石 → 慢性膵炎"},
+  agml: {"overview": "痛み止め・お酒・ストレスなどで胃の粘膜に急にただれや出血が起こる。", "treatment": ["心筋梗塞・胆膵疾患の除外", "PPI", "原因の除去（NSAIDs中止・禁酒）"], "flow": "きっかけの後の急な心窩部痛 → 心電図・エコー正常 → 急性胃粘膜病変 → PPI"},
+  pbc: {"overview": "自己免疫で肝臓の中の細い胆管が壊れ、胆汁が流れにくくなる病気。中年女性に多い。", "treatment": ["抗ミトコンドリア抗体", "ウルソデオキシコール酸", "骨粗鬆症などの合併症の管理"], "flow": "中年女性の発疹のないかゆみ＋ALP上昇 → 抗ミトコンドリア抗体陽性 → 原発性胆汁性胆管炎"},
+  ogilvie: {"overview": "腸が詰まっていないのに、大腸の動きが止まって大きく膨らむ状態。手術後や寝たきりの高齢者に多い。", "treatment": ["CTで閉塞を除外", "原因薬の中止・電解質補正・胃管", "盲腸の拡張が強ければ内視鏡で減圧"], "flow": "寝たきり高齢者の著明な腹部膨満 → CTで閉塞機転なし → Ogilvie症候群 → 減圧"},
 };
