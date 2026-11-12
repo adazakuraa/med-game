@@ -1,0 +1,42 @@
+// 眼化学外傷（アルカリ）
+// 出典: 日本眼科学会 資料, 一般的な救急眼科の知識
+export default {
+  id: 'chem_eye', name: '眼化学外傷（アルカリ）', dept: '眼科',
+  weight: 1.2, season: {}, minLevel: 1,
+  demo: { age: [20, 70], ageMode: 'uniform', male: 0.6 },
+  sev: { p: [0.45, 0.4, 0.15], burden: [[26, 34], [34, 44], [44, 54]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']), agent: rng.pick(['カビ取り剤のスプレー', '工事現場のセメント', '配管洗浄剤']) }),
+  cc: (v) => `${v.side}目に薬品が入った`, ccKey: 'red_eye',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '20分前、{agent}が{side}目に入りました。水道で少し洗ってから来ました。' },
+    character: { p: 1, text: '目がしみて痛くて、開けていられません。涙が止まりません。' },
+    vision: { p: 1, text: '{side}目がかすんで見えます。' },
+    trigger: { p: 1, text: '{agent}です。アルカリ性と書いてありました。' },
+    itch: { p: 0, text: 'かゆみはありません。' },
+    headache: { p: 0, text: '頭痛や吐き気はありません。' },
+  },
+  exam: { eye: { p: 1, text: '{side}眼の強い結膜充血・浮腫、角膜上皮の広範なびらん（フルオレセイン染色陽性）、輪部の一部が白く虚血。結膜嚢のpH 10。' }, pupils: { p: 1, text: '瞳孔は正円。' } },
+  vitals: {},
+  labs: {},
+  tests: { slit: [{ p: 1, persist: true, unlessProc: 'eye_irrigation', text: '{side}角膜上皮の広範な欠損、輪部虚血は1/4周以下、前房は清明。結膜嚢のpH 10。' }, { p: 1, ifProc: 'eye_irrigation', text: '{side}角膜上皮の欠損、輪部虚血は1/4周以下。洗浄後のpH 7.5。' }], acuity: [{ p: 1, text: '{side}0.3（反対側 1.0）。' }], iop: [{ p: 0.3, text: '{side}24mmHg（やや高値）。' }] },
+  natural: 0.3,
+  therapies: [
+    { id: 'irrigate', label: '診察・検査より先に、生理食塩水で大量の洗眼（pHが中性になるまで）', req: { fn: (enc) => !!enc.state.procs?.eye_irrigation }, effect: -1.2, lagH: 0, required: true, deadlineH: [0.5, 0.5, 0.5] },
+    { id: 'eye', label: '眼科コンサルト（抗菌薬・ステロイド点眼、角膜・輪部の評価）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'eye') }, effect: -0.2, lagH: 2, required: true, deadlineH: [6, 4, 3] },
+  ],
+  dynamics: (enc) => (enc.state.procs?.eye_irrigation && enc.t >= enc.state.procs.eye_irrigation ? -0.6 : 0),
+  consult: { eye: '眼科：アルカリによる角膜化学外傷です。十分に洗浄されpHは中性です。輪部虚血は軽度で、抗菌薬・ステロイド点眼で治療し、明日眼科外来で再診します。輪部虚血が広い場合は失明の危険があり、入院治療になります。' },
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['admit', 'home'], best: 'admit', why: '重いアルカリ外傷：眼科入院' } : { ok: ['home', 'admit'], best: 'home', why: '洗浄・点眼で帰宅し、翌日眼科再診' }),
+  useful: ['slit', 'acuity', 'iop'],
+  key: [],
+  extrasOk: () => ['corneal_fb'],
+  teaching: [
+    '薬品が目に入ったら、問診・視力検査より先に、すぐ生理食塩水（水道水でもよい）で大量に洗う。pHが中性になるまで続ける。',
+    'アルカリ（セメント・カビ取り剤・配管洗浄剤）は組織に浸透し、酸より重症になりやすい。',
+    '輪部虚血（白くなる範囲）が広いほど予後が悪い。眼科で評価する。',
+  ],
+  sources: ['日本眼科学会 資料「眼の化学外傷」'],
+  ideal: () => [{ a: 'proc', id: 'eye_irrigation' }, { a: 'test', ids: ['slit', 'acuity'] }, { a: 'consult', dept: 'eye', delayMin: 10 }, { a: 'wait', min: 70 }],
+};

@@ -1,0 +1,43 @@
+// マムシ咬傷
+// 出典: 日本救急医学会 資料, 堺淳ほか「マムシ咬傷の重症度分類と治療」
+export default {
+  id: 'viper', name: 'マムシ咬傷', dept: '救急科',
+  weight: 1.2, season: { summer: 2.5, autumn: 1.5, spring: 0.8, winter: 0.05 }, minLevel: 2,
+  demo: { age: [50, 85], ageMode: 'old', male: 0.6 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[26, 34], [36, 46], [50, 60]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.3 } }, organisms: [],
+  vars: (rng) => ({ side: rng.pick(['右', '左']), part: rng.pick(['手の指', '足首']), act: rng.pick(['草むしり', '田んぼのあぜ道を歩いていて', '薪を運んでいて']) }),
+  cc: (v) => `${v.side}${v.part}をヘビにかまれた`, ccKey: 'injury',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '1時間前、{act}{side}{part}をヘビにかまれました。' },
+    character: { p: 1, text: 'かまれた所がジンジン痛んで、だんだん腫れが広がってきています。' },
+    location: { p: 1, text: '{side}{part}から上に向かって腫れています。' },
+    trigger: { p: 1, text: '銭形の模様がある、短くて太いヘビでした。マムシだと思います。' },
+    aggravating: { p: 0, text: '' }, syncope: { p: 0, text: '気は失っていません。' },
+    vision: { p: [0, 0.4, 1], text: '少し物が二重に見えます。' },
+    pmh: { p: 0, text: '特にありません。' }, allergy: { p: 0, text: 'アレルギーはありません。馬の血清を使ったこともありません。' }, meds: { p: 0, text: '' },
+  },
+  exam: { skin: { p: 1, text: '{side}{part}に1cm間隔の2つの牙痕。周囲から近位に向かって腫脹・皮下出血が広がっている（時間とともに拡大）。' }, joint: { p: 1, text: '腫脹のため関節の動きが制限。' }, eye: { p: [0, 0.3, 1], text: '複視（眼筋麻痺）。' } },
+  vitals: { HR: { to: [95, 115], k: 1.5 }, SBP: { to: [95, 110], k: 2 } },
+  labs: { CK: { add: [300, 3000], k: 1.2 }, PLT: { mul: [0.5, 0.8], k: 1.5 }, WBC: { to: [10000, 15000], k: 1 } },
+  tests: {},
+  natural: 0.35,
+  therapies: [
+    { id: 'av', label: 'マムシ抗毒素（腫脹が広がる・全身症状があれば早期に）、アナフィラキシーへの備え', req: { tag: 'antivenom' }, effect: 0, lagH: 0, required: (enc) => enc.patient.sev >= 1, deadlineH: [99, 6, 3] },
+    { id: 'tetanus', label: '破傷風の予防（トキソイド）と創の洗浄', req: { tag: 'tetanus' }, effect: 0, lagH: 0, required: true, deadlineH: [24, 24, 24] },
+  ],
+  dynamics: (enc, eff) => { const st = enc.state; if (eff.tags.antivenom) st.av ??= enc.t; return (enc.patient.sev === 0 ? -0.6 : 0) + (st.av != null && enc.t - st.av > 120 ? -1.0 : 0); },
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: 'マムシ咬傷：腫脹は数日かけて広がるので入院で経過観察（CK・血小板・腎機能）' }),
+  useful: ['cbc', 'chem', 'coag', 'ua', 'lab_CK', 'vbg'],
+  key: [['cbc'], ['chem', 'lab_CK']],
+  extrasOk: () => ['rhabdo'],
+  teaching: [
+    'マムシ咬傷は夏〜秋の農作業中に手足をかまれることが多い。2つの牙痕と、時間とともに中枢へ広がる腫脹・皮下出血が特徴。',
+    '重症度は腫脹の範囲で判断（手首・足首を越える、さらに肘・膝を越えるなど）。複視（眼筋麻痺）・血小板減少・CK上昇・腎障害は重症のサイン。',
+    '腫脹が広がる・全身症状があれば早期に抗毒素（アナフィラキシーに備える）。破傷風予防も行う。',
+    '縛る・切開して吸い出すのは推奨されない。安静にして早く受診。',
+  ],
+  sources: ['堺淳ほか「マムシ咬傷の重症度分類と治療」'],
+  ideal: (p) => [{ a: 'test', ids: ['cbc', 'chem', 'coag', 'ua'] }, ...(p.sev >= 1 ? [{ a: 'rx', drugId: 'mamushi_av', route: 'iv', dose: 1, freq: 'once', days: 1 }] : []), { a: 'rx', drugId: 'tetanus', route: 'im', dose: 0.5, freq: 'once', days: 1 }],
+};

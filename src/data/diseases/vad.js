@@ -1,0 +1,48 @@
+// 椎骨動脈解離（延髄外側症候群を伴う）
+// 出典: 日本脳卒中学会『脳卒中治療ガイドライン2021〔改訂2023〕』
+export default {
+  id: 'vad', name: '椎骨動脈解離', dept: '脳神経内科',
+  weight: 1.5, season: {}, minLevel: 3,
+  demo: { age: [30, 55], ageMode: 'uniform', male: 0.65 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [36, 46], [48, 58]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.3 } }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']), trig: rng.pick(['ゴルフのスイングをした後', '美容院でシャンプー台に首を反らせた後', '首を強くひねるマッサージを受けた後']) }),
+  cc: () => '首の後ろが痛く、ふらつく', ccKey: 'headache',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '3日前、{trig}から{side}の首の後ろから後頭部が痛くなりました。今朝からふらついてまっすぐ歩けません。' },
+    character: { p: 1, text: '今まで経験したことのない、首の後ろのズキズキした痛みです。' },
+    location: { p: 1, text: '{side}の首の後ろから後頭部です。' },
+    severity: { p: 1, text: '痛みは強いですが、突然バットで殴られたような痛みではありませんでした。' },
+    trigger: { p: 1, text: '{trig}です。' },
+    vertigo: { p: 1, text: '周りがぐるぐる回る感じと、ふらつきがあります。' },
+    nausea: { p: 0.7, text: '吐き気があります。' },
+    numbness: { p: 0.6, text: '顔の{side}側と、反対側の体の温度の感じ方が鈍い気がします。' },
+    speechq: { p: 0.4, text: '飲み込みにくく、声がかすれる気がします。' },
+    fever: { p: 0, text: '熱はありません。' }, photophobia: { p: 0, text: '' }, family: { p: 0, text: '' },
+  },
+  exam: { ataxia: { p: 1, text: '{side}上下肢の協調運動障害（指鼻試験・膝踵試験で拙劣）。' }, nystagmus: { p: 1, text: '注視方向性眼振。' }, pupils: { p: 0.7, text: '{side}の縮瞳と眼瞼下垂（Horner症候群）。' }, facial: { p: 0.5, text: '{side}顔面の温痛覚低下。' }, motor: { p: 1, text: '明らかな麻痺はない。' }, neck_stiff: { p: 0, text: '項部硬直なし。' } },
+  vitals: { SBP: { to: [140, 160], k: 1 } },
+  labs: {},
+  tests: {
+    head_ct: [{ p: 1, text: 'くも膜下出血・出血を認めない。' }],
+    head_mri: [{ p: 1, persist: true, text: 'DWIで{side}延髄外側〜小脳に高信号（急性期梗塞）。MRAで{side}椎骨動脈の紡錘状拡張と狭窄（pearl and string sign、解離）。' }],
+  },
+  natural: 0.2,
+  therapies: [
+    { id: 'neuro', label: '脳神経内科コンサルト（入院、抗血栓療法・血圧管理、くも膜下出血の否定）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'neuro') }, effect: -0.5, lagH: 2, required: true, deadlineH: [12, 6, 4] },
+  ],
+  consult: { neuro: '脳神経内科：MRI/MRAで{side}椎骨動脈解離と延髄外側〜小脳の梗塞（Wallenberg症候群）です。くも膜下出血はないので、入院で抗血栓療法と血圧管理を行います。嚥下障害があるので誤嚥に注意し、飲水テストまで絶食にしてください。' },
+  harmTags: { thrombolytic: '解離に血栓溶解薬（出血の危険）' },
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: '椎骨動脈解離による脳梗塞：入院（くも膜下出血・梗塞拡大に注意）' }),
+  useful: ['head_ct', 'head_mri', 'ecg', 'cbc', 'chem', 'coag', 'bs_poct'],
+  key: [['head_mri']],
+  extrasOk: () => ['cerebellar', 'stroke'],
+  teaching: [
+    '若年〜中年の脳卒中の原因として多い。首をひねる動作の後の、片側の後頸部〜後頭部痛に続く、めまい・ふらつき・Horner症候群・顔面と反対側の体の温痛覚障害（Wallenberg症候群）。',
+    '頭部CTでくも膜下出血を否定し、MRI/MRAで梗塞と解離を確認する。',
+    '頭蓋内に及ぶ解離はくも膜下出血を起こしうる。出血がなければ抗血栓療法。',
+  ],
+  sources: ['脳卒中治療ガイドライン2021〔改訂2023〕（日本脳卒中学会）'],
+  ideal: () => [{ a: 'test', ids: ['bs_poct', 'head_ct', 'head_mri', 'ecg', 'cbc', 'coag'] }, { a: 'consult', dept: 'neuro', delayMin: 30 }],
+};

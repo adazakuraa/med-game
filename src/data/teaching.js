@@ -263,6 +263,7 @@ export const TEST_WHY = {
   abi: '足と腕の血圧の比。0.9以下なら閉塞性動脈硬化症。',
   ncs: '末梢神経障害（ギラン・バレー症候群・手根管症候群など）の診断。',
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
+  achr: "重症筋無力症の診断（約8割で陽性）。結果は数日後。",
 };
 
 export const LAB_MEANING = {
@@ -330,6 +331,7 @@ export const LAB_MEANING = {
   U_WBC: { H: '膿尿（尿路感染症）' },
   U_RBC: { H: '血尿' },
   U_BACT: { H: '細菌尿' },
+  CHE: { L: '有機リン・カーバメート中毒（著明低下）、肝硬変・低栄養（合成低下）', H: '脂肪肝・ネフローゼ症候群' },
 };
 
 export const DRUG_ROLE = {
@@ -469,6 +471,10 @@ export const DRUG_ROLE = {
   kcl: 'カリウムの補充。必ず薄めてゆっくり点滴する（急速投与は心停止の危険）。',
   bicarb: 'アシドーシスを中和する薬。DKAでは原則不要。',
   vitk: "ワルファリンの効きすぎを打ち消すビタミンK。効果が出るまで数時間かかる。",
+  pyridostigmine: "重症筋無力症で筋力を一時的に改善する飲み薬。",
+  pam: "有機リン中毒の解毒薬。アトロピンと一緒に使う。",
+  mamushi_av: "マムシの毒を中和する血清。腫れが広がるときに使う（アレルギーに注意）。",
+  tig: "破傷風の毒素を中和する免疫グロブリン。",
 };
 
 export const FLUID_ROLE = {
@@ -496,6 +502,7 @@ export const PROC_ROLE = {
   ng: '鼻から胃にチューブを入れる。腸閉塞での減圧や、上部消化管出血の確認に使う。',
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
   drain_L: '左の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
+  eye_irrigation: "薬品が目に入ったら、診察より先にすぐ大量の水で洗う。アルカリは特に危険。",
 };
 
 export const O2_ROLE = {
@@ -725,6 +732,8 @@ APPROACHES.altered_mental = {
     { id: 'apap_od', tests: ['apap', 'chem', 'coag'], point: '市販の解熱鎮痛薬の大量服薬、初期は症状が乏しい、血中濃度高値 → 8時間以内にNAC、精神科と連携', clues: ['q:onset', 'q:trigger', 'q:mood', 'H:APAP'] },
     { id: 'nms', tests: ['lab_CK'], point: '抗精神病薬の開始・増量（または抗パーキンソン病薬の中止）後の高熱・鉛管様筋強剛・意識障害・発汗、CK著明上昇 → 原因薬の中止・冷却・補液・ダントロレン', clues: ['q:meds', 'q:fever', 'e:rigidity', 'H:CK'] },
     { id: 'serotonin', point: 'SSRIなどの追加・増量後、急な発症、ミオクローヌス・腱反射亢進' },
+    { id: 'organophosphate', tests: ['chem'], point: '農薬を飲んだ（自殺企図）、縮瞳・流涎・発汗・気道分泌増加・徐脈・下痢、筋線維束攣縮、特有の臭い、コリンエステラーゼ著明低下 → アトロピン・PAM', clues: ['q:meds', 'q:character', 'e:pupils', 'e:gen_breath_odor', 'e:skin', 'L:CHE'] },
+    { id: 'myxedema', tests: ['thyroid'], point: '甲状腺機能低下症の治療中断、冬、数週かけて進む意識障害、低体温・徐脈・低換気（CO2貯留）、非圧痕性浮腫、低Na → ヒドロコルチゾン・甲状腺ホルモン・加温', clues: ['q:pmh', 'q:course', 'e:skin', 'H:TSH', 'H:PCO2', 'L:NA'] },
   ],
 };
 APPROACHES.fever_headache = {
@@ -747,7 +756,7 @@ APPROACHES.headache = {
   title: '頭痛',
   intro: '頭痛の多くは片頭痛や緊張型頭痛だが、くも膜下出血など危険な頭痛を見逃さないこと。危険なサイン（SNOOP：全身症状、神経症状、突然発症、50歳以降の初発、パターンの変化）があれば画像検査を。',
   keyQ: ['onset', 'course', 'character', 'location', 'severity', 'nausea', 'photophobia', 'aggravating', 'trigger', 'pmh', 'family', 'fever', 'seizure', 'vision', 'jaw'],
-  keyE: ['gen_consc', 'gen_appear', 'neck_stiff', 'jolt', 'pupils', 'eye', 'motor', 'facial', 'temporal'],
+  keyE: ['gen_consc', 'gen_appear', 'neck_stiff', 'jolt', 'pupils', 'ataxia', 'eye', 'motor', 'facial', 'temporal'],
   keyT: [],
   redflags: ['突然発症・人生最悪の頭痛 → くも膜下出血を疑い頭部CT（正常でも疑いが強ければ腰椎穿刺）', '発熱・項部硬直 → 髄膜炎', '神経症状・意識障害・瞳孔不同 → 頭蓋内病変', '典型的な片頭痛で危険なサインがなければ、画像検査は不要'],
   ddx: [
@@ -761,6 +770,7 @@ APPROACHES.headache = {
     { id: 'co_poisoning', tests: ['vbg', 'ecg'], point: '冬・暖房器具や練炭、同居家族も同じ症状、家を出ると楽になる、SpO2は正常でもCOHb高値 → すぐに100%酸素', clues: ['H:COHB'] },
     { id: 'gca', tests: ['esr'], point: '50歳以上の新しいこめかみの頭痛、顎跛行・視力障害、側頭動脈の圧痛・拍動低下、赤沈著明高値 → 失明予防にすぐステロイド', clues: ['q:location', 'q:jaw', 'q:vision', 'e:temporal', 'H:ESR', 'H:CRP'] },
     { id: 'trigeminal', tests: ['head_mri'], point: '片側の顔面に数秒の電撃痛が繰り返す、歯みがき・洗顔・食事で誘発、神経脱落症状なし → カルバマゼピン', clues: ['q:character', 'q:trigger', 'q:location', '!q:nausea', 'e:facial'] },
+    { id: 'vad', tests: ['head_mri'], point: '若年〜中年、首をひねる動作の後の片側の後頸部〜後頭部痛、続いてめまい・ふらつき・Horner症候群・顔面と反対側の体の感覚障害（Wallenberg症候群）→ CTで出血を否定しMRI/MRA', clues: ['q:trigger', 'q:location', 'q:vertigo', 'e:ataxia', 'e:pupils', 't:head_mri'] },
   ],
 };
 
@@ -904,6 +914,8 @@ APPROACHES.vision = {
     { id: 'gca', point: '高齢者の頭痛・顎跛行・視力障害、赤沈高値', clues: ['q:jaw'] },
     { id: 'aacg', point: '眼痛・頭痛・嘔吐・充血・中等度散瞳', clues: ['q:headache'] },
     { id: 'stroke', point: '同名半盲・麻痺・言語障害' },
+    { id: 'mg', tests: ['achr'], point: '夕方や疲れると悪化し休むと良くなる眼瞼下垂・複視、瞳孔は正常、腕の易疲労性 → 抗AChR抗体・アイスパックテスト、胸腺腫の評価', clues: ['q:course', 'q:weakness', 'e:eye', 't:achr', '!e:pupils'] },
+    { id: 'cn3_palsy', point: '突然の片側の眼瞼下垂・複視に瞳孔散大と頭痛 → 脳動脈瘤の切迫破裂（緊急）', clues: ['e:pupils', 'q:headache'] },
   ],
 };
 APPROACHES.throat = {
@@ -924,7 +936,7 @@ APPROACHES.throat = {
 APPROACHES.red_eye = {
   title: '目の充血',
   intro: '目の充血の多くは結膜炎（ウイルス性・細菌性・アレルギー性）だが、視力低下・強い眼痛・頭痛・嘔吐・瞳孔異常・角膜の混濁があれば急性緑内障発作・角膜炎・ぶどう膜炎を考えて眼科へ。',
-  keyQ: ['onset', 'character', 'vision', 'itch', 'sickcontact', 'headache', 'nausea', 'sorethroat', 'allergy'],
+  keyQ: ['onset', 'character', 'trigger', 'vision', 'itch', 'sickcontact', 'headache', 'nausea', 'sorethroat', 'allergy'],
   keyE: ['eye', 'pupils', 'neck_ln'],
   keyT: [],
   redflags: ['視力低下・強い眼痛・頭痛と嘔吐・角膜混濁・瞳孔散大 → 急性緑内障発作（眼圧測定・眼科へ緊急）', 'コンタクトレンズ使用者の眼痛 → 角膜潰瘍', '外傷・薬品が目に入った → すぐに大量の水で洗眼'],
@@ -938,6 +950,7 @@ APPROACHES.red_eye = {
     { id: 'subconj', point: '痛み・かゆみ・視力低下がなく、白目がべったり赤い、咳・いきみ・高血圧 → 自然に吸収', clues: ['q:trigger', 'e:eye', '!q:vision', '!q:itch', '!q:sickcontact'] },
     { id: 'uveitis', tests: ['slit'], point: '眼痛・羞明・かすみ、角膜周囲の充血（毛様充血）・眼脂なし、前房の炎症細胞、強直性脊椎炎など → 眼科でステロイド点眼', clues: ['q:vision', 'q:pmh', 'e:pupils', 't:slit', '!q:itch'] },
     { id: 'aacg', tests: ['iop'], point: '強い眼痛・頭痛・嘔吐・かすみ・虹視、中等度散瞳、眼圧上昇', clues: ['q:vision', 'q:headache', 'e:pupils', 't:iop'] },
+    { id: 'chem_eye', tests: ['slit'], point: '薬品（アルカリ：セメント・カビ取り剤）が目に入った → 診察より先にすぐ大量洗眼、pHを確認', clues: ['q:trigger', 'q:character', 'q:onset', 'e:eye', 't:slit'] },
   ],
 };
 APPROACHES.tremor = {
@@ -967,7 +980,8 @@ APPROACHES.memory = {
     { id: 'hypothyroid', point: '寒がり・むくみ・便秘、TSH高値', clues: ['H:TSH'] },
     { id: 'b12_def', point: '胃切除後、大球性貧血・しびれ', clues: ['L:B12', 'H:MCV'] },
     { id: 'depression', point: '気分の落ち込みが先行、「わからない」と答える（取り繕わない）', clues: ['q:mood'] },
-    { id: 'nph', point: '歩行障害（すり足・開脚）・尿失禁・認知機能低下、脳室拡大' },
+    { id: 'nph', tests: ['head_ct'], point: '歩行障害（すり足・開脚）・尿失禁・認知機能低下、CTで脳室拡大（くも膜下腔の不均衡な拡大）→ 脳神経外科で髄液排除試験・シャント', clues: ['q:character', 'e:motor', 't:head_ct'] },
+    { id: 'tga', tests: ['head_ct'], point: '中高年が冷水・力仕事・強い感情の後に急に新しいことを覚えられなくなり同じ質問を繰り返す、自分が誰かは分かる、神経所見なし、24時間以内に回復 → 脳卒中・低血糖・てんかんを除外', clues: ['q:onset', 'q:trigger', 'q:course'] },
   ],
 };
 APPROACHES.checkup = {
@@ -1008,9 +1022,11 @@ APPROACHES.injury = {
     { id: 'rib_fx', tests: ['cxr'], point: '胸部打撲後の、深呼吸・咳で強くなる限局した圧痛と介達痛、X線で気胸・血胸の有無を確認', clues: ['q:character', 'q:aggravating', 'e:chest_palp', 't:cxr'] },
     { id: 'burn', point: '熱湯・油による受傷、水疱・発赤、面積（手のひら＝1%）と深さを評価 → 冷却・創処置', clues: ['q:trigger', 'e:skin'] },
     { id: 'animal_bite', point: '犬・猫の咬傷（手は特に危険）→ 洗浄（縫合しない）・予防的抗菌薬・破傷風予防', clues: ['q:trigger', 'q:pmh', 'e:skin'] },
+    { id: 'viper', tests: ['cbc', 'chem'], point: '夏〜秋の農作業中のヘビ咬傷、2つの牙痕、時間とともに中枢へ広がる腫脹・皮下出血、複視・血小板減少・CK上昇は重症 → 抗毒素と破傷風予防', clues: ['q:trigger', 'q:character', 'e:skin', 'H:CK', 'L:PLT'] },
     { id: 'central_cord', tests: ['spine_mri'], point: '首の骨の変形がある高齢者が転んで額を打ち首が反った後、両手のしびれ・脱力（上肢＞下肢）、X線で骨折なし → 頸椎固定とMRI', clues: ['q:numbness', 'q:weakness', 'e:motor', 'e:spine', 't:spine_mri'] },
     { id: 'hemothorax', tests: ['cxr'], point: '胸部打撲後の呼吸困難、片側の呼吸音減弱・濁音・皮下気腫、低酸素・頻脈 → X線/FASTで血気胸、胸腔ドレナージ', clues: ['q:character', 'e:lung_ausc', 'e:chest_perc', 'e:chest_palp', 't:cxr'] },
     { id: 'splenic_injury', tests: ['abd_us', 'abd_ct_contrast', 'cbc'], point: '左上腹部の打撲、腹痛・左肩痛、頻脈・血圧低下、FASTで腹腔内液体 → 補液とTAE/開腹止血', clues: ['q:location', 'e:abd_palp', 't:abd_us', 'L:HB', 'H:LAC'] },
+    { id: 'compartment', tests: ['joint_xr', 'lab_CK'], point: '下腿・前腕の骨折や打撲の数時間後、見た目に比べて強すぎる痛み・鎮痛薬が効かない、他動伸展時痛、しびれ（脈は触れる）→ 緊急筋膜切開', clues: ['q:character', 'q:aggravating', 'q:numbness', 'e:joint', 'H:CK'] },
   ],
 };
 APPROACHES.jaundice = {
@@ -1045,6 +1061,7 @@ APPROACHES.fever_unknown = {
     { id: 'neutropenic_fever', tests: ['bcx', 'cbc'], point: 'がん化学療法中（7〜14日後）の発熱、好中球500未満 → 血液培養後1時間以内に緑膿菌をカバーする抗菌薬', clues: ['q:pmh', 'q:meds', 'L:WBC', 'q:chills'] },
     { id: 'malaria', tests: ['malaria'], point: '熱帯地域からの帰国後1か月以内の発熱・悪寒、血小板減少・溶血・脾腫 → 血液塗抹・迅速抗原、抗マラリア薬', clues: ['q:travel', 'q:chills', 'L:PLT', 'e:abd_palp', 't:malaria'] },
     { id: 'dengue', tests: ['dengue_ag', 'malaria'], point: '東南アジアなどから帰国後2週間以内の高熱・目の奥や筋肉/関節の痛み・発疹、白血球と血小板の減少 → マラリアを除外、アセトアミノフェン（NSAIDsは避ける）', clues: ['q:travel', 'q:character', 'e:skin', 'L:WBC', 'L:PLT', 't:dengue_ag'] },
+    { id: 'tsutsugamushi', point: '秋〜初冬に山・畑・草むらに入った、発熱・体幹の発疹、服に隠れた場所の黒いかさぶた（刺し口）とリンパ節腫脹、血小板減少・肝酵素上昇、βラクタムが効かない → テトラサイクリン系', clues: ['q:travel', 'q:course', 'e:skin', 'e:neck_ln', 'L:PLT', 'H:AST'] },
   ],
 };
 APPROACHES.breast = {
@@ -1191,7 +1208,7 @@ APPROACHES.oral = {
   title: '歯・歯ぐき・あごの痛み',
   intro: '歯・口・あごの痛みでは、腫れの範囲（歯肉だけか、頬・顎下・口底に広がっているか）、開口障害、嚥下・呼吸の状態を確認する。口底の腫れ・嚥下困難は深頸部感染として緊急。顎の痛みは狭心症・巨細胞性動脈炎・三叉神経痛のこともある。',
   keyQ: ['onset', 'character', 'fever', 'trigger', 'dyspnea', 'pmh'],
-  keyE: ['oral_mucosa', 'neck_ln', 'temporal'],
+  keyE: ['oral_mucosa', 'neck_ln', 'temporal', 'facial', 'neck_stiff'],
   keyT: ['cbc', 'crp'],
   redflags: ['口底の腫れ・舌の挙上・嚥下困難・含み声・呼吸困難 → Ludwig angina（気道確保の準備）', '労作時の顎の痛み → 狭心症の放散痛', '高齢者の咀嚼時の顎の痛み（顎跛行）→ 巨細胞性動脈炎'],
   ddx: [
@@ -1200,6 +1217,7 @@ APPROACHES.oral = {
     { id: 'odontogenic', tests: ['cbc', 'crp', 'bs_poct'], point: '放置した虫歯から頬・顎下部のびまん性の腫れ・発熱・開口障害、糖尿病 → 抗菌薬静注と切開排膿', clues: ['q:fever', 'q:trigger', 'e:neck_ln', 'H:WBC', 'H:CRP'] },
     { id: 'ludwig', point: '口底の腫れ・舌の挙上・嚥下困難・呼吸困難' },
     { id: 'trigeminal', point: '数秒の電撃痛、食事・歯みがきで誘発' },
+    { id: 'tetanus_dz', point: '高齢者、数日〜数週前の土や錆びたくぎによる小さな傷、開口障害（牙関緊閉）・痙笑・項部や背部の硬直、意識は清明、発熱は乏しい → 抗破傷風人免疫グロブリン・メトロニダゾール・鎮静', clues: ['q:trigger', 'q:character', 'e:facial', 'e:neck_stiff', 'e:skin', '!q:fever'] },
   ],
 };
 APPROACHES.psych = {
@@ -2133,4 +2151,14 @@ export const DISEASE_NOTES = {
   takotsubo: {"overview": "強いストレスのあとに心臓の先端が一時的に動かなくなる病気。心筋梗塞とそっくりの症状。", "treatment": ["心電図・トロポニン・心エコー", "緊急冠動脈造影で心筋梗塞を否定", "CCUで心不全・不整脈を監視"], "flow": "ストレス後の胸痛＋ST上昇 → 冠動脈造影で狭窄なし・心尖部の無収縮 → たこつぼ型心筋症"},
   warfarin_bleed: {"overview": "血液をサラサラにするワルファリンが効きすぎて、出血しやすくなる状態。抗菌薬などの飲み合わせで起こりやすい。", "treatment": ["PT-INRの測定", "ワルファリンの休薬", "ビタミンK（重い出血ではプロトロンビン複合体製剤）"], "flow": "ワルファリン内服中のあざ・出血 → PT-INR著明延長 → ビタミンKと休薬"},
   hyperventilation: {"overview": "不安やストレスで呼吸が速くなりすぎ、血液がアルカリ性に傾いて手足のしびれなどが起こる。", "treatment": ["危険な疾患の除外（SpO2・心電図・血液ガス・血糖）", "安心させ、ゆっくり呼吸を促す"], "flow": "ストレス後の呼吸困難＋しびれ・テタニー、SpO2正常 → 血液ガスで呼吸性アルカローシス → 過換気症候群"},
+  vad: {"overview": "首の後ろを走る椎骨動脈の壁が裂ける病気。脳梗塞やくも膜下出血の原因になる。", "treatment": ["頭部CTで出血を否定", "MRI/MRAで解離と梗塞を確認", "入院で抗血栓療法・血圧管理"], "flow": "首をひねった後の後頸部痛＋めまい・ふらつき → MRI/MRAで椎骨動脈解離と延髄外側梗塞 → 入院"},
+  tga: {"overview": "急に新しいことを覚えられなくなるが、数時間〜1日で自然に治る記憶障害。", "treatment": ["脳卒中・低血糖・てんかんの除外", "経過観察（24時間以内に回復）"], "flow": "急に同じ質問を繰り返す＋神経所見なし → 血糖・頭部画像正常 → 一過性全健忘 → 経過観察"},
+  mg: {"overview": "神経から筋肉への信号が自己抗体でうまく伝わらず、疲れると力が入らなくなる病気。", "treatment": ["抗AChR抗体・反復刺激試験", "ピリドスチグミン・免疫治療", "胸腺腫があれば手術"], "flow": "夕方に悪化する眼瞼下垂・複視 → 抗AChR抗体陽性 → 重症筋無力症 → 治療と胸腺腫の評価"},
+  tetanus_dz: {"overview": "土の中の破傷風菌の毒素で、筋肉がこわばりけいれんする病気。", "treatment": ["抗破傷風人免疫グロブリン", "メトロニダゾールと創の処置", "鎮静・呼吸管理（ICU）"], "flow": "小さな傷の後の開口障害・痙笑・項部硬直 → 破傷風 → 免疫グロブリンと鎮静"},
+  tsutsugamushi: {"overview": "ツツガムシというダニに刺されてリケッチアに感染し、発熱・発疹が出る病気。", "treatment": ["刺し口を探す", "テトラサイクリン系（ドキシサイクリン・ミノサイクリン）"], "flow": "山や畑に入った後の発熱・発疹＋刺し口 → つつが虫病 → テトラサイクリン系"},
+  viper: {"overview": "マムシにかまれ、毒で腫れや出血、重いと腎障害・複視が起こる。", "treatment": ["腫脹の範囲で重症度を評価", "抗毒素（アナフィラキシーに注意）", "破傷風予防・入院で経過観察"], "flow": "ヘビ咬傷＋広がる腫脹 → マムシ咬傷 → 抗毒素と入院観察"},
+  organophosphate: {"overview": "農薬（有機リン）でアセチルコリンが分解されなくなり、縮瞳・よだれ・徐脈・呼吸不全が起こる。", "treatment": ["アトロピン（気道分泌が乾くまで）", "PAM", "呼吸管理と除染"], "flow": "農薬服用＋縮瞳・流涎・徐脈 → コリンエステラーゼ低下 → 有機リン中毒 → アトロピン・PAM"},
+  myxedema: {"overview": "重い甲状腺機能低下症で、意識障害・低体温・呼吸抑制が起こる命に関わる状態。", "treatment": ["ヒドロコルチゾン", "甲状腺ホルモンの補充", "呼吸管理・緩徐な加温"], "flow": "甲状腺の薬の中断＋冬の意識障害・低体温・徐脈 → TSH著明高値 → 粘液水腫性昏睡 → ステロイドと甲状腺ホルモン"},
+  chem_eye: {"overview": "薬品が目に入り角膜や結膜が傷つく。アルカリは特に深く浸透して危険。", "treatment": ["すぐに大量洗眼（pHが中性になるまで）", "眼科で評価", "抗菌薬・ステロイド点眼"], "flow": "薬品が目に入った → すぐ洗眼 → 眼科"},
+  compartment: {"overview": "骨折などで筋肉の区画の内圧が上がり、血流が途絶えて筋肉や神経が壊死していく状態。", "treatment": ["締め付けの解除", "緊急の筋膜切開", "横紋筋融解・腎障害の管理"], "flow": "骨折後の強すぎる痛み＋他動伸展時痛 → コンパートメント症候群 → 緊急筋膜切開"},
 };

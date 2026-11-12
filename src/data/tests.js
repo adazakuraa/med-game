@@ -12,7 +12,7 @@ export const TEST_CATS = [
 
 export const TESTS = [
   { id: 'cbc', cat: 'blood', name: '血算セット', kind: 'lab', items: ['WBC', 'NEUT', 'HB', 'MCV', 'PLT'], cost: 210, timeMin: 30, inv: 1, sample: 'blood' },
-  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'TP', 'ALB', 'AMY', 'LIP', 'CK', 'LDH', 'URIC', 'CA', 'PHOS'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
+  { id: 'chem', cat: 'blood', name: '生化学セット', kind: 'lab', items: ['NA', 'K', 'CL', 'BUN', 'CR', 'EGFR', 'GLU', 'AST', 'ALT', 'TBIL', 'TP', 'ALB', 'AMY', 'LIP', 'CK', 'LDH', 'URIC', 'CA', 'PHOS', 'CHE'], cost: 1100, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'crp', cat: 'blood', name: 'CRP', kind: 'lab', items: ['CRP'], cost: 160, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'pct', cat: 'blood', name: 'プロカルシトニン', kind: 'lab', items: ['PCT'], cost: 2760, timeMin: 60, inv: 1, sample: 'blood' },
   { id: 'coag', cat: 'blood', name: '凝固セット', kind: 'lab', items: ['PT_INR', 'APTT', 'DDIMER'], cost: 640, timeMin: 45, inv: 1, sample: 'blood' },
@@ -72,6 +72,7 @@ export const TESTS = [
   { id: 'ca125', cat: 'blood', name: '腫瘍マーカー（CA125）', kind: 'lab', items: ['CA125'], cost: 1500, timeMin: 1440, inv: 1, sample: 'blood' },
   { id: 'hormone', cat: 'blood', name: '女性ホルモン検査（LH・FSH・PRL・テストステロン）', kind: 'report', cost: 2500, timeMin: 1440, inv: 1, normal: 'LH・FSH・プロラクチン・テストステロンは基準範囲。' },
   { id: 'paracentesis', cat: 'micro', name: '腹水穿刺（腹水検査）', kind: 'report', cost: 2500, timeMin: 45, inv: 2, normal: '穿刺できる腹水はない。' },
+  { id: 'achr', cat: 'blood', name: '抗アセチルコリン受容体抗体', kind: 'report', cost: 3000, timeMin: 2880, inv: 1, normal: '抗AChR抗体 陰性（0.2 nmol/L未満）。' },
   { id: 'etoh', cat: 'blood', name: '血中エタノール濃度', kind: 'lab', items: ['ETOH'], cost: 1000, timeMin: 30, inv: 1, sample: 'blood' },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },

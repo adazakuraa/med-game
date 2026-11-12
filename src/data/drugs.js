@@ -233,6 +233,26 @@ export const DRUGS = [
     info: 'アルコール多飲・低栄養の意識障害では、ブドウ糖の前（または同時）に100mg以上を静注しWernicke脳症を予防する。',
   },
   {
+    id: 'pyridostigmine', generic: 'ピリドスチグミン', brands: ['メスチノン'], cls: 'コリンエステラーゼ阻害薬', tags: ['ache_inh'],
+    routes: { po: { unit: 'mg', min: 60, max: 60, freqs: ['q8h'], maxDaily: 180 } },
+    info: '重症筋無力症の対症療法。1回60mgを1日3回。腹痛・下痢・唾液増加。',
+  },
+  {
+    id: 'pam', generic: 'プラリドキシム（PAM）', brands: ['パム静注'], cls: '有機リン中毒解毒薬', tags: ['pam'],
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['once', 'q8h'], maxDaily: 6000 } },
+    info: '有機リン中毒でアトロピンと併用し、コリンエステラーゼを再賦活する。早期に1〜2gを点滴。',
+  },
+  {
+    id: 'mamushi_av', generic: '乾燥まむしウマ抗毒素', brands: ['まむし抗毒素'], cls: '抗毒素血清', tags: ['antivenom'],
+    routes: { iv: { unit: 'バイアル', min: 1, max: 1, freqs: ['once'], maxDaily: 1 } }, effectHours: 72,
+    info: 'マムシ咬傷で腫脹が広がる・全身症状があるときに1バイアルを点滴。アナフィラキシー・血清病に注意（皮内反応・準備）。',
+  },
+  {
+    id: 'tig', generic: '抗破傷風人免疫グロブリン', brands: ['テタノブリン'], cls: '免疫グロブリン（破傷風）', tags: ['tig'],
+    routes: { iv: { unit: '単位', min: 3000, max: 5000, freqs: ['once'], maxDaily: 5000 } }, effectHours: 720,
+    info: '破傷風の発症時に血中の毒素を中和する（3000〜5000単位）。汚染創の予防には250単位を筋注。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,
@@ -650,7 +670,7 @@ export const DRUGS = [
   {
     id: 'doxy', generic: 'ドキシサイクリン', brands: ['ビブラマイシン'], cls: '抗菌薬（テトラサイクリン系）', allergy: 'tetracycline', abx: true,
     routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q12h', 'q24h'], maxDaily: 200 } },
-    covers: ['chlamydia', 'atypical', 'tp'],
+    covers: ['chlamydia', 'atypical', 'tp', 'rickettsia'],
     contra: ['pregnancy'],
     interact: [{ tag: 'mgo', level: 'warn', msg: 'Mg・Al含有製剤で吸収低下', reduceRoute: 'po' }],
     info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',
