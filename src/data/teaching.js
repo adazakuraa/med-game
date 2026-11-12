@@ -502,6 +502,9 @@ export const DRUG_ROLE = {
   duloxetine: "痛みを抑える神経の働きを強める薬。線維筋痛症・慢性の痛み・うつ病に。",
   cevimeline: "唾液を出やすくする薬（シェーグレン症候群の口の乾き）。",
   tolvaptan: "多発性嚢胞腎で嚢胞が大きくなるのを遅らせる薬。",
+  diquafosol: "涙の分泌を促すドライアイの点眼薬。",
+  miconazole_gel: "口の中のカンジダに塗る抗真菌薬。ワルファリンとは併用禁忌。",
+  triamcinolone_oral: "口内炎に塗るステロイド。",
 };
 
 export const FLUID_ROLE = {
@@ -929,13 +932,15 @@ APPROACHES.itch_rash = {
     { id: 'scabies', tests: ['koh'], point: '施設・家族内で多発、夜間の強いかゆみ、指間・手掌・腋窩・陰部の丘疹と疥癬トンネル、鏡検でヒゼンダニ', clues: ['t:koh', 'q:sickcontact', 'q:itch', 'q:meds'] },
     { id: 'urticaria', point: '数時間で消えては出る膨疹', clues: ['q:course'] },
     { id: 'atopic', point: '幼少期からの慢性・再発性の湿疹、首・肘窩・膝窩に左右対称、乾燥肌、アレルギー疾患の既往・家族歴 → ステロイド外用と保湿', clues: ['q:pmh', 'q:family', '!t:koh', '!q:sickcontact'] },
-    { id: 'herpes_labialis', point: '同じ部位に繰り返す、ピリピリした前駆症状の後の集簇する小水疱（口唇）、疲労・紫外線 → 早期の抗ウイルス薬', clues: ['q:pmh', 'q:trigger', '!q:meds', '!q:family', '!t:koh'] },
-    { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', '!t:koh', '!q:pmh', '!q:family', '!q:sickcontact'] },
+    { id: 'herpes_labialis', point: '同じ部位に繰り返す、ピリピリした前駆症状の後の集簇する小水疱（口唇）、疲労・紫外線 → 早期の抗ウイルス薬', clues: ['q:pmh', 'q:trigger', 'e:skin', '!t:koh'] },
+    { id: 'drug_eruption', tests: ['cbc', 'chem'], point: '新しい薬を飲み始めて数日〜2週間後の、左右対称の小紅斑・丘疹、粘膜疹・水疱はない → 原因薬の中止', clues: ['q:meds', 'q:trigger', '!t:koh', '!q:sickcontact'] },
     { id: 'sjs', point: '高熱・口唇や眼の粘膜疹・水疱・皮膚の剥離（重症薬疹）→ 入院' },
     { id: 'syphilis', tests: ['syphilis'], point: '手掌・足底を含むかゆみの乏しい発疹（バラ疹）、数か月前の無痛性の陰部潰瘍、性交渉歴 → 梅毒血清反応、ペニシリン', clues: ['q:trigger', 'q:pmh', '!q:itch', '!q:meds', 't:syphilis'] },
     { id: 'pbc', tests: ['ama', 'chem'], point: '中年女性、発疹のないかゆみ（夜に強い）・疲労感、ALP・γ-GTP上昇、眼瞼黄色腫、抗ミトコンドリア抗体陽性 → ウルソデオキシコール酸', clues: ['q:character', 'q:pmh', 'H:ALP', 'H:GGT', 't:ama', '!q:sickcontact'] },
-    { id: 'xerotic_eczema', point: '高齢者、冬に悪化、すね・背中の乾燥と白い粉・亀甲状のひび割れ、熱い風呂・ナイロンタオル → 保湿とステロイド外用', clues: ['q:location', 'q:trigger', 'q:itch', '!t:koh'] },
-    { id: 'bullous_pemphigoid', tests: ['bp180'], point: '高齢者の強いかゆみと、紅斑の上や正常皮膚の破れにくい緊満性水疱、口腔は保たれる、DPP-4阻害薬 → 抗BP180抗体・生検、強力なステロイド外用', clues: ['q:meds', 'q:character', 'e:skin', 't:bp180', '!q:fever'] },
+    { id: 'xerotic_eczema', point: '高齢者、冬に悪化、すね・背中の乾燥と白い粉・亀甲状のひび割れ、熱い風呂・ナイロンタオル → 保湿とステロイド外用', clues: ['q:trigger', 'q:itch', 'e:skin', '!t:koh'] },
+    { id: 'bullous_pemphigoid', tests: ['bp180'], point: '高齢者の強いかゆみと、紅斑の上や正常皮膚の破れにくい緊満性水疱、口腔は保たれる、DPP-4阻害薬 → 抗BP180抗体・生検、強力なステロイド外用', clues: ['q:meds', 'q:character', 'e:skin', '!q:fever'] },
+    { id: 'hand_eczema', tests: ['koh'], point: '水仕事・頻回の手洗い（美容師・調理師・医療職）、両手の指先・手のひらの乾燥・ひび割れ・紅斑、KOH陰性 → ステロイド外用・保湿・手袋', clues: ['q:trigger', 'q:location', 'e:skin', '!t:koh'] },
+    { id: 'cutaneous_candida', tests: ['koh'], point: 'おむつ部・乳房の下など湿った皺の部分の境界明瞭な赤いびらんと周囲の小膿疱（衛星病変）、糖尿病・抗菌薬、KOHで仮性菌糸 → 抗真菌薬外用（ステロイドは悪化）', clues: ['q:trigger', 'q:pmh', 't:koh'] },
   ],
 };
 APPROACHES.vision = {
@@ -956,6 +961,7 @@ APPROACHES.vision = {
     { id: 'cn3_palsy', point: '突然の片側の眼瞼下垂・複視に瞳孔散大と頭痛 → 脳動脈瘤の切迫破裂（緊急）', clues: ['e:pupils', 'q:headache'] },
     { id: 'amd', tests: ['fundus', 'oct'], point: '高齢の喫煙者、片眼の中心がゆがむ（変視症）・暗い、アムスラーチャートで歪み、黄斑部の出血・網膜下液 → 眼科で抗VEGF療法', clues: ['q:character', 'q:vision', 'e:eye', 't:fundus', 't:oct', '!q:headache'] },
     { id: 'poag', tests: ['fundus', 'perimetry'], point: '痛み・充血のないゆっくり進む視野欠損（自覚が乏しい）、視力は保たれる、視神経乳頭陥凹拡大、日本人は眼圧正常が多い → 点眼で眼圧を下げる', clues: ['q:character', 't:fundus', 't:perimetry', '!q:headache'] },
+    { id: 'pvd', tests: ['fundus'], point: '中高年の急な飛蚊症（目を動かすと一緒に動く）、視野欠損・視力低下なし、眼底で網膜裂孔がない → 経過観察（急増・視野欠損ならすぐ受診）', clues: ['q:character', 'q:vision', 't:fundus', '!q:headache'] },
   ],
 };
 APPROACHES.throat = {
@@ -986,11 +992,13 @@ APPROACHES.red_eye = {
     { id: 'stye', point: 'まぶたの縁の限局した発赤・腫脹・圧痛と膿点、視力・眼球運動は正常 → 抗菌点眼', clues: ['q:character', 'e:eye', '!q:vision'] },
     { id: 'orbital_cellulitis', point: 'まぶた全体の腫れ・発熱・眼球運動痛・視力低下 → 緊急' },
     { id: 'bact_conj', point: '膿性の眼脂でまぶたがくっつく' },
-    { id: 'corneal_fb', tests: ['slit'], point: '作業中に何かが入った後の強い眼痛・異物感・流涙・まぶしさ、フルオレセインで角膜の傷・異物 → 眼科で除去・抗菌点眼', clues: ['q:onset', 'q:character', 'e:eye', 't:slit', '!q:itch'] },
+    { id: 'corneal_fb', tests: ['slit'], point: '作業中に何かが入った後の強い眼痛・異物感・流涙・まぶしさ、フルオレセインで角膜の傷・異物 → 眼科で除去・抗菌点眼', clues: ['q:character', 'e:eye', 't:slit', '!q:itch'] },
     { id: 'subconj', point: '痛み・かゆみ・視力低下がなく、白目がべったり赤い、咳・いきみ・高血圧 → 自然に吸収', clues: ['q:trigger', 'e:eye', '!q:vision', '!q:itch', '!q:sickcontact'] },
     { id: 'uveitis', tests: ['slit'], point: '眼痛・羞明・かすみ、角膜周囲の充血（毛様充血）・眼脂なし、前房の炎症細胞、強直性脊椎炎など → 眼科でステロイド点眼', clues: ['q:vision', 'q:pmh', 'e:pupils', 't:slit', '!q:itch'] },
     { id: 'aacg', tests: ['iop'], point: '強い眼痛・頭痛・嘔吐・かすみ・虹視、中等度散瞳、眼圧上昇', clues: ['q:vision', 'q:headache', 'e:pupils', 't:iop'] },
-    { id: 'chem_eye', tests: ['slit'], point: '薬品（アルカリ：セメント・カビ取り剤）が目に入った → 診察より先にすぐ大量洗眼、pHを確認', clues: ['q:trigger', 'q:character', 'q:onset', 'e:eye', 't:slit'] },
+    { id: 'chem_eye', tests: ['slit', 'acuity'], point: '薬品（アルカリ：セメント・カビ取り剤）が目に入った → 診察より先にすぐ大量洗眼、pHを確認', clues: ['q:trigger', 'q:vision', 'e:eye', 't:slit', 't:acuity'] },
+    { id: 'dry_eye', tests: ['slit'], point: '画面作業・コンタクト・エアコン、両眼の乾き・ゴロゴロ感・疲れ、かすみはまばたきで戻る、眼脂なし、BUT短縮 → 点眼と生活指導', clues: ['q:trigger', 't:slit', '!q:itch', '!q:sickcontact'] },
+    { id: 'corneal_ulcer', tests: ['slit'], point: 'コンタクトレンズの不適切な使用、強い眼痛・まぶしさ・視力低下・眼脂、角膜の白い浸潤と潰瘍・前房蓄膿 → 当日眼科、頻回の抗菌点眼（ステロイド点眼は禁忌）', clues: ['q:trigger', 'q:vision', 'e:eye', 't:slit', '!q:itch'] },
   ],
 };
 APPROACHES.tremor = {
@@ -1260,13 +1268,14 @@ APPROACHES.skin_lesion = {
     { id: 'atheroma', tests: ['cbc', 'crp'], point: '以前からある皮下のしこりが急に赤く腫れて痛む、中央の黒点・波動 → 切開排膿', clues: ['q:onset', 'q:character', 'H:CRP', 'H:WBC', '!q:family', '!q:itch'] },
     { id: 'alopecia', tests: ['thyroid'], point: '境界明瞭な円形の脱毛斑、皮膚に炎症・鱗屑なし、感嘆符毛 → 甲状腺疾患の確認と外用', clues: ['q:location', 'q:trigger', 'q:pmh', '!q:itch', '!t:koh'] },
     { id: 'pressure_ulcer', tests: ['cbc', 'crp', 'chem'], point: '寝たきり・低栄養の高齢者、仙骨部・踵などの骨突出部の潰瘍、壊死組織・膿・悪臭・発熱は感染 → デブリードマン・抗菌薬・除圧と栄養', clues: ['q:trigger', 'q:fever', 'q:location', 'e:skin', 'H:CRP', '!q:itch'] },
+    { id: 'furuncle', point: '毛包を中心とした痛い赤いしこり、中央の膿栓・波動、以前からあったしこりではない → 切開排膿・抗菌薬（繰り返すなら糖尿病）', clues: ['q:onset', 'q:character', 'e:skin', '!q:itch', '!q:pmh'] },
   ],
 };
 APPROACHES.oral = {
   title: '歯・歯ぐき・あごの痛み',
   intro: '歯・口・あごの痛みでは、腫れの範囲（歯肉だけか、頬・顎下・口底に広がっているか）、開口障害、嚥下・呼吸の状態を確認する。口底の腫れ・嚥下困難は深頸部感染として緊急。顎の痛みは狭心症・巨細胞性動脈炎・三叉神経痛のこともある。',
   keyQ: ['onset', 'character', 'fever', 'trigger', 'dyspnea', 'pmh'],
-  keyE: ['oral_mucosa', 'neck_ln', 'temporal', 'facial', 'neck_stiff'],
+  keyE: ['oral_mucosa', 'neck_ln', 'temporal', 'facial', 'neck_stiff', 'eye'],
   keyT: ['cbc', 'crp'],
   redflags: ['口底の腫れ・舌の挙上・嚥下困難・含み声・呼吸困難 → Ludwig angina（気道確保の準備）', '労作時の顎の痛み → 狭心症の放散痛', '高齢者の咀嚼時の顎の痛み（顎跛行）→ 巨細胞性動脈炎'],
   ddx: [
@@ -1277,6 +1286,11 @@ APPROACHES.oral = {
     { id: 'trigeminal', point: '数秒の電撃痛、食事・歯みがきで誘発' },
     { id: 'tetanus_dz', point: '高齢者、数日〜数週前の土や錆びたくぎによる小さな傷、開口障害（牙関緊閉）・痙笑・項部や背部の硬直、意識は清明、発熱は乏しい → 抗破傷風人免疫グロブリン・メトロニダゾール・鎮静', clues: ['q:trigger', 'q:character', 'e:facial', 'e:neck_stiff', 'e:skin', '!q:fever'] },
     { id: 'sjogren', tests: ['ssab'], point: '中年女性の口の乾燥（乾いた物が飲み込めない・虫歯の増加）と目の乾燥、耳下腺の腫れ、抗SS-A/SS-B抗体陽性 → 唾液分泌促進薬・人工涙液', clues: ['q:character', 'q:pmh', 'e:oral_mucosa', 't:ssab', '!q:fever'] },
+    { id: 'sialolith', tests: ['neck_us'], point: '食事のたびに顎の下が腫れて痛み食後にしぼむ（唾仙痛）、口底の硬い塊、エコーで唾石 → 唾石摘出', clues: ['q:trigger', 'q:character', 'e:neck_ln', 't:neck_us', '!q:fever'] },
+    { id: 'pulpitis', point: '深いむし歯、冷温水でしみた後もズキズキ続く・夜間や横になると悪化、歯肉や顔の腫れ・発熱なし → 鎮痛と歯科（抗菌薬は不要）', clues: ['q:character', 'q:trigger', 'e:oral_mucosa', '!q:fever', '!e:neck_ln'] },
+    { id: 'aphthous', point: '円形の浅い潰瘍に白い偽膜と赤い縁取り、疲れ・寝不足で繰り返し1〜2週で治る → 口腔用ステロイド（2週以上治らなければ生検）', clues: ['q:trigger', 'q:character', 'e:oral_mucosa', '!q:fever', '!q:pmh'] },
+    { id: 'oral_candida', tests: ['koh'], point: '高齢者・吸入ステロイド・糖尿病・義歯、ぬぐうと剥がれる白苔と口腔のヒリヒリ感・味覚異常、KOHで仮性菌糸 → 抗真菌薬・吸入後のうがい', clues: ['q:trigger', 'q:pmh', 'e:oral_mucosa', 't:koh'] },
+    { id: 'behcet', point: '繰り返す口内炎＋陰部潰瘍・ぶどう膜炎・結節性紅斑' },
   ],
 };
 APPROACHES.psych = {
@@ -2336,4 +2350,14 @@ export const DISEASE_NOTES = {
   pkd: {"overview": "両方の腎臓に嚢胞がたくさんでき、腎機能が少しずつ落ちる遺伝性の病気。", "treatment": ["エコー・CT", "降圧・水分摂取・トルバプタン", "脳動脈瘤のスクリーニング"], "flow": "高血圧＋家族歴＋血尿 → 両腎の多数の嚢胞 → 多発性嚢胞腎"},
   dermatomyositis: {"overview": "筋肉と皮膚に自己免疫の炎症が起こる病気。がんや間質性肺炎を合併することがある。", "treatment": ["CK・筋炎抗体", "ステロイドと免疫抑制薬", "がん・間質性肺炎の検索"], "flow": "近位筋の筋力低下＋ヘリオトロープ疹 → CK上昇 → 皮膚筋炎"},
   parvo: {"overview": "子どものりんご病と同じウイルスに大人が感染し、関節炎が起こる。", "treatment": ["IgM抗体", "NSAIDsで対症療法", "妊婦への感染に注意"], "flow": "子どもの流行後の対称性関節炎 → パルボウイルスIgM陽性 → 自然に治る"},
+  furuncle: {"overview": "毛穴の奥に黄色ブドウ球菌が感染し、膿をもった痛いしこりになる。", "treatment": ["切開排膿", "抗菌薬（広がりがあれば）", "繰り返すなら糖尿病の検査"], "flow": "毛包中心の痛いしこり＋膿栓 → せつ → 切開排膿"},
+  hand_eczema: {"overview": "水仕事や洗剤の刺激で手の皮膚のバリアが壊れて起こる湿疹。", "treatment": ["ステロイド外用", "保湿", "手袋で保護"], "flow": "水仕事の多い人の手荒れ・ひび割れ → KOH陰性 → 手湿疹"},
+  cutaneous_candida: {"overview": "湿った皮膚のしわにカンジダ（カビの一種）が増えて、赤くただれる。", "treatment": ["KOH鏡検", "抗真菌薬の外用", "乾燥・清潔（ステロイドは悪化）"], "flow": "おむつ部の赤いびらん＋衛星病変 → KOHで仮性菌糸 → 皮膚カンジダ症"},
+  dry_eye: {"overview": "涙の量や質が低下して目の表面が乾き、不快感や見えにくさが出る。", "treatment": ["涙液層破壊時間（BUT）", "点眼", "画面作業の休憩・加湿"], "flow": "目の乾き・ゴロゴロ感＋画面作業 → BUT短縮 → ドライアイ"},
+  pvd: {"overview": "年齢とともに目の中のゼリー（硝子体）が網膜から離れ、飛蚊症が出る。", "treatment": ["散瞳眼底検査で網膜裂孔を除外", "経過観察"], "flow": "急な飛蚊症 → 眼底で裂孔なし → 後部硝子体剥離 → 経過観察"},
+  corneal_ulcer: {"overview": "コンタクトレンズの不適切な使用などで、角膜に細菌が感染して潰瘍ができる。失明の危険がある。", "treatment": ["細隙灯で角膜を観察", "頻回の抗菌点眼", "コンタクトの中止・眼科へ当日紹介"], "flow": "コンタクト使用者の強い眼痛＋角膜の白い浸潤 → 細菌性角膜潰瘍 → 抗菌点眼"},
+  sialolith: {"overview": "唾液の通り道に石ができ、食事のたびに唾液腺が腫れて痛む。", "treatment": ["エコー・CT", "唾石摘出", "感染があれば抗菌薬"], "flow": "食事のたびに顎下が腫れる → エコーで唾石 → 摘出"},
+  pulpitis: {"overview": "深いむし歯で歯の神経（歯髄）に炎症が起こり、強い痛みが出る。", "treatment": ["鎮痛", "歯科で根管治療"], "flow": "冷温水でしみて続くズキズキした歯痛 → 急性歯髄炎 → 鎮痛と歯科"},
+  aphthous: {"overview": "口の中に丸くて浅い潰瘍ができ、1〜2週で治る口内炎。", "treatment": ["口腔用ステロイド", "休養", "2週以上治らなければ生検"], "flow": "円形の浅い潰瘍＋白い偽膜 → アフタ性口内炎"},
+  oral_candida: {"overview": "口の中にカンジダ（カビの一種）が増えて、白い苔やヒリヒリ感が出る。", "treatment": ["KOH鏡検", "抗真菌薬", "吸入後のうがい・義歯の清掃"], "flow": "ぬぐうと取れる白苔 → KOHで仮性菌糸 → 口腔カンジダ症"},
 };

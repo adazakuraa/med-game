@@ -331,6 +331,22 @@ export const DRUGS = [
     info: '常染色体顕性多発性嚢胞腎の進行抑制（専門医が導入）。多尿・口渇・肝障害に注意。',
   },
   {
+    id: 'diquafosol', generic: 'ジクアホソル点眼', brands: ['ジクアス'], cls: 'ドライアイ治療薬（点眼）', tags: ['dry_eye_drop'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q6h'], maxDaily: 6 } },
+    info: 'ドライアイに1回1滴、1日6回。涙液とムチンの分泌を促す。',
+  },
+  {
+    id: 'miconazole_gel', generic: 'ミコナゾール口腔用ゲル', brands: ['フロリードゲル'], cls: '抗真菌薬（口腔用）', tags: ['oral_antifungal'],
+    routes: { top: { unit: 'g', min: 2.5, max: 5, freqs: ['q6h'], maxDaily: 20 } },
+    interact: [{ tag: 'warfarin', level: 'harm', msg: 'ワルファリンの作用を著明に増強（併用禁忌）' }],
+    info: '口腔カンジダ症に口の中に塗り広げる。ワルファリンとの併用は禁忌。',
+  },
+  {
+    id: 'triamcinolone_oral', generic: 'トリアムシノロン口腔用軟膏', brands: ['ケナログ'], cls: '副腎皮質ステロイド（口腔用）', tags: ['oral_steroid'],
+    routes: { top: { unit: 'g', min: 0.1, max: 0.5, freqs: ['q8h', 'q12h'], maxDaily: 2 } },
+    info: 'アフタ性口内炎に1日数回塗る。カンジダ・ヘルペスには使わない。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,
