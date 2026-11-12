@@ -1,0 +1,43 @@
+// 前置胎盤（警告出血）
+// 出典: 日本産科婦人科学会『産婦人科診療ガイドライン 産科編2023』
+export default {
+  id: 'placenta_previa', name: '前置胎盤', dept: '産婦人科',
+  weight: 1, season: {}, minLevel: 3,
+  demo: { age: [25, 42], ageMode: 'uniform', male: 0 },
+  forcePregnant: true,
+  sev: { p: [0.45, 0.4, 0.15], burden: [[28, 36], [36, 46], [50, 60]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} }, organisms: [],
+  vars: (rng) => ({ wk: rng.int(29, 34) }),
+  cc: () => '妊娠中に急に出血した', ccKey: 'lower_abd_f',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '妊娠{wk}週です。1時間前、寝ているときに突然、痛みもなく真っ赤な血がたくさん出ました。' },
+    character: { p: 1, text: 'お腹の痛みや張りはほとんどありません。' },
+    vagbleed: { p: 1, text: 'ナプキンが2枚ぐっしょりになるくらいの鮮血です。' },
+    lmp: { p: 1, text: '妊娠{wk}週です。健診で「胎盤の位置が低い」と言われていました。' },
+    pmh: { p: 1, text: '前回は帝王切開で出産しました。' },
+    abdpain: { p: 0, text: 'お腹は痛くありません。' }, fever: { p: 0, text: '熱はありません。' }, nausea: { p: 0, text: '' },
+    dizziness: { p: [0, 0.5, 1], text: '立つとふらふらします。' }, course: { p: 0.5, text: '今は少し出血が落ち着いています。' },
+  },
+  exam: { abd_palp: { p: 1, text: '子宮は軟らかく、圧痛・板状硬はない。胎児の頭が骨盤に入っていない（胎位異常）。' }, gen_appear: { p: 1, text: '顔色はやや不良。' } },
+  vitals: { HR: { to: [100, 125], k: 1 }, SBP: { to: [85, 100], k: 1.5 } },
+  labs: { HB: { add: [-3.5, -1], k: 1 } },
+  tests: { tvus: [{ p: 1, persist: true, text: '胎盤が子宮口を完全に覆っている（全前置胎盤）。胎盤後血腫なし。胎児心拍 140/分で良好。' }], abd_us: [{ p: 1, persist: true, text: '胎盤は子宮下部の前壁から子宮口を覆う。胎児心拍は良好。' }] },
+  natural: 0.3,
+  therapies: [
+    { id: 'fluid', label: '細胞外液（出血が多ければ輸血）', req: { fluidTotal: 500 }, when: (c) => c.vit.SBP < 100 || c.vit.HR > 110, required: true, deadlineH: [2, 1, 1], startFromNeed: true },
+    { id: 'obgyn', label: '産婦人科コンサルト（内診はせず超音波で診断、入院で安静・管理、出血が続けば帝王切開）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'obgyn') }, effect: -0.6, lagH: 1, required: true, deadlineH: [2, 1, 1] },
+  ],
+  consult: { obgyn: '産婦人科：経腟エコーで全前置胎盤です。内診は大出血を起こすので行いません。入院で安静とし、出血が止まれば妊娠を継続して、早産に備えステロイドを投与します。大量出血や胎児の状態が悪ければ緊急帝王切開です。前回帝王切開なので癒着胎盤にも注意します。' },
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: '前置胎盤の出血：産科病棟に入院（高次施設）' }),
+  useful: ['tvus', 'abd_us', 'cbc', 'coag', 'chem', 'uhcg'],
+  key: [['tvus', 'abd_us'], ['cbc']],
+  extrasOk: () => [],
+  teaching: [
+    '妊娠後半の、痛みのない突然の鮮血の性器出血は前置胎盤（警告出血）。痛み・子宮の硬直を伴う常位胎盤早期剥離と区別する。',
+    '前置胎盤が疑われるときは内診をしてはいけない（大出血）。まず超音波で胎盤の位置を確認する。',
+    '帝王切開の既往があると前置胎盤・癒着胎盤の危険が高い。分娩は帝王切開。',
+  ],
+  sources: ['産婦人科診療ガイドライン 産科編2023（日本産科婦人科学会）'],
+  ideal: () => [{ a: 'test', ids: ['abd_us', 'cbc', 'coag'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 500 }, { a: 'consult', dept: 'obgyn', delayMin: 10 }],
+};

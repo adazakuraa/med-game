@@ -480,6 +480,11 @@ export const DRUG_ROLE = {
   udca: "胆汁の流れを良くする薬。原発性胆汁性胆管炎の基本の治療。",
   pancrelipase: "膵臓の消化酵素を補う薬。慢性膵炎の脂肪便・体重減少に。",
   camostat: "膵臓の酵素の働きを抑える飲み薬。慢性膵炎の腹痛に。",
+  mnz_po: "嫌気性菌・トリコモナスに効く飲み薬。細菌性腟症の治療に。飲酒は避ける。",
+  estriol_vag: "腟に入れる弱い女性ホルモン。閉経後の萎縮性腟炎に。",
+  ocp: "低用量ピル（LEP）。月経痛・月経前症候群・月経不順に。血栓症に注意。",
+  mpa: "黄体ホルモンの飲み薬。無排卵性の出血を止め、内膜をはがして周期を整える。",
+  ritodrine: "子宮の収縮を抑える点滴。切迫早産に。",
 };
 
 export const FLUID_ROLE = {
@@ -881,10 +886,14 @@ APPROACHES.vaginal = {
     { id: 'vaginal_candida', tests: ['koh'], point: '強いかゆみと白い酒かす状の帯下、抗菌薬使用後・糖尿病、鏡検で仮性菌糸', clues: ['q:itch', 'q:vagbleed', 'e:speculum', 't:koh', '!q:fever'] },
     { id: 'cervical_ca', tests: ['pap', 'uhcg'], point: '性交後出血・不正出血・帯下の増加、検診未受診、子宮頸部の易出血性病変 → 細胞診・組織診', clues: ['q:vagbleed', 'q:pmh', 'e:speculum', 't:pap', '!q:itch'] },
     { id: 'endometrial_ca', tests: ['tvus'], point: '閉経後の性器出血（少量でも）、肥満・糖尿病・未産、エコーで子宮内膜の肥厚 → 内膜の組織診', clues: ['q:lmp', 'q:vagbleed', 'q:pmh', 't:tvus', '!q:itch'] },
-    { id: 'atrophic_vag', point: '閉経後の腟の乾燥・性交痛・少量の出血、内膜は薄い' },
-    { id: 'bv', point: '魚のような臭いの灰色で均一な帯下、かゆみは軽い' },
+    { id: 'atrophic_vag', tests: ['tvus'], point: '閉経後、腟の乾燥・ヒリヒリ感・性交痛・少量の出血・頻尿、腟壁が薄く蒼白、内膜は薄い（体がんを除外）→ エストリオール腟錠', clues: ['q:lmp', 'q:character', 'e:speculum', '!q:fever'] },
+    { id: 'bv', tests: ['koh'], point: '魚のような臭い（性交後に強い）の灰色で均一な帯下、かゆみは乏しい、clue cell・whiff test陽性 → メトロニダゾール', clues: ['q:character', 'e:speculum', 't:koh', '!q:itch', '!q:fever'] },
     { id: 'pid', point: '発熱・下腹部痛・膿性帯下・子宮頸部の移動痛', clues: ['q:fever', 'q:abdpain'] },
     { id: 'pop', point: '高齢・経腟分娩歴、股に何かが挟まる・ピンポン玉が触れる、立位やいきみで悪化し横になると戻る、排尿困難', clues: ['q:character', 'q:aggravating', 'q:retention', 'q:pmh', 'e:speculum'] },
+    { id: 'trichomonas', point: '黄緑色の泡状で悪臭のある帯下と強いかゆみ、子宮頸部のいちご状の発赤 → メトロニダゾール（パートナーも）' },
+    { id: 'bartholin', point: '大陰唇の下1/3の有痛性の腫れ、発赤・波動 → 切開排膿', clues: ['q:character', 'e:speculum', '!q:itch', '!q:vagbleed'] },
+    { id: 'genital_herpes', tests: ['syphilis'], point: '陰部の多発する小水疱と浅い有痛性潰瘍、強い排尿時痛、発熱、新しいパートナー → バラシクロビル、ほかの性感染症も検査', clues: ['q:character', 'q:dysuria', 'q:fever', 'e:speculum', '!t:syphilis'] },
+    { id: 'cervicitis', tests: ['sti_pcr'], point: '若年・新しいパートナー、帯下の増加・性交後出血、子宮頸部の発赤と易出血性・粘液膿性帯下、移動痛なし → 核酸増幅検査、アジスロマイシン（パートナーも）', clues: ['q:vagbleed', 'q:lmp', 'e:speculum', 't:sti_pcr', '!q:itch'] },
   ],
 };
 APPROACHES.itch_rash = {
@@ -1276,6 +1285,8 @@ APPROACHES.menstrual = {
     { id: 'hyperthyroid', point: '暑がり・体重減少・TSH低値', clues: ['L:TSH'] },
     { id: 'hyperprolactinemia', tests: ['hormone', 'uhcg', 'head_mri'], point: '順調だった月経が止まる＋乳汁漏出、妊娠・薬剤（制吐薬・抗精神病薬）・甲状腺機能低下症を除外、プロラクチン高値・下垂体腺腫 → カベルゴリン', clues: ['q:character', 'q:meds', 'e:breast', 't:hormone', '!q:weightgain', '!e:skin'] },
     { id: 'anorexia_nervosa', point: '著明なやせ・体重への恐怖', clues: ['q:weightloss'] },
+    { id: 'pms', point: '月経の数日〜10日前からのイライラ・抑うつ・頭痛・乳房の張り・むくみ、月経が来ると消える → 症状日記、低用量ピル・SSRI', clues: ['q:character', 'q:mood', 'q:menses'] },
+    { id: 'aub', tests: ['tvus', 'uhcg', 'cbc'], point: '更年期移行期（または思春期）の周期の乱れ・だらだら続く出血、妊娠・器質的疾患・甲状腺・凝固異常を除外 → 黄体ホルモン療法（40歳以上は内膜細胞診）', clues: ['q:onset', 'q:menses', 'q:heatcold', 'L:HB'] },
   ],
 };
 APPROACHES.leg_red = {
@@ -1345,10 +1356,12 @@ APPROACHES.lower_abd_f = {
     { id: 'appendicitis', point: '心窩部から右下腹部への痛みの移動・McBurney点圧痛', clues: ['e:mcburney'] },
     { id: 'miscarriage', point: '妊娠初期の少量の性器出血、子宮内に胎嚢と心拍あり', clues: ['q:vagbleed', 't:tvus'] },
     { id: 'abruption', tests: ['cbc', 'coag'], point: '妊娠後半・妊娠高血圧症候群、突然の持続的な腹痛と子宮の板状硬、少量の暗赤色出血、DIC → 緊急帝王切開', clues: ['q:lmp', 'q:character', 'q:pmh', 'e:abd_palp', 'L:PLT', 'H:PT_INR'] },
-    { id: 'placenta_previa', point: '妊娠後半の痛みのない鮮血の出血（内診の前に超音波で胎盤の位置を確認）' },
+    { id: 'placenta_previa', tests: ['abd_us', 'tvus'], point: '妊娠後半の痛みのない突然の鮮血の出血、子宮は軟らかい、帝王切開の既往 → 内診はせず超音波で胎盤の位置を確認', clues: ['q:vagbleed', 'q:lmp', 'q:pmh', '!q:abdpain', 't:abd_us'] },
     { id: 'cyst_rupture', tests: ['tvus'], point: '月経周期の後半・性交後の突然の片側の痛み、妊娠反応陰性、エコーで卵巣周囲の血腫とダグラス窩の液体', clues: ['!t:uhcg', '!q:fever', 't:tvus', 'L:HB'] },
     { id: 'endometriosis', tests: ['tvus'], point: '月経のたびに年々強くなる痛み・性交痛・排便痛・不妊、エコーで卵巣のチョコレート嚢胞', clues: ['q:menses', 'q:course', '!t:uhcg', 't:tvus'] },
     { id: 'pyelo', point: '発熱・CVA叩打痛・膿尿', clues: ['e:cva'] },
+    { id: 'preterm_labor', tests: ['abd_us', 'tvus'], point: '妊娠22〜37週未満の規則的なお腹の張りと痛み、間隔が短くなる、頸管長の短縮 → 子宮収縮抑制薬・入院、34週未満はステロイド', clues: ['q:character', 'q:course', 'q:lmp', 't:tvus'] },
+    { id: 'adenomyosis', tests: ['tvus', 'cbc'], point: '30〜40代の経産婦、年々強くなる月経痛と過多月経、均一に腫大した硬い子宮、貧血 → ホルモン療法と鉄剤', clues: ['q:menses', 'q:character', 'e:pelvic', 'L:HB', 't:tvus'] },
   ],
 };
 APPROACHES.elderly_decline = {
@@ -2200,4 +2213,14 @@ export const DISEASE_NOTES = {
   agml: {"overview": "痛み止め・お酒・ストレスなどで胃の粘膜に急にただれや出血が起こる。", "treatment": ["心筋梗塞・胆膵疾患の除外", "PPI", "原因の除去（NSAIDs中止・禁酒）"], "flow": "きっかけの後の急な心窩部痛 → 心電図・エコー正常 → 急性胃粘膜病変 → PPI"},
   pbc: {"overview": "自己免疫で肝臓の中の細い胆管が壊れ、胆汁が流れにくくなる病気。中年女性に多い。", "treatment": ["抗ミトコンドリア抗体", "ウルソデオキシコール酸", "骨粗鬆症などの合併症の管理"], "flow": "中年女性の発疹のないかゆみ＋ALP上昇 → 抗ミトコンドリア抗体陽性 → 原発性胆汁性胆管炎"},
   ogilvie: {"overview": "腸が詰まっていないのに、大腸の動きが止まって大きく膨らむ状態。手術後や寝たきりの高齢者に多い。", "treatment": ["CTで閉塞を除外", "原因薬の中止・電解質補正・胃管", "盲腸の拡張が強ければ内視鏡で減圧"], "flow": "寝たきり高齢者の著明な腹部膨満 → CTで閉塞機転なし → Ogilvie症候群 → 減圧"},
+  bv: {"overview": "腟の中の善玉菌（乳酸桿菌）が減り、においの強い菌が増える状態。", "treatment": ["鏡検でclue cell", "メトロニダゾール"], "flow": "魚臭い灰色の帯下 → clue cell → 細菌性腟症 → メトロニダゾール"},
+  atrophic_vag: {"overview": "閉経後の女性ホルモン低下で腟の粘膜が薄くなり、乾燥・痛み・出血が起こる。", "treatment": ["子宮体がんの除外（経腟エコー）", "エストリオール腟錠", "保湿"], "flow": "閉経後の陰部の乾燥・少量出血 → 内膜は薄い → 萎縮性腟炎 → 腟錠"},
+  pms: {"overview": "月経前に心や体の不調が出て、月経が来ると消える。", "treatment": ["症状日記", "生活指導", "低用量ピル・SSRI"], "flow": "月経前だけの心身の症状 → 月経で消える → 月経前症候群"},
+  bartholin: {"overview": "腟の入口にあるバルトリン腺の出口が詰まり、膿がたまる。", "treatment": ["切開排膿", "再発を繰り返せば造袋術"], "flow": "大陰唇下部の痛い腫れ → バルトリン腺膿瘍 → 切開排膿"},
+  genital_herpes: {"overview": "単純ヘルペスウイルスによる性感染症。陰部に痛い水ぶくれやただれができる。", "treatment": ["抗ウイルス薬", "ほかの性感染症の検査", "パートナーの受診"], "flow": "陰部の痛い水疱・潰瘍 → 性器ヘルペス → バラシクロビル"},
+  placenta_previa: {"overview": "胎盤が子宮の出口（子宮口）を覆っている状態。妊娠後半に痛みのない出血を起こす。", "treatment": ["内診はしない", "超音波で胎盤の位置を確認", "入院管理、帝王切開"], "flow": "妊娠後半の痛みのない出血 → 超音波で胎盤が子宮口を覆う → 前置胎盤 → 入院"},
+  preterm_labor: {"overview": "妊娠37週より前に陣痛のような子宮収縮が起こり、早産しそうな状態。", "treatment": ["子宮収縮抑制薬・入院", "34週未満ではステロイド", "感染の検索"], "flow": "妊娠中の規則的なお腹の張り＋頸管長短縮 → 切迫早産 → 入院・子宮収縮抑制"},
+  adenomyosis: {"overview": "子宮内膜に似た組織が子宮の筋肉の中にでき、強い月経痛と過多月経を起こす。", "treatment": ["経腟エコー・MRI", "ホルモン療法", "鉄剤・鎮痛"], "flow": "年々ひどくなる月経痛＋過多月経＋硬く腫大した子宮 → 子宮腺筋症"},
+  aub: {"overview": "排卵がうまく起こらず、ホルモンのバランスが崩れて出血が長引く状態。", "treatment": ["妊娠・器質的疾患・がんの除外", "黄体ホルモン療法", "貧血の治療"], "flow": "更年期の不規則でだらだら続く出血 → 器質的疾患なし → 無排卵性出血 → ホルモン療法"},
+  cervicitis: {"overview": "クラミジアという細菌による性感染症。女性では症状が軽く、気づかれにくい。", "treatment": ["核酸増幅検査", "アジスロマイシン", "パートナーの同時治療"], "flow": "帯下増加・性交後出血 → クラミジア陽性 → 子宮頸管炎 → 抗菌薬"},
 };

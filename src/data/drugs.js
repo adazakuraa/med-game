@@ -268,6 +268,33 @@ export const DRUGS = [
     info: '慢性膵炎の急性症状（腹痛）の緩和に1回200mgを1日3回。',
   },
   {
+    id: 'mnz_po', generic: 'メトロニダゾール（内服）', brands: ['フラジール'], cls: 'ニトロイミダゾール系抗菌薬', tags: ['metronidazole'], abx: true,
+    covers: ['anaerobe', 'trichomonas'],
+    routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q12h', 'q8h'], maxDaily: 1500 } },
+    info: '細菌性腟症・トリコモナス腟炎に1回500mgを1日2回7日間。飲酒でジスルフィラム様作用。',
+  },
+  {
+    id: 'estriol_vag', generic: 'エストリオール腟錠', brands: ['エストリール腟錠'], cls: '女性ホルモン（腟錠）', tags: ['estrogen_vag'],
+    routes: { top: { unit: 'mg', min: 0.5, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    info: '萎縮性腟炎に1日1回腟内に挿入。全身への影響は少ない。',
+  },
+  {
+    id: 'ocp', generic: '低用量エストロゲン・プロゲスチン配合薬（LEP）', brands: ['ヤーズ', 'ルナベル'], cls: '女性ホルモン配合薬', tags: ['ocp', 'gyn_hormone'],
+    routes: { po: { unit: '錠', min: 1, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    contra: ['smoker35'],
+    info: '月経困難症・月経前症候群・月経周期の調節に1日1錠。血栓症（35歳以上の喫煙者・前兆のある片頭痛は禁忌）に注意。',
+  },
+  {
+    id: 'mpa', generic: 'メドロキシプロゲステロン', brands: ['プロベラ', 'ヒスロン'], cls: '黄体ホルモン薬', tags: ['progestin'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '無排卵性の出血・続発性無月経に10日間内服し、中止後の消退出血で内膜をはがす（Holmstrom療法）。',
+  },
+  {
+    id: 'ritodrine', generic: 'リトドリン', brands: ['ウテメリン'], cls: '子宮収縮抑制薬（β2刺激薬）', tags: ['tocolytic'],
+    routes: { iv: { unit: 'μg/分', min: 50, max: 200, freqs: ['cont'], maxDaily: 300 } },
+    info: '切迫早産の子宮収縮を抑える点滴。頻脈・動悸・肺水腫・高血糖・低K血症に注意。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

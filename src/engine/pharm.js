@@ -14,6 +14,7 @@ export const CONTRA_RULES = {
   severe_renal: { level: 'harm', msg: '重篤な腎障害には禁忌', check: (c) => c.lab('EGFR') < 30 },
   severe_hf: { level: 'harm', msg: '重篤な心機能不全には禁忌', check: (c) => c.p.diseaseId === 'adhf' || c.p.comorb.includes('chf') },
   aspirin_asthma: { level: 'harm', msg: 'アスピリン喘息（NSAIDs過敏喘息）には禁忌', check: (c) => c.p.comorb.includes('asthma_nsaid') },
+  smoker35: { level: 'harm', msg: '35歳以上の喫煙者には禁忌（血栓症）', check: (c) => c.p.smoking === 'current' && c.p.age >= 35 },
   late_pregnancy: { level: 'harm', msg: '妊娠後期には禁忌', check: (c) => c.p.pregnant },
   dehydration_aki: { level: 'warn', msg: '脱水状態では腎障害・低血圧のリスク', check: (c) => c.st.volume > 1500 },
   gi_obstruction: { level: 'harm', msg: '消化管の器質的閉塞・穿孔・出血には禁忌', check: (c) => c.st.perforated || ['sbo', 'ugib'].includes(c.p.diseaseId) },

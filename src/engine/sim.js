@@ -624,6 +624,7 @@ function consultReply(enc, dept) {
     return need ? '集中治療科：重症であり、ICUでの受け入れが可能です。' : '集中治療科：現時点ではICU管理の適応はないと考えます。一般病棟での管理をお願いします。';
   }
   if (dept === 'obgyn') {
+    if (d.consult?.obgyn) { enc.consultRevealT ??= enc.t; return fmt(d.consult.obgyn, p.vars); }
     if (p.sex === 'M') return '産婦人科：男性の患者さんですので、当科の対象ではありません。';
     if (p.pregnant) return '産婦人科：経腟超音波で子宮内に胎嚢を確認、妊娠7週相当です。妊娠中でも使用可能な薬剤（セフトリアキソン等）で治療を。レボフロキサシンやCTは避けてください。';
     return '産婦人科：経腟超音波で子宮・付属器に明らかな異常はありません。婦人科疾患は否定的です。';
