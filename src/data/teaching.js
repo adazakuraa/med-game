@@ -490,6 +490,8 @@ export const DRUG_ROLE = {
   ritodrine: "子宮の収縮を抑える点滴。切迫早産に。",
   latanoprost: "眼圧を下げる点眼薬。緑内障の基本の治療。",
   mirogabalin: "神経の痛み（帯状疱疹後神経痛など）を和らげる薬。眠気・ふらつきに注意。",
+  txa: "血のかたまりを溶けにくくして出血を止めやすくする薬。喀血・外傷・過多月経に。",
+  nintedanib: "肺の線維化の進行を遅らせる薬（特発性肺線維症）。",
 };
 
 export const FLUID_ROLE = {
@@ -574,6 +576,8 @@ export const APPROACHES = {
       { id: 'legionella', tests: ['u_legion_ag'], point: '温泉・循環式浴槽・腐葉土への曝露、高熱・意識障害・低Na・CK上昇の重症肺炎、尿中抗原 → キノロン・マクロライド（β-ラクタムは無効）', clues: ['q:trigger', 'e:gen_consc', 'L:NA', 'H:CK', 't:u_legion_ag'] },
       { id: 'empyema', tests: ['thoracentesis', 'chest_ct'], point: '肺炎の治療中も熱が続く、胸膜痛、片側の呼吸音減弱・濁音、胸水 → 胸水穿刺で膿性ならドレナージ', clues: ['q:chestpain', 'q:onset', 'e:chest_perc', 'e:lung_ausc', 't:thoracentesis'] },
       { id: 'lung_ca', tests: ['chest_ct'], point: '重喫煙者の続く咳・血痰・体重減少、発熱は乏しい、腫瘤影 → 組織診断', clues: ['q:smoking', 'q:sputum', 'q:weightloss', '!q:fever', 't:chest_ct', 'e:neck_ln'] },
+      { id: 'summer_hp', tests: ['chest_ct', 'kl6'], point: '夏、古い木造家屋、自宅を離れると良くなり帰ると悪くなる発熱・乾いた咳・息切れ、捻髪音、CTで小葉中心性粒状影・KL-6上昇、抗菌薬が効かない → 入院で抗原から隔離', clues: ['q:character', 'q:pmh', 'q:dyspnea', 'e:lung_ausc', 'H:KL6', 't:chest_ct', '!q:sputum'] },
+      { id: 'lung_abscess', tests: ['chest_ct', 'afb'], point: '大量飲酒・誤嚥・歯周病、続く発熱と悪臭のある膿性痰、X線/CTで液面形成を伴う空洞 → 嫌気性菌をカバーする抗菌薬を長期', clues: ['q:sputum', 'q:alcohol', 'q:pmh', 'e:pharynx', 't:chest_ct', 't:cxr'] },
     ],
   },
   fever_flank: {
@@ -631,6 +635,7 @@ export const APPROACHES = {
       { id: 'af_rvr', point: '動悸・脈の不整・心電図で心房細動', clues: ['q:palpitation'] },
       { id: 'tamponade', tests: ['echo'], point: 'がん・心膜炎・心臓手術後、低血圧・頸静脈怒張・心音減弱（Beckの3徴）、奇脈、肺はきれい、心電図で低電位 → 心エコーで心嚢液、心嚢穿刺（利尿薬は禁忌）', clues: ['q:pmh', 'e:jvd', 'e:heart_ausc', 'e:periph', 't:echo', '!q:fever', '!e:lung_ausc'] },
       { id: 'hyperventilation', point: '若い女性、強いストレスの直後、口の周りと手のしびれ・テタニー、SpO2は正常、血液ガスで呼吸性アルカローシス（pCO2低下）→ 危険な疾患を除外して説明', clues: ['q:trigger', 'e:periph', 'H:PH', 'L:PCO2', '!q:chestpain', '!q:fever', '!e:leg_edema'] },
+      { id: 'pleural_effusion', tests: ['chest_ct', 'thoracentesis'], point: '片側の呼吸音消失・濁音、体重減少・喫煙歴、浮腫・頸静脈怒張なし、胸水穿刺で滲出液・細胞診陽性 → ドレナージ・胸膜癒着術・原発巣の治療', clues: ['q:weightloss', 'q:smoking', 'e:lung_ausc', 'e:chest_perc', 't:cxr', '!e:jvd', '!q:fever'] },
     ],
   },
   vomit_malaise: {
@@ -1161,6 +1166,7 @@ APPROACHES.chronic_cough = {
     { id: 'pertussis', tests: ['pertussis'], point: '発作性の連続する咳・吸気時の笛声・咳き込んだ後の嘔吐、発熱なし、周囲（子ども）に同じ咳 → マクロライド', clues: ['q:cough', 'q:character', 'q:sickcontact', '!q:fever', 't:pertussis'] },
     { id: 'tb', point: '寝汗・微熱・体重減少', clues: ['q:nightsweat', 'q:weightloss'] },
     { id: 'lung_ca', point: '喫煙者の血痰・体重減少', clues: ['q:smoking'] },
+    { id: 'ipf', tests: ['chest_ct', 'kl6'], point: '高齢の喫煙男性、ゆっくり進む労作時呼吸困難と乾いた咳、両下肺背側の捻髪音（ベルクロラ音）・ばち指、CTで蜂巣肺、KL-6上昇 → 抗線維化薬', clues: ['q:dyspnea', 'q:smoking', 'e:lung_ausc', 'H:KL6', 't:chest_ct', '!q:sputum', '!q:fever'] },
   ],
 };
 APPROACHES.bowel = {
@@ -1324,6 +1330,7 @@ APPROACHES.leg_red = {
     { id: 'diabetic_foot', tests: ['joint_xr'], point: '長い糖尿病歴・神経障害、治らない足の潰瘍から広がる発赤・膿、骨に届く潰瘍、X線で骨破壊（骨髄炎）→ 抗菌薬・デブリードマン', clues: ['q:pmh', 'q:trigger', 'e:skin', 't:joint_xr', 'H:GLU'] },
     { id: 'paronychia', point: '深爪・きつい靴、爪の縁の食い込みと発赤・膿、糖尿病なし、発赤は趾先にとどまる → 抗菌薬と爪の処置', clues: ['q:trigger', 'e:skin', '!q:fever'] },
     { id: 'varicose', tests: ['leg_us'], point: '立ち仕事・出産・家族歴、ゆっくり目立ってきた蛇行する静脈、夕方のだるさ・むくみ・こむら返り、圧痛や急な腫れはない → 弾性ストッキング', clues: ['q:course', 'q:occupation', 'e:skin', '!e:calf', '!q:fever', 't:leg_us'] },
+    { id: 'sup_thrombophlebitis', tests: ['leg_us'], point: '静脈瘤のある人、表在静脈に沿った索状の発赤・硬結・圧痛、発熱なし、発赤は広がらない → エコーで深部静脈血栓を除外、NSAIDs・弾性ストッキング', clues: ['q:character', 'q:pmh', 'e:skin', 't:leg_us', '!q:fever', '!e:calf'] },
   ],
 };
 
@@ -1342,6 +1349,8 @@ APPROACHES.palpitation = {
     { id: 'thyroid_storm', tests: ['thyroid'], point: 'バセドウ病の治療中断・感染、高熱・著明な頻脈（心房細動）・不穏/意識障害・下痢・心不全 → 抗甲状腺薬・ヨウ素・ステロイド・β遮断薬、ICU', clues: ['q:adherence', 'q:pmh', 'q:heatcold', 'e:thyroid_palp', 'e:gen_consc', 'L:TSH'] },
     { id: 'panic', point: '若年、強い不安・死の恐怖・手足や口のしびれ、10分でピーク、同様の発作の既往、心電図は洞性頻脈のみ、血液ガスでPaCO2低下（除外診断）', clues: ['q:character', 'q:pmh', 'q:trigger', 'q:dyspnea', 'L:PCO2', 'e:gen_appear'] },
     { id: 'acs', point: '胸痛・心電図のST変化', clues: ['q:chestpain'] },
+    { id: 'pvc', tests: ['holter', 'echo'], point: '「脈が飛ぶ」「ドクンとする」、カフェイン・寝不足・横になると増える、心電図で散発する期外収縮、基礎心疾患がなければ治療不要 → ホルター・心エコーで評価', clues: ['q:trigger', 'e:heart_ausc', 't:holter'] },
+    { id: 'aflutter', tests: ['ecg', 'bnp', 'echo'], point: '心拍数が150/分前後に固定した規則正しい頻拍、心電図でII・III・aVFの鋸歯状波（2:1伝導）→ 心拍数コントロール・抗凝固、アブレーション', clues: ['q:dyspnea', 'e:heart_ausc', 't:ecg', 'H:BNP'] },
   ],
 };
 APPROACHES.weakness = {
@@ -1467,6 +1476,8 @@ APPROACHES.syncope = {
     { id: 'sss', tests: ['holter'], point: '高齢者の前兆のない一過性の意識消失・めまい、徐脈・洞停止、徐脈を起こす薬はない → ペースメーカー', clues: ['q:syncope', 'q:dizziness', 'e:heart_ausc', 't:ecg', 't:holter', '!q:sweating'] },
     { id: 'pe', point: '突然の呼吸困難・頻脈・低酸素' },
     { id: 'epilepsy_sz', point: '発作後のもうろう状態が長い、舌咬傷、けいれんが長い', clues: ['q:seizure'] },
+    { id: 'hcm', tests: ['echo'], point: '若年者の運動中の失神（前駆症状）・胸痛・息切れ、若年突然死の家族歴、立位・Valsalvaで増強する収縮期雑音、心電図で左室肥大・深い陰性T波 → 心エコー、β遮断薬、ICD', clues: ['q:family', 'q:chestpain', 'q:dyspnea', 'e:heart_ausc', 't:echo', 't:ecg'] },
+    { id: 'drug_brady', point: '高齢者、β遮断薬・ジルチアゼム・ジゴキシンなどの追加、脱水・腎機能悪化、徐脈性心房細動・高K → 原因薬の中止・補液、不安定ならアトロピン', clues: ['q:meds', 't:ecg', 'H:CR', 'H:K'] },
   ],
 };
 APPROACHES.back_pain = {
@@ -1696,6 +1707,23 @@ APPROACHES.anal_pain = {
     { id: 'hemorrhoid', point: '排便時の痛みのない鮮血、脱出' },
     { id: 'fournier', point: '糖尿病、会陰部の急速に広がる強い痛み・発赤・壊死・発熱 → 緊急デブリードマン' },
     { id: 'crohn', point: '若年者の繰り返す痔瘻・裂肛、慢性下痢・体重減少' },
+  ],
+};
+
+APPROACHES.hemoptysis = {
+  title: '血痰・喀血',
+  intro: '血痰・喀血ではまず量を評価し、大量なら気道確保（出血側を下に）。吐血・鼻出血と区別したうえで、肺がん・結核・気管支拡張症・肺MAC症・肺塞栓・抗凝固薬をCTと検査で評価する。',
+  keyQ: ['onset', 'cough', 'sputum', 'fever', 'weightloss', 'nightsweat', 'smoking', 'dyspnea', 'chestpain', 'pmh', 'meds'],
+  keyE: ['lung_ausc', 'pharynx', 'nose', 'periph', 'leg_edema'],
+  keyT: ['cxr', 'chest_ct', 'cbc', 'coag'],
+  redflags: ['大量喀血（窒息の危険）→ 出血側を下に、気道確保、気管支動脈塞栓術', '寝汗・体重減少・空洞 → 結核（空気感染対策）', '喫煙・体重減少 → 肺がん'],
+  ddx: [
+    { id: 'bronchiectasis', tests: ['chest_ct'], point: '長年の咳と大量の膿性痰、小児期の重い肺炎・副鼻腔炎、両下肺のcoarse crackles、CTで拡張した気管支 → 止血薬、多ければ気管支動脈塞栓術', clues: ['q:sputum', 'q:pmh', 'e:lung_ausc', 't:chest_ct', '!q:smoking', '!q:weightloss'] },
+    { id: 'lung_ca', point: '喫煙・体重減少、CTで腫瘤', clues: ['q:smoking', 'q:weightloss'] },
+    { id: 'tb', tests: ['afb'], point: '寝汗・体重減少・微熱、上肺野の空洞 → 抗酸菌検査と空気感染対策', clues: ['q:nightsweat', 'q:weightloss', 't:afb'] },
+    { id: 'ntm', point: '中高年のやせ型女性、中葉・舌区の気管支拡張と小結節' },
+    { id: 'pe', point: '突然の呼吸困難・胸膜痛・頻脈、片側の下肢腫脹' },
+    { id: 'warfarin_bleed', point: '抗凝固薬内服中、PT-INR延長' },
   ],
 };
 
@@ -2268,4 +2296,14 @@ export const DISEASE_NOTES = {
   whiplash: {"overview": "追突事故などで首がむちのようにしなり、筋肉や靱帯が傷む。", "treatment": ["神経症状・骨折の除外", "鎮痛", "早期の活動再開"], "flow": "追突後の首の痛み＋神経症状なし → むち打ち → 鎮痛"},
   humerus_fx: {"overview": "高齢者が転んで肩を打ち、腕の付け根の骨が折れる。骨粗鬆症が背景にある。", "treatment": ["X線", "三角巾固定（転位が大きければ手術）", "骨粗鬆症の治療"], "flow": "高齢者の転倒後の肩の痛み・皮下出血 → X線で骨折 → 固定"},
   clavicle_fx: {"overview": "肩から転んだり手をついたりして鎖骨が折れる。", "treatment": ["X線", "三角巾・鎖骨バンド", "転位が大きければ手術"], "flow": "肩の外傷後の鎖骨の変形・圧痛 → X線 → 鎖骨骨折 → 固定"},
+  pvc: {"overview": "心室から早いタイミングで余分な拍動が出る不整脈。多くは心配ない。", "treatment": ["心電図・ホルター・心エコーで評価", "生活指導（カフェイン・睡眠）", "基礎心疾患があれば治療"], "flow": "脈が飛ぶ → 心電図で期外収縮 → 心エコー正常 → 経過観察"},
+  aflutter: {"overview": "心房の中を電気がぐるぐる回って、規則正しく速い脈になる不整脈。", "treatment": ["心拍数コントロール", "抗凝固療法", "カテーテルアブレーション"], "flow": "150/分の規則正しい頻拍 → 鋸歯状波 → 心房粗動 → 心拍数調節とアブレーション"},
+  hcm: {"overview": "心臓の筋肉が厚くなり、血液の出口が狭くなったり不整脈を起こしたりする病気。遺伝することがある。", "treatment": ["心エコー", "β遮断薬・激しい運動を避ける", "突然死予防のICD、家族の検査"], "flow": "運動中の失神＋家族の突然死＋心雑音 → 心エコーで中隔肥厚 → 肥大型心筋症"},
+  sup_thrombophlebitis: {"overview": "皮膚のすぐ下の静脈に血栓ができ、炎症を起こす。静脈瘤の人に多い。", "treatment": ["エコーで深部静脈血栓を除外", "NSAIDs・弾性ストッキング", "長い血栓は抗凝固"], "flow": "静脈に沿った索状の発赤 → エコーで表在静脈の血栓 → 表在性血栓性静脈炎"},
+  drug_brady: {"overview": "脈を遅くする薬が効きすぎたり蓄積したりして、徐脈になる。", "treatment": ["原因薬の中止", "補液・電解質補正", "不安定ならアトロピン・ペーシング"], "flow": "高齢者の徐脈＋原因薬・腎機能悪化 → 薬剤性徐脈 → 中止と補液"},
+  bronchiectasis: {"overview": "気管支が広がったまま戻らなくなり、痰がたまって感染や喀血を繰り返す。", "treatment": ["CT", "止血薬", "気管支動脈塞栓術・排痰"], "flow": "長年の咳・痰＋喀血 → CTで拡張した気管支 → 気管支拡張症"},
+  summer_hp: {"overview": "古い家のカビ（トリコスポロン）を吸い込むことで起こる肺のアレルギー。夏に多い。", "treatment": ["CT・KL-6", "抗原からの隔離（入院）", "重症はステロイド、自宅の改修"], "flow": "夏の発熱・咳＋家を離れると改善 → 小葉中心性粒状影 → 夏型過敏性肺炎"},
+  lung_abscess: {"overview": "肺の中に膿がたまって空洞ができる。誤嚥や歯周病の嫌気性菌が原因。", "treatment": ["X線・CTで空洞と液面", "嫌気性菌をカバーする抗菌薬を長期", "口腔ケア・禁酒"], "flow": "飲酒者の発熱＋悪臭のある痰 → 液面形成のある空洞 → 肺膿瘍"},
+  ipf: {"overview": "原因不明に肺が少しずつ硬く（線維化）なり、息切れが進む病気。", "treatment": ["CTで蜂巣肺・KL-6", "抗線維化薬", "急性増悪の予防・在宅酸素"], "flow": "高齢喫煙者の進行する息切れ＋ベルクロラ音 → CTで蜂巣肺 → 特発性肺線維症"},
+  pleural_effusion: {"overview": "がんが胸膜に広がり、胸に水がたまる状態。", "treatment": ["胸水穿刺（細胞診）", "ドレナージ・胸膜癒着術", "原発巣の治療"], "flow": "片側の大量胸水＋体重減少 → 胸水細胞診でがん細胞 → がん性胸水"},
 };

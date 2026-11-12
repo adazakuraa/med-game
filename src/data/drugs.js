@@ -306,6 +306,16 @@ export const DRUGS = [
     info: '帯状疱疹後神経痛・糖尿病性神経障害などに1回5mgを1日2回から。眠気・めまい（高齢者の転倒）に注意。',
   },
   {
+    id: 'txa', generic: 'トラネキサム酸', brands: ['トランサミン'], cls: '抗線溶薬（止血薬）', tags: ['hemostatic'],
+    routes: { iv: { unit: 'mg', min: 250, max: 1000, freqs: ['once', 'q8h'], maxDaily: 3000 }, po: { unit: 'mg', min: 250, max: 500, freqs: ['q8h'], maxDaily: 1500 } },
+    info: '喀血・外傷性出血・過多月経などの止血補助。血栓症に注意。',
+  },
+  {
+    id: 'nintedanib', generic: 'ニンテダニブ', brands: ['オフェブ'], cls: '抗線維化薬', tags: ['antifibrotic'],
+    routes: { po: { unit: 'mg', min: 100, max: 150, freqs: ['q12h'], maxDaily: 300 } },
+    info: '特発性肺線維症などの進行を遅らせる。下痢・肝障害に注意。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

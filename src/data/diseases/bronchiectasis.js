@@ -1,0 +1,43 @@
+// 気管支拡張症（喀血）
+// 出典: 日本呼吸器学会『咳嗽・喀痰の診療ガイドライン2019』, 日本呼吸器学会 資料
+export default {
+  id: 'bronchiectasis', name: '気管支拡張症（喀血）', dept: '呼吸器内科',
+  weight: 1.5, season: {}, minLevel: 2,
+  demo: { age: [50, 80], ageMode: 'uniform', male: 0.35 },
+  sev: { p: [0.5, 0.4, 0.1], burden: [[24, 32], [32, 42], [46, 56]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: () => ({}),
+  cc: () => '血の混じった痰が出た', ccKey: 'hemoptysis',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '今朝、咳と一緒に真っ赤な血が混じった痰が何回か出ました。全部で大さじ2杯くらいです。' },
+    cough: { p: 1, text: '若いころから毎日咳と痰が出ます。' },
+    sputum: { p: 1, text: '毎朝、黄色い痰がたくさん出ます。' },
+    pmh: { p: 1, text: '子どものころに重い肺炎をしたそうです。副鼻腔炎もあります。' },
+    fever: { p: 0, text: '熱はありません。' }, weightloss: { p: 0, text: '体重は変わりません。' }, nightsweat: { p: 0, text: '寝汗はありません。' },
+    smoking: { p: 0, text: 'たばこは吸いません。' }, meds: { p: 0, text: '血をサラサラにする薬は飲んでいません。' },
+    dyspnea: { p: 0.3, text: '少し息切れがします。' }, chestpain: { p: 0, text: '胸の痛みはありません。' }, sickcontact: { p: 0, text: '' },
+  },
+  exam: { lung_ausc: { p: 1, text: '両下肺に粗い断続性ラ音（coarse crackles）。' }, pharynx: { p: 0, text: '口腔・咽頭に出血源なし。' }, nose: { p: 0, text: '鼻腔に出血源なし。' }, periph: { p: 0.3, text: 'ばち指。' } },
+  vitals: {},
+  labs: { HB: { add: [-1, 0], k: 1 } },
+  tests: { cxr: [{ p: 1, text: '両下肺野に線状・輪状影（tram line）。浸潤影・腫瘤なし。' }], chest_ct: [{ p: 1, persist: true, text: '両下葉・中葉に拡張した気管支（気管支拡張症）。腫瘤・空洞・浸潤影なし。' }], afb: [{ p: 1, text: '抗酸菌塗抹 陰性。', normal: true }], sputum_cx: [{ p: 0.5, text: '緑膿菌が少数。' }], coag: [{ p: 1, text: 'PT・APTT 正常。', normal: true }] },
+  natural: 0.1,
+  dynamics: (enc, eff) => { if (eff.tags.hemostatic) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 60 ? -0.8 : 0; },
+  therapies: [
+    { id: 'txa', label: '止血薬（トラネキサム酸）、安静（出血側を下に）、咳の抑制', req: { tag: 'hemostatic' }, effect: 0, lagH: 0, required: true, deadlineH: [6, 4, 2] },
+    { id: 'resp', label: '呼吸器内科コンサルト（大量喀血・持続する喀血は気管支動脈塞栓術）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'resp') }, effect: -0.2, lagH: 2, required: (enc) => enc.patient.sev >= 1, deadlineH: [99, 12, 4] },
+  ],
+  consult: { resp: '呼吸器内科：CTで両下葉・中葉の気管支拡張症があり、そこからの喀血です。肺がん・結核を示す所見はありません。止血薬で経過をみて、出血が続く・増える場合は気管支動脈塞栓術を行います。' },
+  dispo: (enc) => (enc.patient.sev === 0 ? { ok: ['home', 'admit'], best: 'home', why: '少量の喀血（気管支拡張症）：止血薬で外来、増えればすぐ受診' } : { ok: ['admit', 'icu'], best: 'admit', why: '喀血：入院で止血と経過観察（窒息に注意）' }),
+  useful: ['cxr', 'chest_ct', 'cbc', 'coag', 'afb', 'sputum_cx', 'chem', 'vbg'],
+  key: [['cxr'], ['chest_ct'], ['cbc']],
+  extrasOk: () => ['ntm'],
+  teaching: [
+    '喀血は「量」と「原因」を考える。少量でも肺がん・結核・肺MAC症・気管支拡張症をCTで評価する。吐血（消化管）・鼻出血との区別も。',
+    '気管支拡張症は長年の咳・大量の膿性痰・繰り返す気道感染、両下肺のcoarse crackles。CTで拡張した気管支。',
+    '少量なら止血薬と安静（出血側を下に）。大量喀血は窒息が死因になるので気道確保、気管支動脈塞栓術。',
+  ],
+  sources: ['咳嗽・喀痰の診療ガイドライン2019（日本呼吸器学会）'],
+  ideal: (p) => [{ a: 'test', ids: ['cxr', 'chest_ct', 'cbc', 'coag', 'afb'] }, { a: 'rx', drugId: 'txa', route: 'iv', dose: 1000, freq: 'q8h', days: 3 }, ...(p.sev >= 1 ? [{ a: 'consult', dept: 'resp', delayMin: 30 }] : [])],
+};
