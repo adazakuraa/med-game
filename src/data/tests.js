@@ -84,6 +84,7 @@ export const TESTS = [
   { id: 'myositis_ab', cat: 'blood', name: '筋炎特異的自己抗体（抗ARS・抗MDA5・抗TIF1-γ）', kind: 'report', cost: 3000, timeMin: 2880, inv: 1, normal: '筋炎特異的自己抗体 陰性。' },
   { id: 'parvo', cat: 'blood', name: 'パルボウイルスB19 IgM抗体', kind: 'report', cost: 1500, timeMin: 1440, inv: 1, normal: 'パルボウイルスB19 IgM抗体 陰性。' },
   { id: 'bmb', cat: 'micro', name: '骨髄検査（骨髄穿刺・染色体）', kind: 'report', cost: 8000, timeMin: 2880, inv: 2, normal: '骨髄は正形成で、異形成・芽球の増加なし。' },
+  { id: 'measles', cat: 'micro', name: '麻疹の検査（IgM抗体・PCR）', kind: 'report', cost: 2500, timeMin: 1440, inv: 1, normal: '麻疹IgM抗体・PCR 陰性。' },
   { id: 'etoh', cat: 'blood', name: '血中エタノール濃度', kind: 'lab', items: ['ETOH'], cost: 1000, timeMin: 30, inv: 1, sample: 'blood' },
   { id: 'hp', cat: 'micro', name: 'ピロリ菌検査（尿素呼気試験）', kind: 'qual', cost: 1800, timeMin: 30, inv: 0, pos: '陽性', neg: '陰性', spec: 0.97 },
   { id: 'flu_ag', cat: 'micro', name: 'インフルエンザ迅速抗原', kind: 'qual', cost: 1430, timeMin: 15, inv: 1, pos: 'A型陽性', neg: 'A型・B型とも陰性', spec: 0.98 },

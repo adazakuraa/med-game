@@ -347,6 +347,12 @@ export const DRUGS = [
     info: 'アフタ性口内炎に1日数回塗る。カンジダ・ヘルペスには使わない。',
   },
   {
+    id: 'tadalafil', generic: 'タダラフィル', brands: ['シアリス'], cls: 'PDE5阻害薬', tags: ['pde5i'],
+    routes: { po: { unit: 'mg', min: 5, max: 20, freqs: ['once', 'q24h'], maxDaily: 20 } },
+    interact: [{ tag: 'nitrate', level: 'harm', msg: '硝酸薬との併用は禁忌（重い低血圧）' }],
+    info: '勃起障害に性行為の前に10〜20mg（前立腺肥大症には5mgを毎日）。硝酸薬との併用は禁忌。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

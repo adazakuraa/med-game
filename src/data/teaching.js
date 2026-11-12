@@ -275,6 +275,7 @@ export const TEST_WHY = {
   myositis_ab: "皮膚筋炎・多発性筋炎の型（間質性肺炎・がんの合併の危険）を予測する。",
   parvo: "伝染性紅斑（りんご病）の原因ウイルスの最近の感染。",
   bmb: "骨髄の細胞を直接調べる。骨髄異形成症候群・白血病・骨髄腫の診断。",
+  measles: "麻疹の確定（IgM抗体・PCR）。疑ったら保健所へすぐ届け出る。",
 };
 
 export const LAB_MEANING = {
@@ -505,6 +506,7 @@ export const DRUG_ROLE = {
   diquafosol: "涙の分泌を促すドライアイの点眼薬。",
   miconazole_gel: "口の中のカンジダに塗る抗真菌薬。ワルファリンとは併用禁忌。",
   triamcinolone_oral: "口内炎に塗るステロイド。",
+  tadalafil: "勃起障害・前立腺肥大症の薬。硝酸薬とは絶対に併用しない。",
 };
 
 export const FLUID_ROLE = {
@@ -533,6 +535,8 @@ export const PROC_ROLE = {
   drain_R: '右の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
   drain_L: '左の胸腔にチューブを入れて空気（や液体）を抜く。中等度以上の気胸・緊張性気胸の治療。',
   eye_irrigation: "薬品が目に入ったら、診察より先にすぐ大量の水で洗う。アルカリは特に危険。",
+  suture: "傷はまず十分に洗い、異物を除いてから縫う。汚い傷・咬傷は縫わないこともある。",
+  fb_removal: "窒息では、意識があれば背部叩打・腹部突き上げ、病院では喉頭鏡で見ながら鉗子で取り出す。",
 };
 
 export const O2_ROLE = {
@@ -649,6 +653,7 @@ export const APPROACHES = {
       { id: 'tamponade', tests: ['echo'], point: 'がん・心膜炎・心臓手術後、低血圧・頸静脈怒張・心音減弱（Beckの3徴）、奇脈、肺はきれい、心電図で低電位 → 心エコーで心嚢液、心嚢穿刺（利尿薬は禁忌）', clues: ['q:pmh', 'e:jvd', 'e:heart_ausc', 'e:periph', 't:echo', '!q:fever', '!e:lung_ausc'] },
       { id: 'hyperventilation', point: '若い女性、強いストレスの直後、口の周りと手のしびれ・テタニー、SpO2は正常、血液ガスで呼吸性アルカローシス（pCO2低下）→ 危険な疾患を除外して説明', clues: ['q:trigger', 'e:periph', 'H:PH', 'L:PCO2', '!q:chestpain', '!q:fever', '!e:leg_edema'] },
       { id: 'pleural_effusion', tests: ['chest_ct', 'thoracentesis'], point: '片側の呼吸音消失・濁音、体重減少・喫煙歴、浮腫・頸静脈怒張なし、胸水穿刺で滲出液・細胞診陽性 → ドレナージ・胸膜癒着術・原発巣の治療', clues: ['q:weightloss', 'q:smoking', 'e:lung_ausc', 'e:chest_perc', 't:cxr', '!e:jvd', '!q:fever'] },
+      { id: 'choking', point: '食事中（餅）に急に苦しみのどを押さえる、声のかすれ・吸気性喘鳴・陥没呼吸、嚥下障害の高齢者 → 検査より先に異物除去（背部叩打・腹部突き上げ・喉頭鏡とマギル鉗子）', clues: ['q:trigger', 'q:onset', 'e:gen_appear', 'e:chest_insp', '!q:fever'] },
     ],
   },
   vomit_malaise: {
@@ -768,6 +773,7 @@ APPROACHES.altered_mental = {
     { id: 'serotonin', point: 'SSRIなどの追加・増量後、急な発症、ミオクローヌス・腱反射亢進' },
     { id: 'organophosphate', tests: ['chem'], point: '農薬を飲んだ（自殺企図）、縮瞳・流涎・発汗・気道分泌増加・徐脈・下痢、筋線維束攣縮、特有の臭い、コリンエステラーゼ著明低下 → アトロピン・PAM', clues: ['q:meds', 'q:character', 'e:pupils', 'e:gen_breath_odor', 'e:skin', 'L:CHE'] },
     { id: 'myxedema', tests: ['thyroid'], point: '甲状腺機能低下症の治療中断、冬、数週かけて進む意識障害、低体温・徐脈・低換気（CO2貯留）、非圧痕性浮腫、低Na → ヒドロコルチゾン・甲状腺ホルモン・加温', clues: ['q:pmh', 'q:course', 'e:skin', 'H:TSH', 'H:PCO2', 'L:NA'] },
+    { id: 'anticholinergic', tests: ['abd_us'], point: '高齢者が新しい薬（かぜ薬・抗ヒスタミン薬・頻尿の薬・胃腸薬）を始めた後のせん妄・幻視、散瞳、皮膚と口の乾燥、頻脈、尿閉・便秘 → 原因薬の中止と導尿', clues: ['q:meds', 'q:character', 'e:pupils', 'e:skin', 't:abd_us', '!q:fever'] },
   ],
 };
 APPROACHES.fever_headache = {
@@ -895,7 +901,7 @@ APPROACHES.scrotal = {
     { id: 'epididymitis', tests: ['scrotal_us', 'ua'], point: '徐々に始まる痛み・発熱・排尿時痛・膿尿、前立腺肥大の高齢者、持ち上げると痛みが軽くなる、ドプラで血流は保たれる → 抗菌薬', clues: ['q:fever', 'q:dysuria', 'q:character', 't:scrotal_us', 'H:U_LEU', '!q:nausea'] },
     { id: 'inc_hernia', point: '鼠径部から陰嚢への還納できない膨隆、強い痛み・嘔吐', clues: ['q:nausea', 'e:inguinal'] },
     { id: 'inguinal_hernia', tests: ['abd_us'], point: '中高年男性、立位・腹圧でふくらみ横になると戻る鼠径部の膨隆、痛みは軽い・嘔吐なし → 外科で待機的手術（戻らない・痛む・吐くなら嵌頓）', clues: ['q:character', 'q:trigger', 'e:inguinal', '!q:nausea', '!q:fever'] },
-    { id: 'hydrocele', point: '痛みのない陰嚢の腫大、光を当てると透ける' },
+    { id: 'hydrocele', tests: ['scrotal_us'], point: 'ゆっくり大きくなる痛みのない陰嚢の腫れ、波動・透光性陽性、臥位でも小さくならない → エコーで精巣腫瘍を除外、経過観察', clues: ['q:onset', 'q:character', 'e:scrotum', 't:scrotal_us', '!q:nausea', '!q:fever', '!e:inguinal'] },
   ],
 };
 APPROACHES.vaginal = {
@@ -1059,7 +1065,7 @@ APPROACHES.injury = {
   title: 'けが（ひねった・転んだ）',
   intro: '外傷では、受傷機転・部位の圧痛・変形・神経血管障害を確認し、X線が必要か判断する（Ottawa ankle rulesなど）。高齢者の転倒では「なぜ転んだか」と骨粗鬆症の評価も忘れない。',
   keyQ: ['onset', 'trigger', 'character', 'location', 'aggravating', 'syncope', 'numbness', 'pmh', 'meds'],
-  keyE: ['joint', 'skin', 'motor', 'gen_consc', 'chest_palp', 'spine', 'abd_palp'],
+  keyE: ['joint', 'skin', 'motor', 'gen_consc', 'chest_palp', 'spine', 'abd_palp', 'nose'],
   keyT: [],
   redflags: ['変形・強い圧痛・荷重できない → 骨折を疑いX線', 'しびれ・冷感・脈が触れない → 神経・血管損傷', '意識消失して転んだ → 失神の原因検索', '強い腫脹と痛みが増す → コンパートメント症候群'],
   ddx: [
@@ -1084,6 +1090,8 @@ APPROACHES.injury = {
     { id: 'whiplash', point: '追突事故の翌日からの首の痛み・こわばり、正中の圧痛・神経症状なし（Canadian C-spine ruleでX線不要）→ 鎮痛と早期の活動', clues: ['q:trigger', 'e:spine'] },
     { id: 'humerus_fx', tests: ['joint_xr'], point: '骨粗鬆症の高齢女性が転んで肩を打った、肩の腫脹と上腕内側に広がる皮下出血、X線で外科頸骨折 → 三角巾固定・骨粗鬆症の治療', clues: ['q:trigger', 'q:pmh', 'e:joint', 't:joint_xr'] },
     { id: 'clavicle_fx', tests: ['joint_xr', 'cxr'], point: '肩から転ぶ・手をつく外傷、鎖骨の変形・圧痛・轢音 → X線、三角巾固定（開放骨折・皮膚の突き上げは手術）', clues: ['q:trigger', 'e:joint', 't:joint_xr', '!t:cxr'] },
+    { id: 'laceration', tests: ['joint_xr'], point: '刃物・ガラスによる切り傷、指の動き・感覚・血流は正常 → 洗浄・縫合、破傷風予防', clues: ['q:trigger', 'e:skin', '!t:joint_xr'] },
+    { id: 'nasal_fx', tests: ['joint_xr'], point: '顔面の打撲後の鼻出血・鼻背の腫れ・変形・轢音、鼻中隔血腫の有無を確認 → 冷却・鎮痛、1週間前後に整復', clues: ['q:trigger', 'e:nose', 't:joint_xr'] },
   ],
 };
 APPROACHES.jaundice = {
@@ -1122,6 +1130,7 @@ APPROACHES.fever_unknown = {
     { id: 'dengue', tests: ['dengue_ag', 'malaria'], point: '東南アジアなどから帰国後2週間以内の高熱・目の奥や筋肉/関節の痛み・発疹、白血球と血小板の減少 → マラリアを除外、アセトアミノフェン（NSAIDsは避ける）', clues: ['q:travel', 'q:character', 'e:skin', 'L:WBC', 'L:PLT', 't:dengue_ag'] },
     { id: 'tsutsugamushi', point: '秋〜初冬に山・畑・草むらに入った、発熱・体幹の発疹、服に隠れた場所の黒いかさぶた（刺し口）とリンパ節腫脹、血小板減少・肝酵素上昇、βラクタムが効かない → テトラサイクリン系', clues: ['q:travel', 'q:course', 'e:skin', 'e:neck_ln', 'L:PLT', 'H:AST'] },
     { id: 'anca', tests: ['ua', 'anca'], point: '高齢者の不明熱・体重減少、急速に進む腎障害（血尿・円柱）・多発単神経炎・紫斑・肺病変、MPO-ANCA陽性 → 感染を除外してステロイドと免疫抑制薬', clues: ['q:weightloss', 'q:pmh', 'q:course', 'H:CR', 'H:U_RBC', 't:anca', '!q:chills'] },
+    { id: 'measles', tests: ['measles'], point: '予防接種1回・海外渡航、カタル症状（咳・鼻水・結膜炎）の後に再び高熱と顔から全身へ広がる発疹、Koplik斑、白血球・血小板減少 → 空気感染対策・保健所へ届け出', clues: ['q:course', 'q:travel', 'q:pmh', 'e:skin', 'e:conjunctiva', 'L:WBC', 't:measles'] },
   ],
 };
 APPROACHES.breast = {
@@ -1308,6 +1317,7 @@ APPROACHES.psych = {
     { id: 'anorexia_nervosa', tests: ['ecg', 'chem'], point: '若い女性の著明なやせ・体重増加への恐怖・無月経・下剤乱用、徐脈・低血圧・低K → 慎重な再栄養', clues: ['q:weightloss', 'q:menses', 'q:character', 'L:K', 'e:gen_appear'] },
     { id: 'depression', point: '抑うつ気分・興味の喪失・早朝覚醒', clues: ['q:mood'] },
     { id: 'delirium', point: '意識の変動・注意障害（身体疾患が原因）' },
+    { id: 'adjustment', point: 'はっきりしたストレス因（異動・人間関係）の後に始まり、ストレス因から離れると軽くなる抑うつ・不安・身体症状、休日は楽しめる → 環境調整と精神療法', clues: ['q:onset', 'q:character', 'q:mood', '!q:hallucination', '!q:weightloss', '!q:alcohol'] },
   ],
 };
 APPROACHES.hematuria = {
@@ -1324,6 +1334,7 @@ APPROACHES.hematuria = {
     { id: 'ureteral', point: '側腹部の激痛と血尿', clues: ['q:flankpain'] },
     { id: 'cystitis', point: '排尿時痛・頻尿と血尿', clues: ['q:dysuria'] },
     { id: 'pkd', tests: ['abd_us'], point: '若い頃からの高血圧、家族歴（透析・くも膜下出血）、両側の大きな腎臓を触れる、エコーで両腎の多数の嚢胞 → 降圧・水分、腎臓内科、脳動脈瘤のスクリーニング', clues: ['q:pmh', 'q:meds', 'e:abd_palp', 't:abd_us', '!q:dysuria', '!q:fever'] },
+    { id: 'rcc', tests: ['abd_us', 'abd_ct_contrast'], point: '中高年の痛みのない肉眼的血尿、喫煙・肥満、微熱・体重減少、エコー/CTで腎の充実性腫瘤 → 泌尿器科で手術', clues: ['q:hematuria', 'q:character', 'q:smoking', 't:abd_us', '!q:dysuria'] },
   ],
 };
 APPROACHES.menstrual = {
@@ -1457,6 +1468,7 @@ APPROACHES.urinary = {
     { id: 'retention', point: '高齢男性・前立腺肥大症・抗コリン薬（風邪薬）・飲酒、恥骨上部の膨隆、エコーで膀胱拡張', clues: ['q:retention', 'q:trigger', 'q:frequency', 'e:bladder', 't:abd_us'] },
     { id: 'aki', point: '膀胱が空で尿が作られていない、脱水・薬剤・腎疾患', clues: ['H:CR'] },
     { id: 'prostatitis', point: '発熱・排尿時痛・会陰部痛' },
+    { id: 'bladder_tamponade', tests: ['abd_us', 'coag', 'cbc'], point: '抗凝固薬内服・膀胱がん・前立腺の病気、肉眼的血尿の後に凝血塊で尿閉、エコーで膀胱内の凝血塊 → 3wayカテーテルで膀胱洗浄・持続灌流', clues: ['q:hematuria', 'q:meds', 'q:pmh', 'e:bladder', 't:abd_us', 'H:PT_INR'] },
   ],
 };
 APPROACHES.fall = {
@@ -1567,6 +1579,7 @@ APPROACHES.urinary_sx = {
     { id: 'prostate_ca', point: 'PSA高値、直腸診で硬い結節', clues: ['H:PSA'] },
     { id: 'oab', tests: ['pvr'], point: '急に我慢できない尿意（尿意切迫感）・頻尿・切迫性尿失禁、排尿時痛・血尿なし、残尿は少ない → 行動療法とβ3作動薬', clues: ['q:character', 'q:frequency', '!q:dysuria', '!q:retention', '!t:pvr'] },
     { id: 'stress_incontinence', point: '咳・くしゃみ・力んだときの尿漏れ、経腟分娩歴、急な尿意や排尿時痛はない → 骨盤底筋訓練', clues: ['q:incontinence', 'q:pmh', '!q:dysuria', '!q:frequency'] },
+    { id: 'ed', tests: ['hba1c', 'lipid'], point: '中高年男性の勃起障害、糖尿病・高血圧・脂質異常症・喫煙、排尿症状なし → 危険因子の管理とPDE5阻害薬（硝酸薬は併用禁忌）、心血管リスクの評価', clues: ['q:pmh', 'q:meds', '!q:dysuria', '!q:frequency', '!q:fever'] },
   ],
 };
 APPROACHES.joint_pain = {
@@ -2360,4 +2373,14 @@ export const DISEASE_NOTES = {
   pulpitis: {"overview": "深いむし歯で歯の神経（歯髄）に炎症が起こり、強い痛みが出る。", "treatment": ["鎮痛", "歯科で根管治療"], "flow": "冷温水でしみて続くズキズキした歯痛 → 急性歯髄炎 → 鎮痛と歯科"},
   aphthous: {"overview": "口の中に丸くて浅い潰瘍ができ、1〜2週で治る口内炎。", "treatment": ["口腔用ステロイド", "休養", "2週以上治らなければ生検"], "flow": "円形の浅い潰瘍＋白い偽膜 → アフタ性口内炎"},
   oral_candida: {"overview": "口の中にカンジダ（カビの一種）が増えて、白い苔やヒリヒリ感が出る。", "treatment": ["KOH鏡検", "抗真菌薬", "吸入後のうがい・義歯の清掃"], "flow": "ぬぐうと取れる白苔 → KOHで仮性菌糸 → 口腔カンジダ症"},
+  hydrocele: {"overview": "精巣のまわりに液体がたまって陰嚢が腫れる。痛みはない。", "treatment": ["陰嚢エコーで精巣腫瘍を除外", "経過観察", "大きければ手術"], "flow": "痛みのない陰嚢の腫れ＋透光性陽性 → エコーで液体貯留 → 陰嚢水腫"},
+  ed: {"overview": "十分な勃起が得られない・続かない状態。血管の動脈硬化が主な原因。", "treatment": ["危険因子（糖尿病・喫煙など）の管理", "PDE5阻害薬（硝酸薬とは併用禁忌）", "心血管リスクの評価"], "flow": "中高年男性の勃起障害＋生活習慣病 → ED → PDE5阻害薬"},
+  rcc: {"overview": "腎臓にできるがん。無症状で見つかることが多い。", "treatment": ["エコー・造影CT", "手術（部分切除・摘除）", "転移があれば薬物療法"], "flow": "痛みのない肉眼的血尿 → エコーで腎腫瘤 → 造影CT → 腎細胞がん"},
+  bladder_tamponade: {"overview": "膀胱の中で血液が固まり、尿が出なくなる状態。", "treatment": ["3wayカテーテルで膀胱洗浄", "持続膀胱灌流", "出血源の治療・抗凝固薬の調整"], "flow": "血尿の後の尿閉 → エコーで膀胱内の凝血塊 → 膀胱タンポナーデ → 膀胱洗浄"},
+  adjustment: {"overview": "はっきりしたストレスに心がうまく適応できず、気分や行動の不調が出る状態。", "treatment": ["ストレス因の調整（休養・職場との相談）", "精神療法", "うつ病への移行に注意"], "flow": "ストレス後の抑うつ・不安＋離れると軽くなる → 適応障害 → 環境調整"},
+  anticholinergic: {"overview": "抗コリン作用のある薬で、せん妄・尿閉・口の乾燥などが起こる。高齢者に多い。", "treatment": ["原因薬の中止", "導尿・補液", "ポリファーマシーの見直し"], "flow": "新しい薬の後のせん妄＋散瞳・乾燥・尿閉 → 抗コリン作用による中毒 → 中止と導尿"},
+  measles: {"overview": "麻疹ウイルスによる感染症。空気感染で非常にうつりやすい。", "treatment": ["IgM抗体・PCR", "空気感染対策と保健所への届け出", "対症療法・接触者へのワクチン"], "flow": "カタル症状→高熱と全身の発疹＋Koplik斑 → 麻疹 → 隔離と届け出"},
+  laceration: {"overview": "刃物などで皮膚が切れた傷。", "treatment": ["神経・腱・血流の確認", "洗浄・縫合", "破傷風予防"], "flow": "手の切り傷 → 神経・腱の損傷なし → 洗浄・縫合"},
+  nasal_fx: {"overview": "顔をぶつけて鼻の骨が折れる。顔面骨折で最も多い。", "treatment": ["鼻中隔血腫の確認", "冷却・鎮痛", "1週間前後に整復"], "flow": "顔面打撲後の鼻出血・変形 → 鼻骨骨折 → 後日整復"},
+  choking: {"overview": "食べ物などがのどや気管に詰まり、息ができなくなる状態。", "treatment": ["背部叩打・腹部突き上げ", "喉頭鏡とマギル鉗子で除去", "除去できなければ輪状甲状靱帯切開"], "flow": "食事中の急な窒息＋吸気性喘鳴 → 気道異物 → すぐに除去"},
 };

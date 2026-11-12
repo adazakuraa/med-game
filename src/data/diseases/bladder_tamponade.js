@@ -1,0 +1,42 @@
+// 膀胱タンポナーデ（凝血塊による尿閉）
+// 出典: 日本泌尿器科学会 資料, 一般的な泌尿器救急の知識
+export default {
+  id: 'bladder_tamponade', name: '膀胱タンポナーデ', dept: '泌尿器科',
+  weight: 1.5, season: {}, minLevel: 2,
+  demo: { age: [70, 92], ageMode: 'old', male: 0.85 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [36, 46], [48, 58]] },
+  refractoryP: [0, 0, 0], comorb: { forced: ['af'], extra: { bph: 0.5 } }, organisms: [], untreatedFatal: false,
+  vars: () => ({}),
+  cc: () => '血のおしっこが出て、今は尿が出ない', ccKey: 'urinary',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '昨日から真っ赤なおしっこが出ていて、今朝から血の塊が出て、まったくおしっこが出なくなりました。' },
+    retention: { p: 1, text: '下腹部がパンパンで、出したいのに出ません。' },
+    hematuria: { p: 1, text: '真っ赤で、塊が混じっていました。' },
+    meds: { p: 1, text: '心房細動で血液をサラサラにする薬を飲んでいます。' },
+    pmh: { p: 1, text: '3年前に膀胱がんの手術を受けました。前立腺も大きいと言われています。' },
+    abdpain: { p: 1, text: '下腹部が張って痛いです。' }, fever: { p: 0, text: '熱はありません。' }, frequency: { p: 0, text: '' }, trigger: { p: 0, text: '' },
+  },
+  exam: { bladder: { p: 1, text: '恥骨上に緊満した膀胱を触れ、圧痛。' }, abd_palp: { p: 1, text: '下腹部の膨隆と圧痛。' }, cva: { p: 0, text: 'CVA叩打痛なし。' }, gen_appear: { p: 1, text: '下腹部痛で苦しそう。' } },
+  vitals: { HR: { to: [95, 115], k: 1 }, SBP: { to: [150, 170], k: 1 } },
+  labs: { HB: { add: [-3, -1], k: 0.7 }, CR: { add: [0.2, 0.8], k: 1 } },
+  tests: { abd_us: [{ p: 1, persist: true, unlessProc: 'foley', text: '膀胱内に大量の凝血塊（エコー輝度の高い不整な塊）と尿の貯留（約600mL）。両側の軽度水腎症。' }, { p: 1, ifProc: 'foley', text: '膀胱内の凝血塊は減少し、膀胱壁に2cmの隆起性病変（膀胱がんの再発を疑う）。' }], coag: [{ p: 1, text: 'PT-INR 3.2（延長）。' }], urine_cyto: [{ p: 1, text: '異型細胞あり（Class IV）。' }] },
+  natural: 0.4,
+  therapies: [
+    { id: 'foley', label: '太い3wayカテーテルを留置し膀胱洗浄で凝血塊を除去、持続膀胱灌流', req: { fn: (enc) => !!enc.state.procs?.foley }, effect: 0, lagH: 0, required: true, deadlineH: [2, 1.5, 1] },
+    { id: 'uro', label: '泌尿器科コンサルト（出血源の検索：膀胱鏡、止血・経尿道的手術）、抗凝固薬の調整', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'uro') }, effect: 0, lagH: 0, required: true, deadlineH: [12, 6, 4] },
+  ],
+  dynamics: (enc) => (enc.state.procs?.foley && enc.t >= enc.state.procs.foley ? -1.0 : 0),
+  consult: { uro: '泌尿器科：凝血塊による膀胱タンポナーデです。3wayカテーテルで凝血塊を除去し、持続膀胱灌流を続けます。膀胱がんの再発からの出血が疑われるので、膀胱鏡で確認し、経尿道的切除術と止血を行います。抗凝固薬は循環器と相談して一時中止します。' },
+  dispo: () => ({ ok: ['admit'], best: 'admit', why: '膀胱タンポナーデ：入院で持続膀胱灌流と出血源の治療' }),
+  useful: ['abd_us', 'ua', 'cbc', 'chem', 'coag', 'urine_cyto', 'abd_ct_contrast'],
+  key: [['abd_us'], ['cbc'], ['coag']],
+  extrasOk: () => ['bladder_ca', 'retention'],
+  teaching: [
+    '肉眼的血尿の後に凝血塊で尿が出なくなる → 膀胱タンポナーデ。抗凝固薬内服・膀胱がん・前立腺の病気・放射線性膀胱炎の高齢者に多い。',
+    '通常の細いカテーテルでは凝血塊で詰まる。太い3wayカテーテルで膀胱洗浄し、持続灌流する。',
+    '出血源（膀胱がんなど）を膀胱鏡・CTで調べ、貧血・凝固異常を補正する。',
+  ],
+  sources: ['日本泌尿器科学会 資料'],
+  ideal: () => [{ a: 'test', ids: ['abd_us', 'cbc', 'chem', 'coag'] }, { a: 'proc', id: 'foley' }, { a: 'consult', dept: 'uro', delayMin: 20 }],
+};

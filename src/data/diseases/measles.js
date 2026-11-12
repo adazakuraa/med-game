@@ -1,0 +1,38 @@
+// 麻疹（成人）
+// 出典: 国立感染症研究所 IDWR「麻疹」, 厚生労働省 麻しんに関する特定感染症予防指針
+export default {
+  id: 'measles', name: '麻疹（はしか）', dept: '感染症内科',
+  weight: 0.8, season: { spring: 1.8 }, minLevel: 3,
+  demo: { age: [20, 40], ageMode: 'young', male: 0.5 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[30, 38], [38, 46], [48, 58]] },
+  refractoryP: [0, 0, 0.05], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: () => ({}),
+  cc: () => '高熱と全身の発疹', ccKey: 'fever_unknown',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '5日前から38度の熱・咳・鼻水・目の充血があり、いったん少し下がった後、昨日から39度台の高熱と、顔から全身に広がる赤い発疹が出ました。' },
+    course: { p: 1, text: '発疹は耳の後ろ・顔から始まって、体・手足に広がりました。' },
+    fever: { p: 1, text: '39度台の熱です。' }, chills: { p: 0.5, text: '寒気があります。' },
+    travel: { p: 1, text: '2週間前に東南アジアに旅行しました。' },
+    sickcontact: { p: 0.5, text: '旅行の同行者が帰国後に熱を出したと聞きました。' },
+    pmh: { p: 1, text: '子どものころの予防接種は1回だけだったと思います（母子手帳は見つかりません）。' },
+    dyspnea: { p: 0.3, text: '咳がひどいです。' }, diarrhea: { p: 0.3, text: '少し下痢があります。' }, weightloss: { p: 0, text: '' }, nightsweat: { p: 0, text: '' }, meds: { p: 0, text: '新しい薬は飲んでいません。' },
+  },
+  exam: { skin: { p: 1, text: '顔・体幹・四肢に融合傾向のある紅斑性丘疹（斑状丘疹）。' }, oral_mucosa: { p: 0.8, text: '頬粘膜に白い小斑点（Koplik斑）。' }, conjunctiva: { p: 1, text: '眼球結膜の充血、眼脂。' }, neck_ln: { p: 1, text: '頸部リンパ節の軽い腫脹。' }, heart_ausc: { p: 0, text: '心雑音なし。' } },
+  vitals: { T: { to: [39, 40], k: 0.3 }, HR: { to: [100, 115], k: 1 } },
+  labs: { WBC: { to: [2800, 3800], k: 0 }, PLT: { mul: [0.6, 0.8], k: 0 }, AST: { add: [20, 80], k: 0.7 }, ALT: { add: [20, 80], k: 0.7 }, CRP: { to: [1, 4], k: 0.7 } },
+  tests: { measles: [{ p: 1, persist: true, text: '麻疹IgM抗体 陽性、咽頭ぬぐい液の麻疹PCR 陽性。' }], dengue_ag: [{ p: 1, text: 'NS1抗原 陰性。', normal: true }], malaria: [{ p: 1, text: '陰性。', normal: true }], cxr: [{ p: 0.3, text: '両側肺門周囲の淡い浸潤影。' }] },
+  natural: -0.05,
+  therapies: [{ id: 'isolate', label: '空気感染対策（陰圧個室・N95）、保健所へ直ちに届け出、対症療法（解熱薬）、接触者の調査', req: { fn: (enc, eff) => enc.tests.some((t) => t.id === 'measles') && (eff.tags.antipyretic || 0) > 0 }, effect: -0.2, lagH: 1, required: true, deadlineH: [12, 12, 12] }],
+  dispo: (enc) => (enc.patient.sev === 0 ? { ok: ['home', 'admit'], best: 'home', why: '合併症のない麻疹：自宅で隔離（解熱後3日まで）と対症療法、保健所へ届け出' } : { ok: ['admit'], best: 'admit', why: '肺炎・肝障害を伴う麻疹：陰圧個室に入院' }),
+  useful: ['measles', 'cbc', 'chem', 'crp', 'cxr', 'dengue_ag', 'malaria', 'ua'],
+  key: [['measles'], ['cbc']],
+  extrasOk: () => [],
+  teaching: [
+    '高熱・咳・鼻水・結膜炎（カタル期）の後、いったん解熱しかけて再び高熱とともに顔から全身へ広がる発疹 → 麻疹。Koplik斑が特徴。',
+    '空気感染で非常に感染力が強い。疑ったら陰圧個室・N95で対応し、直ちに保健所へ届け出る。接触者への緊急ワクチン接種。',
+    '予防接種が1回だけの世代・海外渡航歴がリスク。肺炎・脳炎・妊婦の流早産に注意。',
+  ],
+  sources: ['国立感染症研究所「麻疹とは」'],
+  ideal: () => [{ a: 'test', ids: ['measles', 'cbc', 'chem', 'crp', 'dengue_ag', 'malaria'] }, { a: 'rx', drugId: 'apap_po', route: 'po', dose: 500, freq: 'q6h', days: 5 }],
+};

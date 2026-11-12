@@ -29,6 +29,8 @@ export const PROCEDURES = [
   { id: 'incision', name: '切開排膿（局所麻酔）', min: 20 },
   { id: 'paring', name: '鶏眼・胼胝の削り（コーンカッター）', min: 10 },
   { id: 'eye_irrigation', name: '眼の洗浄（生理食塩水で大量洗浄）', min: 30 },
+  { id: 'suture', name: '創の洗浄・縫合（局所麻酔）', min: 30 },
+  { id: 'fb_removal', name: '喉頭鏡・マギル鉗子による気道異物の除去', min: 5 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
@@ -572,7 +574,9 @@ export function procedure(enc, procId) {
     else if (P.id === 'incision') addLog(enc, 'exam', ['atheroma', 'paronychia', 'perianal_abscess', 'bartholin', 'furuncle'].includes(d.id) ? (d.id === 'atheroma' ? '局所麻酔下に切開し、悪臭のある膿と粥状物を排出した。' : '局所麻酔下に切開し、膿を排出した。痛みがすぐ軽くなった。') : '切開したが、膿は出なかった。', { label: '切開排膿', positive: ['atheroma', 'paronychia', 'perianal_abscess', 'bartholin', 'furuncle'].includes(d.id) });
     else if (P.id === 'paring') addLog(enc, 'exam', d.id === 'corn' ? '角質の芯を削り取った。歩く痛みがすぐ軽くなった。' : '削ったが、変化はなかった。', { label: '鶏眼の処置', positive: d.id === 'corn' });
     else if (P.id === 'eye_irrigation') addLog(enc, 'exam', d.id === 'chem_eye' ? '生理食塩水2Lで眼を洗浄した。結膜嚢のpHが7.5に下がった。' : '眼を洗浄したが、特に変化はない。', { label: '眼の洗浄', positive: d.id === 'chem_eye' });
-    else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
+    else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : d.id === 'anticholinergic' ? '尿道カテーテルから尿が850mL流出。下腹部の張りがとれ、少し落ち着いた。' : d.id === 'bladder_tamponade' ? '太い3wayカテーテルを入れ、膀胱洗浄で凝血塊を多量に除去した。下腹部の張りが軽くなり、持続灌流を開始した。' : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: ['retention', 'anticholinergic', 'bladder_tamponade'].includes(d.id) });
+    else if (P.id === 'suture') addLog(enc, 'exam', d.id === 'laceration' ? '局所麻酔下に生理食塩水で十分に洗浄し、異物がないことを確認して縫合した。' : '縫合が必要な創はない。', { label: '創の縫合', positive: d.id === 'laceration' });
+    else if (P.id === 'fb_removal') addLog(enc, 'exam', d.id === 'choking' ? '喉頭鏡で声門上に詰まった餅を確認し、マギル鉗子で除去した。呼吸が楽になった。' : '気道に異物は見当たらなかった。', { label: '気道異物の除去', positive: d.id === 'choking' });
     advance(enc, P.min);
     return;
   }
