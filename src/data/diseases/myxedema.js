@@ -23,7 +23,7 @@ export default {
   exam: { gen_consc: { p: 1, text: 'JCS 20〜30。' }, skin: { p: 1, text: '皮膚は乾燥して冷たく、顔面と眼瞼の非圧痕性浮腫。眉毛の外側が薄い。' }, thyroid_palp: { p: 1, text: '甲状腺はびまん性に硬く腫大。' }, motor: { p: 1, text: 'アキレス腱反射の弛緩相が遅延。麻痺なし。' }, leg_edema: { p: 1, text: '下腿の圧痕を残さない浮腫。' }, pupils: { p: 1, text: '瞳孔は正常大、対光反射あり。' } },
   vitals: { T: { to: [33.5, 35], k: 1 }, HR: { to: [42, 52], k: 1 }, RR: { to: [8, 11], k: 1 }, SBP: { to: [85, 100], k: 1.5 }, SpO2: { drop: [3, 8], k: 1.5 } },
   labs: { TSH: { to: [60, 150], k: 0 }, FT4: { to: [0.1, 0.3], k: 0 }, NA: { add: [-15, -6], k: 1 }, GLU: { add: [-30, -10], k: 1 }, CK: { add: [300, 1200], k: 0.7 }, PCO2: { to: [55, 70], k: 1.2 }, PH: { to: [7.25, 7.32], k: 1.2 }, LDL: { add: [30, 70], k: 0 } },
-  tests: { head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。' }], echo: [{ p: 0.5, text: '少量の心嚢液貯留。' }], cxr: [{ p: 0.5, text: '心拡大（心嚢液）。' }] },
+  tests: { head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。', normal: true }], echo: [{ p: 0.5, text: '少量の心嚢液貯留。' }], cxr: [{ p: 0.5, text: '心拡大（心嚢液）。' }] },
   ecg: [{ p: 1, text: '洞性徐脈、低電位、QT延長。' }],
   natural: 0.45,
   therapies: [

@@ -21,7 +21,7 @@ export default outpatient({
   },
   exam: { abd_palp: { p: 1, text: '心窩部の圧痛。筋性防御・反跳痛なし。' }, gen_appear: { p: 1, text: '痛みで顔をしかめているが、全身状態は保たれている。' }, conjunctiva: { p: 0, text: '貧血なし。' } },
   labs: { BUN: { add: [0, 6], k: 1 } },
-  tests: { abd_us: [{ p: 1, text: '胆石・胆嚢炎なし。膵臓に異常なし。' }], hp: [{ p: 0.3, text: 'ピロリ菌 陽性。' }] },
+  tests: { abd_us: [{ p: 1, text: '胆石・胆嚢炎なし。膵臓に異常なし。', normal: true }], hp: [{ p: 0.3, text: 'ピロリ菌 陽性。' }] },
   natural: -0.1,
   therapies: [{ id: 'ppi', label: 'PPI（または P-CAB）と原因の除去（NSAIDsの中止・禁酒・休養）', req: { tag: 'ppi' }, effect: -0.6, lagH: 1, required: true, deadlineH: [6, 6, 4] }],
   useful: ['cbc', 'chem', 'ecg', 'abd_us', 'hp', 'lab_AMY', 'uhcg'], key: [['ecg'], ['cbc']],

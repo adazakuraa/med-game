@@ -26,7 +26,7 @@ export default {
   tests: {
     spine_xr: [{ p: 1, text: '頸椎の変形性変化（骨棘・椎間板腔狭小化）。明らかな骨折・脱臼なし。' }],
     spine_mri: [{ p: 1, persist: true, text: 'C4/5レベルで脊柱管狭窄と、頸髄内のT2高信号（頸髄損傷）。骨折なし。' }],
-    head_ct: [{ p: 1, text: '頭蓋内出血なし。' }],
+    head_ct: [{ p: 1, text: '頭蓋内出血なし。', normal: true }],
   },
   natural: 0.05,
   therapies: [

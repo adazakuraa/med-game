@@ -15,7 +15,7 @@ export default outpatient({
     lmp: { p: 1, text: '最終月経は2週間前です。' }, abdpain: { p: 0, text: 'お腹は痛くありません。' },
   },
   exam: { speculum: { p: 1, text: '{side}大陰唇の下1/3に3cmの発赤・熱感を伴う有痛性の腫瘤、波動あり（バルトリン腺膿瘍）。腟内の帯下に異常なし。' }, pelvic: { p: 0, text: '子宮・付属器に圧痛なし。' } },
-  tests: { sti_pcr: [{ p: 0.2, text: '淋菌 陽性。' }], uhcg: [{ p: 1, text: '陰性。' }] },
+  tests: { sti_pcr: [{ p: 0.2, text: '淋菌 陽性。' }], uhcg: [{ p: 1, text: '陰性。', normal: true }] },
   natural: 0.1,
   therapies: [{ id: 'incision', label: '切開排膿（または穿刺・造袋術）', req: { fn: (enc) => !!enc.state.procs?.incision }, effect: -1.0, lagH: 0, required: true, deadlineH: [12, 8, 6] }],
   dynamics: (enc) => (enc.state.procs?.incision && enc.t >= enc.state.procs.incision ? -1.0 : 0),

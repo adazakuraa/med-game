@@ -17,7 +17,7 @@ export default outpatient({
     retention: { p: 0.3, text: '痛くておしっこが出しにくいです。' }, vagbleed: { p: 0, text: '' }, abdpain: { p: 0, text: '' },
   },
   exam: { speculum: { p: 1, text: '大陰唇・小陰唇に多発する小水疱と浅い有痛性潰瘍（左右両側）。子宮頸部にも潰瘍。' }, pelvic: { p: 0, text: '付属器に圧痛なし。' } },
-  tests: { syphilis: [{ p: 1, text: 'RPR・TPHA 陰性。' }], sti_pcr: [{ p: 1, text: 'クラミジア・淋菌 陰性。' }], hiv: [{ p: 1, text: '陰性。' }], uhcg: [{ p: 1, text: '陰性。' }] },
+  tests: { syphilis: [{ p: 1, text: 'RPR・TPHA 陰性。', normal: true }], sti_pcr: [{ p: 1, text: 'クラミジア・淋菌 陰性。', normal: true }], hiv: [{ p: 1, text: '陰性。', normal: true }], uhcg: [{ p: 1, text: '陰性。', normal: true }] },
   natural: -0.05,
   therapies: [{ id: 'av', label: '抗ヘルペスウイルス薬（バラシクロビル）と鎮痛、性感染症の検査', req: { tag: 'antiviral_hsv' }, effect: -0.5, lagH: 12, required: true, deadlineH: [24, 24, 24] }],
   useful: ['syphilis', 'sti_pcr', 'hiv', 'uhcg', 'ua'], key: [['syphilis']],

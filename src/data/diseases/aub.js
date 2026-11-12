@@ -18,7 +18,7 @@ export default outpatient({
   },
   exam: { conjunctiva: { p: 0.5, text: '眼瞼結膜はやや蒼白。' }, skin: { p: 0, text: '皮下出血・多毛なし。' }, thyroid_palp: { p: 0, text: '甲状腺腫なし。' } },
   labs: { HB: { add: [-2.5, -1], k: 0 } },
-  tests: { tvus: [{ p: 1, persist: true, text: '子宮内膜は12mmで均一。筋腫・ポリープ・腺筋症を認めない。卵巣に腫瘤なし。' }], uhcg: [{ p: 1, text: '陰性。' }], pap: [{ p: 1, text: 'NILM（陰性）。' }], thyroid: [{ p: 1, text: 'TSH・FT4 正常。' }], coag: [{ p: 1, text: 'PT・APTT 正常。' }], hormone: [{ p: 1, text: 'FSH軽度高値、エストラジオールは保たれる、プロラクチン正常（更年期移行期）。' }] },
+  tests: { tvus: [{ p: 1, persist: true, text: '子宮内膜は12mmで均一。筋腫・ポリープ・腺筋症を認めない。卵巣に腫瘤なし。', normal: true }], uhcg: [{ p: 1, text: '陰性。', normal: true }], pap: [{ p: 1, text: 'NILM（陰性）。', normal: true }], thyroid: [{ p: 1, text: 'TSH・FT4 正常。', normal: true }], coag: [{ p: 1, text: 'PT・APTT 正常。', normal: true }], hormone: [{ p: 1, text: 'FSH軽度高値、エストラジオールは保たれる、プロラクチン正常（更年期移行期）。' }] },
   natural: -0.01,
   therapies: [{ id: 'tx', label: '器質的疾患・妊娠・がんを除外し、黄体ホルモン療法（または低用量ピル）で止血・周期の調整', req: { fn: (enc, eff) => ((eff.tags.progestin || 0) + (eff.tags.ocp || 0)) > 0 && enc.tests.some((t) => t.id === 'uhcg' && t.done) }, effect: -0.3, lagH: 12, required: true, deadlineH: [48, 48, 48] }],
   useful: ['uhcg', 'tvus', 'pap', 'cbc', 'thyroid', 'coag', 'hormone', 'ferritin'], key: [['uhcg'], ['tvus']],

@@ -265,6 +265,9 @@ export const TEST_WHY = {
   echo: '心臓の動き（EF）・弁膜症・下大静脈の太さ（体液量）を評価する。',
   achr: "重症筋無力症の診断（約8割で陽性）。結果は数日後。",
   ama: "原発性胆汁性胆管炎の診断（9割以上で陽性）。",
+  oct: "網膜の断面を撮影する。加齢黄斑変性（網膜下液・新生血管）や緑内障の神経線維の薄さがわかる。",
+  perimetry: "見える範囲を調べる。緑内障・脳の病気（半盲）などで欠ける。",
+  bp180: "水疱性類天疱瘡の自己抗体。",
 };
 
 export const LAB_MEANING = {
@@ -485,6 +488,8 @@ export const DRUG_ROLE = {
   ocp: "低用量ピル（LEP）。月経痛・月経前症候群・月経不順に。血栓症に注意。",
   mpa: "黄体ホルモンの飲み薬。無排卵性の出血を止め、内膜をはがして周期を整える。",
   ritodrine: "子宮の収縮を抑える点滴。切迫早産に。",
+  latanoprost: "眼圧を下げる点眼薬。緑内障の基本の治療。",
+  mirogabalin: "神経の痛み（帯状疱疹後神経痛など）を和らげる薬。眠気・ふらつきに注意。",
 };
 
 export const FLUID_ROLE = {
@@ -914,6 +919,8 @@ APPROACHES.itch_rash = {
     { id: 'sjs', point: '高熱・口唇や眼の粘膜疹・水疱・皮膚の剥離（重症薬疹）→ 入院' },
     { id: 'syphilis', tests: ['syphilis'], point: '手掌・足底を含むかゆみの乏しい発疹（バラ疹）、数か月前の無痛性の陰部潰瘍、性交渉歴 → 梅毒血清反応、ペニシリン', clues: ['q:trigger', 'q:pmh', '!q:itch', '!q:meds', 't:syphilis'] },
     { id: 'pbc', tests: ['ama', 'chem'], point: '中年女性、発疹のないかゆみ（夜に強い）・疲労感、ALP・γ-GTP上昇、眼瞼黄色腫、抗ミトコンドリア抗体陽性 → ウルソデオキシコール酸', clues: ['q:character', 'q:pmh', 'H:ALP', 'H:GGT', 't:ama', '!q:sickcontact'] },
+    { id: 'xerotic_eczema', point: '高齢者、冬に悪化、すね・背中の乾燥と白い粉・亀甲状のひび割れ、熱い風呂・ナイロンタオル → 保湿とステロイド外用', clues: ['q:location', 'q:trigger', 'q:itch', '!t:koh'] },
+    { id: 'bullous_pemphigoid', tests: ['bp180'], point: '高齢者の強いかゆみと、紅斑の上や正常皮膚の破れにくい緊満性水疱、口腔は保たれる、DPP-4阻害薬 → 抗BP180抗体・生検、強力なステロイド外用', clues: ['q:meds', 'q:character', 'e:skin', 't:bp180', '!q:fever'] },
   ],
 };
 APPROACHES.vision = {
@@ -932,6 +939,8 @@ APPROACHES.vision = {
     { id: 'stroke', point: '同名半盲・麻痺・言語障害' },
     { id: 'mg', tests: ['achr'], point: '夕方や疲れると悪化し休むと良くなる眼瞼下垂・複視、瞳孔は正常、腕の易疲労性 → 抗AChR抗体・アイスパックテスト、胸腺腫の評価', clues: ['q:course', 'q:weakness', 'e:eye', 't:achr', '!e:pupils'] },
     { id: 'cn3_palsy', point: '突然の片側の眼瞼下垂・複視に瞳孔散大と頭痛 → 脳動脈瘤の切迫破裂（緊急）', clues: ['e:pupils', 'q:headache'] },
+    { id: 'amd', tests: ['fundus', 'oct'], point: '高齢の喫煙者、片眼の中心がゆがむ（変視症）・暗い、アムスラーチャートで歪み、黄斑部の出血・網膜下液 → 眼科で抗VEGF療法', clues: ['q:character', 'q:vision', 'e:eye', 't:fundus', 't:oct', '!q:headache'] },
+    { id: 'poag', tests: ['fundus', 'perimetry'], point: '痛み・充血のないゆっくり進む視野欠損（自覚が乏しい）、視力は保たれる、視神経乳頭陥凹拡大、日本人は眼圧正常が多い → 点眼で眼圧を下げる', clues: ['q:character', 't:fundus', 't:perimetry', '!q:headache'] },
   ],
 };
 APPROACHES.throat = {
@@ -986,7 +995,7 @@ APPROACHES.tremor = {
 APPROACHES.memory = {
   title: '物忘れ',
   intro: '物忘れでは、まず「治る認知症」（甲状腺機能低下症・ビタミンB12欠乏・慢性硬膜下血腫・正常圧水頭症・うつ病・薬剤）とせん妄を除外する。家族から経過を詳しく聞く。',
-  keyQ: ['onset', 'course', 'memory', 'character', 'trigger', 'mood', 'adl', 'meds', 'alcohol'],
+  keyQ: ['onset', 'course', 'memory', 'character', 'trigger', 'mood', 'hallucination', 'adl', 'meds', 'alcohol'],
   keyE: ['gen_consc', 'motor', 'rigidity'],
   keyT: ['hdsr', 'head_ct', 'thyroid', 'b12', 'chem', 'cbc'],
   redflags: ['急に始まり変動する → せん妄（原因を探す）', '頭部打撲後に数週で進行・片麻痺 → 慢性硬膜下血腫', '歩行障害・尿失禁を伴う → 正常圧水頭症', '抗コリン薬・ベンゾジアゼピン → 薬剤による認知機能低下'],
@@ -998,6 +1007,8 @@ APPROACHES.memory = {
     { id: 'depression', point: '気分の落ち込みが先行、「わからない」と答える（取り繕わない）', clues: ['q:mood'] },
     { id: 'nph', tests: ['head_ct'], point: '歩行障害（すり足・開脚）・尿失禁・認知機能低下、CTで脳室拡大（くも膜下腔の不均衡な拡大）→ 脳神経外科で髄液排除試験・シャント', clues: ['q:character', 'e:motor', 't:head_ct'] },
     { id: 'tga', tests: ['head_ct'], point: '中高年が冷水・力仕事・強い感情の後に急に新しいことを覚えられなくなり同じ質問を繰り返す、自分が誰かは分かる、神経所見なし、24時間以内に回復 → 脳卒中・低血糖・てんかんを除外', clues: ['q:onset', 'q:trigger', 'q:course'] },
+    { id: 'dlb', tests: ['hdsr'], point: '認知機能の変動、ありありとした幻視（人・小動物）、夜中に叫ぶ・暴れる（レム睡眠行動異常）、パーキンソニズム・転倒、抗精神病薬への過敏 → ドネペジル、抗精神病薬は避ける', clues: ['q:course', 'q:character', 'q:hallucination', 'e:rigidity', '!q:trigger'] },
+    { id: 'vascular_dementia', tests: ['head_mri'], point: '脳卒中の後から段階的に進む、意欲低下・動作緩慢・感情失禁・小刻み歩行・尿失禁、高血圧・糖尿病、MRIで多発梗塞・白質病変 → 再発予防', clues: ['q:course', 'q:mood', 'q:meds', 'e:motor', 't:head_mri', 't:head_ct'] },
   ],
 };
 APPROACHES.checkup = {
@@ -1108,6 +1119,7 @@ APPROACHES.hearing = {
     { id: 'cerumen', point: '痛みのない耳閉感・伝音難聴、外耳道が耳垢でふさがる、補聴器・高齢 → 耳垢除去', clues: ['q:hearing', 'q:trigger', 'e:ear', '!q:fever', '!q:onset'] },
     { id: 'otitis_externa', point: '耳介牽引痛・耳珠圧痛・外耳道の腫れと耳漏、綿棒・水泳、発熱なし → 清掃と点耳薬', clues: ['q:character', 'q:trigger', 'e:ear', '!q:fever'] },
     { id: 'otitis_media', point: 'かぜの後の耳痛・耳閉感・発熱、鼓膜の発赤と膨隆、伝音難聴 → 鎮痛・アモキシシリン', clues: ['q:fever', 'q:trigger', 'q:character', 'e:ear'] },
+    { id: 'presbycusis', tests: ['audiometry'], point: '高齢者、両耳が対称にゆっくり聞こえにくくなる、高い音・騒がしい所の会話が苦手、鼓膜は正常 → 聴力検査、補聴器', clues: ['q:hearing', 'q:course', 't:audiometry', '!q:vertigo', '!e:ear'] },
   ],
 };
 APPROACHES.numbness = {
@@ -1123,6 +1135,8 @@ APPROACHES.numbness = {
     { id: 'dm_neuropathy', point: '糖尿病、両足先からの手袋靴下型のしびれ', clues: ['H:HBA1C'] },
     { id: 'b12_def', point: '胃切除後、大球性貧血、振動覚低下', clues: ['L:B12'] },
     { id: 'stroke', point: '突然の片側のしびれ・脱力', clues: ['e:facial', 'e:speech'] },
+    { id: 'phn', point: '帯状疱疹の後に同じ皮膚分節に続く焼けるような痛み、触れるだけで痛い（アロディニア）、色素沈着・瘢痕 → 神経障害性疼痛の薬（NSAIDsは効きにくい）', clues: ['q:onset', 'q:character', 'q:aggravating', 'q:pmh', '!q:weakness'] },
+    { id: 'cervical_myelopathy', tests: ['spine_mri'], point: '両手のしびれと巧緻運動障害（箸・ボタン）、歩行障害（痙性）、腱反射亢進・病的反射 → MRIで頸髄の圧迫、手術を検討', clues: ['q:character', 'q:weakness', 'q:location', 'e:motor', 't:spine_mri', '!e:phalen'] },
   ],
 };
 APPROACHES.chronic_cough = {
@@ -1526,6 +1540,7 @@ APPROACHES.joint_pain = {
     { id: 'rotator_cuff', tests: ['joint_xr'], point: '中高年、外傷や重い物を持った後の肩の痛み、自分では上げられないが他人が持ち上げれば上がる（他動可動域は保たれる）、drop arm sign陽性 → 鎮痛と整形外科（MRI）', clues: ['q:character', 'q:trigger', 'e:joint', '!q:stiffness', '!H:CRP'] },
     { id: 'ra', tests: ['rf_ccp'], point: '手の小関節（MCP・PIP・手関節）の左右対称の腫れ、1時間以上の朝のこわばり、抗CCP抗体陽性 → 早期にメトトレキサート', clues: ['q:stiffness', 'q:location', 'e:joint', 't:rf_ccp', 'H:CRP', '!q:fever'] },
     { id: 'sle', tests: ['ana', 'cbc', 'ua'], point: '若い女性の発熱・関節痛・蝶形紅斑・光線過敏・口内炎・脱毛、白血球/血小板減少、抗核抗体・抗dsDNA抗体陽性・低補体', clues: ['q:fever', 'q:character', 'e:skin', 'e:oral_mucosa', 't:ana', 'L:WBC'] },
+    { id: 'hip_oa', tests: ['hip_xr'], point: '中高年女性、歩き始め・長く歩いた後の鼠径部痛、靴下がはけない（屈曲・内旋制限）、臼蓋形成不全の既往、X線で関節裂隙の狭小化 → 鎮痛・運動療法、人工股関節', clues: ['q:location', 'q:pmh', 't:hip_xr'] },
   ],
 };
 APPROACHES.epigastric = {
@@ -2223,4 +2238,14 @@ export const DISEASE_NOTES = {
   adenomyosis: {"overview": "子宮内膜に似た組織が子宮の筋肉の中にでき、強い月経痛と過多月経を起こす。", "treatment": ["経腟エコー・MRI", "ホルモン療法", "鉄剤・鎮痛"], "flow": "年々ひどくなる月経痛＋過多月経＋硬く腫大した子宮 → 子宮腺筋症"},
   aub: {"overview": "排卵がうまく起こらず、ホルモンのバランスが崩れて出血が長引く状態。", "treatment": ["妊娠・器質的疾患・がんの除外", "黄体ホルモン療法", "貧血の治療"], "flow": "更年期の不規則でだらだら続く出血 → 器質的疾患なし → 無排卵性出血 → ホルモン療法"},
   cervicitis: {"overview": "クラミジアという細菌による性感染症。女性では症状が軽く、気づかれにくい。", "treatment": ["核酸増幅検査", "アジスロマイシン", "パートナーの同時治療"], "flow": "帯下増加・性交後出血 → クラミジア陽性 → 子宮頸管炎 → 抗菌薬"},
+  dlb: {"overview": "脳にレビー小体という異常なたんぱく質がたまる認知症。幻視やパーキンソン症状が特徴。", "treatment": ["認知機能・画像検査", "ドネペジル", "抗精神病薬を避ける・転倒予防"], "flow": "変動する認知機能＋幻視＋パーキンソニズム → レビー小体型認知症"},
+  vascular_dementia: {"overview": "脳梗塞や脳出血のくり返しで起こる認知症。", "treatment": ["MRIで多発梗塞・白質病変", "脳卒中の再発予防", "リハビリ・介護サービス"], "flow": "脳卒中後に段階的に進む認知機能低下 → MRIで多発梗塞 → 血管性認知症 → 再発予防"},
+  phn: {"overview": "帯状疱疹が治った後も神経の痛みが残る状態。高齢者に多い。", "treatment": ["神経障害性疼痛の薬（ミロガバリンなど）", "神経ブロック", "ワクチンで予防"], "flow": "帯状疱疹後に続く焼けるような痛み → 帯状疱疹後神経痛 → 神経障害性疼痛の薬"},
+  xerotic_eczema: {"overview": "皮膚の脂が減って乾燥し、かゆみや湿疹が出る。高齢者の冬に多い。", "treatment": ["保湿剤", "ステロイド外用", "入浴の工夫"], "flow": "高齢者の冬のすね・背中の乾燥とかゆみ → 皮脂欠乏性湿疹 → 保湿"},
+  presbycusis: {"overview": "年齢とともに内耳の働きが落ち、両耳が少しずつ聞こえにくくなる。", "treatment": ["聴力検査", "補聴器", "話し方の工夫"], "flow": "両耳がゆっくり聞こえにくい → 聴力検査で高音障害型の感音難聴 → 補聴器"},
+  amd: {"overview": "網膜の中心（黄斑）が加齢で傷み、中心がゆがんだり見えなくなったりする。", "treatment": ["眼底・OCT", "抗VEGF薬の硝子体内注射", "禁煙"], "flow": "片眼の中心のゆがみ → OCTで網膜下液・新生血管 → 加齢黄斑変性 → 抗VEGF療法"},
+  poag: {"overview": "視神経が少しずつ傷み、気づかないうちに視野が欠けていく病気。", "treatment": ["眼底・視野検査・OCT", "眼圧を下げる点眼", "定期的な検査"], "flow": "視神経乳頭陥凹拡大＋視野欠損 → 開放隅角緑内障 → 点眼で眼圧を下げる"},
+  hip_oa: {"overview": "股関節の軟骨がすり減って痛みと動きの制限が起こる。日本では臼蓋形成不全が原因として多い。", "treatment": ["鎮痛", "運動療法・減量・杖", "人工股関節置換術"], "flow": "鼠径部痛＋股関節の可動域制限 → X線で関節裂隙の狭小化 → 変形性股関節症"},
+  cervical_myelopathy: {"overview": "首の骨の変形で脊髄が圧迫され、手のしびれや歩きにくさが出る。", "treatment": ["MRIで脊髄の圧迫を確認", "手術（除圧術）", "転倒・首の過伸展を避ける"], "flow": "両手のしびれ・巧緻運動障害＋歩行障害＋病的反射 → MRIで頸髄圧迫 → 頸椎症性脊髄症"},
+  bullous_pemphigoid: {"overview": "自己抗体で皮膚の下の層がはがれ、かゆみと大きな水ぶくれが出る高齢者の病気。", "treatment": ["抗BP180抗体・皮膚生検", "強力なステロイド外用（広範囲なら内服）", "DPP-4阻害薬の中止を検討"], "flow": "高齢者のかゆみ＋緊満性水疱 → 抗BP180抗体陽性 → 水疱性類天疱瘡"},
 };

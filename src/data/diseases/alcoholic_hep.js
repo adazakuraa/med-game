@@ -23,7 +23,7 @@ export default {
   exam: { conjunctiva: { p: 1, text: '眼球結膜の黄染。' }, skin: { p: 1, text: '皮膚の黄染、くも状血管腫、手掌紅斑。' }, abd_palp: { p: 1, text: '肝臓を右季肋下に3横指触れ、圧痛あり。' }, abd_perc: { p: 0.4, text: '軽い腹水（濁音の移動）。' }, gen_consc: { p: [0, 0.2, 0.7], text: '軽い見当識障害と羽ばたき振戦。' } },
   vitals: { T: { to: [37.6, 38.3], k: 0.5 }, HR: { to: [95, 110], k: 1 } },
   labs: { TBIL: { add: [4, 12], k: 0.6 }, AST: { add: [100, 250], k: 0.6 }, ALT: { add: [30, 90], k: 0.6 }, GGT: { add: [300, 900], k: 0.5 }, WBC: { to: [12000, 20000], k: 0.7 }, PT_INR: { add: [0.3, 1.2], k: 1 }, ALB: { add: [-1.2, -0.6], k: 0.5 }, MCV: { add: [6, 12], k: 0 }, PLT: { mul: [0.6, 0.8], k: 0.5 } },
-  tests: { abd_us: [{ p: 1, persist: true, text: '肝腫大と脂肪肝。胆管の拡張なし。胆石なし。少量の腹水。' }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体・IgM-HA抗体 陰性。' }], bcx: [{ p: 1, text: '陰性。' }] },
+  tests: { abd_us: [{ p: 1, persist: true, text: '肝腫大と脂肪肝。胆管の拡張なし。胆石なし。少量の腹水。' }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体・IgM-HA抗体 陰性。', normal: true }], bcx: [{ p: 1, text: '陰性。', normal: true }] },
   natural: 0.25,
   dynamics: (enc, eff) => { if (eff.tags.thiamine) enc.state.abst ??= enc.t; return enc.state.abst != null && enc.t - enc.state.abst > 720 ? -0.75 : 0; },
   therapies: [

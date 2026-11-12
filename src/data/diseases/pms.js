@@ -17,7 +17,7 @@ export default outpatient({
     weightloss: { p: 0, text: '' }, heatcold: { p: 0, text: '' }, meds: { p: 0, text: '飲んでいる薬はありません。' }, pmh: { p: 0, text: '持病はありません。' },
   },
   exam: { skin: { p: 0, text: '特記所見なし。' }, thyroid_palp: { p: 0, text: '甲状腺腫なし。' } },
-  tests: { uhcg: [{ p: 1, text: '陰性。' }], thyroid: [{ p: 1, text: 'TSH・FT4 正常。' }] },
+  tests: { uhcg: [{ p: 1, text: '陰性。', normal: true }], thyroid: [{ p: 1, text: 'TSH・FT4 正常。', normal: true }] },
   natural: -0.01,
   therapies: [{ id: 'tx', label: '症状日記・生活指導と、低用量ピル（LEP）またはSSRI', req: { anyTag: ['ocp', 'ssri'] }, effect: -0.2, lagH: 24, required: true, deadlineH: [48, 48, 48] }],
   useful: ['uhcg', 'thyroid', 'cbc'], key: [],

@@ -20,7 +20,7 @@ export default {
   exam: { gen_consc: { p: 1, text: '呼びかけで開眼するがすぐに閉じる。' }, gen_breath_odor: { p: 1, text: 'ニンニクのような・石油のような強い臭い。' }, pupils: { p: 1, text: '両側とも1mmの著明な縮瞳。' }, lung_ausc: { p: 1, text: '両側にcrackleとwheeze（気道分泌物増加・気管支攣縮）。' }, skin: { p: 1, text: '全身の発汗、流涎。' }, motor: { p: 0.7, text: '全身の筋線維束性攣縮。' } },
   vitals: { HR: { to: [42, 55], k: 1 }, SBP: { to: [85, 100], k: 1.5 }, RR: { to: [26, 34], k: 1 }, SpO2: { drop: [6, 14], k: 1.2 } },
   labs: { CHE: { to: [5, 40], k: 0 }, GLU: { add: [30, 80], k: 1 }, AMY: { add: [50, 300], k: 1 }, K: { add: [-0.6, -0.2], k: 1 } },
-  tests: { cxr: [{ p: 0.6, text: '両側肺門周囲に淡い浸潤影（気道分泌物・誤嚥）。' }], tox: [{ p: 1, text: '尿中薬物スクリーニング：ベンゾジアゼピン・三環系など陰性（有機リンは検出されない）。' }] },
+  tests: { cxr: [{ p: 0.6, text: '両側肺門周囲に淡い浸潤影（気道分泌物・誤嚥）。' }], tox: [{ p: 1, text: '尿中薬物スクリーニング：ベンゾジアゼピン・三環系など陰性（有機リンは検出されない）。', normal: true }] },
   ecg: [{ p: 1, text: '洞性徐脈、QT延長。' }],
   natural: 0.6,
   dynamics: (enc, eff) => { const st = enc.state; if (eff.tags.atropine) st.atr ??= enc.t; if (eff.tags.pam) st.pam ??= enc.t; return (st.atr != null ? -1.1 : 0) + (st.pam != null && enc.t - st.pam > 60 ? -0.4 : 0); },

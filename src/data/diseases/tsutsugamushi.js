@@ -22,7 +22,7 @@ export default {
   exam: { skin: { p: 1, text: '体幹を中心に、かゆみのない淡い紅斑・丘疹が散在。{site}に中心が黒いかさぶたの付いた1cm程度の潰瘍（刺し口）。' }, neck_ln: { p: 1, text: '刺し口に近い所属リンパ節と頸部リンパ節の腫大・圧痛。' }, conjunctiva: { p: 0.5, text: '結膜充血。' }, heart_ausc: { p: 1, text: '心雑音なし。' }, abd_palp: { p: 0.4, text: '軽い肝腫大。' } },
   vitals: { T: { to: [38.8, 39.8], k: 0.4 }, HR: { to: [95, 110], k: 1 } },
   labs: { AST: { add: [60, 200], k: 0.7 }, ALT: { add: [50, 180], k: 0.7 }, LDH: { add: [150, 400], k: 0.7 }, PLT: { mul: [0.45, 0.7], k: 0.7 }, CRP: { to: [5, 12], k: 0.7 }, WBC: { to: [4500, 7500], k: 0 } },
-  tests: { bcx: [{ p: 1, text: '陰性。' }], cxr: [{ p: 0.3, text: '両側に淡いすりガラス影。' }] },
+  tests: { bcx: [{ p: 1, text: '陰性。', normal: true }], cxr: [{ p: 0.3, text: '両側に淡いすりガラス影。' }] },
   natural: 0.35,
   therapies: [{ id: 'abx', label: 'テトラサイクリン系（ドキシサイクリン・ミノサイクリン）', req: { coverage: ['rickettsia'] }, effect: -1.2, lagH: 18, required: true, deadlineH: [24, 12, 6] }],
   dispo: (enc) => (enc.patient.sev === 0 ? { ok: ['admit', 'home'], best: 'admit', why: 'つつが虫病：入院でテトラサイクリン系（重症化すると播種性血管内凝固・多臓器不全）' } : { ok: ['admit', 'icu'], best: 'admit', why: 'つつが虫病：入院でテトラサイクリン系と臓器障害の監視' }),

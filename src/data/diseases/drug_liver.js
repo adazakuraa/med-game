@@ -17,7 +17,7 @@ export default outpatient({
   },
   exam: { conjunctiva: { p: 0.3, text: '眼球結膜の軽い黄染。' }, abd_palp: { p: 1, text: '軽い肝腫大、圧痛は軽度。' }, skin: { p: 0.2, text: '体幹に淡い紅斑。' } },
   labs: { AST: { add: [150, 400], k: 0 }, ALT: { add: [250, 600], k: 0 }, ALP: { add: [30, 120], k: 0 }, GGT: { add: [60, 200], k: 0 }, TBIL: { add: [0.5, 2], k: 0 } },
-  tests: { abd_us: [{ p: 1, text: '肝臓に腫瘤・脂肪肝なし。胆管の拡張なし。胆石なし。' }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体・IgM-HA抗体・IgM-HBc抗体 陰性。' }], ebv: [{ p: 1, text: '既感染パターン（急性感染なし）。' }] },
+  tests: { abd_us: [{ p: 1, text: '肝臓に腫瘤・脂肪肝なし。胆管の拡張なし。胆石なし。', normal: true }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体・IgM-HA抗体・IgM-HBc抗体 陰性。', normal: true }], ebv: [{ p: 1, text: '既感染パターン（急性感染なし）。', normal: true }] },
   natural: 0.02,
   therapies: [{ id: 'stop', label: '原因と思われる薬・健康食品の中止と、肝機能の経過観察（ウイルス・胆道疾患を除外）', req: { fn: (enc) => enc.tests.some((t) => t.id === 'hep_virus' && t.done) && enc.tests.some((t) => ['abd_us', 'abd_ct_contrast'].includes(t.id) && t.done) }, effect: -0.4, lagH: 6, required: true, deadlineH: [24, 24, 24] }],
   useful: ['chem', 'cbc', 'coag', 'hep_virus', 'abd_us', 'ebv', 'ana'], key: [['chem'], ['hep_virus'], ['abd_us']],

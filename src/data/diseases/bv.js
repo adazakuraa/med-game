@@ -16,7 +16,7 @@ export default outpatient({
     meds: { p: 0, text: '最近、抗菌薬は飲んでいません。' },
   },
   exam: { speculum: { p: 1, text: '灰白色・均一で泡沫状の帯下が腟壁に付着、腟壁の発赤は乏しい。子宮頸部に異常なし。アミン臭（KOH添加で魚臭）。' }, pelvic: { p: 0, text: '子宮・付属器に圧痛なし。子宮頸部の移動痛なし。' } },
-  tests: { koh: [{ p: 1, persist: true, text: '酵母様真菌なし。KOH添加で魚臭（whiff test陽性）。鏡検でclue cell（上皮細胞に細菌が付着）多数、乳酸桿菌は減少。' }], sti_pcr: [{ p: 1, text: 'クラミジア・淋菌 陰性。' }], uhcg: [{ p: 1, text: '陰性。' }] },
+  tests: { koh: [{ p: 1, persist: true, text: '酵母様真菌なし。KOH添加で魚臭（whiff test陽性）。鏡検でclue cell（上皮細胞に細菌が付着）多数、乳酸桿菌は減少。' }], sti_pcr: [{ p: 1, text: 'クラミジア・淋菌 陰性。', normal: true }], uhcg: [{ p: 1, text: '陰性。', normal: true }] },
   natural: -0.02,
   therapies: [{ id: 'abx', label: 'メトロニダゾール（内服または腟錠）', req: { coverage: ['anaerobe'] }, effect: -0.4, lagH: 24, required: true, deadlineH: [24, 24, 24] }],
   useful: ['koh', 'sti_pcr', 'uhcg', 'ua'], key: [['koh']],

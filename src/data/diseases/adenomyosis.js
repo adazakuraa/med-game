@@ -17,7 +17,7 @@ export default outpatient({
   },
   exam: { abd_palp: { p: 0.3, text: '下腹部に軽い圧痛。' }, pelvic: { p: 1, text: '子宮は手拳大で全体に均一に腫大し、硬く圧痛がある。付属器に腫瘤なし。' }, conjunctiva: { p: 1, text: '眼瞼結膜は蒼白。' } },
   labs: { HB: { add: [-3.5, -2], k: 0 }, MCV: { add: [-14, -8], k: 0 }, CA125: { to: [60, 150], k: 0 } },
-  tests: { tvus: [{ p: 1, persist: true, text: '子宮はびまん性に腫大し、後壁の筋層が肥厚、境界不明瞭（子宮腺筋症）。筋腫の結節なし。卵巣に嚢胞なし。' }], uhcg: [{ p: 1, text: '陰性。' }], ferritin: [{ p: 1, text: 'フェリチン 5 ng/mL（低値）。' }] },
+  tests: { tvus: [{ p: 1, persist: true, text: '子宮はびまん性に腫大し、後壁の筋層が肥厚、境界不明瞭（子宮腺筋症）。筋腫の結節なし。卵巣に嚢胞なし。' }], uhcg: [{ p: 1, text: '陰性。', normal: true }], ferritin: [{ p: 1, text: 'フェリチン 5 ng/mL（低値）。' }] },
   natural: -0.01,
   therapies: [{ id: 'tx', label: 'ホルモン療法（ジエノゲスト・低用量ピルなど）と鉄剤、鎮痛', req: { anyTag: ['gyn_hormone', 'iron'] }, effect: -0.3, lagH: 12, required: true, deadlineH: [48, 48, 48] }],
   useful: ['tvus', 'uhcg', 'cbc', 'ferritin', 'ca125', 'abd_us'], key: [['tvus'], ['cbc']],

@@ -19,7 +19,7 @@ export default outpatient({
     weightgain: { p: 0, text: '' }, weightloss: { p: 0, text: '' }, heatcold: { p: 0, text: '暑がり・寒がりはありません。' }, mood: { p: 0, text: '' }, fatigue: { p: 0, text: '' },
   },
   exam: { breast: { p: 1, text: '両側乳頭を圧迫すると乳白色の分泌物（乳汁漏出）。乳房にしこりはない。' }, eye: { p: 1, text: '対座法で視野欠損なし。' } },
-  tests: { hormone: [{ p: 1, persist: true, text: 'プロラクチン 120ng/mL（高値）、LH・FSH低値、テストステロン正常。' }], head_mri: [{ p: 1, persist: true, text: '下垂体に約7mmの腫瘤（下垂体微小腺腫）。視交叉の圧迫なし。' }], thyroid: [], tvus: [{ p: 1, text: '子宮内膜は薄い。卵巣に多数の小卵胞はない。子宮内に胎嚢なし。' }] },
+  tests: { hormone: [{ p: 1, persist: true, text: 'プロラクチン 120ng/mL（高値）、LH・FSH低値、テストステロン正常。' }], head_mri: [{ p: 1, persist: true, text: '下垂体に約7mmの腫瘤（下垂体微小腺腫）。視交叉の圧迫なし。' }], thyroid: [], tvus: [{ p: 1, text: '子宮内膜は薄い。卵巣に多数の小卵胞はない。子宮内に胎嚢なし。', normal: true }] },
   natural: -0.001,
   therapies: [
     { id: 'tx', label: 'ドパミン作動薬（カベルゴリン）', req: { tag: 'dopamine_agonist' }, effect: -0.2, lagH: 12, required: true, deadlineH: [48, 48, 48] },

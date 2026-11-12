@@ -16,7 +16,7 @@ export default outpatient({
     weightloss: { p: 0, text: '体重は変わりません。' },
   },
   exam: { speculum: { p: 1, text: '腟壁は薄く蒼白で、ひだが消失し、点状出血が散在。少量の黄色い帯下。子宮頸部に腫瘤なし。' }, pelvic: { p: 0, text: '子宮は萎縮、付属器に腫瘤・圧痛なし。' } },
-  tests: { tvus: [{ p: 1, text: '子宮内膜は2mmと薄い。子宮・卵巣に腫瘤なし。' }], pap: [{ p: 1, text: 'NILM（陰性）。萎縮性変化あり。' }], ua: [{ p: 0.3, text: '白血球（±）。' }], koh: [{ p: 1, text: '真菌を認めない。' }] },
+  tests: { tvus: [{ p: 1, text: '子宮内膜は2mmと薄い。子宮・卵巣に腫瘤なし。', normal: true }], pap: [{ p: 1, text: 'NILM（陰性）。萎縮性変化あり。', normal: true }], ua: [{ p: 0.3, text: '白血球（±）。' }], koh: [{ p: 1, text: '真菌を認めない。', normal: true }] },
   natural: -0.01,
   therapies: [{ id: 'tx', label: '内膜の病気（子宮体がん）を除外したうえで、エストリオール腟錠と保湿', req: { fn: (enc, eff) => (eff.tags.estrogen_vag || 0) > 0 && enc.tests.some((t) => t.id === 'tvus' && t.done) }, effect: -0.3, lagH: 12, required: true, deadlineH: [48, 48, 48] }],
   useful: ['tvus', 'pap', 'ua', 'koh', 'cbc'], key: [['tvus']],

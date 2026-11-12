@@ -25,7 +25,7 @@ export default {
   vitals: { SBP: { to: [140, 160], k: 1 } },
   labs: {},
   tests: {
-    head_ct: [{ p: 1, text: 'くも膜下出血・出血を認めない。' }],
+    head_ct: [{ p: 1, text: 'くも膜下出血・出血を認めない。', normal: true }],
     head_mri: [{ p: 1, persist: true, text: 'DWIで{side}延髄外側〜小脳に高信号（急性期梗塞）。MRAで{side}椎骨動脈の紡錘状拡張と狭窄（pearl and string sign、解離）。' }],
   },
   natural: 0.2,

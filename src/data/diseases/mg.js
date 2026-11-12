@@ -17,7 +17,7 @@ export default outpatient({
     pmh: { p: 0, text: '持病はありません。' }, meds: { p: 0, text: '薬は飲んでいません。' },
   },
   exam: { eye: { p: 1, text: '両側の眼瞼下垂（上方を1分見続けると増悪）と眼球運動制限による複視。瞳孔は正常。アイスパックで眼瞼下垂が改善。' }, motor: { p: 1, text: '上肢挙上を続けると数十秒で落ちてくる（易疲労性）。腱反射は正常。' }, pupils: { p: 1, text: '瞳孔は正常で対光反射も正常。' }, facial: { p: 0.3, text: '口の周りの筋力が軽く低下。' } },
-  tests: { achr: [{ p: 1, persist: true, text: '抗AChR抗体 陽性（12 nmol/L）。' }], chest_ct: [{ p: 0.3, persist: true, text: '前縦隔に3cmの腫瘤（胸腺腫）。' }], head_mri: [{ p: 1, text: '脳幹・眼窩に異常なし。' }], ncs: [{ p: 1, text: '反復刺激試験で振幅の漸減（waning）を認める。' }] },
+  tests: { achr: [{ p: 1, persist: true, text: '抗AChR抗体 陽性（12 nmol/L）。' }], chest_ct: [{ p: 0.3, persist: true, text: '前縦隔に3cmの腫瘤（胸腺腫）。' }], head_mri: [{ p: 1, text: '脳幹・眼窩に異常なし。', normal: true }], ncs: [{ p: 1, text: '反復刺激試験で振幅の漸減（waning）を認める。' }] },
   natural: -0.01,
   therapies: [
     { id: 'tx', label: 'コリンエステラーゼ阻害薬（ピリドスチグミン）で症状緩和', req: { tag: 'ache_inh' }, effect: -0.2, lagH: 2, required: true, deadlineH: [48, 48, 48] },

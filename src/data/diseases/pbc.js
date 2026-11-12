@@ -19,7 +19,7 @@ export default outpatient({
   },
   exam: { skin: { p: 1, text: '発疹はなく、ひっかき傷のみ。眼瞼に黄色腫。' }, conjunctiva: { p: 0, text: '黄疸なし。' }, abd_palp: { p: 0.3, text: '軽い肝腫大。' } },
   labs: { ALP: { add: [200, 400], k: 0 }, GGT: { add: [150, 400], k: 0 }, AST: { add: [10, 40], k: 0 }, ALT: { add: [10, 40], k: 0 }, LDL: { add: [30, 70], k: 0 } },
-  tests: { ama: [{ p: 1, persist: true, text: '抗ミトコンドリアM2抗体 陽性（高値）。' }], abd_us: [{ p: 1, text: '胆管の拡張なし。胆石なし。肝表面は平滑。' }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体 陰性。' }], koh: [{ p: 1, text: '真菌を認めない。' }] },
+  tests: { ama: [{ p: 1, persist: true, text: '抗ミトコンドリアM2抗体 陽性（高値）。' }], abd_us: [{ p: 1, text: '胆管の拡張なし。胆石なし。肝表面は平滑。', normal: true }], hep_virus: [{ p: 1, text: 'HBs抗原・HCV抗体 陰性。', normal: true }], koh: [{ p: 1, text: '真菌を認めない。', normal: true }] },
   natural: -0.005,
   therapies: [{ id: 'udca', label: 'ウルソデオキシコール酸と、消化器内科での経過観察（骨粗鬆症・脂溶性ビタミン欠乏にも注意）', req: { tag: 'udca' }, effect: -0.2, lagH: 12, required: true, deadlineH: [48, 48, 48] }],
   useful: ['chem', 'cbc', 'ama', 'abd_us', 'hep_virus', 'thyroid', 'lipid', 'koh', 'ana'], key: [['chem'], ['ama']],

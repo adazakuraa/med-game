@@ -21,7 +21,7 @@ export default {
   exam: { joint: { p: 1, text: '{side}下腿の前外側が緊満して硬く、強い圧痛。足趾を他動的に底屈させると激痛（他動伸展時痛）。' }, leg_pulse: { p: 1, text: '{side}足背動脈は触知する。' }, motor: { p: 1, text: '{side}足趾の背屈が弱い。第1趾間の感覚低下。' }, skin: { p: 1, text: '下腿前面に打撲痕、皮膚は光沢がある。' } },
   vitals: { HR: { to: [100, 120], k: 1 } },
   labs: { CK: { add: [2000, 15000], k: 1 }, K: { add: [0.2, 0.8], k: 1.5 } },
-  tests: { joint_xr: [{ p: 1, persist: true, text: '{side}脛骨骨幹部の骨折（転位は軽度）。' }], leg_us: [{ p: 1, text: '深部静脈血栓なし。' }] },
+  tests: { joint_xr: [{ p: 1, persist: true, text: '{side}脛骨骨幹部の骨折（転位は軽度）。' }], leg_us: [{ p: 1, text: '深部静脈血栓なし。', normal: true }] },
   natural: 0.4,
   curedBy: 'fasciotomy',
   therapies: [

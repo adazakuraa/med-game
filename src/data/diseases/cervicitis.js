@@ -16,7 +16,7 @@ export default outpatient({
     dysuria: { p: 0.3, text: '少しおしっこがしみます。' },
   },
   exam: { speculum: { p: 1, text: '子宮頸部の発赤・浮腫と易出血性、頸管から黄色の粘液膿性帯下。' }, pelvic: { p: 0, text: '子宮頸部の移動痛・付属器の圧痛なし。' } },
-  tests: { sti_pcr: [{ p: 1, persist: true, text: 'クラミジア・トラコマティス陽性、淋菌陰性。' }], uhcg: [{ p: 1, text: '陰性。' }], koh: [{ p: 1, text: '真菌・clue cellなし。' }], syphilis: [{ p: 1, text: '陰性。' }], hiv: [{ p: 1, text: '陰性。' }], pap: [{ p: 1, text: 'NILM（陰性）、炎症性変化。' }] },
+  tests: { sti_pcr: [{ p: 1, persist: true, text: 'クラミジア・トラコマティス陽性、淋菌陰性。' }], uhcg: [{ p: 1, text: '陰性。', normal: true }], koh: [{ p: 1, text: '真菌・clue cellなし。', normal: true }], syphilis: [{ p: 1, text: '陰性。', normal: true }], hiv: [{ p: 1, text: '陰性。', normal: true }], pap: [{ p: 1, text: 'NILM（陰性）、炎症性変化。', normal: true }] },
   natural: 0.01,
   dynamics: (enc, eff) => { if (eff.covers.chlamydia) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 360 ? -0.6 : 0; },
   therapies: [{ id: 'abx', label: 'アジスロマイシン（またはドキシサイクリン）、パートナーの同時治療', req: { coverage: ['chlamydia'] }, effect: 0, lagH: 0, required: true, deadlineH: [48, 48, 48] }],

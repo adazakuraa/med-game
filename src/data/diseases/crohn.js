@@ -22,7 +22,7 @@ export default outpatient({
   },
   exam: { abd_palp: { p: 1, text: '右下腹部に圧痛と、軽い腫瘤感。腹膜刺激徴候なし。' }, rectal: { p: 0.6, text: '肛門周囲に痔瘻の手術痕と、新しい皮垂（スキンタグ）。' }, oral_mucosa: { p: 0.5, text: 'アフタ性口内炎。' }, conjunctiva: { p: 0.5, text: '眼瞼結膜はやや蒼白。' } },
   labs: { CRP: { to: [2, 6], k: 0 }, ALB: { add: [-1.2, -0.6], k: 0 }, HB: { add: [-2.5, -1.2], k: 0 }, PLT: { mul: [1.3, 1.6], k: 0 }, ESR: { to: [35, 60], k: 0 } },
-  tests: { abd_ct_contrast: [{ p: 1, persist: true, text: '回腸末端の全周性の壁肥厚と狭窄、周囲の脂肪織の濃度上昇（クローン病を疑う）。膿瘍なし。' }], stool_cx: [{ p: 1, text: '病原菌は検出されない。' }], fobt: [{ p: 1, text: '便潜血陽性。' }], cdiff: [{ p: 1, text: 'CDトキシン陰性。' }] },
+  tests: { abd_ct_contrast: [{ p: 1, persist: true, text: '回腸末端の全周性の壁肥厚と狭窄、周囲の脂肪織の濃度上昇（クローン病を疑う）。膿瘍なし。' }], stool_cx: [{ p: 1, text: '病原菌は検出されない。', normal: true }], fobt: [{ p: 1, text: '便潜血陽性。' }], cdiff: [{ p: 1, text: 'CDトキシン陰性。', normal: true }] },
   natural: -0.005,
   therapies: [{ id: 'gi', label: '消化器内科へ紹介：大腸内視鏡（回腸末端）と生検で確定し、栄養療法・5-ASA・生物学的製剤などで治療', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'gi') }, effect: -0.2, lagH: 12, required: true, deadlineH: [48, 48, 48] }],
   consult: { gi: '消化器内科：若年者の慢性下痢・右下腹部痛・体重減少・痔瘻の既往、CTで回腸末端の壁肥厚から、クローン病を強く疑います。大腸内視鏡で回腸末端の縦走潰瘍・敷石像を確認し、生検します。治療は栄養療法と、重症度に応じて生物学的製剤を検討します。禁煙も大切です。' },

@@ -28,7 +28,7 @@ export default {
   tests: {
     ncs: [{ p: 1, persist: true, text: '運動神経伝導速度の低下・F波の出現率低下（脱髄型ニューロパチー）。' }],
     lp: [{ p: 0.8, persist: true, text: '初圧 13cmH2O。細胞数 3/μL、蛋白 120mg/dL（蛋白細胞解離）、糖 正常。' }],
-    head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。' }],
+    head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。', normal: true }],
     spine_mri: [{ p: 1, text: '脊髄の圧迫・信号変化なし。馬尾神経根の軽い造影増強。' }],
   },
   natural: 0.4,

@@ -18,7 +18,7 @@ export default outpatient({
     meds: { p: 0, text: '睡眠薬は飲んでいません。' }, adl: { p: 1, text: '（妻）普段は仕事も家事も問題なくしています。' }, pmh: { p: 0, text: '物忘れを指摘されたことはありません。' },
   },
   exam: { gen_consc: { p: 1, text: '意識清明。名前・生年月日は言える。今日の日付と、ここ数時間のことが思い出せない。新しく覚えたことを数分で忘れる。' }, motor: { p: 1, text: '麻痺なし。' }, speech: { p: 1, text: '構音障害・失語なし。' }, facial: { p: 0, text: '顔面の左右差なし。' } },
-  tests: { head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。' }], head_mri: [{ p: 0.3, text: '海馬に数mmの点状のDWI高信号（一過性全健忘に特徴的、梗塞ではない）。' }], eeg: [{ p: 1, text: 'てんかん性放電なし。' }] },
+  tests: { head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。', normal: true }], head_mri: [{ p: 0.3, text: '海馬に数mmの点状のDWI高信号（一過性全健忘に特徴的、梗塞ではない）。' }], eeg: [{ p: 1, text: 'てんかん性放電なし。', normal: true }] },
   natural: -0.6,
   therapies: [{ id: 'eval', label: '脳卒中・低血糖・てんかんの除外（神経所見・血糖・頭部画像）と、24時間以内に治ることの説明', req: { fn: (enc) => enc.tests.some((t) => ['bs_poct', 'chem'].includes(t.id) && t.done) && enc.tests.some((t) => ['head_ct', 'head_mri'].includes(t.id) && t.done) }, effect: -0.3, lagH: 0.3, required: true, deadlineH: [4, 4, 4] }],
   useful: ['bs_poct', 'head_ct', 'head_mri', 'ecg', 'chem', 'cbc', 'eeg'], key: [['bs_poct', 'chem'], ['head_ct', 'head_mri']],

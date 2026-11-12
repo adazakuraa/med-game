@@ -22,7 +22,7 @@ export default {
   exam: { abd_palp: { p: 1, text: '子宮は収縮の間は軟らかい。持続的な圧痛・板状硬はない。' }, gen_appear: { p: 1, text: '張りのたびに顔をしかめる。' }, cva: { p: 0, text: 'CVA叩打痛なし。' } },
   vitals: { HR: { to: [90, 105], k: 1 } },
   labs: {},
-  tests: { tvus: [{ p: 1, persist: true, text: '子宮頸管長 18mm（短縮）、内子宮口の開大（funneling）。胎盤の位置は正常、胎盤後血腫なし。胎児心拍 145/分で良好。' }], ua: [{ p: 0.3, text: '白血球（2+）、亜硝酸塩（+）。' }], abd_us: [{ p: 1, text: '胎盤の位置は正常、胎盤後血腫なし。胎児心拍は良好。' }] },
+  tests: { tvus: [{ p: 1, persist: true, text: '子宮頸管長 18mm（短縮）、内子宮口の開大（funneling）。胎盤の位置は正常、胎盤後血腫なし。胎児心拍 145/分で良好。' }], ua: [{ p: 0.3, text: '白血球（2+）、亜硝酸塩（+）。' }], abd_us: [{ p: 1, text: '胎盤の位置は正常、胎盤後血腫なし。胎児心拍は良好。', normal: true }] },
   natural: 0.3,
   dynamics: (enc, eff) => { if (eff.tags.tocolytic) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 60 ? -0.8 : 0; },
   therapies: [

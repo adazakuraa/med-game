@@ -295,6 +295,17 @@ export const DRUGS = [
     info: '切迫早産の子宮収縮を抑える点滴。頻脈・動悸・肺水腫・高血糖・低K血症に注意。',
   },
   {
+    id: 'latanoprost', generic: 'ラタノプロスト点眼', brands: ['キサラタン'], cls: 'プロスタグランジン関連薬（緑内障点眼）', tags: ['glaucoma_drop'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    info: '開放隅角緑内障の第一選択。1日1回。まつげが伸びる・虹彩の色素沈着。',
+  },
+  {
+    id: 'mirogabalin', generic: 'ミロガバリン', brands: ['タリージェ'], cls: '神経障害性疼痛治療薬', tags: ['neuropathic'],
+    routes: { po: { unit: 'mg', min: 5, max: 15, freqs: ['q12h'], maxDaily: 30 } },
+    renal: [{ crclBelow: 60, maxDaily: 15, text: 'CrCl<60: 減量' }],
+    info: '帯状疱疹後神経痛・糖尿病性神経障害などに1回5mgを1日2回から。眠気・めまい（高齢者の転倒）に注意。',
+  },
+  {
     id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
     routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
     effectHours: 24,

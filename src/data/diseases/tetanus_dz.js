@@ -21,7 +21,7 @@ export default {
   exam: { oral_mucosa: { p: 1, text: '開口障害（開口は1横指）。歯・歯肉に炎症なし。' }, facial: { p: 1, text: '額にしわを寄せ、口角が横に引かれる痙笑。' }, neck_stiff: { p: 1, text: '頸部・背部の筋の硬直（項部硬直様）。' }, skin: { p: 1, text: '足底（下肢）に小さな刺創、軽い発赤のみ。' }, gen_consc: { p: 1, text: '意識清明。' } },
   vitals: { HR: { to: [100, 125], k: 1.5 }, SBP: { to: [150, 175], k: 1.5 }, T: { to: [37.4, 38.2], k: 2 } },
   labs: { CK: { add: [100, 800], k: 1 } },
-  tests: { head_ct: [{ p: 1, text: '頭蓋内に異常なし。' }], lp: [{ p: 1, text: '髄液に異常なし。' }] },
+  tests: { head_ct: [{ p: 1, text: '頭蓋内に異常なし。', normal: true }], lp: [{ p: 1, text: '髄液に異常なし。', normal: true }] },
   natural: 0.4,
   therapies: [
     { id: 'tig', label: '抗破傷風人免疫グロブリン（毒素の中和）', req: { tag: 'tig' }, effect: -0.6, lagH: 6, required: true, deadlineH: [12, 6, 4] },
