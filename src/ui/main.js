@@ -183,7 +183,7 @@ function tabQuestions() {
   <div class="sub small">質問をタップすると患者が答えます（1問1分）。${isRes() ? '★はこの主訴で特に重要な質問です。' : ''}</div>
   ${qs.map((q) => {
     const a = enc.asked[q.id];
-    return `<button class="q ${a ? 'asked' : ''}" data-a="ask" data-v="${q.id}" ${a ? 'disabled' : ''}><div class="qt">${star(rec?.q.has(q.id))}${esc(q.text)}</div>${rec && !a ? `<div class="why">${esc(QUESTION_WHY[q.id])}</div>` : ''}${a ? `<div class="bubble ${a.positive ? 'pos' : ''}">${esc(a.text)}</div>` : ''}</button>`;
+    return `<button class="q ${a ? 'asked' : ''}" data-a="ask" data-v="${q.id}" ${a ? 'disabled' : ''}><div class="qt">${star(rec?.q.has(q.id))}${esc(q.text)}</div>${rec ? `<div class="why">${esc(QUESTION_WHY[q.id])}</div>` : ''}${a ? `<div class="bubble ${a.positive ? 'pos' : ''}">${esc(a.text)}</div>` : ''}</button>`;
   }).join('')}`;
 }
 
@@ -196,7 +196,7 @@ function tabExam() {
   <div class="sub small">⚠のついた診察は患者に痛みを伴います。</div>
   ${ex.map((e) => {
     const f = enc.examined[e.id];
-    return `<button class="ex ${f ? 'done' : ''}" data-a="exam" data-v="${e.id}"><span class="badge m">${e.method[0]}</span><div class="grow"><div class="name">${star(rec?.e.has(e.id))}${esc(e.name)} ${e.pain ? '⚠' : ''}</div>${rec && !f ? `<div class="why">${esc(EXAM_WHY[e.id])}</div>` : ''}${f ? `<div class="finding ${f.abnormal ? 'abn' : ''}">${esc(f.text)} <span class="sub small">${clockOf(enc, f.t).slice(-5)}</span></div>` : ''}</div></button>`;
+    return `<button class="ex ${f ? 'done' : ''}" data-a="exam" data-v="${e.id}"><span class="badge m">${e.method[0]}</span><div class="grow"><div class="name">${star(rec?.e.has(e.id))}${esc(e.name)} ${e.pain ? '⚠' : ''}</div>${rec ? `<div class="why">${esc(EXAM_WHY[e.id])}</div>` : ''}${f ? `<div class="finding ${f.abnormal ? 'abn' : ''}">${esc(f.text)} <span class="sub small">${clockOf(enc, f.t).slice(-5)}</span></div>` : ''}</div></button>`;
   }).join('')}
   <button class="btn block" data-a="vitals">📈 バイタルサインを測定（2分）</button>`;
 }
