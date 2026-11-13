@@ -1,0 +1,53 @@
+// 脾損傷（鈍的腹部外傷）
+// 出典: 外傷初期診療ガイドライン JATEC（日本外傷学会）, 日本外傷学会 臓器損傷分類2008
+export default {
+  id: 'splenic_injury', name: '脾損傷（腹部打撲）', dept: '外科',
+  weight: 1.2, season: {}, minLevel: 3,
+  demo: { age: [16, 70], ageMode: 'young', male: 0.7 },
+  sev: { p: [0.3, 0.45, 0.25], burden: [[30, 40], [44, 54], [60, 70]] },
+  refractoryP: [0, 0, 0], comorb: { extra: {} }, organisms: [], noPregnancy: true,
+  vars: (rng) => ({ how: rng.pick(['自転車で転んでハンドルで左脇腹を打ち', 'ラグビーで左脇腹にタックルを受け', '脚立から落ちて左脇腹を打ち']) }),
+  cc: () => '左脇腹を打ってから痛い', ccKey: 'injury',
+  arrival: (sev) => (sev === 0 ? 'walk' : 'ambulance'),
+  history: {
+    onset: { p: 1, text: '2時間前、{how}ました。' },
+    character: { p: 1, text: '左の脇腹からお腹全体が痛くなってきて、立つとふらふらします。' },
+    location: { p: 1, text: '左の脇腹と、左肩も痛い気がします。' },
+    aggravating: { p: 1, text: '動くと痛みます。' },
+    trigger: { p: 1, text: '{how}ました。頭は打っていません。' },
+    syncope: { p: 0.3, text: '立ち上がったとき気が遠くなりかけました。' },
+    pmh: { p: 0, text: '特にありません。' }, meds: { p: 0, text: '飲んでいません。' },
+  },
+  exam: { abd_palp: { p: 1, text: '左上腹部〜左側腹部の圧痛、筋性防御は軽度。' }, chest_palp: { p: 0.5, text: '左下位肋骨に圧痛。' }, skin: { p: 1, text: '左側腹部に打撲痕。' }, periph: { p: [0.2, 0.7, 1], text: '四肢末梢が冷たく湿っている。' } },
+  vitals: { HR: { to: [115, 135], k: 1 }, SBP: { to: [72, 88], k: 1.5 }, RR: { to: [22, 28], k: 1 } },
+  labs: { HB: { add: [-5, -2], k: 1 }, LAC: { to: [2.5, 5], k: 2 } },
+  tests: {
+    abd_us: [{ p: 1, persist: true, text: 'FAST陽性：脾臓周囲とダグラス窩に液体貯留（腹腔内出血）。' }],
+    abd_ct_contrast: [{ p: 1, persist: true, text: '脾臓に深い裂傷と造影剤の血管外漏出、脾周囲から骨盤内の血腫（脾損傷 III型）。' }],
+    cxr: [{ p: 0.5, text: '左第10肋骨骨折。気胸・血胸なし。' }],
+  },
+  natural: 0.6,
+  curedBy: 'tae',
+  therapies: [
+    { id: 'fluid', label: '細胞外液の急速補液（出血性ショック、輸血の準備）', req: { fluidTotal: 1000 }, when: (c) => c.vit.SBP < 100 || c.vit.HR > 110, required: true, deadlineH: [2, 1.5, 1.5], startFromNeed: true },
+    { id: 'tae', label: '外科（IVR）コンサルト→経カテーテル動脈塞栓術（TAE）、反応がなければ開腹止血', req: { procDone: 'tae' }, required: true, deadlineH: [12, 4, 3] },
+  ],
+  procedures: [{
+    id: 'tae', depts: ['surgery'], label: '経カテーテル動脈塞栓術（TAE）', delay: 30, duration: 60, after: 'icu',
+    decide: (enc) => (enc.tests.some((t) => ['abd_us', 'abd_ct_contrast'].includes(t.id) && t.done) ? { accept: true, reveal: true, text: '脾損傷による腹腔内出血です。輸液で一時的に血圧が保てるので、すぐに血管造影室で脾動脈の塞栓術（TAE）を行います（約30分後）。輸液に反応しなければ開腹止血に切り替えます。輸血の準備をお願いします。' } : { accept: false, text: 'まずFAST（腹部エコー）で腹腔内出血を確認してください。' }),
+    onDone: (enc) => { enc.state.burden = Math.min(enc.state.burden, 22); },
+    doneText: '外科：脾動脈の出血点を塞栓し、止血できました。ICUで経過をみます。',
+  }],
+  harmTags: { antiplatelet: '出血中の外傷に抗血小板薬', anticoag: '出血中の外傷に抗凝固薬', anticoag_bolus: '出血中の外傷に抗凝固薬', nsaid: '出血中の外傷にNSAIDs' },
+  dispo: () => ({ ok: ['icu'], best: 'icu', why: '脾損傷（腹腔内出血）：止血後もICUで再出血を監視' }),
+  useful: ['abd_us', 'abd_ct_contrast', 'cbc', 'chem', 'coag', 'vbg', 'cxr', 'ua', 'uhcg'],
+  key: [['abd_us', 'abd_ct_contrast'], ['cbc']],
+  extrasOk: () => ['rib_fx'],
+  teaching: [
+    '左上腹部の打撲後の腹痛・左肩痛（Kehr徴候）・頻脈・血圧低下は脾損傷による腹腔内出血を疑う。左下位肋骨骨折に合併しやすい。',
+    'まずFAST（腹部エコー）で腹腔内出血を探す。輸液に反応すれば造影CTで損傷と血管外漏出を評価。',
+    '輸液に反応する出血はTAE（動脈塞栓術）、反応しなければ開腹止血。鎮痛にNSAIDsは避ける。',
+  ],
+  sources: ['外傷初期診療ガイドライン JATEC（日本外傷学会）'],
+  ideal: () => [{ a: 'test', ids: ['abd_us', 'cbc', 'chem', 'coag', 'vbg'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000 }, { a: 'consult', dept: 'surgery', delayMin: 10 }],
+};

@@ -1,0 +1,42 @@
+// 皮膚筋炎
+// 出典: 厚生労働省 自己免疫疾患に関する調査研究班『多発性筋炎・皮膚筋炎診療ガイドライン（2020年暫定版）』
+export default {
+  id: 'dermatomyositis', name: '皮膚筋炎', dept: '膠原病内科',
+  weight: 1, season: {}, minLevel: 3,
+  demo: { age: [40, 70], ageMode: 'uniform', male: 0.3 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [36, 46], [50, 60]] },
+  refractoryP: [0, 0.05, 0.1], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: () => ({}),
+  cc: () => '腕や太ももに力が入らない', ccKey: 'weakness',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '2か月前から、髪を洗うときに腕が上がりにくく、しゃがんだ姿勢から立ち上がるのがつらくなりました。' },
+    character: { p: 1, text: '肩や太ももなど体に近い筋肉が弱く、少し痛みます。まぶたや手の甲に赤い発疹も出ています。' },
+    weakness: { p: 1, text: '両腕と両足の付け根の力が入りません。手先は大丈夫です。' },
+    speechq: { p: 0.2, text: '最近、少し飲み込みにくいです。' }, palpitation: { p: 0, text: '' }, diet: { p: 0, text: '' }, polyuria: { p: 0, text: '' }, diarrhea: { p: 0, text: '' },
+    pmh: { p: 0, text: '持病はありません。' }, meds: { p: 0, text: 'スタチンなどの薬は飲んでいません。' }, adherence: { p: 0, text: '' },
+    dyspnea: { p: 0.4, text: '最近、少し息切れがして、乾いた咳が出ます。' },
+  },
+  exam: { motor: { p: 1, text: '両側対称性の近位筋（三角筋・腸腰筋）の筋力低下（MMT 4-/5）、把握痛あり。遠位筋・腱反射は保たれる。' }, skin: { p: 1, text: '両上眼瞼の紫紅色の浮腫性紅斑（ヘリオトロープ疹）、手指関節背側の角化性紅斑（ゴットロン丘疹）、爪囲紅斑。' }, facial: { p: 0, text: '顔面筋力低下なし。' }, speech: { p: 0, text: '構音障害なし。' }, gen_consc: { p: 0, text: '意識清明。' } },
+  vitals: {},
+  labs: { CK: { add: [1500, 5000], k: 0 }, AST: { add: [40, 120], k: 0 }, ALT: { add: [30, 80], k: 0 }, LDH: { add: [150, 400], k: 0 }, K: { add: [0, 0.1], k: 0 } },
+  tests: { myositis_ab: [{ p: 1, persist: true, text: '抗TIF1-γ抗体 陽性（悪性腫瘍の合併に注意）。抗MDA5抗体・抗ARS抗体 陰性。' }], chest_ct: [{ p: 0.4, text: '両下葉にわずかなすりガラス影。腫瘤なし。' }], ncs: [{ p: 1, text: '神経伝導速度は正常。', normal: true }], thyroid: [{ p: 1, text: 'TSH・FT4 正常。', normal: true }] },
+  natural: 0.1,
+  therapies: [
+    { id: 'steroid', label: 'ステロイド（プレドニゾロン）±免疫抑制薬、悪性腫瘍の検索', req: { tag: 'steroid_sys' }, effect: 0, lagH: 0, required: true, deadlineH: [72, 48, 24] },
+    { id: 'rheum', label: '膠原病内科コンサルト（筋MRI・筋生検、間質性肺炎・悪性腫瘍の評価）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'rheum') }, effect: 0, lagH: 0, required: true, deadlineH: [48, 24, 12] },
+  ],
+  dynamics: (enc, eff) => { if (eff.tags.steroid_sys) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 1440 ? -0.5 : 0; },
+  consult: { rheum: '膠原病内科：近位筋の筋力低下・CK上昇と、ヘリオトロープ疹・ゴットロン丘疹で皮膚筋炎です。抗TIF1-γ抗体陽性で悪性腫瘍の合併が多いので、全身のがん検索を行います。ステロイドで治療を始め、間質性肺炎の評価もします。' },
+  dispo: () => ({ ok: ['admit', 'home'], best: 'admit', why: '皮膚筋炎：入院でステロイド導入と悪性腫瘍・間質性肺炎の評価' }),
+  useful: ['chem', 'cbc', 'crp', 'lab_CK', 'myositis_ab', 'ana', 'chest_ct', 'thyroid', 'ncs', 'ecg', 'kl6'],
+  key: [['chem', 'lab_CK'], ['myositis_ab', 'ana']],
+  extrasOk: () => [],
+  teaching: [
+    '数週〜数か月で進む両側対称性の近位筋（肩・腰回り）の筋力低下とCK上昇、ヘリオトロープ疹・ゴットロン丘疹 → 皮膚筋炎。',
+    '筋炎特異的自己抗体で型が分かる：抗MDA5抗体は急速進行性間質性肺炎、抗TIF1-γ抗体は悪性腫瘍の合併が多い。',
+    '甲状腺機能低下症・薬剤（スタチン）・低K血症による筋症を除外する。治療はステロイドと免疫抑制薬、がん検索も必須。',
+  ],
+  sources: ['多発性筋炎・皮膚筋炎診療ガイドライン（2020年暫定版）'],
+  ideal: () => [{ a: 'test', ids: ['chem', 'cbc', 'crp', 'myositis_ab', 'chest_ct', 'thyroid'] }, { a: 'consult', dept: 'rheum', delayMin: 30 }, { a: 'rx', drugId: 'prednisolone', route: 'po', dose: 50, freq: 'q24h', days: 14 }],
+};

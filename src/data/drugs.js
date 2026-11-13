@@ -233,6 +233,132 @@ export const DRUGS = [
     info: 'アルコール多飲・低栄養の意識障害では、ブドウ糖の前（または同時）に100mg以上を静注しWernicke脳症を予防する。',
   },
   {
+    id: 'pyridostigmine', generic: 'ピリドスチグミン', brands: ['メスチノン'], cls: 'コリンエステラーゼ阻害薬', tags: ['ache_inh'],
+    routes: { po: { unit: 'mg', min: 60, max: 60, freqs: ['q8h'], maxDaily: 180 } },
+    info: '重症筋無力症の対症療法。1回60mgを1日3回。腹痛・下痢・唾液増加。',
+  },
+  {
+    id: 'pam', generic: 'プラリドキシム（PAM）', brands: ['パム静注'], cls: '有機リン中毒解毒薬', tags: ['pam'],
+    routes: { iv: { unit: 'mg', min: 1000, max: 2000, freqs: ['once', 'q8h'], maxDaily: 6000 } },
+    info: '有機リン中毒でアトロピンと併用し、コリンエステラーゼを再賦活する。早期に1〜2gを点滴。',
+  },
+  {
+    id: 'mamushi_av', generic: '乾燥まむしウマ抗毒素', brands: ['まむし抗毒素'], cls: '抗毒素血清', tags: ['antivenom'],
+    routes: { iv: { unit: 'バイアル', min: 1, max: 1, freqs: ['once'], maxDaily: 1 } }, effectHours: 72,
+    info: 'マムシ咬傷で腫脹が広がる・全身症状があるときに1バイアルを点滴。アナフィラキシー・血清病に注意（皮内反応・準備）。',
+  },
+  {
+    id: 'tig', generic: '抗破傷風人免疫グロブリン', brands: ['テタノブリン'], cls: '免疫グロブリン（破傷風）', tags: ['tig'],
+    routes: { iv: { unit: '単位', min: 3000, max: 5000, freqs: ['once'], maxDaily: 5000 } }, effectHours: 720,
+    info: '破傷風の発症時に血中の毒素を中和する（3000〜5000単位）。汚染創の予防には250単位を筋注。',
+  },
+  {
+    id: 'udca', generic: 'ウルソデオキシコール酸', brands: ['ウルソ'], cls: '利胆薬', tags: ['udca'],
+    routes: { po: { unit: 'mg', min: 100, max: 300, freqs: ['q8h'], maxDaily: 900 } },
+    info: '原発性胆汁性胆管炎の第一選択（1日600〜900mg）。胆石の溶解にも。',
+  },
+  {
+    id: 'pancrelipase', generic: 'パンクレリパーゼ', brands: ['リパクレオン'], cls: '消化酵素製剤', tags: ['pert'],
+    routes: { po: { unit: 'mg', min: 600, max: 600, freqs: ['q8h'], maxDaily: 1800 } },
+    info: '慢性膵炎の膵外分泌不全（脂肪便・体重減少）に毎食直後。',
+  },
+  {
+    id: 'camostat', generic: 'カモスタット', brands: ['フオイパン'], cls: '蛋白分解酵素阻害薬（内服）', tags: ['protease_inh'],
+    routes: { po: { unit: 'mg', min: 200, max: 200, freqs: ['q8h'], maxDaily: 600 } },
+    info: '慢性膵炎の急性症状（腹痛）の緩和に1回200mgを1日3回。',
+  },
+  {
+    id: 'mnz_po', generic: 'メトロニダゾール（内服）', brands: ['フラジール'], cls: 'ニトロイミダゾール系抗菌薬', tags: ['metronidazole'], abx: true,
+    covers: ['anaerobe', 'trichomonas'],
+    routes: { po: { unit: 'mg', min: 250, max: 500, freqs: ['q12h', 'q8h'], maxDaily: 1500 } },
+    info: '細菌性腟症・トリコモナス腟炎に1回500mgを1日2回7日間。飲酒でジスルフィラム様作用。',
+  },
+  {
+    id: 'estriol_vag', generic: 'エストリオール腟錠', brands: ['エストリール腟錠'], cls: '女性ホルモン（腟錠）', tags: ['estrogen_vag'],
+    routes: { top: { unit: 'mg', min: 0.5, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    info: '萎縮性腟炎に1日1回腟内に挿入。全身への影響は少ない。',
+  },
+  {
+    id: 'ocp', generic: '低用量エストロゲン・プロゲスチン配合薬（LEP）', brands: ['ヤーズ', 'ルナベル'], cls: '女性ホルモン配合薬', tags: ['ocp', 'gyn_hormone'],
+    routes: { po: { unit: '錠', min: 1, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    contra: ['smoker35'],
+    info: '月経困難症・月経前症候群・月経周期の調節に1日1錠。血栓症（35歳以上の喫煙者・前兆のある片頭痛は禁忌）に注意。',
+  },
+  {
+    id: 'mpa', generic: 'メドロキシプロゲステロン', brands: ['プロベラ', 'ヒスロン'], cls: '黄体ホルモン薬', tags: ['progestin'],
+    routes: { po: { unit: 'mg', min: 2.5, max: 10, freqs: ['q24h'], maxDaily: 10 } },
+    info: '無排卵性の出血・続発性無月経に10日間内服し、中止後の消退出血で内膜をはがす（Holmstrom療法）。',
+  },
+  {
+    id: 'ritodrine', generic: 'リトドリン', brands: ['ウテメリン'], cls: '子宮収縮抑制薬（β2刺激薬）', tags: ['tocolytic'],
+    routes: { iv: { unit: 'μg/分', min: 50, max: 200, freqs: ['cont'], maxDaily: 300 } },
+    info: '切迫早産の子宮収縮を抑える点滴。頻脈・動悸・肺水腫・高血糖・低K血症に注意。',
+  },
+  {
+    id: 'latanoprost', generic: 'ラタノプロスト点眼', brands: ['キサラタン'], cls: 'プロスタグランジン関連薬（緑内障点眼）', tags: ['glaucoma_drop'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q24h'], maxDaily: 1 } },
+    info: '開放隅角緑内障の第一選択。1日1回。まつげが伸びる・虹彩の色素沈着。',
+  },
+  {
+    id: 'mirogabalin', generic: 'ミロガバリン', brands: ['タリージェ'], cls: '神経障害性疼痛治療薬', tags: ['neuropathic'],
+    routes: { po: { unit: 'mg', min: 5, max: 15, freqs: ['q12h'], maxDaily: 30 } },
+    renal: [{ crclBelow: 60, maxDaily: 15, text: 'CrCl<60: 減量' }],
+    info: '帯状疱疹後神経痛・糖尿病性神経障害などに1回5mgを1日2回から。眠気・めまい（高齢者の転倒）に注意。',
+  },
+  {
+    id: 'txa', generic: 'トラネキサム酸', brands: ['トランサミン'], cls: '抗線溶薬（止血薬）', tags: ['hemostatic'],
+    routes: { iv: { unit: 'mg', min: 250, max: 1000, freqs: ['once', 'q8h'], maxDaily: 3000 }, po: { unit: 'mg', min: 250, max: 500, freqs: ['q8h'], maxDaily: 1500 } },
+    info: '喀血・外傷性出血・過多月経などの止血補助。血栓症に注意。',
+  },
+  {
+    id: 'nintedanib', generic: 'ニンテダニブ', brands: ['オフェブ'], cls: '抗線維化薬', tags: ['antifibrotic'],
+    routes: { po: { unit: 'mg', min: 100, max: 150, freqs: ['q12h'], maxDaily: 300 } },
+    info: '特発性肺線維症などの進行を遅らせる。下痢・肝障害に注意。',
+  },
+  {
+    id: 'duloxetine', generic: 'デュロキセチン', brands: ['サインバルタ'], cls: 'SNRI', tags: ['snri'],
+    routes: { po: { unit: 'mg', min: 20, max: 60, freqs: ['q24h'], maxDaily: 60 } },
+    info: '線維筋痛症・慢性腰痛・糖尿病性神経障害・うつ病に。吐き気・眠気、セロトニン症候群に注意。',
+  },
+  {
+    id: 'cevimeline', generic: 'セビメリン', brands: ['サリグレン', 'エボザック'], cls: '唾液分泌促進薬（M3作動薬）', tags: ['secretagogue'],
+    routes: { po: { unit: 'mg', min: 30, max: 30, freqs: ['q8h'], maxDaily: 90 } },
+    info: 'シェーグレン症候群の口腔乾燥に1回30mgを1日3回。発汗・吐き気。',
+  },
+  {
+    id: 'tolvaptan', generic: 'トルバプタン', brands: ['サムスカ'], cls: 'バソプレシンV2受容体拮抗薬', tags: ['v2_antag'],
+    routes: { po: { unit: 'mg', min: 15, max: 60, freqs: ['q12h', 'q24h'], maxDaily: 120 } },
+    info: '常染色体顕性多発性嚢胞腎の進行抑制（専門医が導入）。多尿・口渇・肝障害に注意。',
+  },
+  {
+    id: 'diquafosol', generic: 'ジクアホソル点眼', brands: ['ジクアス'], cls: 'ドライアイ治療薬（点眼）', tags: ['dry_eye_drop'],
+    routes: { top: { unit: '滴', min: 1, max: 1, freqs: ['q6h'], maxDaily: 6 } },
+    info: 'ドライアイに1回1滴、1日6回。涙液とムチンの分泌を促す。',
+  },
+  {
+    id: 'miconazole_gel', generic: 'ミコナゾール口腔用ゲル', brands: ['フロリードゲル'], cls: '抗真菌薬（口腔用）', tags: ['oral_antifungal'],
+    routes: { top: { unit: 'g', min: 2.5, max: 5, freqs: ['q6h'], maxDaily: 20 } },
+    interact: [{ tag: 'warfarin', level: 'harm', msg: 'ワルファリンの作用を著明に増強（併用禁忌）' }],
+    info: '口腔カンジダ症に口の中に塗り広げる。ワルファリンとの併用は禁忌。',
+  },
+  {
+    id: 'triamcinolone_oral', generic: 'トリアムシノロン口腔用軟膏', brands: ['ケナログ'], cls: '副腎皮質ステロイド（口腔用）', tags: ['oral_steroid'],
+    routes: { top: { unit: 'g', min: 0.1, max: 0.5, freqs: ['q8h', 'q12h'], maxDaily: 2 } },
+    info: 'アフタ性口内炎に1日数回塗る。カンジダ・ヘルペスには使わない。',
+  },
+  {
+    id: 'tadalafil', generic: 'タダラフィル', brands: ['シアリス'], cls: 'PDE5阻害薬', tags: ['pde5i'],
+    routes: { po: { unit: 'mg', min: 5, max: 20, freqs: ['once', 'q24h'], maxDaily: 20 } },
+    interact: [{ tag: 'nitrate', level: 'harm', msg: '硝酸薬との併用は禁忌（重い低血圧）' }],
+    info: '勃起障害に性行為の前に10〜20mg（前立腺肥大症には5mgを毎日）。硝酸薬との併用は禁忌。',
+  },
+  {
+    id: 'vitk', generic: 'ビタミンK（メナテトレノン）', brands: ['ケイツーN'], cls: 'ビタミンK製剤', tags: ['vitk'],
+    routes: { iv: { unit: 'mg', min: 5, max: 20, freqs: ['once'], maxDaily: 20 } },
+    effectHours: 24,
+    info: 'ワルファリンの効きすぎ（PT-INR延長）に5〜20mgをゆっくり静注。効果発現に数時間。重い出血ではプロトロンビン複合体製剤を併用。',
+  },
+  {
     id: 'vcm', generic: 'バンコマイシン', brands: ['塩酸バンコマイシン'], cls: '抗菌薬（グリコペプチド系）', allergy: 'glycopeptide', abx: true, broad: true,
     routes: { iv: { unit: 'mg', min: 500, max: 2000, freqs: ['q12h', 'q8h'], maxDaily: 4000, perKgOnce: [12, 22] } },
     covers: ['prsp', 'mrsa', 'gpc'],
@@ -644,7 +770,7 @@ export const DRUGS = [
   {
     id: 'doxy', generic: 'ドキシサイクリン', brands: ['ビブラマイシン'], cls: '抗菌薬（テトラサイクリン系）', allergy: 'tetracycline', abx: true,
     routes: { po: { unit: 'mg', min: 100, max: 100, freqs: ['q12h', 'q24h'], maxDaily: 200 } },
-    covers: ['chlamydia', 'atypical', 'tp'],
+    covers: ['chlamydia', 'atypical', 'tp', 'rickettsia'],
     contra: ['pregnancy'],
     interact: [{ tag: 'mgo', level: 'warn', msg: 'Mg・Al含有製剤で吸収低下', reduceRoute: 'po' }],
     info: '骨盤内炎症性疾患ではクラミジアをカバーするため100mg 1日2回14日間（セフトリアキソンと併用）。妊婦・8歳未満には禁忌。',

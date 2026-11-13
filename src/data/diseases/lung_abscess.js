@@ -1,0 +1,41 @@
+// 肺膿瘍
+// 出典: JAID/JSC感染症治療ガイド2023（呼吸器感染症）
+import { sepsisExtras } from './common.js';
+export default {
+  id: 'lung_abscess', name: '肺膿瘍', dept: '呼吸器内科',
+  weight: 1.2, season: {}, minLevel: 3,
+  demo: { age: [50, 80], ageMode: 'old', male: 0.75 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[30, 38], [38, 48], [52, 62]] },
+  refractoryP: [0, 0.03, 0.06], comorb: { extra: { dm2: 0.3 } }, organisms: ['anaerobe', 'gpc'], minAbxDays: 21,
+  vars: () => ({ forceAlcohol: true }),
+  cc: () => '熱と、臭い痰が続く', ccKey: 'fever_cough',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '2週間前から熱と咳が続いています。' },
+    fever: { p: 1, text: '38度台の熱が続きます。' },
+    cough: { p: 1, text: '咳が出ます。' },
+    sputum: { p: 1, text: '最近、ものすごく臭い膿のような痰がたくさん出ます。' },
+    chills: { p: 0.5, text: '寒気があります。' }, weightloss: { p: 0.6, text: '少しやせました。' }, nightsweat: { p: 0.4, text: '寝汗をかきます。' },
+    alcohol: { p: 1, text: '毎日焼酎を4〜5合飲みます。酔って記憶をなくすこともあります。' },
+    pmh: { p: 1, text: '歯がぼろぼろで、何年も歯医者に行っていません。' },
+    dyspnea: { p: 0.3, text: '少し息切れがします。' }, chestpain: { p: 0.3, text: '右胸が少し痛みます。' },
+    sickcontact: { p: 0, text: '' }, sorethroat: { p: 0, text: '' }, myalgia: { p: 0, text: '' }, headache: { p: 0, text: '' },
+  },
+  exam: { lung_ausc: { p: 1, text: '右下肺野で呼吸音の減弱とcrackle。' }, pharynx: { p: 1, text: '多数の齲歯と歯周病、強い口臭。' }, chest_perc: { p: 0.5, text: '右下肺で濁音。' }, gen_appear: { p: 1, text: 'やや消耗している。' } },
+  vitals: { T: { to: [38.2, 39], k: 0.5 }, HR: { to: [95, 110], k: 1 }, RR: { to: [20, 26], k: 1 } },
+  labs: { WBC: { to: [13000, 20000], k: 0.6 }, CRP: { to: [10, 20], k: 0.6 }, ALB: { add: [-1.0, -0.5], k: 0.5 } },
+  tests: { cxr: [{ p: 1, persist: true, text: '右下肺野に鏡面形成（air-fluid level）を伴う厚い壁の空洞影。' }], chest_ct: [{ p: 1, persist: true, text: '右S6に壁の厚い空洞と内部の液面形成（肺膿瘍）。腫瘤・膿胸なし。' }], afb: [{ p: 1, text: '抗酸菌塗抹 陰性。', normal: true }], sputum_gram: [{ p: 1, text: '好中球多数、多種類の菌（嫌気性菌の混合感染を疑う）。' }], bcx: [{ p: 0.2, text: 'Streptococcus anginosus群。' }] },
+  natural: 0.3,
+  therapies: [{ id: 'abx', label: '嫌気性菌をカバーする抗菌薬（アンピシリン・スルバクタムなど）を長期（3〜6週）、口腔ケア', req: { coverage: ['anaerobe', 'gpc'] }, effect: -0.9, lagH: 24, required: true, deadlineH: [24, 12, 6] }],
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['admit', 'icu'], best: 'admit', why: '肺膿瘍：入院で長期の点滴抗菌薬' } : { ok: ['admit'], best: 'admit', why: '肺膿瘍：入院で点滴抗菌薬（3〜6週間、後半は内服）' }),
+  useful: ['cxr', 'chest_ct', 'cbc', 'crp', 'chem', 'sputum_gram', 'sputum_cx', 'bcx', 'afb', 'hba1c'],
+  key: [['cxr', 'chest_ct'], ['afb']],
+  extrasOk: sepsisExtras,
+  teaching: [
+    '大量飲酒・意識障害（誤嚥）・歯周病のある人の、続く発熱と悪臭のある膿性痰は肺膿瘍。口腔内の嫌気性菌が原因。',
+    'X線・CTで液面形成を伴う厚い壁の空洞。結核（抗酸菌検査）・肺がんの空洞と区別する。',
+    'アンピシリン・スルバクタムなど嫌気性菌をカバーする抗菌薬を長期間。口腔ケアと禁酒。',
+  ],
+  sources: ['JAID/JSC感染症治療ガイド2023'],
+  ideal: () => [{ a: 'test', ids: ['cxr', 'chest_ct', 'cbc', 'crp', 'chem', 'sputum_gram', 'afb', 'bcx'] }, { a: 'rx', drugId: 'abpc_sbt', route: 'iv', dose: 3000, freq: 'q6h', days: 21 }],
+};

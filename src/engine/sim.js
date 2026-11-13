@@ -28,6 +28,9 @@ export const PROCEDURES = [
   { id: 'ear_clean', name: '耳垢除去（洗浄・鉗子）', min: 15 },
   { id: 'incision', name: '切開排膿（局所麻酔）', min: 20 },
   { id: 'paring', name: '鶏眼・胼胝の削り（コーンカッター）', min: 10 },
+  { id: 'eye_irrigation', name: '眼の洗浄（生理食塩水で大量洗浄）', min: 30 },
+  { id: 'suture', name: '創の洗浄・縫合（局所麻酔）', min: 30 },
+  { id: 'fb_removal', name: '喉頭鏡・マギル鉗子による気道異物の除去', min: 5 },
   { id: 'warming', name: '加温（温風ブランケット・加温輸液）', min: 10 },
 ];
 
@@ -565,17 +568,20 @@ export function procedure(enc, procId) {
       addLog(enc, 'exam', ok ? '修正Valsalva法の直後に頻拍が停止し、洞調律（約80/分）に戻った。' : d.id === 'svt' ? '修正Valsalva法を行ったが、頻拍は停止しなかった。' : '修正Valsalva法を行ったが、変化はなかった。', { label: '迷走神経刺激', positive: ok });
     }
     else if (P.id === 'nasal_pack') addLog(enc, 'exam', d.id === 'epistaxis' ? '鼻翼を圧迫し、血管収縮薬を浸したガーゼを挿入した。出血は止まった。' : '鼻腔にガーゼを入れたが、特に出血はなかった。', { label: '鼻出血の止血', positive: d.id === 'epistaxis' });
-    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx', 'achilles'].includes(d.id) });
+    else if (P.id === 'splint') addLog(enc, 'exam', ['ankle_sprain', 'wrist_fx', 'achilles', 'humerus_fx', 'clavicle_fx', 'meniscus', 'acl'].includes(d.id) ? 'シーネで固定し、挙上と冷却を指導した。痛みが和らいだ。' : 'シーネで固定したが、特に変化はない。', { label: 'シーネ固定', positive: ['ankle_sprain', 'wrist_fx', 'achilles', 'humerus_fx', 'clavicle_fx', 'meniscus', 'acl'].includes(d.id) });
     else if (P.id === 'wound_care') addLog(enc, 'exam', ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) ? '創部を十分に洗浄し、被覆した。' : '創部を確認したが、処置が必要な傷はなかった。', { label: '創処置', positive: ['burn', 'animal_bite', 'diabetic_foot', 'pressure_ulcer'].includes(d.id) });
     else if (P.id === 'ear_clean') addLog(enc, 'exam', d.id === 'cerumen' ? '硬い耳垢を除去した。直後から聞こえが良くなった。' : d.id === 'otitis_externa' ? '外耳道の耳漏と落屑を清掃した。' : '耳垢はほとんどなかった。', { label: '耳垢除去', positive: ['cerumen', 'otitis_externa'].includes(d.id) });
-    else if (P.id === 'incision') addLog(enc, 'exam', ['atheroma', 'paronychia'].includes(d.id) ? '局所麻酔下に切開し、悪臭のある膿と粥状物を排出した。' : '切開したが、膿は出なかった。', { label: '切開排膿', positive: ['atheroma', 'paronychia'].includes(d.id) });
+    else if (P.id === 'incision') addLog(enc, 'exam', ['atheroma', 'paronychia', 'perianal_abscess', 'bartholin', 'furuncle'].includes(d.id) ? (d.id === 'atheroma' ? '局所麻酔下に切開し、悪臭のある膿と粥状物を排出した。' : '局所麻酔下に切開し、膿を排出した。痛みがすぐ軽くなった。') : '切開したが、膿は出なかった。', { label: '切開排膿', positive: ['atheroma', 'paronychia', 'perianal_abscess', 'bartholin', 'furuncle'].includes(d.id) });
     else if (P.id === 'paring') addLog(enc, 'exam', d.id === 'corn' ? '角質の芯を削り取った。歩く痛みがすぐ軽くなった。' : '削ったが、変化はなかった。', { label: '鶏眼の処置', positive: d.id === 'corn' });
-    else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: d.id === 'retention' });
+    else if (P.id === 'eye_irrigation') addLog(enc, 'exam', d.id === 'chem_eye' ? '生理食塩水2Lで眼を洗浄した。結膜嚢のpHが7.5に下がった。' : '眼を洗浄したが、特に変化はない。', { label: '眼の洗浄', positive: d.id === 'chem_eye' });
+    else if (P.id === 'foley') addLog(enc, 'exam', d.id === 'retention' ? `尿道カテーテルから尿が${p.vars.vol || 900}mL流出。下腹部の張りが軽くなった。` : d.id === 'anticholinergic' ? '尿道カテーテルから尿が850mL流出。下腹部の張りがとれ、少し落ち着いた。' : d.id === 'bladder_tamponade' ? '太い3wayカテーテルを入れ、膀胱洗浄で凝血塊を多量に除去した。下腹部の張りが軽くなり、持続灌流を開始した。' : '尿道カテーテルから尿が少量流出。', { label: '導尿', positive: ['retention', 'anticholinergic', 'bladder_tamponade'].includes(d.id) });
+    else if (P.id === 'suture') addLog(enc, 'exam', d.id === 'laceration' ? '局所麻酔下に生理食塩水で十分に洗浄し、異物がないことを確認して縫合した。' : '縫合が必要な創はない。', { label: '創の縫合', positive: d.id === 'laceration' });
+    else if (P.id === 'fb_removal') addLog(enc, 'exam', d.id === 'choking' ? '喉頭鏡で声門上に詰まった餅を確認し、マギル鉗子で除去した。呼吸が楽になった。' : '気道に異物は見当たらなかった。', { label: '気道異物の除去', positive: d.id === 'choking' });
     advance(enc, P.min);
     return;
   }
   st.drains[P.side] = enc.t + P.min;
-  if (!(d.id === 'ptx' && p.vars.side === P.side)) {
+  if (!(['ptx', 'hemothorax'].includes(d.id) && p.vars.side === P.side)) {
     recordIssues(enc, [{ level: 'harm', code: 'drain_wrong', msg: `気胸のない側への胸腔ドレナージ（${P.name}）：医原性の気胸・出血の危険` }], P.name);
     st.burden = Math.min(100, st.burden + 12);
     st.comp.iatrogenic ??= enc.t;
@@ -622,6 +628,7 @@ function consultReply(enc, dept) {
     return need ? '集中治療科：重症であり、ICUでの受け入れが可能です。' : '集中治療科：現時点ではICU管理の適応はないと考えます。一般病棟での管理をお願いします。';
   }
   if (dept === 'obgyn') {
+    if (d.consult?.obgyn) { enc.consultRevealT ??= enc.t; return fmt(d.consult.obgyn, p.vars); }
     if (p.sex === 'M') return '産婦人科：男性の患者さんですので、当科の対象ではありません。';
     if (p.pregnant) return '産婦人科：経腟超音波で子宮内に胎嚢を確認、妊娠7週相当です。妊娠中でも使用可能な薬剤（セフトリアキソン等）で治療を。レボフロキサシンやCTは避けてください。';
     return '産婦人科：経腟超音波で子宮・付属器に明らかな異常はありません。婦人科疾患は否定的です。';

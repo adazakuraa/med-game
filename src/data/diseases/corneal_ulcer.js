@@ -1,0 +1,42 @@
+// 細菌性角膜潰瘍（コンタクトレンズ関連）
+// 出典: 日本眼感染症学会『感染性角膜炎診療ガイドライン（第3版）』
+export default {
+  id: 'corneal_ulcer', name: '細菌性角膜炎（コンタクトレンズ）', dept: '眼科',
+  weight: 1.5, season: {}, minLevel: 2,
+  demo: { age: [16, 40], ageMode: 'young', male: 0.45 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[26, 34], [34, 44], [44, 54]] },
+  refractoryP: [0, 0.03, 0.06], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ side: rng.pick(['右', '左']) }),
+  cc: (v) => `${v.side}目が痛くて開けられない`, ccKey: 'red_eye',
+  arrival: () => 'walk',
+  history: {
+    onset: { p: 1, text: '昨日から{side}目が痛くなり、今日は痛くて目を開けていられません。' },
+    character: { p: 1, text: 'まぶしくて、涙と目やにが出ます。' },
+    vision: { p: 1, text: '{side}目がかすんで見えにくいです。' },
+    trigger: { p: 1, text: '2週間用のコンタクトレンズを、1か月以上つけっぱなしで寝ることもありました。' },
+    itch: { p: 0, text: 'かゆみはありません。' }, sickcontact: { p: 0, text: '周りに目の病気の人はいません。' },
+    headache: { p: 0, text: '頭痛や吐き気はありません。' }, nausea: { p: 0, text: '' }, sorethroat: { p: 0, text: '' }, allergy: { p: 0, text: '' },
+  },
+  exam: { eye: { p: 1, text: '{side}眼の強い毛様充血、角膜中央付近に3mmの白色の浸潤と潰瘍（フルオレセイン染色陽性）、前房に少量の膿（前房蓄膿）。' }, pupils: { p: 0, text: '瞳孔は正円。' } },
+  vitals: {}, labs: {},
+  tests: { slit: [{ p: 1, persist: true, text: '{side}角膜中央の3mmの潰瘍と白色浸潤、周囲の浮腫、前房蓄膿。' }], acuity: [{ p: 1, text: '{side}0.1、反対側 1.2。' }] },
+  natural: 0.4,
+  therapies: [
+    { id: 'eye', label: '眼科へ当日紹介：角膜擦過物の塗抹・培養と、頻回の抗菌点眼（緑膿菌をカバー）。コンタクトレンズの中止', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'eye') }, effect: -0.2, lagH: 1, required: true, deadlineH: [6, 4, 3] },
+    { id: 'abx', label: '抗菌点眼（フルオロキノロンなど）', req: { tag: 'eye_abx' }, effect: 0, lagH: 0, required: true, deadlineH: [6, 4, 3] },
+  ],
+  dynamics: (enc, eff) => { if (eff.tags.eye_abx) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 360 ? -0.8 : 0; },
+  consult: { eye: '眼科：コンタクトレンズの不適切な使用による細菌性角膜潰瘍で、前房蓄膿もあり緑膿菌を強く疑います。角膜擦過物の塗抹・培養を出し、フルオロキノロンとアミノグリコシドの頻回点眼を始めます。失明の危険があるので毎日通院、悪化すれば入院です。' },
+  harmTags: { eye_steroid: '感染性角膜炎にステロイド点眼（悪化・穿孔）' },
+  dispo: () => ({ ok: ['home', 'admit'], best: 'home', why: '細菌性角膜潰瘍：頻回点眼と毎日の眼科通院（重症は入院）' }),
+  useful: ['slit', 'acuity'],
+  key: [['slit']],
+  extrasOk: () => [],
+  teaching: [
+    'コンタクトレンズ（つけたまま寝る・期限を守らない）の人の強い眼痛・充血・まぶしさ・視力低下・角膜の白い浸潤は細菌性角膜潰瘍。緑膿菌が多く、急速に進んで失明しうる。',
+    '細隙灯で角膜潰瘍と前房蓄膿。眼科で塗抹・培養を出し、頻回の抗菌点眼。ステロイド点眼は禁忌。',
+    'アカントアメーバ角膜炎（激しい痛み・ソフトレンズの水道水洗浄）も鑑別。',
+  ],
+  sources: ['感染性角膜炎診療ガイドライン（第3版）（日本眼感染症学会）'],
+  ideal: () => [{ a: 'test', ids: ['slit', 'acuity'] }, { a: 'rx', drugId: 'eye_abx', route: 'top', dose: 1, freq: 'q6h', days: 7 }, { a: 'consult', dept: 'eye', delayMin: 10 }, { a: 'wait', min: 70 }],
+};

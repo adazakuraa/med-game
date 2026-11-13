@@ -1,0 +1,41 @@
+// 自己免疫性溶血性貧血（温式）
+// 出典: 厚生労働省 特発性造血障害に関する調査研究班『自己免疫性溶血性貧血 診療の参照ガイド 令和4年度改訂版』
+export default {
+  id: 'aiha', name: '自己免疫性溶血性貧血', dept: '血液内科',
+  weight: 1, season: {}, minLevel: 3,
+  demo: { age: [40, 80], ageMode: 'uniform', male: 0.4 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[28, 36], [36, 46], [50, 60]] },
+  refractoryP: [0, 0.05, 0.1], comorb: { extra: {} }, organisms: [], untreatedFatal: false,
+  vars: () => ({}),
+  cc: () => '急にだるくなり、目が黄色い', ccKey: 'jaundice',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '1週間前から急にだるくなり、階段で息切れと動悸がします。家族に顔色が悪く目が黄色いと言われました。' },
+    character: { p: 1, text: '尿が紅茶のように濃いです。便の色は普通です。' },
+    abdpain: { p: 0, text: 'お腹は痛くありません。' }, fever: { p: 0.3, text: '微熱があります。' }, chills: { p: 0, text: '' },
+    alcohol: { p: 0, text: 'お酒はほとんど飲みません。' }, meds: { p: 0, text: '新しい薬は飲んでいません。' }, travel: { p: 0, text: '' }, weightloss: { p: 0, text: '' },
+    pmh: { p: 0, text: '持病はありません。' }, dyspnea: { p: 1, text: '動くと息切れがします。' }, palpitation: { p: 1, text: '動悸がします。' },
+  },
+  exam: { conjunctiva: { p: 1, text: '眼瞼結膜は蒼白、眼球結膜は軽い黄染。' }, skin: { p: 0.6, text: '皮膚の軽い黄染。' }, abd_palp: { p: 0.5, text: '軽い脾腫。腹部の圧痛なし。' }, heart_ausc: { p: 1, text: '収縮期の機能性雑音。' } },
+  vitals: { HR: { to: [100, 120], k: 1 } },
+  labs: { HB: { add: [-8, -6], k: 0.6 }, MCV: { add: [4, 10], k: 0 }, TBIL: { add: [2, 4], k: 0.6 }, LDH: { add: [300, 700], k: 0.6 }, AST: { add: [10, 30], k: 0.6 } },
+  tests: { coombs: [{ p: 1, persist: true, text: '直接クームス試験 陽性（IgG・補体）。ハプトグロビン著明低値、網赤血球 12%（増加）。' }], smear: [{ p: 1, persist: true, text: '球状赤血球と多染性赤血球が多数。破砕赤血球なし。芽球なし。' }], abd_us: [{ p: 1, text: '胆管拡張なし。軽度の脾腫。' }], ua: [{ p: 1, text: 'ウロビリノーゲン強陽性、ビリルビン陰性、潜血陰性。' }] },
+  natural: 0.3,
+  therapies: [
+    { id: 'steroid', label: 'ステロイド（プレドニゾロン）', req: { tag: 'steroid_sys' }, effect: 0, lagH: 0, required: true, deadlineH: [24, 12, 6] },
+    { id: 'hema', label: '血液内科コンサルト（原因検索：リンパ腫・SLE・薬剤、重い貧血では慎重に輸血）', req: { fn: (enc) => enc.consults.some((c) => c.dept === 'hema') }, effect: -0.1, lagH: 2, required: true, deadlineH: [24, 12, 6] },
+  ],
+  dynamics: (enc, eff) => { if (eff.tags.steroid_sys) enc.state.tx ??= enc.t; return enc.state.tx != null && enc.t - enc.state.tx > 1440 ? -0.8 : 0; },
+  consult: { hema: '血液内科：直接クームス陽性の溶血性貧血で、温式自己免疫性溶血性貧血です。プレドニゾロン1mg/kgで治療を始めます。リンパ腫・SLEなどの原因も調べます。輸血は交差適合が難しいので、症状が強い場合に慎重に行います。' },
+  dispo: () => ({ ok: ['admit'], best: 'admit', why: '自己免疫性溶血性貧血：入院でステロイドと貧血の管理' }),
+  useful: ['cbc', 'smear', 'coombs', 'chem', 'ua', 'abd_us', 'ana', 'hep_virus', 'coag'],
+  key: [['cbc'], ['coombs']],
+  extrasOk: () => [],
+  teaching: [
+    '急に進む貧血＋黄疸（間接ビリルビン優位）・LDH上昇・ハプトグロビン低下・網赤血球増加は溶血性貧血。紅茶色の尿（ウロビリノーゲン）。',
+    '直接クームス試験陽性なら自己免疫性溶血性貧血。球状赤血球。原因としてリンパ腫・SLE・薬剤を探す。破砕赤血球があればTTP・HUSを考える。',
+    '治療はステロイド。重い貧血でも輸血は慎重に（交差適合が難しい）。',
+  ],
+  sources: ['自己免疫性溶血性貧血 診療の参照ガイド 令和4年度改訂版'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'smear', 'chem', 'coombs', 'ua'] }, { a: 'rx', drugId: 'prednisolone', route: 'po', dose: 60, freq: 'q24h', days: 14 }, { a: 'consult', dept: 'hema', delayMin: 30 }],
+};

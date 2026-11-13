@@ -1,0 +1,43 @@
+// 抗コリン薬中毒（高齢者の薬剤性せん妄・尿閉）
+// 出典: 日本老年医学会『高齢者の安全な薬物療法ガイドライン2015』
+export default {
+  id: 'anticholinergic', name: '抗コリン作用による中毒（薬剤性せん妄）', dept: '内科',
+  weight: 1.5, season: { winter: 1.3, spring: 1.3 }, minLevel: 2,
+  demo: { age: [72, 92], ageMode: 'old', male: 0.6 },
+  sev: { p: [0.4, 0.45, 0.15], burden: [[28, 36], [36, 46], [48, 58]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { bph: 0.5, htn: 0.4 } }, organisms: [], untreatedFatal: false,
+  vars: (rng) => ({ drug: rng.pick(['市販のかぜ薬と花粉症の薬（抗ヒスタミン薬）', '頻尿の薬（抗コリン薬）', '胃けいれんの薬（ブチルスコポラミン）と市販の睡眠薬']) }),
+  cc: () => '急に様子がおかしく、おしっこが出ない', ccKey: 'altered_mental',
+  arrival: () => 'ambulance',
+  history: {
+    lastnormal: { p: 1, text: '（妻）昨日の昼までは普段どおりでした。' },
+    onset: { p: 1, text: '（妻）昨夜から落ち着きがなく、壁に虫がいると言ったり、つじつまの合わないことを言います。' },
+    meds: { p: 1, text: '（妻）3日前から{drug}を飲み始めました。' },
+    character: { p: 1, text: '（妻）昨日からおしっこがほとんど出ていません。便も出ていません。' },
+    pmh: { p: 1, text: '（妻）前立腺肥大と言われています。認知症はありません。' },
+    adl: { p: 1, text: '（妻）普段は自分で身の回りのことができます。' },
+    fever: { p: 0, text: '（妻）熱はありません。' }, alcohol: { p: 0, text: '（妻）お酒は飲みません。' }, headache: { p: 0, text: '' }, seizure: { p: 0, text: '' }, adherence: { p: 0, text: '' }, anorexia: { p: 0, text: '' },
+  },
+  exam: { gen_consc: { p: 1, text: 'JCS 3、見当識障害と注意力の低下、幻視。' }, pupils: { p: 1, text: '両側散瞳（5mm）、対光反射は緩慢。' }, skin: { p: 1, text: '皮膚と口腔が乾燥し、顔が紅潮。発汗なし。' }, motor: { p: 0, text: '麻痺なし。' }, neck_stiff: { p: 0, text: '項部硬直なし。' }, gen_appear: { p: 1, text: '落ち着きなく、ベッドの上で手を動かしている。' } },
+  vitals: { HR: { to: [100, 115], k: 1 }, T: { to: [37.3, 37.8], k: 1 } },
+  labs: { CR: { add: [0.2, 0.6], k: 1 } },
+  tests: { abd_us: [{ p: 1, persist: true, unlessProc: 'foley', text: '膀胱に約800mLの尿が貯留。軽度の両側水腎症。' }], head_ct: [{ p: 1, text: '頭蓋内に出血・梗塞を認めない。', normal: true }], ua: [{ p: 1, text: '白血球（−）、亜硝酸塩（−）。', normal: true }] },
+  natural: 0.2,
+  therapies: [
+    { id: 'foley', label: '尿道カテーテルで導尿（尿閉の解除）', req: { fn: (enc) => !!enc.state.procs?.foley }, effect: 0, lagH: 0, required: true, deadlineH: [4, 3, 2] },
+    { id: 'stop', label: '原因薬（抗コリン作用のある薬）の中止と補液、静かな環境（ベンゾジアゼピンは避ける）', req: { fn: (enc) => enc.state.ivCryst >= 500 || enc.consults.length > 0 }, effect: 0, lagH: 0, required: true, deadlineH: [6, 4, 3] },
+  ],
+  dynamics: (enc) => (enc.state.procs?.foley && enc.t >= enc.state.procs.foley ? -0.7 : 0),
+  harmTags: { antispasmodic: '抗コリン薬中毒に抗コリン薬を追加', antihistamine: '抗コリン薬中毒に抗ヒスタミン薬を追加', benzo: '高齢者のせん妄にベンゾジアゼピン（悪化）' },
+  dispo: () => ({ ok: ['admit'], best: 'admit', why: '抗コリン薬による中毒（せん妄・尿閉）：入院で原因薬の中止と経過観察' }),
+  useful: ['bs_poct', 'chem', 'cbc', 'ua', 'abd_us', 'head_ct', 'ecg', 'vbg'],
+  key: [['bs_poct', 'chem'], ['abd_us']],
+  extrasOk: () => ['delirium', 'retention'],
+  teaching: [
+    '高齢者が新しい薬（かぜ薬・抗ヒスタミン薬・頻尿の薬・胃腸薬・三環系抗うつ薬）を飲み始めた後の、せん妄・幻視・散瞳・皮膚と口の乾燥・頻脈・尿閉・便秘 → 抗コリン作用による中毒。',
+    '「Mad as a hatter, blind as a bat, dry as a bone, red as a beet, hot as a hare, full as a flask（尿閉）」。',
+    '原因薬を中止し、導尿・補液。高齢者には抗コリン作用の強い薬を避ける（ポリファーマシーの見直し）。',
+  ],
+  sources: ['高齢者の安全な薬物療法ガイドライン2015（日本老年医学会）'],
+  ideal: () => [{ a: 'test', ids: ['bs_poct', 'chem', 'cbc', 'ua', 'abd_us', 'ecg'] }, { a: 'proc', id: 'foley' }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 500 }],
+};

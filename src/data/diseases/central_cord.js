@@ -1,0 +1,51 @@
+// 中心性頸髄損傷（非骨傷性頸髄損傷）
+// 出典: 日本整形外科学会/日本脊髄障害医学会 資料, 一般的な外傷診療（JATEC）
+export default {
+  id: 'central_cord', name: '中心性頸髄損傷', dept: '整形外科',
+  weight: 1.5, season: { winter: 1.2 }, minLevel: 2,
+  demo: { age: [60, 88], ageMode: 'old', male: 0.8 },
+  sev: { p: [0.45, 0.4, 0.15], burden: [[26, 34], [34, 44], [44, 54]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.4 } }, organisms: [], untreatedFatal: false, noPregnancy: true,
+  vars: (rng) => ({ how: rng.pick(['自宅の階段でつまずいて', '酔って道で転んで', '自転車で転んで']) }),
+  cc: () => '転んで顔を打ってから手がしびれる', ccKey: 'injury',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '2時間前、{how}おでこを地面に打ちました。首が後ろに反りました。' },
+    character: { p: 1, text: '両手がビリビリしびれて、箸やボタンがうまく使えません。足は何とか動きます。' },
+    location: { p: 1, text: '両手、特に指先です。首の後ろも痛いです。' },
+    trigger: { p: 1, text: '{how}転んで顔から落ちました。気は失っていません。' },
+    syncope: { p: 0, text: '気を失って倒れたわけではありません。' },
+    numbness: { p: 1, text: '両手のしびれと、腕に力が入りにくいです。' },
+    weakness: { p: 1, text: '手に力が入りません。足は手ほど弱くありません。' },
+    retention: { p: 0.3, text: 'おしっこが出にくい感じがします。' },
+    pmh: { p: 1, text: '以前から首の骨が変形していると言われています。' }, meds: { p: 1, text: '血圧の薬だけです。' }, aggravating: { p: 0, text: '' },
+  },
+  exam: { motor: { p: 1, text: '両上肢の筋力低下（MMT 3/5、手指で強い）、下肢は4/5で上肢より軽い。両手の異常感覚。上肢の腱反射低下、下肢腱反射は亢進。' }, spine: { p: 1, text: '後頸部の圧痛。前額部に擦過傷。' }, skin: { p: 1, text: '前額部の擦過傷。' }, gen_consc: { p: 1, text: '意識清明。' } },
+  vitals: {},
+  labs: {},
+  tests: {
+    spine_xr: [{ p: 1, text: '頸椎の変形性変化（骨棘・椎間板腔狭小化）。明らかな骨折・脱臼なし。' }],
+    spine_mri: [{ p: 1, persist: true, text: 'C4/5レベルで脊柱管狭窄と、頸髄内のT2高信号（頸髄損傷）。骨折なし。' }],
+    head_ct: [{ p: 1, text: '頭蓋内出血なし。', normal: true }],
+  },
+  natural: 0.05,
+  therapies: [
+    { id: 'collar', label: '頸椎の固定（カラー）と整形外科/脳神経外科コンサルト（MRIで評価、入院でリハビリ・手術の検討）', req: { fn: (enc) => enc.consults.some((c) => ['ortho', 'nsurg'].includes(c.dept)) }, effect: -0.4, lagH: 2, required: true, deadlineH: [6, 4, 3] },
+  ],
+  consult: {
+    ortho: '整形外科：骨折のない頸髄損傷（中心性頸髄損傷）です。もともとの脊柱管狭窄に、転倒による頸部の過伸展が加わったものです。カラーで固定して入院し、安静とリハビリで多くは回復しますが、改善が悪ければ除圧術を検討します。',
+    nsurg: '脳神経外科：MRIで頸髄にT2高信号があり、中心性頸髄損傷です。頸椎カラーで固定して入院とし、神経症状の変化をみます。',
+  },
+  dispo: () => ({ ok: ['admit', 'icu'], best: 'admit', why: '頸髄損傷：入院で頸椎固定・神経症状の監視とリハビリ' }),
+  useful: ['spine_xr', 'spine_mri', 'head_ct', 'ecg', 'cbc', 'chem'],
+  key: [['spine_mri']],
+  extrasOk: () => ['head_injury'],
+  teaching: [
+    '高齢者が転んで顔（額）を打ち首が反った後の、両手のしびれ・脱力（上肢＞下肢）は中心性頸髄損傷。骨折がなく、X線では見逃される。',
+    'もともとの頸部脊柱管狭窄症に過伸展が加わって起こる。MRIで頸髄のT2高信号。',
+    '頸椎を固定して入院。多くは保存的に回復するが、手指の巧緻運動障害が残りやすい。',
+    '顔面・頭部の外傷では、頸椎損傷を常に疑い、神経所見をとる。',
+  ],
+  sources: ['外傷初期診療ガイドライン JATEC（日本外傷学会）'],
+  ideal: () => [{ a: 'test', ids: ['spine_xr', 'spine_mri', 'head_ct'] }, { a: 'consult', dept: 'ortho', delayMin: 30 }],
+};

@@ -1,0 +1,42 @@
+// 気道異物（窒息・餅）
+// 出典: JRC蘇生ガイドライン2020（日本蘇生協議会）
+export default {
+  id: 'choking', name: '気道異物（窒息）', dept: '救急科',
+  weight: 1, season: { winter: 2.5 }, minLevel: 1,
+  demo: { age: [75, 95], ageMode: 'old', male: 0.55 },
+  sev: { p: [0.4, 0.4, 0.2], burden: [[34, 42], [46, 56], [62, 72]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { dementia: 0.3, old_stroke: 0.3 } }, organisms: [],
+  vars: () => ({}),
+  cc: () => '餅をのどに詰まらせた', ccKey: 'dyspnea',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '（家族）20分前、正月の雑煮の餅を食べていて急に苦しみだし、のどを押さえました。' },
+    course: { p: 1, text: '（家族）背中をたたいたら少し出ましたが、まだゼーゼーして苦しそうです。' },
+    character: { p: 1, text: '（家族）声がかすれて、ヒューヒューいっています。' },
+    pmh: { p: 1, text: '（家族）脳梗塞の後遺症で、最近むせることが多いです。' },
+    fever: { p: 0, text: '（家族）熱はありません。' }, cough: { p: 1, text: '（家族）弱い咳をしています。' }, sputum: { p: 0, text: '' }, chestpain: { p: 0, text: '' },
+    orthopnea: { p: 0, text: '' }, pnd: { p: 0, text: '' }, edema: { p: 0, text: '' }, weightgain: { p: 0, text: '' }, palpitation: { p: 0, text: '' }, adherence: { p: 0, text: '' }, diet: { p: 0, text: '' }, trigger: { p: 1, text: '（家族）餅を食べていました。' },
+  },
+  exam: { gen_appear: { p: 1, text: '苦悶様で、のどを押さえている。声はかすれ、吸気時に喘鳴（stridor）。' }, chest_insp: { p: 1, text: '鎖骨上窩・肋間の陥没呼吸。' }, lung_ausc: { p: 1, text: '両側の呼吸音が減弱、頸部で吸気性喘鳴を聴取。' }, gen_consc: { p: [0, 0.4, 1], text: '意識がもうろうとしている。' } },
+  vitals: { RR: { to: [28, 36], k: 1 }, HR: { to: [115, 135], k: 1 }, SpO2: { drop: [8, 20], k: 1.2 } },
+  labs: {},
+  tests: { cxr: [{ p: 1, text: '肺野に明らかな異常なし。' , normal: true }] },
+  natural: 0.8,
+  curedBy: 'fb',
+  therapies: [
+    { id: 'fb', label: '喉頭鏡とマギル鉗子で異物を除去（意識があれば背部叩打・腹部突き上げ、できなければ輪状甲状靱帯切開）', req: { fn: (enc) => !!enc.state.procs?.fb_removal }, required: true, deadlineH: [0.5, 0.25, 0.25] },
+    { id: 'o2', label: '酸素投与', req: { o2: true }, when: (c) => c.rawSpO2 < 90, required: true, deadlineH: [0.25, 0.25, 0.25] },
+  ],
+  dynamics: (enc) => (enc.state.procs?.fb_removal && enc.t >= enc.state.procs.fb_removal ? -4 : 0),
+  dispo: (enc) => (enc.patient.sev === 2 ? { ok: ['icu', 'admit'], best: 'icu', why: '低酸素を伴った窒息：除去後もICUで誤嚥性肺炎・低酸素脳症を監視' } : { ok: ['admit', 'home'], best: 'admit', why: '窒息：除去後も誤嚥性肺炎に注意して入院で経過観察' }),
+  useful: ['cxr', 'vbg', 'chest_ct', 'laryngoscope'],
+  key: [],
+  extrasOk: () => ['aspiration'],
+  teaching: [
+    '食事中に急に苦しみ、のどを押さえる（チョークサイン）・声が出ない・吸気性喘鳴 → 気道異物による窒息。高齢者の餅・嚥下障害で多い（正月）。',
+    '意識があり咳ができなければ背部叩打・腹部突き上げ（ハイムリック法）。病院では喉頭鏡で見ながらマギル鉗子で除去。除去できなければ輪状甲状靱帯切開。',
+    '検査を待たずに異物除去を優先する。除去後は誤嚥性肺炎・低酸素脳症に注意。',
+  ],
+  sources: ['JRC蘇生ガイドライン2020（日本蘇生協議会）'],
+  ideal: () => [{ a: 'proc', id: 'fb_removal' }, { a: 'o2', device: 'reservoir', flow: 10, when: 'spo2<92' }, { a: 'test', ids: ['cxr', 'vbg'] }],
+};

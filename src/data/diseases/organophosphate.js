@@ -1,0 +1,43 @@
+// 有機リン中毒
+// 出典: 日本中毒学会 資料, 公益財団法人日本中毒情報センター「有機リン系殺虫剤」
+export default {
+  id: 'organophosphate', name: '有機リン中毒', dept: '救急科',
+  weight: 0.8, season: { summer: 1.3 }, minLevel: 3,
+  demo: { age: [50, 85], ageMode: 'old', male: 0.6 },
+  sev: { p: [0.25, 0.45, 0.3], burden: [[34, 44], [46, 56], [60, 70]] },
+  refractoryP: [0, 0.05, 0.1], comorb: { extra: {} }, organisms: [],
+  vars: (rng) => ({ agent: rng.pick(['スミチオン', 'マラソン', 'オルトラン']) }),
+  cc: () => '畑の農薬を飲んだ', ccKey: 'altered_mental',
+  arrival: () => 'ambulance',
+  history: {
+    onset: { p: 1, text: '（家族）1時間前、物置で倒れているのが見つかり、そばに農薬（{agent}）のビンが空になっていました。' },
+    character: { p: 1, text: '（家族）よだれと汗がすごくて、何度も吐いて、便も漏らしていました。' },
+    meds: { p: 1, text: '（家族）農薬を飲んだと思います。ほかの薬が減っているかは分かりません。' },
+    pmh: { p: 1, text: '（家族）最近、気分が落ち込んで眠れないと言っていました。' },
+    alcohol: { p: 0, text: '（家族）お酒は飲みません。' }, lastnormal: { p: 1, text: '（家族）2時間前に話したときは普段どおりでした。' },
+    fever: { p: 0, text: '熱はありませんでした。' }, headache: { p: 0, text: '' }, seizure: { p: 0.3, text: '（家族）手足がピクピクしていました。' },
+  },
+  exam: { gen_consc: { p: 1, text: '呼びかけで開眼するがすぐに閉じる。' }, gen_breath_odor: { p: 1, text: 'ニンニクのような・石油のような強い臭い。' }, pupils: { p: 1, text: '両側とも1mmの著明な縮瞳。' }, lung_ausc: { p: 1, text: '両側にcrackleとwheeze（気道分泌物増加・気管支攣縮）。' }, skin: { p: 1, text: '全身の発汗、流涎。' }, motor: { p: 0.7, text: '全身の筋線維束性攣縮。' } },
+  vitals: { HR: { to: [42, 55], k: 1 }, SBP: { to: [85, 100], k: 1.5 }, RR: { to: [26, 34], k: 1 }, SpO2: { drop: [6, 14], k: 1.2 } },
+  labs: { CHE: { to: [5, 40], k: 0 }, GLU: { add: [30, 80], k: 1 }, AMY: { add: [50, 300], k: 1 }, K: { add: [-0.6, -0.2], k: 1 } },
+  tests: { cxr: [{ p: 0.6, text: '両側肺門周囲に淡い浸潤影（気道分泌物・誤嚥）。' }], tox: [{ p: 1, text: '尿中薬物スクリーニング：ベンゾジアゼピン・三環系など陰性（有機リンは検出されない）。', normal: true }] },
+  ecg: [{ p: 1, text: '洞性徐脈、QT延長。' }],
+  natural: 0.6,
+  dynamics: (enc, eff) => { const st = enc.state; if (eff.tags.atropine) st.atr ??= enc.t; if (eff.tags.pam) st.pam ??= enc.t; return (st.atr != null ? -1.1 : 0) + (st.pam != null && enc.t - st.pam > 60 ? -0.4 : 0); },
+  therapies: [
+    { id: 'atropine', label: 'アトロピン（気道分泌が乾くまで繰り返し・増量）', req: { tag: 'atropine' }, effect: 0, lagH: 0, required: true, deadlineH: [1, 0.5, 0.5] },
+    { id: 'pam', label: 'PAM（プラリドキシム）', req: { tag: 'pam' }, effect: 0, lagH: 0, required: true, deadlineH: [6, 3, 2] },
+    { id: 'o2', label: '酸素投与（SpO2<90%）・必要なら挿管', req: { o2: true }, when: (c) => c.rawSpO2 < 90, required: true, deadlineH: [0.5, 0.5, 0.25] },
+  ],
+  dispo: () => ({ ok: ['icu'], best: 'icu', why: '有機リン中毒：ICUで呼吸管理とアトロピン調整（数日後の中間症候群・遅発性神経障害にも注意）。回復後に精神科評価' }),
+  useful: ['chem', 'cbc', 'vbg', 'ecg', 'cxr', 'tox', 'bs_poct', 'etoh', 'apap'],
+  key: [['chem'], ['vbg'], ['ecg']],
+  extrasOk: () => ['intox', 'aspiration'],
+  teaching: [
+    '縮瞳・流涎・発汗・気道分泌増加・徐脈・嘔吐下痢（ムスカリン症状）と、筋線維束攣縮・脱力（ニコチン症状）があれば有機リン中毒。特有の臭い、コリンエステラーゼ著明低下。',
+    '治療はアトロピン（気道分泌が乾き心拍が上がるまで繰り返し増量）とPAM。皮膚・衣類の除染も。医療者は手袋で二次被曝を防ぐ。',
+    '自殺企図が多いので、回復後に精神科の評価を必ず行う。',
+  ],
+  sources: ['日本中毒情報センター「有機リン系殺虫剤」'],
+  ideal: () => [{ a: 'test', ids: ['bs_poct', 'vbg', 'chem', 'cbc', 'ecg', 'cxr'] }, { a: 'o2', device: 'reservoir', flow: 10, when: 'spo2<92' }, { a: 'rx', drugId: 'atropine', route: 'iv', dose: 1, freq: 'once', days: 1 }, { a: 'rx', drugId: 'pam', route: 'iv', dose: 1000, freq: 'q8h', days: 2 }],
+};

@@ -186,6 +186,7 @@ export function testReport(enc, tid, vit, k) {
   // report
   const fs = d.tests?.[tid];
   const out = [];
+  let abn = false;
   if (Array.isArray(fs)) {
     fs.forEach((f, i) => {
       if (!p.rolls.tests[tid]?.[i]) return;
@@ -194,10 +195,11 @@ export function testReport(enc, tid, vit, k) {
       if (!f.minBurden && !f.persist && st.burden < 6 && !['ucx', 'bcx', 'sputum_cx'].includes(tid)) return;
       if (['ucx', 'bcx', 'sputum_cx', 'urine_gram', 'sputum_gram'].includes(tid) && enc.abxStartT != null && enc.t - enc.abxStartT > 360 && hashRand(p.seed, 'cxneg', tid) < 0.6) return; // 抗菌薬投与後の検体は陰性化しやすい
       out.push(fmt(f.text, p.vars));
+      if (!f.normal) abn = true;
     });
   }
   // 背景疾患による所見
-  if (tid === 'cxr' && !out.length && p.comorb.includes('chf')) out.push('CTR 約55%の軽度心拡大。肺野に明らかな浸潤影なし。');
-  if (tid === 'echo' && !out.length && p.comorb.includes('chf')) out.push('LVEF 約40%。びまん性の軽度壁運動低下。下大静脈径 15mm、呼吸性変動あり。');
-  return { text: out.length ? out.join(' ') : T.normal, abnormal: out.length > 0 };
+  if (tid === 'cxr' && !out.length && p.comorb.includes('chf')) { out.push('CTR 約55%の軽度心拡大。肺野に明らかな浸潤影なし。'); abn = true; }
+  if (tid === 'echo' && !out.length && p.comorb.includes('chf')) { out.push('LVEF 約40%。びまん性の軽度壁運動低下。下大静脈径 15mm、呼吸性変動あり。'); abn = true; }
+  return { text: out.length ? out.join(' ') : T.normal, abnormal: abn };
 }

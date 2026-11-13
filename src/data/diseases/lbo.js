@@ -1,0 +1,52 @@
+// 大腸がんによる大腸閉塞
+// 出典: 大腸癌研究会『大腸癌治療ガイドライン2024年版』, 大腸ステント安全手技研究会 資料
+import { procByImaging } from './common.js';
+export default {
+  id: 'lbo', name: '大腸がんによる大腸閉塞', dept: '消化器外科',
+  weight: 2, season: {}, minLevel: 2,
+  demo: { age: [60, 90], ageMode: 'old', male: 0.55 },
+  sev: { p: [0.35, 0.45, 0.2], burden: [[30, 38], [38, 48], [52, 62]] },
+  refractoryP: [0, 0, 0], comorb: { extra: { htn: 0.4 } }, organisms: [],
+  vars: () => ({}),
+  cc: () => 'お腹が張って、便もガスも出ない', ccKey: 'abd_pain',
+  arrival: (sev) => (sev === 2 ? 'ambulance' : 'walk'),
+  history: {
+    onset: { p: 1, text: '4日前から便が出なくなり、昨日からおならも出ません。お腹がどんどん張ってきました。' },
+    character: { p: 1, text: 'お腹全体が張って、時々しぼるように痛みます。' },
+    location: { p: 1, text: 'お腹全体です。' },
+    nausea: { p: 0.6, text: '少し吐き気があり、今朝1回吐きました。' },
+    constipation: { p: 1, text: 'ここ2〜3か月、便が細くなって、便秘と下痢を繰り返していました。' },
+    bloodystool: { p: 0.6, text: '時々、便に血が混じっていました。' },
+    weightloss: { p: 0.7, text: 'この3か月で5kgやせました。' },
+    surgery: { p: 0, text: 'お腹の手術は受けたことがありません。' },
+    fever: { p: 0, text: '熱はありません。' }, diarrhea: { p: 0, text: '' }, migration: { p: 0, text: '' },
+  },
+  exam: { abd_insp: { p: 1, text: '腹部は著明に膨満。手術痕なし。' }, abd_palp: { p: 1, text: '腹部全体が張って軽い圧痛、右下腹部（盲腸）に強めの圧痛。腹膜刺激徴候なし。' }, abd_perc: { p: 1, text: '鼓音。' }, abd_ausc: { p: 1, text: '腸雑音は亢進し金属音。' }, rectal: { p: 1, text: '直腸に便はなく、腫瘤も触れない。指に少量の血液。' } },
+  vitals: { HR: { to: [100, 118], k: 1 } },
+  labs: { HB: { add: [-3, -1.5], k: 0 }, MCV: { add: [-12, -6], k: 0 }, WBC: { to: [9000, 14000], k: 1 }, CRP: { to: [1, 6], k: 1 }, BUN: { add: [5, 20], k: 1 } },
+  tests: {
+    axr: [{ p: 1, persist: true, text: '結腸（盲腸〜下行結腸）の著明な拡張。直腸ガスなし。' }],
+    abd_ct_contrast: [{ p: 1, persist: true, text: 'S状結腸に全周性の壁肥厚（腫瘍）による狭窄と、口側の結腸の著明な拡張（盲腸径10cm）。穿孔・遊離ガスなし。肝転移なし。' }],
+    abd_ct_plain: [{ p: 1, persist: true, text: 'S状結腸の狭窄と口側結腸の著明な拡張（盲腸径10cm）。遊離ガスなし。' }],
+    fobt: [{ p: 1, text: '便潜血陽性。' }],
+  },
+  natural: 0.45,
+  curedBy: 'decomp',
+  therapies: [
+    { id: 'fluid', label: '細胞外液の補液', req: { fluidTotal: 1000 }, when: (c) => c.state.volume > 800 || c.vit.SBP < 100, required: true, deadlineH: [4, 3, 2], startFromNeed: true },
+    { id: 'decomp', label: '消化器内科/外科コンサルト→大腸ステント留置または人工肛門造設で減圧（その後に根治手術）', req: { procDone: 'decomp' }, required: true, deadlineH: [24, 12, 6] },
+  ],
+  procedures: [procByImaging({ id: 'decomp', depts: ['gi', 'surgery'], label: '大腸ステント留置', tests: ['abd_ct_contrast', 'abd_ct_plain'], delay: 90, duration: 60, after: 'ward',
+    acceptText: 'S状結腸がんによる大腸閉塞です。盲腸が拡張しており穿孔の危険があるので、今日中に内視鏡で大腸ステントを留置して減圧します（約1時間半後）。全身状態が整ってから腫瘍の切除術を行います。', needText: '閉塞の部位と原因を確認するため、腹部CTをお願いします。', doneText: '消化器内科：S状結腸の狭窄部に大腸ステントを留置し、多量のガスと便が排出されました。生検も提出しています。' })],
+  dispo: () => ({ ok: ['admit'], best: 'admit', why: '大腸閉塞：入院で減圧と、その後の根治手術' }),
+  useful: ['axr', 'abd_ct_contrast', 'abd_ct_plain', 'cbc', 'chem', 'crp', 'vbg', 'coag', 'fobt', 'abd_us'],
+  key: [['abd_ct_contrast', 'abd_ct_plain']],
+  extrasOk: () => ['colorectal_ca', 'ida'],
+  teaching: [
+    '手術歴のない高齢者の腸閉塞で、便が細い・便通異常・血便・体重減少・貧血があれば大腸がんによる大腸閉塞を疑う。',
+    '回盲弁が閉じていると大腸が閉じた袋になり、盲腸が拡張して穿孔しやすい（盲腸径>9〜12cmは危険）。',
+    'CTで閉塞部位を確認し、大腸ステントか人工肛門で減圧してから根治手術。胃管だけでは減圧できない。',
+  ],
+  sources: ['大腸癌治療ガイドライン2024年版（大腸癌研究会）'],
+  ideal: () => [{ a: 'test', ids: ['cbc', 'chem', 'crp', 'axr', 'abd_ct_contrast'] }, { a: 'fluid', fluidId: 'lr', mode: 'bolus', volume: 1000 }, { a: 'consult', dept: 'gi', delayMin: 30 }],
+};
