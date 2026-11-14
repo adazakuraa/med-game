@@ -250,3 +250,10 @@ test('適切な診療は高得点、不適切な診療は低得点になる', ()
   S.discharge(bad);
   assert.ok(scoreCase(good).total > scoreCase(bad).total + 30);
 });
+
+test('すべての薬剤が処方画面のどこかのグループに入っている', async () => {
+  const { DRUG_GROUPS } = await import('../src/data/drugGroups.js');
+  const inGroup = new Set(DRUG_GROUPS.flatMap((g) => g.subs.flatMap((s) => s[1])));
+  for (const d of DRUGS) assert.ok(inGroup.has(d.id), `${d.id} がどのグループにも入っていない`);
+  for (const id of inGroup) assert.ok(DRUGS.some((d) => d.id === id), `グループに存在しない薬剤 ${id}`);
+});

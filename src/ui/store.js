@@ -1,7 +1,7 @@
 // セーブデータ（端末のブラウザ保存領域 localStorage）
 const KEY = 'medrot_save_v1';
 
-const fresh = () => ({ v: 1, profile: { xp: 0, cases: [], seen: {}, mastery: {}, tutorialSeen: false }, settings: { realtime: true, mode: 'resident' }, enc: null });
+const fresh = () => ({ v: 1, profile: { xp: 0, cases: [], seen: {}, mastery: {}, tutorialSeen: false }, settings: { realtime: true, mode: 'resident', rotation: 'all' }, enc: null });
 
 export function load() {
   try {
