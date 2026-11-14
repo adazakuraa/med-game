@@ -1,4 +1,5 @@
 // 疾患モデルからルールベースで患者を生成する
+import { ROTATION_BY_ID } from '../data/rotations.js';
 import { makeRng, clamp, hashRand } from './rng.js';
 import { DISEASES, DISEASE_BY_ID } from '../data/diseases/index.js';
 import { LABS } from '../data/labs.js';
@@ -53,7 +54,8 @@ export function diseaseWeight(d, month, level) {
   return d.weight * (d.season?.[s] ?? 1);
 }
 
-export function pickDisease(rng, month, level) {
+export function pickDisease(rng, month, level, match) {
+  if (match && DISEASES.some((d) => match(d) && diseaseWeight(d, month, level) > 0)) return rng.weighted(DISEASES, (d) => (match(d) ? diseaseWeight(d, month, level) : 0));
   return rng.weighted(DISEASES, (d) => diseaseWeight(d, month, level));
 }
 
@@ -66,10 +68,11 @@ export function generatePatient(o) {
   const seed = o.seed >>> 0;
   const rng = makeRng(seed);
   const level = o.level ?? 1;
-  const d = o.diseaseId ? DISEASE_BY_ID[o.diseaseId] : pickDisease(rng, o.month ?? 1, level);
+  const rot = ROTATION_BY_ID[o.rotation];
+  const d = o.diseaseId ? DISEASE_BY_ID[o.diseaseId] : pickDisease(rng, o.month ?? 1, level, rot?.match);
 
-  // 重症度（重症はレベル3以上で出現）
-  let sev = o.sev ?? rng.weighted([0, 1, 2], (i) => d.sev.p[i]);
+  // 重症度（重症はレベル3以上で出現。救命救急ローテーションでは重症が多い）
+  let sev = o.sev ?? rng.weighted([0, 1, 2], (i) => d.sev.p[i] * (i === 2 && rot?.sevBoost ? rot.sevBoost : 1));
   if (o.sev == null && sev === 2 && level < 3) sev = 1;
 
   // 年齢・性別

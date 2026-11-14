@@ -8,6 +8,8 @@ import { TEST_CATS, TESTS, TEST_BY_ID } from '../data/tests.js';
 import { LABS, refFor } from '../data/labs.js';
 import { DDX, DDX_CATS, DDX_BY_ID } from '../data/ddx.js';
 import { DRUGS, DRUG_BY_ID, FLUIDS, FREQS, ROUTE_LABEL, O2_DEVICES } from '../data/drugs.js';
+import { DRUG_GROUPS, normJa } from '../data/drugGroups.js';
+import { ROTATIONS, ROTATION_BY_ID, titleOf, unlocksBetween, nextUnlock } from '../data/rotations.js';
 import { DISEASE_BY_ID } from '../data/diseases/index.js';
 import { COMORB } from '../engine/patient.js';
 import { load, save, resetSave, levelOf, levelProgress } from './store.js';
@@ -67,16 +69,25 @@ function viewTitle() {
   const lv = levelOf(game.profile.xp);
   const pr = levelProgress(game.profile.xp);
   const enc = game.enc;
+  const nx = nextUnlock(lv);
+  const curRot = ROTATION_BY_ID[game.settings.rotation]?.minLv <= lv ? game.settings.rotation : 'all';
   return `<div class="screen">
     <div class="hero"><div class="logo">🩺</div><h1>メディカル・ローテーション</h1>
     <div class="sub">救急外来に来た患者を、あなたの臨床推論で救え</div></div>
     <div class="card">
-      <div class="row"><b class="grow">研修医 レベル ${lv}</b><span class="sub">${game.profile.xp} XP</span></div>
+      <div class="row"><b class="grow">${esc(titleOf(lv))}　レベル ${lv}</b><span class="sub">${game.profile.xp} XP</span></div>
       <div class="xpbar"><i style="width:${Math.round(pr * 100)}%"></i></div>
-      <div class="sub small">ローテーション：内科（救急外来）｜診療した患者 ${game.profile.cases.length}人</div>
+      <div class="sub small">ローテーション：${esc((ROTATION_BY_ID[game.settings.rotation]?.minLv <= lv ? ROTATION_BY_ID[game.settings.rotation] : ROTATIONS[0]).name)}｜診療した患者 ${game.profile.cases.length}人</div>
+      ${nx ? `<div class="sub small" style="margin-top:4px">🎁 次のごほうび（レベル${nx.lv}）：${nx.items.map((x) => esc(x.text)).join('、')}</div>` : ''}
     </div>
     ${enc && !enc.ended ? `<button class="btn primary block" data-a="resume">▶ 診療を再開（${esc(enc.patient.name)}さん）</button>` : ''}
     <button class="btn ${enc && !enc.ended ? '' : 'primary'} block" data-a="newcase">🚑 次の患者を呼ぶ</button>
+    <div class="card"><b>ローテーション（研修先）</b>
+      <div class="sub small">レベルが上がると新しい研修先が選べるようになります。</div>
+      <div class="rotgrid">${ROTATIONS.map((r) => (r.minLv <= lv ? `<button class="rot ${curRot === r.id ? 'on' : ''}" data-a="rotation" data-v="${r.id}"><span class="ic">${r.icon}</span><b>${esc(r.name)}</b><span class="sub small">${r.count}疾患</span></button>` : `<div class="rot locked"><span class="ic">🔒</span><b>${esc(r.name)}</b><span class="sub small">レベル${r.minLv}で解禁</span></div>`)).join('')}</div>
+      <div class="sub small" style="margin-top:4px">${esc(ROTATION_BY_ID[curRot].desc)}</div>
+      ${enc && !enc.ended ? '<div class="sub small">※ 変更は次の患者から反映されます。</div>' : ''}
+    </div>
     <div class="card"><b>難易度</b>
       <div class="row wrap" style="margin-top:6px">${Object.entries(MODES).map(([k, m]) => `<button class="chip ${game.settings.mode === k ? 'on' : ''}" data-a="mode" data-v="${k}">${m.short}</button>`).join('')}</div>
       <div class="sub small" style="margin-top:4px">${esc(MODES[game.settings.mode].desc)}</div>
@@ -273,6 +284,7 @@ function tabTreat() {
   const pendC = enc.consults.filter((c) => !c.replied);
   return `<h3>実施中の指示（${act.length}）</h3><div class="card tight">${act.length ? act.map((o) => `<div class="order"><div class="grow">${esc(S.orderLabel(o))}${o.end ? `<div class="sub small">〜${clockOf(enc, o.end)}</div>` : ''}${o.start > enc.t ? '<div class="sub small">準備中</div>' : ''}</div><button class="x" data-a="stop" data-v="${o.oid}">中止</button></div>`).join('') : '<div class="sub">なし</div>'}</div>
   ${pendC.length ? `<div class="sub small">コンサルト返信待ち：${pendC.map((c) => S.DEPTS[c.dept]).join('、')}</div>` : ''}
+  ${txResults(enc)}
   <div class="actgrid" style="margin-top:12px">
     <button class="act" data-a="rx"><span class="ic">💊</span>薬剤処方</button>
     <button class="act" data-a="fluid"><span class="ic">💧</span>輸液</button>
@@ -286,6 +298,16 @@ function tabTreat() {
     <div class="sub small">時間を進めて経過を観察しましょう。急変時は看護師から連絡が入り、自動的に停止します。</div>
     <div class="grid3" style="margin-top:8px"><button class="btn" data-a="adv" data-v="240">+4時間</button><button class="btn" data-a="adv" data-v="morning">翌朝へ</button><button class="btn" data-a="auto">自動経過</button></div></div>` : ''}
   <div class="sub small" style="margin-top:12px">💡 処方前に問診（アレルギー・常用薬）と腎機能を確認しましょう。</div>`;
+}
+
+// 治療・処置・コンサルトの結果（カルテを開かなくても確認できるように）
+function txResults(enc) {
+  const all = enc.log.filter((e) => (e.type === 'alert' && ['consult', 'nurse'].includes(e.kind)) || (e.type === 'exam' && !e.eid)).slice().reverse();
+  if (!all.length) return '';
+  const list = ui.txAll ? all : all.slice(0, 4);
+  const icon = (e) => (e.type === 'exam' ? '🔧' : e.kind === 'consult' ? '📞' : '👩‍⚕️');
+  return `<h3>治療・処置の結果（${all.length}）</h3><div class="card tight txres">${list.map((e) => `<div class="e"><div class="tm">${icon(e)} ${clockOf(enc, e.t)}${e.label ? ' · ' + esc(e.label) : ''}</div>${esc(e.text)}</div>`).join('')}
+    ${all.length > 4 ? `<button class="btn block" data-a="txall">${ui.txAll ? '最新の4件だけ表示' : `すべて表示（あと${all.length - 4}件）`}</button>` : ''}</div>`;
 }
 
 function tabLog() {
@@ -308,6 +330,7 @@ function viewDebrief() {
     <div class="card" style="text-align:center"><div class="sub">転帰</div><div style="font-size:22px;font-weight:800">${OUTCOME_LABEL[sc.outcome.kind]}</div>
       ${sc.outcome.notes?.length ? `<div class="sub small">${sc.outcome.notes.map(esc).join('／')}</div>` : ''}
       <div class="grade ${sc.grade}">${sc.grade}</div><div>${sc.total}点 <span class="sub">（+${sc.xp} XP）</span></div>
+      ${sc.levelUp ? `<div class="levelup"><div class="lvt">🎉 レベルアップ！</div><div>レベル ${sc.levelUp.from} → <b>${sc.levelUp.to}</b>　${esc(titleOf(sc.levelUp.to))}</div>${sc.levelUp.items.length ? `<ul class="clean">${sc.levelUp.items.map((x) => `<li>${x.icon} ${esc(x.text)}</li>`).join('')}</ul>` : ''}${sc.levelUp.items.some((x) => x.text.startsWith('ローテーション')) ? '<div class="sub small">タイトル画面でローテーションを選べます。</div>' : ''}</div>` : ''}
       <div class="sub small">${MODES[enc.mode || 'expert'].name}${enc.hintUse && (enc.hintUse.l1 + enc.hintUse.l2 + enc.hintUse.l3) ? `・ヒント ${enc.hintUse.l1 + enc.hintUse.l2 + enc.hintUse.l3}回${enc.hintUse.answer ? '（答えを見た）' : ''}` : ''}${enc.pharmCalls ? `・疑義照会 ${enc.pharmCalls}回` : ''}・経験値×${sc.xpMult ?? 1}</div>
       ${modeSuggestion()}
       ${sc.deathText ? `<div class="card tight" style="text-align:left;border-color:${sc.deathType === 'unavoidable' ? 'var(--line)' : 'var(--bad)'}">${esc(sc.deathText)}</div>` : ''}
@@ -419,9 +442,7 @@ function renderModal() {
       break;
     case 'ddxadd': {
       const q = (m.q || '').trim();
-      const list = DDX.filter((d) => !enc.ddx.some((x) => x.id === d.id) && (!q || d.name.includes(q)));
-      inner = hd('鑑別診断を追加') + `<input class="input" id="ddxq" placeholder="疾患名で検索" value="${esc(q)}" data-input="ddxq">` +
-        DDX_CATS.map((c) => { const it = list.filter((d) => d.cat === c.id); return it.length ? `<h3>${c.name}</h3><div class="row wrap">${it.map((d) => `<button class="chip" data-a="ddxpick" data-v="${d.id}">${esc(d.name)}</button>`).join('')}</div>` : ''; }).join('');
+      inner = hd('鑑別診断を追加') + `<input class="input" id="ddxq" placeholder="疾患名で検索（ひらがな・カタカナどちらでも）" value="${esc(q)}" data-input="ddxq"><div id="mlist">${ddxListHtml(m)}</div>`;
       break;
     }
     case 'link': {
@@ -512,14 +533,40 @@ function modalHint(m, hd) {
     sec('ans', 3, '⑤ 指導医の答え（診断と治療）', ans);
 }
 
+function ddxListHtml(m) {
+  const enc = game.enc;
+  const q = normJa((m.q || '').trim());
+  const list = DDX.filter((d) => !enc.ddx.some((x) => x.id === d.id) && (!q || normJa(d.name).includes(q)));
+  const html = DDX_CATS.map((c) => { const it = list.filter((d) => d.cat === c.id); return it.length ? `<h3>${c.name}</h3><div class="row wrap">${it.map((d) => `<button class="chip" data-a="ddxpick" data-v="${d.id}">${esc(d.name)}</button>`).join('')}</div>` : ''; }).join('');
+  return html || '<div class="sub" style="margin-top:8px">見つかりません。</div>';
+}
+
+const DRUG_GROUP_NAMES = {};
+for (const g of DRUG_GROUPS) for (const [sub, ids] of g.subs) for (const id of ids) (DRUG_GROUP_NAMES[id] ||= []).push(g.name, sub, ...g.kw.split(' '));
+
+function drugBtn(d) {
+  return `<button class="drug" data-a="rxpick" data-v="${d.id}"><b>${esc(d.generic)}</b><span>${esc(d.brands.join('・'))}｜${Object.keys(d.routes).map((r) => ROUTE_LABEL[r]).join('・')}</span>${isRes() ? `<div class="why">${esc(DRUG_ROLE[d.id])}</div>` : ''}</button>`;
+}
+
+function rxListHtml(m) {
+  const q = normJa((m.q || '').trim());
+  if (q) {
+    const hit = DRUGS.filter((d) => [d.generic, ...d.brands, d.cls, DRUG_ROLE[d.id]].some((x) => normJa(x).includes(q)) || (DRUG_GROUP_NAMES[d.id] || []).some((x) => normJa(x).startsWith(q) || (q.length >= 2 && normJa(x).includes(q))));
+    return hit.length ? `<div class="sub small" style="margin:8px 0 2px">${hit.length}件見つかりました</div>${hit.map(drugBtn).join('')}` : '<div class="sub" style="margin-top:8px">見つかりません。下のグループから探すか、別の言葉（一般名・商品名・「痛み」「血圧」など目的）で検索してください。</div>';
+  }
+  const g = DRUG_GROUPS.find((x) => x.id === m.group);
+  if (!g) {
+    return `<div class="sub small" style="margin:8px 0">目的のグループを選んでください</div><div class="ggrid">${DRUG_GROUPS.map((x) => `<button class="gbtn" data-a="rxgroup" data-v="${x.id}"><span class="ic">${x.icon}</span><b>${esc(x.name)}</b><span class="sub small">${new Set(x.subs.flatMap((y) => y[1])).size}種類</span></button>`).join('')}</div>`;
+  }
+  return `<div class="row" style="margin:8px 0"><button class="chip" data-a="rxgroup" data-v="">← グループ一覧へ</button></div><h3>${g.icon} ${esc(g.name)}</h3>` +
+    g.subs.map(([name, ids]) => `<div class="subh">${esc(name)}</div>${ids.map((id) => drugBtn(DRUG_BY_ID[id])).join('')}`).join('');
+}
+
 function modalRx(m, hd) {
   const enc = game.enc;
   if (!m.drugId) {
     const q = (m.q || '').trim();
-    const list = DRUGS.filter((d) => !q || d.generic.includes(q) || d.brands.some((b) => b.includes(q)) || d.cls.includes(q));
-    const groups = [...new Set(list.map((d) => d.cls.split('（')[0]))];
-    return hd('薬剤処方') + `<input class="input" id="rxq" placeholder="一般名・商品名で検索" value="${esc(q)}" data-input="rxq">` +
-      groups.map((g) => `<h3>${esc(g)}</h3>${list.filter((d) => d.cls.startsWith(g)).map((d) => `<button class="drug" data-a="rxpick" data-v="${d.id}"><b>${esc(d.generic)}</b><span>${esc(d.brands.join('・'))}｜${Object.keys(d.routes).map((r) => ROUTE_LABEL[r]).join('・')}</span>${isRes() ? `<div class="why">${esc(DRUG_ROLE[d.id])}</div>` : ''}</button>`).join('')}`).join('');
+    return hd('薬剤処方') + `<input class="input" id="rxq" placeholder="薬の名前・目的で検索（例：ロキソニン、血圧、抗菌）" value="${esc(q)}" data-input="rxq"><div id="mlist">${rxListHtml(m)}</div>`;
   }
   const d = DRUG_BY_ID[m.drugId];
   const r = d.routes[m.route];
@@ -558,7 +605,10 @@ function finishEncounter() {
   const hintPen = mode === 'resident' ? 0.05 * hu.l2 + 0.15 * hu.l3 : mode === 'senior' ? 0.05 * hu.l1 + 0.1 * hu.l2 + 0.25 * hu.l3 : 0;
   enc.score.xpMult = Math.round(MODES[mode].xp * Math.max(0.3, 1 - hintPen) * 100) / 100;
   enc.score.xp = Math.round(enc.score.total * enc.score.xpMult);
+  const lvBefore = levelOf(game.profile.xp);
   game.profile.xp += enc.score.xp;
+  const lvAfter = levelOf(game.profile.xp);
+  if (lvAfter > lvBefore) enc.score.levelUp = { from: lvBefore, to: lvAfter, items: unlocksBetween(lvBefore, lvAfter) };
   const d = DISEASE_BY_ID[enc.patient.diseaseId];
   game.profile.seen = game.profile.seen || {};
   game.profile.seen[d.id] = true;
@@ -575,7 +625,9 @@ function finishEncounter() {
 
 function newCase() {
   const seed = (Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0;
-  game.enc = S.newEncounter({ seed, month: new Date().getMonth() + 1, level: levelOf(game.profile.xp) });
+  const lv = levelOf(game.profile.xp);
+  const rot = ROTATION_BY_ID[game.settings.rotation];
+  game.enc = S.newEncounter({ seed, month: new Date().getMonth() + 1, level: lv, rotation: rot && rot.minLv <= lv ? rot.id : 'all' });
   game.enc.mode = game.settings.mode;
   game.enc.hintUse = { l1: 0, l2: 0, l3: 0 };
   ui.tab = 'q'; ui.qcat = 'hpi'; ui.region = 'general'; ui.tcat = 'blood'; ui.sel.clear(); ui.paused = false;
@@ -671,13 +723,16 @@ const handlers = {
   fdok: () => { S.setFinalDx(game.enc, [...ui.modal.sel], ui.modal.und); closeModal(); afterAction(); },
   // 治療
   rx: () => openModal({ type: 'rx', q: '' }),
+  txall: () => { ui.txAll = !ui.txAll; render(); },
+  rotation: (el) => { game.settings.rotation = el.dataset.v; persist(); render(); },
   rxpick: (el) => {
     const d = DRUG_BY_ID[el.dataset.v];
     const route = Object.keys(d.routes)[0];
     const r = d.routes[route];
-    openModal({ type: 'rx', drugId: d.id, route, freq: r.freqs[0], days: r.freqs.includes('cont') ? 2 : 5, dose: null });
+    openModal({ type: 'rx', drugId: d.id, route, freq: r.freqs[0], days: r.freqs.includes('cont') ? 2 : 5, dose: null, group: ui.modal?.group, q: ui.modal?.q || '' });
   },
-  rxback: () => openModal({ type: 'rx', q: '' }),
+  rxback: () => openModal({ type: 'rx', q: ui.modal?.q || '', group: ui.modal?.group }),
+  rxgroup: (el) => { ui.modal.group = el.dataset.v || null; ui.modal.q = ''; renderModal(); const sh = document.querySelector('.sheet'); if (sh) sh.scrollTop = 0; },
   rset: (el) => {
     const m = ui.modal;
     const k = el.dataset.k;
@@ -761,8 +816,21 @@ document.addEventListener('click', (ev) => {
 document.addEventListener('input', (ev) => {
   const el = ev.target;
   if (!el.dataset.input || !ui.modal) return;
-  if (el.dataset.input === 'ddxq' || el.dataset.input === 'rxq') { ui.modal.q = el.value; ui.modal.focus = true; renderModal(); const i = document.getElementById(el.id); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+  if (el.dataset.input === 'ddxq' || el.dataset.input === 'rxq') { ui.modal.q = el.value; if (!ev.isComposing) updateModalList(); }
   if (el.dataset.input === 'rxdose') ui.modal.dose = el.value;
+});
+
+// 検索欄は一覧だけを書き換える（入力中の日本語変換を途切れさせない）
+function updateModalList() {
+  const box = document.getElementById('mlist');
+  if (!box || !ui.modal) return;
+  box.innerHTML = ui.modal.type === 'rx' ? rxListHtml(ui.modal) : ddxListHtml(ui.modal);
+}
+document.addEventListener('compositionend', (ev) => {
+  const el = ev.target;
+  if (!ui.modal || !['ddxq', 'rxq'].includes(el.dataset?.input)) return;
+  ui.modal.q = el.value;
+  updateModalList();
 });
 
 // ========== 緊迫モード（リアルタイム進行） ==========
